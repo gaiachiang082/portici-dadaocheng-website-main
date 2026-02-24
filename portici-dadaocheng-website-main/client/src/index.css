@@ -1,0 +1,223 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ─── Portici DaDaocheng Brand Tokens ──────────────────────────────── */
+/* Brand Guidelines 2.0 — Rengairo 磚紅 as protagonist (45/30/20/5)     */
+@theme inline {
+  /* Brand Colours */
+  --color-moon-white:      oklch(96.5% 0.006 85);   /* #F5F3EE — 45% base */
+  --color-rengairo:        oklch(42.0% 0.120 30);   /* #a2482b — 30% protagonist */
+  --color-ochre-brown:     oklch(55.0% 0.075 55);   /* #A67C52 — 20% support */
+  --color-ink-grey:        oklch(27.5% 0.000 0);    /* #3D3D3D — 5% details */
+  --color-bamboo-green:    oklch(57.5% 0.045 165);  /* #6B8E7F */
+  --color-mist-blue:       oklch(70.0% 0.025 220);  /* #9CADB7 */
+  --color-mulberry-paper:  oklch(89.5% 0.025 80);   /* #E8DCC6 */
+
+  /* Semantic Colour Tokens */
+  --color-background:           var(--background);
+  --color-foreground:           var(--foreground);
+  --color-card:                 var(--card);
+  --color-card-foreground:      var(--card-foreground);
+  --color-popover:              var(--popover);
+  --color-popover-foreground:   var(--popover-foreground);
+  --color-primary:              var(--primary);
+  --color-primary-foreground:   var(--primary-foreground);
+  --color-secondary:            var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted:                var(--muted);
+  --color-muted-foreground:     var(--muted-foreground);
+  --color-accent:               var(--accent);
+  --color-accent-foreground:    var(--accent-foreground);
+  --color-destructive:          var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border:               var(--border);
+  --color-input:                var(--input);
+  --color-ring:                 var(--ring);
+
+  /* Typography — H1–H3 Optima Semibold; UI/body Noto Sans Semibold */
+  --font-heading:  'Optima', system-ui, sans-serif;  /* H1–H3 大標題 */
+  --font-display:  'Optima', system-ui, sans-serif;  /* 展示用 = heading */
+  --font-body:     'Noto Sans', system-ui, sans-serif; /* 內文 */
+  --font-ui:       'Optima', system-ui, sans-serif; /* UI / 標籤 */
+
+  /* Radius */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* ─── Light Theme (Default) ─────────────────────────────────────────── */
+:root {
+  --radius: 0.25rem;
+
+  /* Portici brand palette as semantic tokens */
+  --background:           oklch(96.5% 0.006 85);   /* Moon White */
+  --foreground:           oklch(27.5% 0.000 0);    /* Ink Grey */
+  --card:                 oklch(98.5% 0.003 85);
+  --card-foreground:      oklch(27.5% 0.000 0);
+  --popover:              oklch(98.5% 0.003 85);
+  --popover-foreground:   oklch(27.5% 0.000 0);
+  --primary:              oklch(42.0% 0.120 30);   /* Rengairo #a2482b — brand protagonist */
+  --primary-foreground:   oklch(96.5% 0.006 85);   /* Moon White */
+  --ochre:                oklch(55.0% 0.075 55);   /* Ochre Brown — supporting color */
+  --secondary:            oklch(89.5% 0.025 80);   /* Mulberry Paper */
+  --secondary-foreground: oklch(27.5% 0.000 0);
+  --muted:                oklch(92.0% 0.008 85);
+  --muted-foreground:     oklch(50.0% 0.005 60);
+  --accent:               oklch(89.5% 0.025 80);   /* Mulberry Paper */
+  --accent-foreground:    oklch(27.5% 0.000 0);
+  --destructive:          oklch(55.0% 0.180 25);
+  --destructive-foreground: oklch(96.5% 0.006 85);
+  --border:               oklch(88.0% 0.010 80);
+  --input:                oklch(88.0% 0.010 80);
+  --ring:                 oklch(42.0% 0.120 30);   /* Rengairo */
+}
+
+/* ─── Base Styles ───────────────────────────────────────────────────── */
+@layer base {
+  *, *::before, *::after {
+    @apply border-border outline-ring/50;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  /*
+    Typography enforcement:
+    - We use !important so legacy inline fontFamily styles don't override the token system.
+  */
+
+  /* Headings: H1–H3 Optima Semibold */
+  h1, h2, h3 {
+    font-family: var(--font-display) !important;
+    font-weight: 600 !important;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--foreground);
+  }
+
+  /* Headings: H4–H6 + UI labels */
+  h4, h5, h6 {
+    font-family: var(--font-ui) !important;
+    font-weight: 600 !important;
+    line-height: 1.35;
+    color: var(--foreground);
+  }
+
+  h1 { font-size: clamp(2rem, 5vw, 3rem); }
+  h2 { font-size: clamp(1.5rem, 3.5vw, 2rem); }
+  h3 { font-size: clamp(1.2rem, 2.5vw, 1.5rem); }
+  h4 { font-size: 1.125rem; }
+
+  p {
+    font-family: var(--font-body) !important;
+    line-height: 1.8;
+  }
+
+  li {
+    font-family: var(--font-body) !important;
+  }
+
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  label {
+    font-family: var(--font-ui) !important;
+  }
+
+  a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+  a:hover { opacity: 0.72; }
+
+  img, video { max-width: 100%; height: auto; display: block; }
+
+  :focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+    border-radius: var(--radius);
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin-block: 2rem;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [type="button"]:not(:disabled),
+  [type="submit"]:not(:disabled),
+  a[href],
+  select:not(:disabled),
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled) {
+    @apply cursor-pointer;
+  }
+}
+
+/* ─── Component Overrides ───────────────────────────────────────────── */
+@layer components {
+  /* Container: max 1200px, centred, responsive padding */
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+  @media (min-width: 640px)  { .container { padding-inline: 1.5rem; } }
+  @media (min-width: 1024px) { .container { padding-inline: 2rem; } }
+
+  /* Flex: prevent overflow collapse */
+  .flex { min-height: 0; min-width: 0; }
+
+  /* Ochre accent divider */
+  .brand-divider {
+    width: 2.5rem;
+    height: 2px;
+    background-color: var(--primary);
+    border-radius: 1px;
+  }
+
+  /* Readable prose column */
+  .prose-brand {
+    max-width: 68ch;
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.85;
+  }
+}
+
+/* ─── Utility Helpers ───────────────────────────────────────────────── */
+@layer utilities {
+  .font-display { font-family: var(--font-display); font-weight: 600; }
+  .font-body    { font-family: var(--font-body); }
+  .font-ui      { font-family: var(--font-ui); font-weight: 600; }
+
+  .text-ochre       { color: oklch(55.0% 0.075 55); }
+  .text-bamboo      { color: oklch(57.5% 0.045 165); }
+  .text-mist        { color: oklch(70.0% 0.025 220); }
+  .bg-mulberry      { background-color: oklch(89.5% 0.025 80); }
+  .bg-moon          { background-color: oklch(96.5% 0.006 85); }
+  .bg-ochre         { background-color: oklch(55.0% 0.075 55); }
+  .border-ochre     { border-color: oklch(55.0% 0.075 55); }
+}

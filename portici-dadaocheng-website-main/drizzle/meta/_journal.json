@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1771700477482,
+      "tag": "0000_sad_lightspeed",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1771715405917,
+      "tag": "0001_natural_darwin",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1771784764233,
+      "tag": "0002_clear_christian_walker",
+      "breakpoints": true
+    }
+  ]
+}
