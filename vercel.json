@@ -14,10 +14,11 @@
     {
       "src": "/api/(.*)",
       "dest": "server/_core/index.ts"
-    },
+    }, 
+    {"handle": "filesystem"},
     {
       "src": "/(.*)",
-        "dest": "/"
+        "dest": "/index.html"
     }
   ]
 }
