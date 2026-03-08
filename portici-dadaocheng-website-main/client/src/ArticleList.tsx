@@ -50,16 +50,16 @@ const ArticleList = () => {
     <div className="max-w-2xl mx-auto p-6">
       <h2 className="text-2xl font-semibold text-neutral-800 mb-6">我的雙語部落格</h2>
 
-      {/* 語系切換按鈕 - 藥丸形狀 */}
-      <div className="inline-flex p-1 rounded-full bg-neutral-200/80 mb-8 gap-0.5">
+      {/* 語系切換按鈕 - 藥丸風格，與 Articoli 一致、對比更明顯 */}
+      <div className="inline-flex p-1.5 rounded-full bg-neutral-200/90 mb-8 gap-1">
         <button
           type="button"
           onClick={() => setLanguage('it')}
           className={`
-            px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300
+            px-5 py-2.5 rounded-full text-sm font-semibold tracking-wide transition-all duration-300
             ${language === 'it'
-              ? 'bg-white text-neutral-900 shadow-sm'
-              : 'text-neutral-600 hover:text-neutral-800 hover:bg-neutral-100/80'
+              ? 'bg-[#a2482b] text-[#F5F3EE] shadow-sm'
+              : 'text-neutral-600 hover:text-neutral-800 hover:bg-neutral-100/90'
             }
           `}
         >
@@ -69,10 +69,10 @@ const ArticleList = () => {
           type="button"
           onClick={() => setLanguage('en')}
           className={`
-            px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300
+            px-5 py-2.5 rounded-full text-sm font-semibold tracking-wide transition-all duration-300
             ${language === 'en'
-              ? 'bg-white text-neutral-900 shadow-sm'
-              : 'text-neutral-600 hover:text-neutral-800 hover:bg-neutral-100/80'
+              ? 'bg-[#a2482b] text-[#F5F3EE] shadow-sm'
+              : 'text-neutral-600 hover:text-neutral-800 hover:bg-neutral-100/90'
             }
           `}
         >
