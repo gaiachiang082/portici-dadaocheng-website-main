@@ -55,7 +55,7 @@ export default function Navigation() {
               alt="Portici DaDaocheng"
               className="h-12 md:h-14 w-auto object-contain transition-all duration-300"
               style={{
-                filter: scrolled || !isHome ? 'brightness(0.4) saturate(1.2)' : 'brightness(0) invert(1)',
+                filter: 'brightness(0) saturate(1.2)',
                 opacity: 0.95
               }}
             />
@@ -79,9 +79,7 @@ export default function Navigation() {
                     className={`text-[15px] tracking-wide transition-all duration-200 relative group ${
                       location === href || (href === "/workshop" && location.startsWith("/workshop"))
                         ? "text-[#a2482b]"
-                        : scrolled || !isHome
-                        ? "text-[oklch(27.5%_0.000_0)] hover:text-[#a2482b]"
-                        : "text-[oklch(90%_0.005_85)] hover:text-[#a2482b]"
+                        : "text-gray-900 hover:text-[#a2482b]"
                     }`}
                     style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
                   >
@@ -110,7 +108,7 @@ export default function Navigation() {
 
             {/* Hamburger — Mobile 收合選單 */}
             <button
-              className="md:hidden p-2 text-[oklch(27.5%_0.000_0)] hover:text-[oklch(55.0%_0.075_55)] transition-colors duration-200"
+              className="md:hidden p-2 text-gray-900 hover:text-[#a2482b] transition-colors duration-200"
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label={menuOpen ? "Chiudi menu" : "Apri menu"}
               aria-expanded={menuOpen}
@@ -145,7 +143,7 @@ export default function Navigation() {
               className={`text-[16px] transition-colors duration-200 ${
                 location === href || (href === "/workshop" && location.startsWith("/workshop"))
                   ? "text-[#a2482b]"
-                  : "text-[oklch(27.5%_0.000_0)] hover:text-[#a2482b]"
+                  : "text-gray-900 hover:text-[#a2482b]"
               }`}
               style={{
                 fontFamily: 'var(--font-ui)',
