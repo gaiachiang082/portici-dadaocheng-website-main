@@ -82,7 +82,7 @@ export default function Navigation() {
                     className={`text-[15px] tracking-wide transition-all duration-200 relative group ${
                       location === href || (href === "/workshop" && location.startsWith("/workshop"))
                         ? "text-[#a2482b]"
-                        : "text-gray-900 hover:text-[#a2482b]"
+                        : "text-slate-800 hover:text-[#a2482b]"
                     }`}
                     style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
                   >
@@ -103,8 +103,8 @@ export default function Navigation() {
                 onClick={() => setLang("it")}
                 className={`px-4 py-2 text-[13px] font-medium rounded-md transition-all duration-200 ${
                   lang === "it"
-                    ? "bg-[oklch(92%_0.005_85)] text-[oklch(27.5%_0.000_0)]"
-                    : "text-[oklch(55%_0.005_60)] hover:text-[oklch(27.5%_0.000_0)] hover:bg-[oklch(96%_0.005_85)]"
+                    ? "bg-[oklch(92%_0.005_85)] text-slate-800"
+                    : "text-slate-600 hover:text-slate-800 hover:bg-[oklch(96%_0.005_85)]"
                 }`}
                 style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
               >
@@ -115,8 +115,8 @@ export default function Navigation() {
                 onClick={() => setLang("en")}
                 className={`px-4 py-2 text-[13px] font-medium rounded-md transition-all duration-200 ${
                   lang === "en"
-                    ? "bg-[oklch(92%_0.005_85)] text-[oklch(27.5%_0.000_0)]"
-                    : "text-[oklch(55%_0.005_60)] hover:text-[oklch(27.5%_0.000_0)] hover:bg-[oklch(96%_0.005_85)]"
+                    ? "bg-[oklch(92%_0.005_85)] text-slate-800"
+                    : "text-slate-600 hover:text-slate-800 hover:bg-[oklch(96%_0.005_85)]"
                 }`}
                 style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
               >
@@ -139,7 +139,7 @@ export default function Navigation() {
 
             {/* Hamburger — Mobile 收合選單 */}
             <button
-              className="md:hidden p-2 text-gray-900 hover:text-[#a2482b] transition-colors duration-200"
+              className="md:hidden p-2 text-slate-800 hover:text-[#a2482b] transition-colors duration-200"
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label={menuOpen ? "Chiudi menu" : "Apri menu"}
               aria-expanded={menuOpen}
