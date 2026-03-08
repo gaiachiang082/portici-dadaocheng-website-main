@@ -47,10 +47,9 @@ export default function Navigation() {
       }}
     >
       <div className="container">
-        <nav className="flex items-center justify-between h-16 md:h-20">
-          {/* Logo */}
-          <Link href="/" className="flex items-center group transition-opacity duration-300 hover:opacity-80">
-            {/* Full logo image - white version for dark background, Rengairo for light */}
+        <nav className="flex flex-nowrap justify-between items-center h-16 md:h-20">
+          {/* Logo — 僅左側 */}
+          <Link href="/" className="flex items-center shrink-0 group transition-opacity duration-300 hover:opacity-80">
             <img
               src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/YOOdRRgvjAwtBHHT.png"
               alt="Portici DaDaocheng"
@@ -62,68 +61,71 @@ export default function Navigation() {
             />
           </Link>
 
-          {/* Desktop Nav */}
-          <ul className="hidden md:flex items-center gap-8">
-            {navLinks.map(({ href, label }, i) => (
-              <li
-                key={href}
-                style={{
-                  opacity: mounted ? 1 : 0,
-                  transform: mounted ? "translateY(0)" : "translateY(-8px)",
-                  transition: `opacity 0.5s ease ${200 + i * 80}ms, transform 0.5s ease ${200 + i * 80}ms`,
-                }}
-              >
-                <Link
-                  href={href}
-                  className={`text-[15px] tracking-wide transition-all duration-200 relative group ${
-                    location === href || (href === "/workshop" && location.startsWith("/workshop"))
-                      ? "text-[#a2482b]"
-                      : scrolled || !isHome
-                      ? "text-[oklch(27.5%_0.000_0)] hover:text-[#a2482b]"
-                      : "text-[oklch(90%_0.005_85)] hover:text-[#a2482b]"
-                  }`}
-                  style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+          {/* 右側：桌面選單 + CTA，手機為漢堡鈕（右側不再出現 logo） */}
+          <div className="flex items-center gap-6 shrink-0">
+            {/* Desktop Nav */}
+            <ul className="hidden md:flex items-center gap-8">
+              {navLinks.map(({ href, label }, i) => (
+                <li
+                  key={href}
+                  style={{
+                    opacity: mounted ? 1 : 0,
+                    transform: mounted ? "translateY(0)" : "translateY(-8px)",
+                    transition: `opacity 0.5s ease ${200 + i * 80}ms, transform 0.5s ease ${200 + i * 80}ms`,
+                  }}
                 >
-                  {label}
-                  {/* Underline indicator */}
-                  <span
-                    className="absolute -bottom-0.5 left-0 h-px bg-[#a2482b] transition-all duration-300"
-                    style={{ width: location === href || (href === "/workshop" && location.startsWith("/workshop")) ? "100%" : "0%" }}
-                  />
-                </Link>
-              </li>
-            ))}
-          </ul>
+                  <Link
+                    href={href}
+                    className={`text-[15px] tracking-wide transition-all duration-200 relative group ${
+                      location === href || (href === "/workshop" && location.startsWith("/workshop"))
+                        ? "text-[#a2482b]"
+                        : scrolled || !isHome
+                        ? "text-[oklch(27.5%_0.000_0)] hover:text-[#a2482b]"
+                        : "text-[oklch(90%_0.005_85)] hover:text-[#a2482b]"
+                    }`}
+                    style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+                  >
+                    {label}
+                    <span
+                      className="absolute -bottom-0.5 left-0 h-px bg-[#a2482b] transition-all duration-300"
+                      style={{ width: location === href || (href === "/workshop" && location.startsWith("/workshop")) ? "100%" : "0%" }}
+                    />
+                  </Link>
+                </li>
+              ))}
+            </ul>
 
-          {/* CTA Button — Desktop */}
-          <Link
-            href="/workshop"
-            className="hidden md:inline-flex items-center px-5 py-2 text-[15px] font-semibold transition-all duration-300 bg-[#a2482b] text-[#F5F3EE] hover:opacity-85 hover:px-6"
-            style={{
-              fontFamily: 'var(--font-ui)',
-              opacity: mounted ? 1 : 0,
-              transition: `opacity 0.5s ease 700ms, padding 0.3s ease, background-color 0.3s ease`,
-            }}
-          >
-            Prenota Workshop
-          </Link>
-
-          {/* Hamburger — Mobile */}
-          <button
-            className="md:hidden p-2 text-[oklch(27.5%_0.000_0)] hover:text-[oklch(55.0%_0.075_55)] transition-colors duration-200"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label={menuOpen ? "Chiudi menu" : "Apri menu"}
-          >
-            <span
+            {/* CTA — Desktop */}
+            <Link
+              href="/workshop"
+              className="hidden md:inline-flex items-center px-5 py-2 text-[15px] font-semibold transition-all duration-300 bg-[#a2482b] text-[#F5F3EE] hover:opacity-85 hover:px-6"
               style={{
-                display: "block",
-                transition: "transform 0.3s ease, opacity 0.3s ease",
-                transform: menuOpen ? "rotate(90deg)" : "rotate(0deg)",
+                fontFamily: 'var(--font-ui)',
+                opacity: mounted ? 1 : 0,
+                transition: `opacity 0.5s ease 700ms, padding 0.3s ease, background-color 0.3s ease`,
               }}
             >
-              {menuOpen ? <X size={22} /> : <Menu size={22} />}
-            </span>
-          </button>
+              Prenota Workshop
+            </Link>
+
+            {/* Hamburger — Mobile 收合選單 */}
+            <button
+              className="md:hidden p-2 text-[oklch(27.5%_0.000_0)] hover:text-[oklch(55.0%_0.075_55)] transition-colors duration-200"
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label={menuOpen ? "Chiudi menu" : "Apri menu"}
+              aria-expanded={menuOpen}
+            >
+              <span
+                style={{
+                  display: "block",
+                  transition: "transform 0.3s ease, opacity 0.3s ease",
+                  transform: menuOpen ? "rotate(90deg)" : "rotate(0deg)",
+                }}
+              >
+                {menuOpen ? <X size={22} /> : <Menu size={22} />}
+              </span>
+            </button>
+          </div>
         </nav>
       </div>
 
