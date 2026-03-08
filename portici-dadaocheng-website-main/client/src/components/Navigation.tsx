@@ -49,7 +49,7 @@ export default function Navigation() {
     >
       <div className="container">
         <nav className="flex flex-nowrap justify-between items-center h-16 md:h-20">
-          {/* Logo — 左側放大，捲動時縮小 */}
+          {/* Logo — 首頁深色底用白色，捲動/其他頁用黑色 */}
           <Link href="/" className="flex items-center shrink-0 group transition-opacity duration-300 hover:opacity-80">
             <img
               src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/YOOdRRgvjAwtBHHT.png"
@@ -58,7 +58,7 @@ export default function Navigation() {
                 scrolled ? "h-12 md:h-[52px]" : "h-14 md:h-[72px]"
               }`}
               style={{
-                filter: 'brightness(0) saturate(1.2)',
+                filter: isHome && !scrolled ? "brightness(0) invert(1)" : "brightness(0) saturate(1.2)",
                 opacity: 0.95,
               }}
             />
@@ -82,7 +82,9 @@ export default function Navigation() {
                     className={`text-[15px] tracking-wide transition-all duration-200 relative group ${
                       location === href || (href === "/workshop" && location.startsWith("/workshop"))
                         ? "text-[#a2482b]"
-                        : "text-slate-800 hover:text-[#a2482b]"
+                        : isHome && !scrolled
+                          ? "text-[#F5F3EE] hover:text-[#a2482b]"
+                          : "text-slate-800 hover:text-[#a2482b]"
                     }`}
                     style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
                   >
@@ -96,15 +98,19 @@ export default function Navigation() {
               ))}
             </ul>
 
-            {/* IT/EN 語言切換 — 與分頁同一行 */}
+            {/* IT/EN 語言切換 — 首頁深色底用白字，捲動後用深字 */}
             <div className="hidden md:flex items-center gap-0.5 shrink-0">
               <button
                 type="button"
                 onClick={() => setLang("it")}
                 className={`px-4 py-2 text-[13px] font-medium rounded-md transition-all duration-200 ${
                   lang === "it"
-                    ? "bg-[oklch(92%_0.005_85)] text-slate-800"
-                    : "text-slate-600 hover:text-slate-800 hover:bg-[oklch(96%_0.005_85)]"
+                    ? isHome && !scrolled
+                      ? "bg-white/20 text-[#F5F3EE]"
+                      : "bg-[oklch(92%_0.005_85)] text-slate-800"
+                    : isHome && !scrolled
+                      ? "text-[#F5F3EE]/80 hover:text-[#F5F3EE] hover:bg-white/10"
+                      : "text-slate-600 hover:text-slate-800 hover:bg-[oklch(96%_0.005_85)]"
                 }`}
                 style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
               >
@@ -115,8 +121,12 @@ export default function Navigation() {
                 onClick={() => setLang("en")}
                 className={`px-4 py-2 text-[13px] font-medium rounded-md transition-all duration-200 ${
                   lang === "en"
-                    ? "bg-[oklch(92%_0.005_85)] text-slate-800"
-                    : "text-slate-600 hover:text-slate-800 hover:bg-[oklch(96%_0.005_85)]"
+                    ? isHome && !scrolled
+                      ? "bg-white/20 text-[#F5F3EE]"
+                      : "bg-[oklch(92%_0.005_85)] text-slate-800"
+                    : isHome && !scrolled
+                      ? "text-[#F5F3EE]/80 hover:text-[#F5F3EE] hover:bg-white/10"
+                      : "text-slate-600 hover:text-slate-800 hover:bg-[oklch(96%_0.005_85)]"
                 }`}
                 style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
               >
@@ -139,7 +149,7 @@ export default function Navigation() {
 
             {/* Hamburger — Mobile 收合選單 */}
             <button
-              className="md:hidden p-2 text-slate-800 hover:text-[#a2482b] transition-colors duration-200"
+              className={`md:hidden p-2 transition-colors duration-200 ${isHome && !scrolled ? "text-[#F5F3EE] hover:text-[#a2482b]" : "text-slate-800 hover:text-[#a2482b]"}`}
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label={menuOpen ? "Chiudi menu" : "Apri menu"}
               aria-expanded={menuOpen}

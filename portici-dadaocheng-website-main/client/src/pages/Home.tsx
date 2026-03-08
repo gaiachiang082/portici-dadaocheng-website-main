@@ -290,27 +290,27 @@ function HeroSection() {
       {/* Main copy — centered, spacious */}
       <div className="container relative z-10 pt-28 pb-20 flex justify-center">
         <div className="max-w-[720px] w-full mx-auto px-4 md:px-8">
-          <p className="text-[14px] font-normal tracking-[0.22em] uppercase text-[#a2482b] mb-9"
+          <p className="text-[14px] font-normal tracking-[0.22em] uppercase text-[#F5F3EE] mb-9"
             style={{ fontFamily: 'var(--font-ui)',
               opacity: mounted ? 1 : 0, transform: mounted ? "translateY(0)" : "translateY(16px)",
               transition: "opacity 0.7s ease 150ms, transform 0.7s ease 150ms" }}>
             Esperienze Culturali Comparate
           </p>
 
-          <h1 className="font-semibold text-gray-900 mb-8"
+          <h1 className="font-semibold text-[#F5F3EE] mb-8"
             style={{ fontFamily: 'var(--font-display)', fontSize: "clamp(2.4rem, 4.8vw, 3.1rem)", lineHeight: 1.1, letterSpacing: "-0.01em" }}>
             {["Dove culture diverse", "interpretano", "la stessa cosa."].map((line, i) => (
               <span key={i} className="block"
                 style={{ opacity: mounted ? 1 : 0, transform: mounted ? "translateY(0)" : "translateY(24px)",
                   transition: `opacity 0.8s ease ${280 + i * 160}ms, transform 0.8s ease ${280 + i * 160}ms`,
-                  color: i === 1 ? "#a2482b" : "#171717",
+                  color: i === 1 ? "#a2482b" : "#F5F3EE",
                   fontStyle: i === 1 ? "italic" : "normal" }}>
                 {line}
               </span>
             ))}
           </h1>
 
-          <p className="text-[18px] text-slate-800 leading-[1.75] mb-12 max-w-[540px]"
+          <p className="text-[18px] text-[#F5F3EE] leading-[1.75] mb-12 max-w-[540px]"
             style={{ fontFamily: 'var(--font-body)',
               opacity: mounted ? 1 : 0, transform: mounted ? "translateY(0)" : "translateY(16px)",
               transition: "opacity 0.8s ease 700ms, transform 0.8s ease 700ms" }}>
@@ -326,7 +326,7 @@ function HeroSection() {
               Scopri i Workshop <ArrowRight size={16} />
             </Link>
             <Link href="/chi-siamo"
-              className="inline-flex items-center gap-2 px-8 py-3.5 text-[16px] font-semibold border border-slate-600 text-slate-800 transition-all duration-300 hover:border-[#A67C52] hover:text-[#A67C52] hover:gap-3"
+              className="inline-flex items-center gap-2 px-8 py-3.5 text-[16px] font-semibold border border-[#F5F3EE] text-[#F5F3EE] transition-all duration-300 hover:border-[#A67C52] hover:text-[#A67C52] hover:gap-3"
               style={{ fontFamily: 'var(--font-ui)' }}>
               La Nostra Storia
             </Link>
