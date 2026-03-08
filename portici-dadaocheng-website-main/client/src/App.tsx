@@ -1,31 +1,3 @@
-// 確保在檔案最上方有這行 import
-import ArticleList from './ArticleList'; 
-
-function App() {
-  return (
-    <div>
-      {/* 你的其他網站內容... */}
-      <h3>Bevenut*</h3>
-      
-      {/* 確保有把這個標籤放在你想顯示的地方 */}
-      <ArticleList /> 
-    <ErrorBoundary>
-      <ThemeProvider defaultTheme="light">
-        <TooltipProvider>
-          <Toaster />
-          <Navigation />
-          <Router />
-          <Footer />
-        </TooltipProvider>
-      </ThemeProvider>
-    </ErrorBoundary>
-    </div>
-  );
-}
-
-export default App;
-
-
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Route, Switch } from "wouter";
@@ -62,3 +34,20 @@ function Router() {
     </Switch>
   );
 }
+
+function App() {
+  return (
+    <ErrorBoundary>
+      <ThemeProvider defaultTheme="light">
+        <TooltipProvider>
+          <Toaster />
+          <Navigation />
+          <Router />
+          <Footer />
+        </TooltipProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
+  );
+}
+
+export default App;

@@ -14,6 +14,7 @@ export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [lang, setLang] = useState<"it" | "en">("it");
   const [location] = useLocation();
 
   useEffect(() => {
@@ -48,15 +49,17 @@ export default function Navigation() {
     >
       <div className="container">
         <nav className="flex flex-nowrap justify-between items-center h-16 md:h-20">
-          {/* Logo — 僅左側 */}
+          {/* Logo — 左側放大，捲動時縮小 */}
           <Link href="/" className="flex items-center shrink-0 group transition-opacity duration-300 hover:opacity-80">
             <img
               src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/YOOdRRgvjAwtBHHT.png"
               alt="Portici DaDaocheng"
-              className="h-12 md:h-14 w-auto object-contain transition-all duration-300"
+              className={`w-auto object-contain transition-[height] duration-400 ease-out ${
+                scrolled ? "h-12 md:h-[52px]" : "h-14 md:h-[72px]"
+              }`}
               style={{
                 filter: 'brightness(0) saturate(1.2)',
-                opacity: 0.95
+                opacity: 0.95,
               }}
             />
           </Link>
@@ -92,6 +95,34 @@ export default function Navigation() {
                 </li>
               ))}
             </ul>
+
+            {/* IT/EN 語言切換 — 與分頁同一行 */}
+            <div className="hidden md:flex items-center gap-0.5 shrink-0">
+              <button
+                type="button"
+                onClick={() => setLang("it")}
+                className={`px-4 py-2 text-[13px] font-medium rounded-md transition-all duration-200 ${
+                  lang === "it"
+                    ? "bg-[oklch(92%_0.005_85)] text-[oklch(27.5%_0.000_0)]"
+                    : "text-[oklch(55%_0.005_60)] hover:text-[oklch(27.5%_0.000_0)] hover:bg-[oklch(96%_0.005_85)]"
+                }`}
+                style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+              >
+                IT Italiano
+              </button>
+              <button
+                type="button"
+                onClick={() => setLang("en")}
+                className={`px-4 py-2 text-[13px] font-medium rounded-md transition-all duration-200 ${
+                  lang === "en"
+                    ? "bg-[oklch(92%_0.005_85)] text-[oklch(27.5%_0.000_0)]"
+                    : "text-[oklch(55%_0.005_60)] hover:text-[oklch(27.5%_0.000_0)] hover:bg-[oklch(96%_0.005_85)]"
+                }`}
+                style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+              >
+                GB English
+              </button>
+            </div>
 
             {/* CTA — Desktop */}
             <Link
