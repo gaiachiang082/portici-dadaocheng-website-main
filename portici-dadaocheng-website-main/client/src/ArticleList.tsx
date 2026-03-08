@@ -48,7 +48,7 @@ const ArticleList = () => {
 
   return (
     <div className="max-w-2xl mx-auto p-6">
-      <h2 className="text-2xl font-semibold text-neutral-800 mb-6">我的雙語部落格</h2>
+      <h2 className="text-2xl font-semibold text-neutral-800 mb-6"></h2>
 
       {/* 語系切換按鈕 - 藥丸形狀 */}
       <div className="inline-flex p-1 rounded-full bg-neutral-200/80 mb-8 gap-0.5">

@@ -287,31 +287,9 @@ function HeroSection() {
       {/* Left ochre accent */}
       <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-[oklch(55.0%_0.075_55)]" />
 
-      {/* Right — Full Logo (white version, non-transparent) aligned with arch background */}
-      <div
-        className="absolute right-[8%] md:right-[12%] top-1/2 -translate-y-[52%] select-none pointer-events-none hidden md:flex flex-col items-center"
-        style={{
-          opacity: mounted ? 1 : 0,
-          transition: "opacity 1.8s ease 900ms",
-        }}
-      >
-        <img
-          src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/YOOdRRgvjAwtBHHT.png"
-          alt="Portici DaDaocheng"
-          className="h-auto object-contain drop-shadow-2xl"
-          style={{
-            width: "clamp(140px, 16vw, 220px)",
-            filter: "drop-shadow(0 4px 24px oklch(0% 0 0 / 0.5))",
-          }}
-        />
-      </div>
-
-
-
-
-      {/* Main copy */}
-      <div className="container relative z-10 pt-28 pb-20">
-        <div className="max-w-[700px]">
+      {/* Main copy — centered, spacious */}
+      <div className="container relative z-10 pt-28 pb-20 flex justify-center">
+        <div className="max-w-[720px] w-full mx-auto px-4 md:px-8">
           <p className="text-[14px] font-normal tracking-[0.22em] uppercase text-[#a2482b] mb-9"
             style={{ fontFamily: 'var(--font-ui)',
               opacity: mounted ? 1 : 0, transform: mounted ? "translateY(0)" : "translateY(16px)",
