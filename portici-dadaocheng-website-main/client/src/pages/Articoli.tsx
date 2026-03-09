@@ -36,10 +36,10 @@ export default function Articoli() {
   }, []);
 
   return (
-    <main>
+    <main className="bg-[oklch(96.5%_0.006_85)]">
       {/* Hero */}
-      <section className="pt-32 pb-24 px-8 bg-[oklch(27.5%_0.000_0)]">
-        <div className="container max-w-3xl mx-auto flex flex-col gap-8">
+      <section className="pt-32 pb-28 px-6 md:px-10 bg-[oklch(27.5%_0.000_0)]">
+        <div className="container max-w-3xl mx-auto flex flex-col gap-10">
           <p
             className="text-[15px] font-normal tracking-[0.22em] uppercase text-[#A67C52]"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
@@ -70,13 +70,13 @@ export default function Articoli() {
       </section>
 
       {/* Category filter */}
-      <section className="py-10 px-8 bg-[oklch(96.5%_0.006_85)] border-b border-gray-100">
+      <section className="py-12 px-6 md:px-10 bg-[oklch(96.5%_0.006_85)]">
         <div className="container mx-auto">
-          <div className="flex flex-wrap gap-4">
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm flex flex-wrap gap-3 md:gap-4 px-6 py-4 md:px-8 md:py-5">
             {categories.map((cat) => (
               <button
                 key={cat}
-                className={`px-5 py-2.5 text-sm font-semibold tracking-wide rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all ${
+                className={`px-5 py-2.5 text-sm font-semibold tracking-wide rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all ${
                   cat === "Tutti"
                     ? "bg-[#a2482b] text-[#F5F3EE]"
                     : "bg-white text-gray-500 hover:bg-[#a2482b] hover:text-[#F5F3EE] hover:border-transparent"
@@ -91,10 +91,10 @@ export default function Articoli() {
       </section>
 
       {/* Articles grid */}
-      <section className="py-20 px-8 bg-[oklch(96.5%_0.006_85)]">
+      <section className="py-24 px-6 md:px-10 bg-[oklch(96.5%_0.006_85)]">
         <div className="container mx-auto">
           {loading ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
               {[1, 2, 3].map((i) => (
                 <div
                   key={i}
@@ -112,12 +112,12 @@ export default function Articoli() {
               ))}
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
               {articles.map((article) => (
                 <Link
                   key={article._id}
                   href={`/articoli/${article._id}`}
-                  className="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all flex flex-col"
+                  className="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all flex flex-col"
                 >
                   <div className="h-1.5 rounded-t-2xl" style={{ backgroundColor: article.color ?? "#A67C52" }} />
                   <div className="p-8 flex flex-col flex-1 gap-6">
