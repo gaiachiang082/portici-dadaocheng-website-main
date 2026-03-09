@@ -4,16 +4,23 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ─── Portici DaDaocheng Brand Tokens ──────────────────────────────── */
-/* Brand Guidelines 2.0 — Rengairo 磚紅 as protagonist (45/30/20/5)     */
+/* Stile Mattone Rosso Classico (Heritage Style) — Dadaocheng 大稻埕     */
+/* Warm tones: red brick, yellow earth, dark brown — nostalgic heritage */
 @theme inline {
-  /* Brand Colours */
-  --color-moon-white:      oklch(96.5% 0.006 85);   /* #F5F3EE — 45% base */
-  --color-rengairo:        oklch(42.0% 0.120 30);   /* #a2482b — 30% protagonist */
-  --color-ochre-brown:     oklch(55.0% 0.075 55);   /* #A67C52 — 20% support */
-  --color-ink-grey:        oklch(27.5% 0.000 0);    /* #3D3D3D — 5% details */
+  /* Heritage Style Colour Palette */
+  --color-primary:         #8B4513;   /* Colore Primario — Saddle Brown, dark reddish-brown */
+  --color-secondary:       #D2691E;   /* Colore Secondario — Chocolate, terracotta */
+  --color-accent:          #CD853F;   /* Colore di Accento — Peru, warm medium brown */
+  --color-bg-light:        #F5DEB3;   /* Sfondo Chiaro — Wheat, creamy off-white */
+  --color-text-dark:       #3E2723;   /* Testo Scuro — deep warm brown */
+  /* Legacy aliases for compatibility */
+  --color-moon-white:      #F5DEB3;   /* Aligned with light background */
+  --color-rengairo:        #8B4513;   /* Primary */
+  --color-ochre-brown:     #D2691E;   /* Secondary */
+  --color-ink-grey:        #3E2723;   /* Dark text */
   --color-bamboo-green:    oklch(57.5% 0.045 165);  /* #6B8E7F */
   --color-mist-blue:       oklch(70.0% 0.025 220);  /* #9CADB7 */
-  --color-mulberry-paper:  oklch(89.5% 0.025 80);   /* #E8DCC6 */
+  --color-mulberry-paper:  #F5DEB3;   /* Light background */
 
   /* Semantic Colour Tokens */
   --color-background:           var(--background);
@@ -78,31 +85,32 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* ─── Light Theme (Default) ─────────────────────────────────────────── */
+/* ─── Light Theme (Default) — Heritage Style ─────────────────────────── */
 :root {
-  --radius: 0.25rem;
+  --radius: 0.5rem;   /* Rounded corners per UI Components spec */
 
-  /* Portici brand palette as semantic tokens */
-  --background:           oklch(96.5% 0.006 85);   /* Moon White */
-  --foreground:           oklch(27.5% 0.000 0);    /* Ink Grey */
-  --card:                 oklch(98.5% 0.003 85);
-  --card-foreground:      oklch(27.5% 0.000 0);
-  --popover:              oklch(98.5% 0.003 85);
-  --popover-foreground:   oklch(27.5% 0.000 0);
-  --primary:              oklch(42.0% 0.120 30);   /* Rengairo #a2482b — brand protagonist */
-  --primary-foreground:   oklch(96.5% 0.006 85);   /* Moon White */
-  --ochre:                oklch(55.0% 0.075 55);   /* Ochre Brown — supporting color */
-  --secondary:            oklch(89.5% 0.025 80);   /* Mulberry Paper */
-  --secondary-foreground: oklch(27.5% 0.000 0);
-  --muted:                oklch(92.0% 0.008 85);
-  --muted-foreground:     oklch(50.0% 0.005 60);
-  --accent:               oklch(89.5% 0.025 80);   /* Mulberry Paper */
-  --accent-foreground:    oklch(27.5% 0.000 0);
+  /* Heritage Style — Stile Mattone Rosso Classico */
+  --background:           #F5DEB3;   /* Sfondo Chiaro — Wheat, warm creamy */
+  --foreground:           #3E2723;   /* Testo Scuro — deep warm brown */
+  --card:                 #FDF8F0;   /* Slightly lighter for cards */
+  --card-foreground:      #3E2723;
+  --popover:              #FDF8F0;
+  --popover-foreground:   #3E2723;
+  --primary:              #8B4513;   /* Colore Primario — Saddle Brown */
+  --primary-foreground:   #FFFFFF;   /* White on primary buttons */
+  --ochre:                #D2691E;   /* Secondary / Chocolate */
+  --secondary:            #CD853F;   /* Colore di Accento — Peru */
+  --secondary-foreground: #3E2723;
+  --muted:                #EDE4D4;   /* Warm muted */
+  --muted-foreground:     #5D4E37;
+  --accent:               #CD853F;   /* Accent — Peru */
+  --accent-foreground:    #3E2723;
   --destructive:          oklch(55.0% 0.180 25);
-  --destructive-foreground: oklch(96.5% 0.006 85);
-  --border:               oklch(88.0% 0.010 80);
-  --input:                oklch(88.0% 0.010 80);
-  --ring:                 oklch(42.0% 0.120 30);   /* Rengairo */
+  --destructive-foreground: #FFFFFF;
+  --border:               #E8D5B7;   /* Warm border */
+  --input:                #E8D5B7;
+  --ring:                 #8B4513;   /* Primary */
+  --on-dark:              #F5DEB3;   /* Light text on dark backgrounds (hero, footer) */
 }
 
 /* ─── Base Styles ───────────────────────────────────────────────────── */
@@ -275,6 +283,32 @@
     line-height: var(--font-small-line);
     letter-spacing: var(--font-small-spacing);
   }
+
+  /* Heritage Card — Design della Scheda (UI Components) */
+  /* Creamy background, left border in warm brown, rounded corners, historical sense */
+  .card-heritage {
+    background-color: var(--card);
+    border-radius: var(--radius-lg);
+    border-left: 4px solid var(--primary);
+    padding: 1.5rem 1.5rem 1.5rem 1.5rem;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05);
+  }
+
+  /* Heritage Tags — Etichette di classificazione (Sito Storico, Commercio, Cultura) */
+  /* Pill-shaped, warm tones, white text */
+  .tag-heritage {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: white;
+    font-family: var(--font-ui);
+  }
+  .tag-heritage-primary { background-color: var(--primary); }
+  .tag-heritage-secondary { background-color: var(--secondary); }
+  .tag-heritage-accent { background-color: var(--accent); }
 }
 
 /* ─── Utility Helpers ───────────────────────────────────────────────── */
@@ -284,11 +318,11 @@
   .font-ui      { font-family: var(--font-ui); font-weight: 600; }
   .text-small   { font-size: var(--font-small-size); line-height: var(--font-small-line); letter-spacing: var(--font-small-spacing); }
 
-  .text-ochre       { color: oklch(55.0% 0.075 55); }
+  .text-ochre       { color: var(--secondary); }
   .text-bamboo      { color: oklch(57.5% 0.045 165); }
   .text-mist        { color: oklch(70.0% 0.025 220); }
-  .bg-mulberry      { background-color: oklch(89.5% 0.025 80); }
-  .bg-moon          { background-color: oklch(96.5% 0.006 85); }
-  .bg-ochre         { background-color: oklch(55.0% 0.075 55); }
-  .border-ochre     { border-color: oklch(55.0% 0.075 55); }
+  .bg-mulberry      { background-color: var(--card); }
+  .bg-moon          { background-color: var(--background); }
+  .bg-ochre         { background-color: var(--primary); }
+  .border-ochre     { border-color: var(--primary); }
 }

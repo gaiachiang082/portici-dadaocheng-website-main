@@ -168,15 +168,15 @@ function Carousel({
         }}>
         <div className="flex items-end justify-between max-w-5xl mx-auto">
           <div>
-            <p className="text-[12px] tracking-[0.24em] uppercase text-[oklch(55.0%_0.075_55)] mb-1.5"
+            <p className="text-[12px] tracking-[0.24em] uppercase text-primary mb-1.5"
               style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>{slide.label}</p>
-            <p className="text-[oklch(96.5%_0.006_85)] max-w-[440px]"
+            <p className="text-[var(--on-dark)] max-w-[440px]"
               style={{ fontFamily: 'var(--font-display)', fontSize: "clamp(1rem, 2vw, 1.35rem)", fontWeight: 400, lineHeight: 1.35 }}>
               {slide.caption}
             </p>
           </div>
           {showCounter && (
-            <p className="text-[oklch(70%_0.005_85)] hidden md:block"
+            <p className="text-[var(--on-dark)]/70 hidden md:block"
               style={{ fontFamily: 'var(--font-ui)', fontSize: "12px" }}>
               {String(current + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
             </p>
@@ -188,7 +188,7 @@ function Carousel({
       {[{ dir: "prev", Icon: ChevronLeft, onClick: prev, pos: "left-3 md:left-6" },
         { dir: "next", Icon: ChevronRight, onClick: next, pos: "right-3 md:right-6" }].map(({ dir, Icon, onClick, pos }) => (
         <button key={dir} onClick={onClick}
-          className={`absolute ${pos} top-1/2 -translate-y-1/2 z-20 w-9 h-9 flex items-center justify-center rounded-xl border border-[oklch(80%_0.005_85/0.4)] text-[oklch(90%_0.005_85)] hover:border-[oklch(55.0%_0.075_55)] hover:text-[oklch(55.0%_0.075_55)] transition-all duration-300 bg-[oklch(0%_0_0/0.25)]`}
+          className={`absolute ${pos} top-1/2 -translate-y-1/2 z-20 w-9 h-9 flex items-center justify-center rounded-xl border border-[var(--on-dark)]/40 text-[var(--on-dark)] hover:border-primary hover:text-primary transition-all duration-300 bg-black/25`}
           aria-label={dir}>
           <Icon size={16} />
         </button>
@@ -202,7 +202,7 @@ function Carousel({
               className="transition-all duration-300"
               style={{
                 width: i === current ? "20px" : "5px", height: "5px",
-                backgroundColor: i === current ? "oklch(55.0% 0.075 55)" : "oklch(80% 0.005 85 / 0.5)",
+                backgroundColor: i === current ? "var(--primary)" : "rgba(245,222,179,0.5)",
               }} aria-label={`${i + 1}`} />
           ))}
         </div>
@@ -210,8 +210,8 @@ function Carousel({
 
       {/* Progress bar */}
       {showProgress && (
-        <div className="absolute top-0 left-0 right-0 h-0.5 z-20 bg-[oklch(80%_0.005_85/0.15)]">
-          <div className="h-full bg-[oklch(55.0%_0.075_55)]"
+        <div className="absolute top-0 left-0 right-0 h-0.5 z-20 bg-[var(--on-dark)]/15">
+          <div className="h-full bg-primary"
             style={{ width: `${((current + 1) / total) * 100}%`, transition: "width 0.5s ease" }} />
         </div>
       )}
@@ -273,12 +273,12 @@ function HeroSection() {
         <div className="absolute inset-0 left-1/2">
           <img src={IMG.bolognaPortici} alt="Bologna Portici 金色拱廊"
             className="w-full h-full object-cover object-center scale-105" />
-          <div className="absolute" style={{ background: "linear-gradient(to left, oklch(8% 0 0 / 0.72) 0%, oklch(8% 0 0 / 0.50) 70%, oklch(8% 0 0 / 0.80) 100%)", top: 0, bottom: 0, left: '-60px', right: 0 }} />
+          <div className="absolute" style={{ background: "linear-gradient(to left, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.50) 70%, rgba(0,0,0,0.80) 100%)", top: 0, bottom: 0, left: '-60px', right: 0 }} />
         </div>
 
         {/* Centre vertical divider glow */}
         <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-px"
-          style={{ background: "linear-gradient(to bottom, transparent, oklch(55.0% 0.075 55 / 0.8) 30%, oklch(55.0% 0.075 55 / 0.8) 70%, transparent)" }} />
+          style={{ background: "linear-gradient(to bottom, transparent, rgba(139,69,19,0.8) 30%, rgba(139,69,19,0.8) 70%, transparent)" }} />
 
         {/* Bottom fade */}
         <div className="absolute bottom-0 left-0 right-0 h-48"
@@ -286,32 +286,32 @@ function HeroSection() {
       </div>
 
       {/* Left ochre accent */}
-      <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-[oklch(55.0%_0.075_55)]" />
+      <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-primary" />
 
       {/* Main copy — centered, spacious */}
       <div className="container relative z-10 pt-28 pb-20 flex justify-center">
         <div className="max-w-[720px] w-full mx-auto px-4 md:px-8">
-          <p className="text-[14px] font-normal tracking-[0.22em] uppercase text-[#F5F3EE] mb-9"
+          <p className="text-[14px] font-normal tracking-[0.22em] uppercase text-[var(--on-dark)] mb-9"
             style={{ fontFamily: 'var(--font-ui)',
               opacity: mounted ? 1 : 0, transform: mounted ? "translateY(0)" : "translateY(16px)",
               transition: "opacity 0.7s ease 150ms, transform 0.7s ease 150ms" }}>
             Esperienze Culturali Comparate
           </p>
 
-          <h1 className="font-semibold text-[#F5F3EE] mb-8"
+          <h1 className="font-semibold text-[var(--on-dark)] mb-8"
             style={{ fontFamily: 'var(--font-display)', fontSize: "clamp(2.4rem, 4.8vw, 3.1rem)", lineHeight: 1.1, letterSpacing: "-0.01em" }}>
             {["Dove culture diverse", "interpretano", "la stessa cosa."].map((line, i) => (
               <span key={i} className="block"
                 style={{ opacity: mounted ? 1 : 0, transform: mounted ? "translateY(0)" : "translateY(24px)",
                   transition: `opacity 0.8s ease ${280 + i * 160}ms, transform 0.8s ease ${280 + i * 160}ms`,
-                  color: i === 1 ? "#a2482b" : "#F5F3EE",
+                  color: i === 1 ? "var(--primary)" : "var(--on-dark)",
                   fontStyle: i === 1 ? "italic" : "normal" }}>
                 {line}
               </span>
             ))}
           </h1>
 
-          <p className="text-[18px] text-[#F5F3EE] leading-[1.75] mb-12 max-w-[540px]"
+          <p className="text-[18px] text-[var(--on-dark)] leading-[1.75] mb-12 max-w-[540px]"
             style={{ fontFamily: 'var(--font-body)',
               opacity: mounted ? 1 : 0, transform: mounted ? "translateY(0)" : "translateY(16px)",
               transition: "opacity 0.8s ease 700ms, transform 0.8s ease 700ms" }}>
@@ -322,12 +322,12 @@ function HeroSection() {
             style={{ opacity: mounted ? 1 : 0, transform: mounted ? "translateY(0)" : "translateY(16px)",
               transition: "opacity 0.8s ease 880ms, transform 0.8s ease 880ms" }}>
             <Link href="/workshop"
-              className="inline-flex items-center gap-2 px-8 py-3.5 text-[16px] font-semibold rounded-xl transition-all duration-300 hover:opacity-85 hover:gap-3 bg-[#a2482b] text-[#F5F3EE]"
+              className="inline-flex items-center gap-2 px-8 py-3.5 text-[16px] font-semibold rounded-xl transition-all duration-300 hover:opacity-85 hover:gap-3 bg-primary text-primary-foreground"
               style={{ fontFamily: 'var(--font-ui)' }}>
               Scopri i Workshop <ArrowRight size={16} />
             </Link>
             <Link href="/chi-siamo"
-              className="inline-flex items-center gap-2 px-8 py-3.5 text-[16px] font-semibold rounded-xl border border-[#F5F3EE] text-[#F5F3EE] transition-all duration-300 hover:border-[#A67C52] hover:text-[#A67C52] hover:gap-3"
+              className="inline-flex items-center gap-2 px-8 py-3.5 text-[16px] font-semibold rounded-xl border border-[var(--on-dark)] text-[var(--on-dark)] transition-all duration-300 hover:border-secondary hover:text-secondary hover:gap-3"
               style={{ fontFamily: 'var(--font-ui)' }}>
               La Nostra Storia
             </Link>
@@ -338,7 +338,7 @@ function HeroSection() {
       {/* Scroll indicator */}
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
         style={{ opacity: mounted ? 0.5 : 0, transition: "opacity 1s ease 1200ms" }}>
-        <div className="w-px bg-[oklch(55.0%_0.075_55)]"
+        <div className="w-px bg-primary"
           style={{ height: mounted ? "52px" : "0px", transition: "height 1s ease 1300ms" }} />
       </div>
     </section>
@@ -353,7 +353,7 @@ function GalleryCarousel() {
     <section className="relative bg-[oklch(10%_0_0)]">
       {/* Section label */}
       <div className="absolute top-5 left-6 md:left-12 z-20">
-        <p className="text-[11px] tracking-[0.28em] uppercase text-[oklch(70%_0.005_85/0.6)]"
+        <p className="text-[11px] tracking-[0.28em] uppercase text-[var(--on-dark)]/60"
           style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>Galleria Fotografica</p>
       </div>
       <Carousel slides={GALLERY_SLIDES} height="clamp(400px, 58vh, 660px)" interval={4200} />
@@ -375,7 +375,7 @@ const WORKSHOP_FEATURES = [
     src: IMG.calligroupA,
     alt: "Workshop di calligrafia — gruppo intorno al tavolo",
     reverse: false,
-    accent: "oklch(55.0% 0.075 55)",
+    accent: "var(--primary)",
   },
   {
     category: "Pittura ad Inchiostro",
@@ -387,7 +387,7 @@ const WORKSHOP_FEATURES = [
     src: IMG.inkFlower,
     alt: "Mano che dipinge fiori di susino con inchiostro",
     reverse: true,
-    accent: "oklch(57.5% 0.045 165)",
+    accent: "var(--secondary)",
   },
   {
     category: "Cucina Culturale",
@@ -399,23 +399,23 @@ const WORKSHOP_FEATURES = [
     src: IMG.dumplingWorkshop,
     alt: "Famiglia italiana impara a fare i ravioli cinesi",
     reverse: false,
-    accent: "oklch(70.0% 0.025 220)",
+    accent: "var(--accent)",
   },
 ];
 
 function WorkshopSection() {
   return (
-    <section className="py-0 bg-[oklch(96.5%_0.006_85)]">
+    <section className="py-0 bg-background">
       {/* Header */}
       <div className="container py-20">
         <Reveal>
-          <p className="text-[15px] font-normal tracking-[0.22em] uppercase text-[#a2482b] mb-4"
+          <p className="text-[15px] font-normal tracking-[0.22em] uppercase text-primary mb-4"
             style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>Workshop</p>
           <h2 className="font-medium text-[oklch(27.5%_0.000_0)]"
             style={{ fontFamily: "'Spectral', Georgia, serif", fontSize: "2rem", fontWeight: 500 }}>
             Esperienze che aprono nuove prospettive
           </h2>
-          <div className="w-10 h-0.5 bg-[#a2482b] mt-5" />
+          <div className="w-10 h-0.5 bg-primary mt-5" />
         </Reveal>
       </div>
 
@@ -429,27 +429,27 @@ function WorkshopSection() {
                 className="w-full h-full object-cover absolute inset-0 transition-transform duration-700 group-hover:scale-105"
                 style={{ direction: "ltr" }} />
               {/* Ochre tint on hover */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                style={{ background: `${item.accent.replace(")", " / 0.12)")}`, direction: "ltr" }} />
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-primary/10"
+                style={{ direction: "ltr" }} />
               {/* Category badge */}
               <div className="absolute top-6 left-6 z-10" style={{ direction: "ltr" }}>
-                <span className="text-[11px] tracking-[0.22em] uppercase text-[oklch(96.5%_0.006_85)] bg-[oklch(0%_0_0/0.45)] px-3 py-1.5"
+                <span className="text-[11px] tracking-[0.22em] uppercase text-[var(--on-dark)] bg-black/45 px-3 py-1.5"
                   style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>{item.categoryZh}</span>
               </div>
             </div>
 
             {/* Text */}
-            <div className="flex flex-col justify-center px-10 py-14 md:px-14 md:py-16 bg-[oklch(98.5%_0.003_85)]"
+            <div className="flex flex-col justify-center px-10 py-14 md:px-14 md:py-16 bg-card"
               style={{ direction: "ltr" }}>
               <span className="text-[13px] font-semibold tracking-[0.18em] uppercase mb-6"
                 style={{ fontFamily: "'Inter', system-ui, sans-serif", color: item.accent }}>
                 {item.category}
               </span>
-              <h3 className="text-[oklch(27.5%_0.000_0)] mb-5"
+              <h3 className="text-foreground mb-5"
                 style={{ fontFamily: 'var(--font-display)', fontSize: "clamp(1.35rem, 2.4vw, 1.75rem)", fontWeight: 500, lineHeight: 1.25 }}>
                 {item.title}
               </h3>
-              <p className="text-[18px] text-[oklch(45%_0.005_60)] leading-[1.8] mb-9"
+              <p className="text-[18px] text-muted-foreground leading-[1.8] mb-9"
                 style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
                 {item.body}
               </p>
@@ -461,12 +461,8 @@ function WorkshopSection() {
                 </Link>
                 {item.href === "/workshop/calligraphy" && (
                   <Link href="/workshop/calligraphy"
-                    className="inline-flex items-center gap-2 text-[14px] font-semibold px-5 py-2.5 border transition-all duration-300 hover:gap-3"
-                    style={{
-                      fontFamily: "'Inter', system-ui, sans-serif",
-                      color: item.accent,
-                      borderColor: `${item.accent.replace(")", " / 0.4)")}`,
-                    }}>
+                    className="inline-flex items-center gap-2 text-[14px] font-semibold px-5 py-2.5 border border-primary/40 text-primary transition-all duration-300 hover:gap-3"
+                    style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
                     Vedi tutte le foto del corso <ArrowRight size={13} />
                   </Link>
                 )}
@@ -480,7 +476,7 @@ function WorkshopSection() {
       <div className="bg-[oklch(14%_0_0)] mt-0">
         <div className="container py-10">
           <Reveal>
-            <p className="text-[12px] tracking-[0.28em] uppercase text-[oklch(55.0%_0.075_55)] mb-4"
+            <p className="text-[12px] tracking-[0.28em] uppercase text-primary mb-4"
               style={{ fontFamily: "'Inter', system-ui, sans-serif", fontSize: '14px' }}>Momenti dai Workshop</p>
           </Reveal>
         </div>
@@ -489,7 +485,7 @@ function WorkshopSection() {
         <div className="container pb-12 pt-8 text-center">
           <Reveal>
             <Link href="/workshop"
-              className="inline-flex items-center gap-2 text-[15px] font-semibold text-[#a2482b] hover:opacity-70 hover:gap-3 transition-all duration-300"
+              className="inline-flex items-center gap-2 text-[15px] font-semibold text-primary hover:opacity-70 hover:gap-3 transition-all duration-300"
               style={{ fontFamily: "'Noto Sans', system-ui, sans-serif", fontSize: '17px' }}>
               Vedi tutti i workshop <ArrowRight size={14} />
             </Link>
@@ -524,7 +520,7 @@ function DualCitySection() {
   ];
 
   return (
-    <section className="py-0 bg-[oklch(27.5%_0.000_0)]">
+    <section className="py-0 bg-foreground">
       <div className="container py-16" style={{paddingTop: '32px', paddingBottom: '0px'}}>
         <Reveal className="text-center mb-14">
           <p className="text-[15px] font-normal tracking-[0.22em] uppercase text-[oklch(55.0%_0.075_55)] mb-4"
@@ -547,19 +543,19 @@ function DualCitySection() {
               <div className="absolute inset-0"
                 style={{ background: "linear-gradient(to top, oklch(0% 0 0 / 0.85) 0%, oklch(0% 0 0 / 0.3) 50%, transparent 100%)" }} />
               {/* Divider line */}
-              {i === 0 && <div className="absolute top-0 bottom-0 right-0 w-px bg-[oklch(55.0%_0.075_55/0.5)]" />}
+              {i === 0 && <div className="absolute top-0 bottom-0 right-0 w-px bg-primary/50" />}
 
               {/* Content */}
               <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10">
-                <span className="inline-block text-[11px] tracking-[0.24em] uppercase text-[oklch(55.0%_0.075_55)] bg-[oklch(0%_0_0/0.4)] px-3 py-1 mb-5"
+                <span className="inline-block text-[11px] tracking-[0.24em] uppercase text-primary bg-black/40 px-3 py-1 mb-5"
                   style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>{city.tag}</span>
-                <h3 className="text-[oklch(96.5%_0.006_85)] mb-1"
+                <h3 className="text-[var(--on-dark)] mb-1"
                   style={{ fontFamily: 'var(--font-display)', fontSize: "clamp(1.5rem, 2.8vw, 2rem)", fontWeight: 500 }}>
                   {city.name}
                 </h3>
-                <p className="text-[13px] tracking-[0.14em] text-[oklch(55.0%_0.075_55)] mb-5"
+                <p className="text-[13px] tracking-[0.14em] text-primary mb-5"
                   style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>{city.subtitle}</p>
-                <p className="text-[16px] text-[oklch(82%_0.005_85)] leading-[1.75] max-w-[400px]"
+                <p className="text-[16px] text-[var(--on-dark)]/90 leading-[1.75] max-w-[400px]"
                   style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
                   {city.description}
                 </p>
@@ -577,27 +573,27 @@ function DualCitySection() {
    ───────────────────────────────────────────────────────────────── */
 function BrandStoryStrip() {
   return (
-    <section className="py-28 relative overflow-hidden" style={{ background: "oklch(92% 0.008 85)" }}>
+    <section className="py-28 relative overflow-hidden bg-muted">
       <div className="absolute inset-0 pointer-events-none"
-        style={{ backgroundImage: "radial-gradient(ellipse 120% 80% at 80% 50%, oklch(89% 0.012 75 / 0.6) 0%, transparent 70%)" }} />
+        style={{ backgroundImage: "radial-gradient(ellipse 120% 80% at 80% 50%, rgba(205,133,63,0.3) 0%, transparent 70%)" }} />
       <div className="container relative z-10">
         <div className="grid md:grid-cols-2 gap-16 items-center">
           <Reveal>
-            <p className="text-[15px] font-normal tracking-[0.22em] uppercase text-[oklch(55.0%_0.075_55)] mb-5"
+            <p className="text-[15px] font-normal tracking-[0.22em] uppercase text-primary mb-5"
               style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>La Nostra Filosofia</p>
-            <h2 className="font-medium text-[oklch(27.5%_0.000_0)] mb-2"
+            <h2 className="font-medium text-foreground mb-2"
               style={{ fontFamily: "'Spectral', Georgia, serif", fontSize: "2rem", fontWeight: 500 }}>同中求異</h2>
-            <div className="w-10 h-0.5 bg-[oklch(55.0%_0.075_55)] mb-7" />
-            <p className="text-[18px] text-[oklch(40%_0.005_60)] leading-[1.8] mb-5"
+            <div className="w-10 h-0.5 bg-primary mb-7" />
+            <p className="text-[18px] text-muted-foreground leading-[1.8] mb-5"
               style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
               <em>Trovare le differenze nell'unità.</em> Il nostro metodo parte sempre dalla stessa domanda: come rispondono culture diverse allo stesso bisogno umano?
             </p>
-            <p className="text-[18px] text-[oklch(40%_0.005_60)] leading-[1.8] mb-10"
+            <p className="text-[18px] text-muted-foreground leading-[1.8] mb-10"
               style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
               Non per giudicare quale risposta sia migliore, ma per scoprire che la diversità stessa è la risposta più ricca che l'umanità abbia mai prodotto.
             </p>
             <Link href="/chi-siamo"
-              className="inline-flex items-center gap-2 text-[16px] font-semibold text-[#a2482b] hover:opacity-70 hover:gap-3 transition-all duration-300"
+              className="inline-flex items-center gap-2 text-[16px] font-semibold text-primary hover:opacity-70 hover:gap-3 transition-all duration-300"
               style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
               Scopri la nostra storia <ArrowRight size={14} />
             </Link>
@@ -607,11 +603,11 @@ function BrandStoryStrip() {
             <div className="flex items-center justify-center">
               <div className="relative group" style={{ width: "280px" }}>
                 <ArchImage src={IMG.teaSettle} alt="Cerimonia del tè — armonia" aspectRatio="3/4"
-                  borderColor="oklch(55.0% 0.075 55 / 0.5)" />
+                  borderColor="rgba(139,69,19,0.5)" />
                 <div className="absolute -bottom-4 -right-4 -z-10">
-                  <ArchDecor size="lg" color="oklch(55.0% 0.075 55)" opacity={0.15} />
+                  <ArchDecor size="lg" color="#8B4513" opacity={0.15} />
                 </div>
-                <p className="mt-4 text-center text-[13px] tracking-[0.18em] uppercase text-[oklch(55%_0.005_60)]"
+                <p className="mt-4 text-center text-[13px] tracking-[0.18em] uppercase text-muted-foreground"
                   style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>Il rito del tè</p>
               </div>
             </div>
@@ -633,16 +629,16 @@ function ArchGalleryStrip() {
   ];
 
   return (
-    <section className="py-24 bg-[oklch(27.5%_0.000_0)] overflow-hidden">
+    <section className="py-24 bg-foreground overflow-hidden">
       <div className="container">
         <Reveal className="text-center mb-16">
-          <p className="text-[15px] font-normal tracking-[0.22em] uppercase text-[oklch(55.0%_0.075_55)] mb-4"
+          <p className="text-[15px] font-normal tracking-[0.22em] uppercase text-primary mb-4"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>Attraverso il Portale</p>
-          <h2 className="font-medium text-[oklch(96.5%_0.006_85)]"
+          <h2 className="font-medium text-[var(--on-dark)]"
             style={{ fontFamily: "'Spectral', Georgia, serif", fontSize: "2rem", fontWeight: 500 }}>
             Ogni arco è una soglia
           </h2>
-          <div className="w-10 h-0.5 bg-[oklch(55.0%_0.075_55)] mt-5 mx-auto" />
+          <div className="w-10 h-0.5 bg-primary mt-5 mx-auto" />
         </Reveal>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 items-end justify-items-center">
@@ -650,9 +646,9 @@ function ArchGalleryStrip() {
             <Reveal key={img.label} delay={i * 120} className="flex flex-col items-center w-full">
               <div className="relative group w-full" style={{ maxWidth: i === 1 ? "340px" : "300px", marginTop: i === 1 ? "0" : "2.5rem" }}>
                 <ArchImage src={img.src} alt={img.alt} aspectRatio={i === 1 ? "2/3" : "3/4"}
-                  borderColor="oklch(55.0% 0.075 55 / 0.5)" />
+                  borderColor="rgba(139,69,19,0.5)" />
               </div>
-              <p className="mt-5 text-[13px] tracking-[0.22em] uppercase text-[oklch(55.0%_0.075_55)]"
+              <p className="mt-5 text-[13px] tracking-[0.22em] uppercase text-primary"
                 style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>{img.label}</p>
             </Reveal>
           ))}
@@ -695,21 +691,21 @@ function FeaturedArticlesSection() {
     fetchArticles();
   }, []);
 
-  const accentColor = (color?: string) => color ?? "#A67C52";
+  const accentColor = (color?: string) => color ?? "var(--secondary)";
 
   return (
-    <section className="py-24 bg-[oklch(96.5%_0.006_85)]">
+    <section className="py-24 bg-background">
       <div className="container">
         <Reveal className="flex items-end justify-between mb-16 flex-wrap gap-4">
           <div>
-            <p className="text-[15px] font-normal tracking-[0.22em] uppercase text-[oklch(55.0%_0.075_55)] mb-4"
+            <p className="text-[15px] font-normal tracking-[0.22em] uppercase text-primary mb-4"
               style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>Articoli</p>
-            <h2 className="font-medium text-[oklch(27.5%_0.000_0)]"
+            <h2 className="font-medium text-foreground"
               style={{ fontFamily: "'Spectral', Georgia, serif", fontSize: "2rem", fontWeight: 500 }}>Letture Recenti</h2>
-            <div className="w-10 h-0.5 bg-[oklch(55.0%_0.075_55)] mt-5" />
+            <div className="w-10 h-0.5 bg-primary mt-5" />
           </div>
           <Link href="/articoli"
-            className="inline-flex items-center gap-2 text-[15px] text-[oklch(55.0%_0.075_55)] hover:opacity-70 hover:gap-3 transition-all duration-300"
+            className="inline-flex items-center gap-2 text-[15px] text-primary hover:opacity-70 hover:gap-3 transition-all duration-300"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
             Tutti gli articoli <ArrowRight size={14} />
           </Link>
@@ -717,14 +713,14 @@ function FeaturedArticlesSection() {
 
         {loading ? (
           <div className="max-w-2xl">
-            <div className="bg-[oklch(98.5%_0.003_85)] overflow-hidden rounded-2xl border border-gray-100 shadow-sm animate-pulse">
-              <div className="h-1 bg-[oklch(88%_0.010_80)]" />
+            <div className="bg-card overflow-hidden rounded-2xl border border-border shadow-sm animate-pulse">
+              <div className="h-1 bg-border" />
               <div className="p-8 flex flex-col gap-3">
-                <div className="h-3 w-16 bg-[oklch(88%_0.010_80)] rounded" />
-                <div className="h-5 w-full bg-[oklch(88%_0.010_80)] rounded" />
-                <div className="h-4 w-full bg-[oklch(88%_0.010_80)] rounded" />
-                <div className="h-4 w-3/4 bg-[oklch(88%_0.010_80)] rounded mt-2" />
-                <div className="h-3 w-20 bg-[oklch(88%_0.010_80)] rounded mt-5" />
+                <div className="h-3 w-16 bg-border rounded" />
+                <div className="h-5 w-full bg-border rounded" />
+                <div className="h-4 w-full bg-border rounded" />
+                <div className="h-4 w-3/4 bg-border rounded mt-2" />
+                <div className="h-3 w-20 bg-border rounded mt-5" />
               </div>
             </div>
           </div>
@@ -733,26 +729,25 @@ function FeaturedArticlesSection() {
             {articles.map((article, i) => (
               <Reveal key={article._id} delay={i * 100}>
                 <Link href={`/articoli/${article._id}`}
-                  className="group bg-[oklch(98.5%_0.003_85)] overflow-hidden rounded-2xl border border-gray-100 shadow-sm flex flex-col transition-all duration-400 hover:-translate-y-1.5 hover:shadow-md">
+                  className="group bg-card overflow-hidden rounded-2xl border border-border shadow-sm flex flex-col transition-all duration-400 hover:-translate-y-1.5 hover:shadow-md">
                   <div className="h-1" style={{ backgroundColor: accentColor(article.color) }} />
                   <div className="p-8 flex flex-col flex-1">
                     <span className="text-[13px] font-semibold tracking-[0.18em] uppercase mb-5"
                       style={{ fontFamily: "'Inter', system-ui, sans-serif", color: accentColor(article.color) }}>
                       {article.category ?? "Articolo"}
                     </span>
-                    <h3 className="text-[oklch(27.5%_0.000_0)] mb-4 group-hover:text-[oklch(55.0%_0.075_55)] transition-colors duration-300"
+                    <h3 className="text-foreground mb-4 group-hover:text-primary transition-colors duration-300"
                       style={{ fontFamily: "'Inter', system-ui, sans-serif", fontSize: "1.125rem", fontWeight: 600, lineHeight: 1.35 }}>
                       {article.title ?? ""}
                     </h3>
-                    <p className="text-[17px] text-[oklch(50%_0.005_60)] leading-[1.75] flex-1"
+                    <p className="text-[17px] text-muted-foreground leading-[1.75] flex-1"
                       style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>{article.excerpt ?? ""}</p>
                     <div className="mt-6 flex items-center justify-between">
-                      <span className="text-[13px] text-[oklch(60%_0.005_60)]"
+                      <span className="text-[13px] text-muted-foreground"
                         style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
                         {article.readTime ? `${article.readTime} di lettura` : "—"}
                       </span>
-                      <ArrowRight size={14} className="opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-1"
-                        style={{ color: "oklch(55.0% 0.075 55)" }} />
+                      <ArrowRight size={14} className="text-primary opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-1" />
                     </div>
                   </div>
                 </Link>
@@ -786,26 +781,26 @@ function NewsletterSection() {
   };
 
   return (
-    <section className="py-24 bg-[oklch(89.5%_0.025_80)]">
+    <section className="py-24 bg-muted">
       <div className="container">
         <Reveal className="max-w-[560px] mx-auto text-center">
-          <div className="flex justify-center mb-8"><ArchDivider count={3} color="oklch(55.0% 0.075 55)" /></div>
-          <p className="text-[15px] font-normal tracking-[0.22em] uppercase text-[#A67C52] mb-5"
+          <div className="flex justify-center mb-8"><ArchDivider count={3} color="#8B4513" /></div>
+          <p className="text-[15px] font-normal tracking-[0.22em] uppercase text-secondary mb-5"
             style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>Newsletter</p>
-          <h2 className="font-medium text-[oklch(27.5%_0.000_0)] mb-5"
+          <h2 className="font-medium text-foreground mb-5"
             style={{ fontFamily: "'Spectral', Georgia, serif", fontSize: "2rem", fontWeight: 500 }}>
             Una Prospettiva Diversa,<br />Ogni Mese
           </h2>
-          <p className="text-[18px] text-[oklch(42%_0.005_60)] leading-[1.8] mb-10"
+          <p className="text-[18px] text-muted-foreground leading-[1.8] mb-10"
             style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
             Ricevi un articolo esclusivo, un'idea che cambierà come vedi qualcosa, e l'invito al prossimo evento. Niente spam. Solo cultura.
           </p>
           {submitted ? (
-            <div className="py-6 px-8 bg-[#F5F3EE] border border-gray-100 rounded-xl text-center shadow-sm">
-              <p className="text-[18px] text-[#1C1917] mb-1" style={{ fontFamily: 'var(--font-display)' }}>
+            <div className="py-6 px-8 bg-card border border-border rounded-xl text-center shadow-sm">
+              <p className="text-[18px] text-foreground mb-1" style={{ fontFamily: 'var(--font-display)' }}>
                 Grazie per l'iscrizione!
               </p>
-              <p className="text-[15px] text-[#78716C]" style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
+              <p className="text-[15px] text-muted-foreground" style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
                 Ti abbiamo inviato un'email di benvenuto.
               </p>
             </div>
@@ -813,22 +808,22 @@ function NewsletterSection() {
             <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
               <input type="email" placeholder="La tua email" value={email} onChange={(e) => setEmail(e.target.value)}
                 required
-                className="flex-1 px-5 py-3.5 text-[16px] bg-[oklch(96.5%_0.006_85)] border border-gray-200 text-[oklch(27.5%_0.000_0)] placeholder:text-gray-400 rounded-xl focus:outline-none focus:border-[#a2482b] transition-colors"
+                className="flex-1 px-5 py-3.5 text-[16px] bg-background border border-border text-foreground placeholder:text-muted-foreground rounded-xl focus:outline-none focus:border-primary transition-colors"
                 style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }} />
               <button type="submit" disabled={subscribe.isPending}
-                className="px-8 py-3.5 text-[16px] font-semibold bg-[#a2482b] text-[#F5F3EE] rounded-xl hover:opacity-85 transition-opacity whitespace-nowrap disabled:opacity-50"
+                className="px-8 py-3.5 text-[16px] font-semibold bg-primary text-primary-foreground rounded-xl hover:opacity-85 transition-opacity whitespace-nowrap disabled:opacity-50"
                 style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
                 {subscribe.isPending ? "..." : "Iscriviti"}
               </button>
             </form>
           )}
           {subscribe.error && (
-            <p className="mt-3 text-sm text-[#a2482b]" style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
+            <p className="mt-3 text-sm text-primary" style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
               {subscribe.error.message}
             </p>
           )}
           {!submitted && (
-            <p className="mt-5 text-[15px] text-[oklch(55%_0.005_60)]" style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
+            <p className="mt-5 text-[15px] text-muted-foreground" style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
               Puoi cancellarti quando vuoi. Ma scommettiamo che non lo farai.
             </p>
           )}

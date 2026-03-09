@@ -19,24 +19,24 @@ function FooterNewsletter() {
 
   return (
     <div>
-      <p className="text-[15px] font-normal tracking-[0.22em] uppercase text-[#A67C52] mb-5"
+      <p className="text-[15px] font-normal tracking-[0.22em] uppercase text-secondary mb-5"
         style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>Newsletter</p>
-      <p className="text-[16px] text-[oklch(70%_0.005_85)] leading-[1.75] mb-4"
+      <p className="text-[16px] text-[var(--on-dark)]/80 leading-[1.75] mb-4"
         style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
         Una prospettiva diversa, ogni mese. Niente spam. Solo cultura.
       </p>
       {submitted ? (
-        <p className="text-[15px] text-[#A67C52]" style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
+        <p className="text-[15px] text-secondary" style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
           ✓ Grazie! Controlla la tua email.
         </p>
       ) : (
         <form onSubmit={handleSubmit} className="flex flex-col gap-2">
           <input type="email" placeholder="La tua email" value={email}
             onChange={(e) => setEmail(e.target.value)} required
-            className="px-4 py-2.5 text-[15px] bg-[oklch(35%_0.000_0)] border border-[oklch(45%_0.000_0)] text-[oklch(90%_0.005_85)] placeholder:text-[oklch(55%_0.005_85)] rounded-xl focus:outline-none focus:border-[#a2482b] transition-colors"
+            className="px-4 py-2.5 text-[15px] bg-[oklch(35%_0.000_0)] border border-[oklch(45%_0.000_0)] text-[var(--on-dark)] placeholder:text-[var(--on-dark)]/60 rounded-xl focus:outline-none focus:border-primary transition-colors"
             style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }} />
           <button type="submit" disabled={subscribe.isPending}
-            className="px-4 py-2.5 text-[15px] font-semibold bg-[#a2482b] text-[#F5F3EE] rounded-xl hover:opacity-85 transition-opacity disabled:opacity-50"
+            className="px-4 py-2.5 text-[15px] font-semibold bg-primary text-primary-foreground rounded-xl hover:opacity-85 transition-opacity disabled:opacity-50"
             style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
             {subscribe.isPending ? "..." : "Iscriviti"}
           </button>
@@ -53,7 +53,7 @@ function FooterNewsletter() {
 
 export default function Footer() {
   return (
-    <footer className="bg-[oklch(27.5%_0.000_0)] text-[oklch(96.5%_0.006_85)]">
+    <footer className="bg-foreground text-[var(--on-dark)]">
       <div className="container py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
 
@@ -75,7 +75,7 @@ export default function Footer() {
                   PORTICI
                 </span>
                 <span
-                  className="tracking-[0.2em] uppercase text-[#A67C52] mt-0.5"
+                  className="tracking-[0.2em] uppercase text-secondary mt-0.5"
                   style={{ fontSize: "0.62rem", fontFamily: 'var(--font-ui)' }}
                 >
                   DADAOCHENG
@@ -83,13 +83,13 @@ export default function Footer() {
               </div>
             </div>
             <p
-              className="text-[17px] text-[oklch(70%_0.005_85)] leading-[1.75] max-w-xs"
+              className="text-[17px] text-[var(--on-dark)]/80 leading-[1.75] max-w-xs"
               style={{ fontFamily: 'var(--font-display)' }}
             >
               Dove culture diverse interpretano la stessa cosa in modi sorprendentemente diversi.
             </p>
             <p
-              className="text-xs text-[oklch(55%_0.005_85)]"
+              className="text-xs text-[var(--on-dark)]/70"
               style={{ fontFamily: 'var(--font-ui)' }}
             >
               Bologna, Italia · 2026
@@ -99,7 +99,7 @@ export default function Footer() {
           {/* Navigation */}
           <div>
             <p
-              className="text-[15px] font-normal tracking-[0.22em] uppercase text-[#A67C52] mb-5"
+              className="text-[15px] font-normal tracking-[0.22em] uppercase text-secondary mb-5"
               style={{ fontFamily: 'var(--font-ui)' }}
             >
               Esplora
@@ -115,7 +115,7 @@ export default function Footer() {
                 <li key={href}>
                   <Link
                     href={href}
-                    className="text-[15px] text-[oklch(75%_0.005_85)] hover:text-[oklch(96.5%_0.006_85)] transition-colors"
+                    className="text-[15px] text-[var(--on-dark)]/80 hover:text-[var(--on-dark)] transition-colors"
                     style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
                   >
                     {label}
@@ -132,9 +132,9 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 pt-6 border-t border-[oklch(40%_0.000_0)] flex flex-col md:flex-row items-center justify-between gap-3">
+        <div className="mt-12 pt-6 border-t border-[var(--on-dark)]/30 flex flex-col md:flex-row items-center justify-between gap-3">
           <p
-            className="text-xs text-[oklch(50%_0.005_85)]"
+            className="text-xs text-[var(--on-dark)]/60"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
           >
             © {new Date().getFullYear()} Portici DaDaocheng. Tutti i diritti riservati.
@@ -144,7 +144,7 @@ export default function Footer() {
               href="https://instagram.com/portici.dadaocheng"
               target="_blank"
               rel="noopener noreferrer"
-                className="text-xs text-[oklch(50%_0.005_85)] hover:text-[#A67C52] transition-colors"
+                className="text-xs text-[var(--on-dark)]/60 hover:text-secondary transition-colors"
               style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
             >
               Instagram

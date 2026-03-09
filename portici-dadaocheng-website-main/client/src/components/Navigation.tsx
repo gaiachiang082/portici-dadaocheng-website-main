@@ -38,7 +38,7 @@ export default function Navigation() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled || !isHome
-          ? "bg-[oklch(96.5%_0.006_85)] border-b border-[oklch(88%_0.010_80)] shadow-[0_1px_8px_oklch(0%_0_0/0.06)]"
+          ? "bg-background border-b border-border shadow-[0_1px_8px_rgba(62,39,35,0.08)]"
           : "bg-transparent"
       }`}
       style={{
@@ -81,16 +81,16 @@ export default function Navigation() {
                     href={href}
                     className={`text-[15px] tracking-wide transition-all duration-200 relative group ${
                       location === href || (href === "/workshop" && location.startsWith("/workshop"))
-                        ? "text-[#a2482b]"
+                        ? "text-primary"
                         : isHome && !scrolled
-                          ? "text-[#F5F3EE] hover:text-[#a2482b]"
-                          : "text-slate-800 hover:text-[#a2482b]"
+                          ? "text-[var(--on-dark)] hover:text-primary"
+                          : "text-foreground hover:text-primary"
                     }`}
                     style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
                   >
                     {label}
                     <span
-                      className="absolute -bottom-0.5 left-0 h-px bg-[#a2482b] transition-all duration-300"
+                      className="absolute -bottom-0.5 left-0 h-px bg-primary transition-all duration-300"
                       style={{ width: location === href || (href === "/workshop" && location.startsWith("/workshop")) ? "100%" : "0%" }}
                     />
                   </Link>
@@ -106,11 +106,11 @@ export default function Navigation() {
                 className={`px-4 py-2 text-[13px] font-medium rounded-xl transition-all duration-200 ${
                   lang === "it"
                     ? isHome && !scrolled
-                      ? "bg-white/20 text-[#F5F3EE]"
-                      : "bg-[oklch(92%_0.005_85)] text-slate-800"
+                      ? "bg-white/20 text-[var(--on-dark)]"
+                      : "bg-muted text-foreground"
                     : isHome && !scrolled
-                      ? "text-[#F5F3EE]/80 hover:text-[#F5F3EE] hover:bg-white/10"
-                      : "text-slate-600 hover:text-slate-800 hover:bg-[oklch(96%_0.005_85)]"
+                      ? "text-[var(--on-dark)]/80 hover:text-[var(--on-dark)] hover:bg-white/10"
+                      : "text-muted-foreground hover:text-foreground hover:bg-background"
                 }`}
                 style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
               >
@@ -122,11 +122,11 @@ export default function Navigation() {
                 className={`px-4 py-2 text-[13px] font-medium rounded-md transition-all duration-200 ${
                   lang === "en"
                     ? isHome && !scrolled
-                      ? "bg-white/20 text-[#F5F3EE]"
-                      : "bg-[oklch(92%_0.005_85)] text-slate-800"
+                      ? "bg-white/20 text-[var(--on-dark)]"
+                      : "bg-muted text-foreground"
                     : isHome && !scrolled
-                      ? "text-[#F5F3EE]/80 hover:text-[#F5F3EE] hover:bg-white/10"
-                      : "text-slate-600 hover:text-slate-800 hover:bg-[oklch(96%_0.005_85)]"
+                      ? "text-[var(--on-dark)]/80 hover:text-[var(--on-dark)] hover:bg-white/10"
+                      : "text-muted-foreground hover:text-foreground hover:bg-background"
                 }`}
                 style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
               >
@@ -137,7 +137,7 @@ export default function Navigation() {
             {/* CTA — Desktop */}
             <Link
               href="/workshop"
-              className="hidden md:inline-flex items-center px-5 py-2 text-[15px] font-semibold rounded-xl transition-all duration-300 bg-[#a2482b] text-[#F5F3EE] hover:opacity-85 hover:px-6"
+              className="hidden md:inline-flex items-center px-5 py-2 text-[15px] font-semibold rounded-xl transition-all duration-300 bg-primary text-primary-foreground hover:opacity-85 hover:px-6"
               style={{
                 fontFamily: 'var(--font-ui)',
                 opacity: mounted ? 1 : 0,
@@ -149,7 +149,7 @@ export default function Navigation() {
 
             {/* Hamburger — Mobile 收合選單 */}
             <button
-              className={`md:hidden p-2 transition-colors duration-200 ${isHome && !scrolled ? "text-[#F5F3EE] hover:text-[#a2482b]" : "text-slate-800 hover:text-[#a2482b]"}`}
+              className={`md:hidden p-2 transition-colors duration-200 ${isHome && !scrolled ? "text-[var(--on-dark)] hover:text-primary" : "text-foreground hover:text-primary"}`}
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label={menuOpen ? "Chiudi menu" : "Apri menu"}
               aria-expanded={menuOpen}
@@ -170,7 +170,7 @@ export default function Navigation() {
 
       {/* Mobile Menu — slide down */}
       <div
-        className="md:hidden bg-[oklch(96.5%_0.006_85)] border-t border-[oklch(88%_0.010_80)] overflow-hidden"
+        className="md:hidden bg-background border-t border-border overflow-hidden"
         style={{
           maxHeight: menuOpen ? "400px" : "0px",
           transition: "max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
@@ -183,8 +183,8 @@ export default function Navigation() {
               href={href}
               className={`text-[16px] transition-colors duration-200 ${
                 location === href || (href === "/workshop" && location.startsWith("/workshop"))
-                  ? "text-[#a2482b]"
-                  : "text-gray-900 hover:text-[#a2482b]"
+                  ? "text-primary"
+                  : "text-foreground hover:text-primary"
               }`}
               style={{
                 fontFamily: 'var(--font-ui)',
@@ -198,7 +198,7 @@ export default function Navigation() {
           ))}
           <Link
             href="/workshops"
-            className="mt-2 inline-flex items-center justify-center px-5 py-2.5 text-[15px] font-semibold rounded-xl bg-[#a2482b] text-[#F5F3EE] hover:opacity-85 transition-opacity"
+            className="mt-2 inline-flex items-center justify-center px-5 py-2.5 text-[15px] font-semibold rounded-xl bg-primary text-primary-foreground hover:opacity-85 transition-opacity"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
           >
             Prenota Workshop

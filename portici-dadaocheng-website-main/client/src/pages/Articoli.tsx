@@ -36,18 +36,18 @@ export default function Articoli() {
   }, []);
 
   return (
-    <main className="bg-[oklch(96.5%_0.006_85)]">
+    <main className="bg-background">
       {/* Hero */}
-      <section className="pt-32 pb-28 px-6 md:px-10 bg-[oklch(27.5%_0.000_0)]">
+      <section className="pt-32 pb-28 px-6 md:px-10 bg-foreground">
         <div className="container max-w-3xl mx-auto flex flex-col gap-10">
           <p
-            className="text-[15px] font-normal tracking-[0.22em] uppercase text-[#A67C52]"
+            className="text-[15px] font-normal tracking-[0.22em] uppercase text-secondary"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
           >
             Articoli
           </p>
           <h1
-            className="font-bold text-[oklch(96.5%_0.006_85)]"
+            className="font-bold text-[var(--on-dark)]"
             style={{
               fontFamily: 'var(--font-display)',
               fontSize: "clamp(2rem, 4vw, 3rem)",
@@ -56,7 +56,7 @@ export default function Articoli() {
           >
             Letture che cambiano
             <br />
-            <em className="text-[#A67C52] not-italic">come vedi il mondo.</em>
+            <em className="text-secondary not-italic">come vedi il mondo.</em>
           </h1>
           <p
             className="text-lg text-[oklch(68%_0.005_85)] leading-[1.75]"
@@ -65,12 +65,12 @@ export default function Articoli() {
             Ogni articolo segue il metodo 同中求異 — trovare le differenze nell'unità.
             Non informazioni, ma trasformazioni.
           </p>
-          <div className="w-10 h-0.5 bg-[#A67C52]" />
+          <div className="w-10 h-0.5 bg-secondary" />
         </div>
       </section>
 
       {/* Category filter */}
-      <section className="py-12 px-6 md:px-10 bg-[oklch(96.5%_0.006_85)]">
+      <section className="py-12 px-6 md:px-10 bg-background">
         <div className="container mx-auto">
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm flex flex-wrap gap-3 md:gap-4 px-6 py-4 md:px-8 md:py-5">
             {categories.map((cat) => (
@@ -78,8 +78,8 @@ export default function Articoli() {
                 key={cat}
                 className={`px-5 py-2.5 text-sm font-semibold tracking-wide rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all ${
                   cat === "Tutti"
-                    ? "bg-[#a2482b] text-[#F5F3EE]"
-                    : "bg-white text-gray-500 hover:bg-[#a2482b] hover:text-[#F5F3EE] hover:border-transparent"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-white text-gray-500 hover:bg-primary hover:text-primary-foreground hover:border-transparent"
                 }`}
                 style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
               >
@@ -91,7 +91,7 @@ export default function Articoli() {
       </section>
 
       {/* Articles grid */}
-      <section className="py-24 px-6 md:px-10 bg-[oklch(96.5%_0.006_85)]">
+      <section className="py-24 px-6 md:px-10 bg-background">
         <div className="container mx-auto">
           {loading ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
@@ -119,16 +119,16 @@ export default function Articoli() {
                   href={`/articoli/${article._id}`}
                   className="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all flex flex-col"
                 >
-                  <div className="h-1.5 rounded-t-2xl" style={{ backgroundColor: article.color ?? "#A67C52" }} />
+                  <div className="h-1.5 rounded-t-2xl" style={{ backgroundColor: article.color ?? "var(--secondary)" }} />
                   <div className="p-8 flex flex-col flex-1 gap-6">
                     <span
                       className="text-xs font-semibold tracking-widest uppercase text-gray-500"
-                      style={{ fontFamily: 'var(--font-ui)', color: article.color ?? "#A67C52" }}
+                      style={{ fontFamily: 'var(--font-ui)', color: article.color ?? "var(--secondary)" }}
                     >
                       {article.category ?? "Articolo"}
                     </span>
                     <h3
-                      className="text-gray-900 font-bold group-hover:text-[#A67C52] transition-colors"
+                      className="text-gray-900 font-bold group-hover:text-secondary transition-colors"
                       style={{ fontFamily: 'var(--font-ui)', fontSize: "1.125rem", lineHeight: 1.35 }}
                     >
                       {article.title ?? ""}
@@ -146,7 +146,7 @@ export default function Articoli() {
                       >
                         {article.readTime ? `${article.readTime} di lettura` : "—"}
                       </span>
-                      <ArrowRight size={14} className="text-[#A67C52] opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <ArrowRight size={14} className="text-secondary opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
                   </div>
                 </Link>
