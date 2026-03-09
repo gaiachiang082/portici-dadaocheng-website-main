@@ -36,11 +36,11 @@
   --color-input:                var(--input);
   --color-ring:                 var(--ring);
 
-  /* Typography — H1–H3 Optima Semibold; UI/body Noto Sans Semibold */
-  --font-heading:  'Optima', system-ui, sans-serif;  /* H1–H3 大標題 */
-  --font-display:  'Optima', system-ui, sans-serif;  /* 展示用 = heading */
-  --font-body:     'Noto Sans', system-ui, sans-serif; /* 內文 */
-  --font-ui:       'Optima', system-ui, sans-serif; /* UI / 標籤 */
+  /* Typography — H1–H3 Futura; 內文 Roboto Mono */
+  --font-heading:  'Futura', 'Futura PT', 'Century Gothic', 'CenturyGothic', 'Apple Gothic', sans-serif;  /* H1–H3 大標題 */
+  --font-display:  'Futura', 'Futura PT', 'Century Gothic', 'CenturyGothic', 'Apple Gothic', sans-serif;  /* 展示用 = heading */
+  --font-body:     'Roboto Mono', 'Consolas', monospace; /* 內文 TESTO */
+  --font-ui:       'Futura', 'Futura PT', 'Century Gothic', 'CenturyGothic', 'Apple Gothic', sans-serif; /* UI / 標籤 */
 
   /* Radius */
   --radius-sm: calc(var(--radius) - 4px);
