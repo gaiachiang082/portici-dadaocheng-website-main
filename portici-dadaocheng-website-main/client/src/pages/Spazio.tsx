@@ -82,7 +82,10 @@ export default function Spazio() {
               { sense: "Tatto", kanji: "觸", desc: "Una scatola di materiali da toccare: carta, legno, lino, ceramica." },
               { sense: "Gusto", kanji: "味", desc: "All'entrata: 30ml di oolong freddo taiwanese in tazze ceramiche uniche." },
             ].map(({ sense, kanji, desc }) => (
-              <div key={sense} className="bg-[oklch(89.5%_0.025_80)] p-6 text-center">
+              <div
+                key={sense}
+                className="bg-[oklch(89.5%_0.025_80)] p-8 text-center rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+              >
                 {/* §9: No emoji — use CJK characters as visual elements */}
                 <p
                   className="text-[2rem] mb-3 text-[#A67C52]"
@@ -130,8 +133,8 @@ export default function Spazio() {
             </h2>
           </div>
 
-          <div className="space-y-6">
-            <div className="bg-[oklch(96.5%_0.006_85)] p-8 rounded-sm">
+            <div className="space-y-6">
+            <div className="bg-[oklch(96.5%_0.006_85)] p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
               <div className="flex items-start gap-4">
                 <MapPin size={18} className="text-[#A67C52] mt-0.5 shrink-0" />
                 <div>
@@ -153,7 +156,7 @@ export default function Spazio() {
               </div>
             </div>
 
-            <div className="bg-[oklch(96.5%_0.006_85)] p-8 rounded-sm">
+            <div className="bg-[oklch(96.5%_0.006_85)] p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
               <div className="flex items-start gap-4">
                 <MapPin size={18} className="text-[#A67C52] mt-0.5 shrink-0" />
                 <div>
