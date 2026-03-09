@@ -36,11 +36,39 @@
   --color-input:                var(--input);
   --color-ring:                 var(--ring);
 
-  /* Typography — H1–H3 Futura; 內文 Roboto Mono */
-  --font-heading:  'Futura', 'Futura PT', 'Century Gothic', 'CenturyGothic', 'Apple Gothic', sans-serif;  /* H1–H3 大標題 */
-  --font-display:  'Futura', 'Futura PT', 'Century Gothic', 'CenturyGothic', 'Apple Gothic', sans-serif;  /* 展示用 = heading */
-  --font-body:     'Roboto Mono', 'Consolas', monospace; /* 內文 TESTO */
-  --font-ui:       'Futura', 'Futura PT', 'Century Gothic', 'CenturyGothic', 'Apple Gothic', sans-serif; /* UI / 標籤 */
+  /* Typography — Poppins (Guida Tipografica Completa) */
+  --font-heading:  'Poppins', system-ui, sans-serif;
+  --font-display:  'Poppins', system-ui, sans-serif;
+  --font-body:     'Poppins', system-ui, sans-serif;
+  --font-ui:       'Poppins', system-ui, sans-serif;
+
+  /* Parametri dettagliati — Poppins (da Guida Tipografica) */
+  /* H1 Titolo Principale: 48-56px | Bold 700 | Interlinea 1.1 | Spaziatura -0.3px */
+  --font-h1-size:     clamp(3rem, 5vw, 3.5rem);       /* 48-56px */
+  --font-h1-weight:    700;
+  --font-h1-line:      1.1;
+  --font-h1-spacing:   -0.3px;
+  /* H2 Sottotitolo: 32-40px | SemiBold 600 | Interlinea 1.2 | Spaziatura 0px */
+  --font-h2-size:     clamp(2rem, 3vw, 2.5rem);     /* 32-40px */
+  --font-h2-weight:    600;
+  --font-h2-line:      1.2;
+  --font-h2-spacing:   0px;
+  /* H3 Sottotitolo Secondario: 24-28px | SemiBold 600 | Interlinea 1.3 | Spaziatura 0.1px */
+  --font-h3-size:     clamp(1.5rem, 2vw, 1.75rem);  /* 24-28px */
+  --font-h3-weight:    600;
+  --font-h3-line:      1.3;
+  --font-h3-spacing:   0.1px;
+  /* Corpo del Testo: 16-18px | Regular 400 | Interlinea 1.6 | Spaziatura 0.2px */
+  --font-body-size:   1rem;                         /* 16px base */
+  --font-body-size-lg: 1.125rem;                    /* 18px */
+  --font-body-weight:  400;
+  --font-body-line:    1.6;
+  --font-body-spacing: 0.2px;
+  /* Testo Piccolo / Didascalia: 12-14px | Regular 400 | Interlinea 1.5 | Spaziatura 0.3px */
+  --font-small-size:   clamp(0.75rem, 1.5vw, 0.875rem);  /* 12-14px */
+  --font-small-weight:  400;
+  --font-small-line:    1.5;
+  --font-small-spacing: 0.3px;
 
   /* Radius */
   --radius-sm: calc(var(--radius) - 4px);
@@ -92,26 +120,49 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);
-    font-size: 18px;
-    line-height: 1.75;
+    font-size: var(--font-body-size-lg);
+    font-weight: var(--font-body-weight);
+    line-height: var(--font-body-line);
+    letter-spacing: var(--font-body-spacing);
     min-height: 100vh;
   }
 
   /*
-    Typography enforcement:
+    Typography enforcement — Parametri dettagliati Poppins:
     - We use !important so legacy inline fontFamily styles don't override the token system.
   */
 
-  /* Headings: H1–H3 Optima Semibold */
-  h1, h2, h3 {
+  /* H1 Titolo Principale: 48-56px | Bold 700 | Interlinea 1.1 | Spaziatura -0.3px */
+  h1 {
     font-family: var(--font-display) !important;
-    font-weight: 600 !important;
-    line-height: 1.2;
-    letter-spacing: -0.01em;
+    font-size: var(--font-h1-size);
+    font-weight: var(--font-h1-weight) !important;
+    line-height: var(--font-h1-line);
+    letter-spacing: var(--font-h1-spacing);
     color: var(--foreground);
   }
 
-  /* Headings: H4–H6 + UI labels */
+  /* H2 Sottotitolo: 32-40px | SemiBold 600 | Interlinea 1.2 | Spaziatura 0px */
+  h2 {
+    font-family: var(--font-display) !important;
+    font-size: var(--font-h2-size);
+    font-weight: var(--font-h2-weight) !important;
+    line-height: var(--font-h2-line);
+    letter-spacing: var(--font-h2-spacing);
+    color: var(--foreground);
+  }
+
+  /* H3 Sottotitolo Secondario: 24-28px | SemiBold 600 | Interlinea 1.3 | Spaziatura 0.1px */
+  h3 {
+    font-family: var(--font-display) !important;
+    font-size: var(--font-h3-size);
+    font-weight: var(--font-h3-weight) !important;
+    line-height: var(--font-h3-line);
+    letter-spacing: var(--font-h3-spacing);
+    color: var(--foreground);
+  }
+
+  /* H4–H6 + UI labels */
   h4, h5, h6 {
     font-family: var(--font-ui) !important;
     font-weight: 600 !important;
@@ -119,18 +170,23 @@
     color: var(--foreground);
   }
 
-  h1 { font-size: clamp(2rem, 5vw, 3rem); }
-  h2 { font-size: clamp(1.5rem, 3.5vw, 2rem); }
-  h3 { font-size: clamp(1.2rem, 2.5vw, 1.5rem); }
   h4 { font-size: 1.125rem; }
 
+  /* Corpo del Testo: 16-18px | Regular 400 | Interlinea 1.6 | Spaziatura 0.2px */
   p {
     font-family: var(--font-body) !important;
-    line-height: 1.8;
+    font-size: var(--font-body-size-lg);
+    font-weight: var(--font-body-weight);
+    line-height: var(--font-body-line);
+    letter-spacing: var(--font-body-spacing);
   }
 
   li {
     font-family: var(--font-body) !important;
+    font-size: var(--font-body-size-lg);
+    font-weight: var(--font-body-weight);
+    line-height: var(--font-body-line);
+    letter-spacing: var(--font-body-spacing);
   }
 
   a,
@@ -198,12 +254,25 @@
     border-radius: 1px;
   }
 
-  /* Readable prose column */
+  /* Readable prose column — Corpo del Testo 16-18px */
   .prose-brand {
     max-width: 68ch;
     font-family: var(--font-body);
-    font-size: 1.0625rem;
-    line-height: 1.85;
+    font-size: var(--font-body-size-lg);
+    font-weight: var(--font-body-weight);
+    line-height: var(--font-body-line);
+    letter-spacing: var(--font-body-spacing);
+  }
+
+  /* Testo Piccolo / Didascalia: 12-14px | Regular 400 | Interlinea 1.5 | Spaziatura 0.3px */
+  .text-small,
+  .caption,
+  figcaption {
+    font-family: var(--font-body);
+    font-size: var(--font-small-size);
+    font-weight: var(--font-small-weight);
+    line-height: var(--font-small-line);
+    letter-spacing: var(--font-small-spacing);
   }
 }
 
@@ -212,6 +281,7 @@
   .font-display { font-family: var(--font-display); font-weight: 600; }
   .font-body    { font-family: var(--font-body); }
   .font-ui      { font-family: var(--font-ui); font-weight: 600; }
+  .text-small   { font-size: var(--font-small-size); line-height: var(--font-small-line); letter-spacing: var(--font-small-spacing); }
 
   .text-ochre       { color: oklch(55.0% 0.075 55); }
   .text-bamboo      { color: oklch(57.5% 0.045 165); }
