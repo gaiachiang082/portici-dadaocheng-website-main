@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import ChiSiamo from "./pages/ChiSiamo";
 import Workshop from "./pages/Workshop";
 import Articoli from "./pages/Articoli";
+import ArticoloDetail from "./pages/ArticoloDetail";
 import Spazio from "./pages/Spazio";
 import Contatti from "./pages/Contatti";
 import NotFound from "./pages/NotFound";
@@ -24,6 +25,7 @@ function Router() {
       <Route path="/chi-siamo" component={ChiSiamo} />
       <Route path="/workshop" component={Workshop} />
       <Route path="/articoli" component={Articoli} />
+      <Route path="/articoli/:id" component={ArticoloDetail} />
       <Route path="/spazio" component={Spazio} />
       <Route path="/contatti" component={Contatti} />
       <Route path="/workshop/calligraphy" component={CalligraphyWorkshop} />
