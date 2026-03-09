@@ -1,10 +1,69 @@
 import { Link } from "wouter";
 import { ArrowRight, Calendar, MapPin, ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { trpc } from "@/lib/trpc";
 import { useScrollReveal, useParallax } from "@/hooks/useScrollReveal";
 import { ArchImage, ArchDecor, ArchDivider } from "@/components/ArchFrame";
 import { client } from "@/SanityClient";
+
+/* ── Sky lantern SVG (平溪天燈) ── */
+function SkyLantern({ delay, left, duration, drift }: { delay: number; left: string; duration: number; drift: number }) {
+  return (
+    <div
+      className="absolute pointer-events-none"
+      style={{
+        left,
+        bottom: "-5%",
+        animation: `float-up ${duration}s ease-in-out ${delay}s infinite`,
+        ["--drift" as string]: `${drift}px`,
+      }}
+    >
+      <svg width="24" height="32" viewBox="0 0 24 32" fill="none" className="drop-shadow-[0_0_8px_rgba(245,222,179,0.5)]">
+        <ellipse cx="12" cy="8" rx="10" ry="6" fill="rgba(245,222,179,0.9)" stroke="rgba(205,133,63,0.6)" strokeWidth="0.5" />
+        <path d="M12 14 L12 28 M10 18 L14 18 M10 22 L14 22" stroke="rgba(205,133,63,0.5)" strokeWidth="0.5" />
+      </svg>
+    </div>
+  );
+}
+
+/* ── Floating light particles ── */
+function LightParticle({ left, top, delay, dx, dy }: { left: string; top: string; delay: number; dx: number; dy: number }) {
+  return (
+    <div
+      className="absolute w-1 h-1 rounded-full bg-[var(--on-dark)] pointer-events-none"
+      style={{
+        left,
+        top,
+        animation: `particle-float 4s ease-in-out ${delay}s infinite`,
+        ["--dx" as string]: `${dx}px`,
+        ["--dy" as string]: `${dy}px`,
+      }}
+    />
+  );
+}
+
+/* ── Letter-by-letter mask slide-in text ── */
+function MaskSlideText({ text, delay, color, italic }: { text: string; delay: number; color?: string; italic?: boolean }) {
+  return (
+    <span className="block overflow-hidden">
+      {text.split("").map((char, i) => (
+        <span
+          key={i}
+          className="inline-block"
+          style={{
+            animation: `letter-slide-in 0.6s ease-out ${delay + i * 40}ms forwards`,
+            clipPath: "inset(0 100% 0 0)",
+            opacity: 0,
+            color: color || "var(--on-dark)",
+            fontStyle: italic ? "italic" : "normal",
+          }}
+        >
+          {char === " " ? "\u00A0" : char}
+        </span>
+      ))}
+    </span>
+  );
+}
 
 /* ─────────────────────────────────────────────────────────────────
    CDN IMAGE REGISTRY
@@ -255,6 +314,28 @@ function HeroSection() {
 
   useEffect(() => { const t = setTimeout(() => setMounted(true), 80); return () => clearTimeout(t); }, []);
 
+  const LANTERN_COUNT = 22;
+  const PARTICLE_COUNT = 30;
+  const lanterns = useMemo(() =>
+    Array.from({ length: LANTERN_COUNT }, (_, i) => ({
+      delay: i * 0.8,
+      left: `${5 + (i * 4.2) % 90}%`,
+      duration: 12 + (i % 5),
+      drift: -20 + (i % 40),
+    })),
+    []
+  );
+  const particles = useMemo(() =>
+    Array.from({ length: PARTICLE_COUNT }, (_, i) => ({
+      left: `${(i * 7.3) % 100}%`,
+      top: `${(i * 11) % 100}%`,
+      delay: i * 0.15,
+      dx: -15 + (i % 30),
+      dy: -20 + (i % 25),
+    })),
+    []
+  );
+
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden bg-[oklch(10%_0_0)]">
 
@@ -285,30 +366,67 @@ function HeroSection() {
           style={{ background: "linear-gradient(to bottom, transparent, oklch(10% 0 0 / 0.7))" }} />
       </div>
 
-      {/* Left ochre accent */}
-      <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-primary" />
+      {/* ── 20+ Sky lanterns floating up (平溪天燈) ── */}
+      <div className="absolute inset-0 pointer-events-none z-[5] overflow-hidden">
+        {lanterns.map((l, i) => (
+          <SkyLantern key={i} delay={l.delay} left={l.left} duration={l.duration} drift={l.drift} />
+        ))}
+      </div>
 
-      {/* Main copy — centered, spacious */}
+      {/* ── 30 floating light particles ── */}
+      <div className="absolute inset-0 pointer-events-none z-[5]">
+        {particles.map((p, i) => (
+          <LightParticle key={i} left={p.left} top={p.top} delay={p.delay} dx={p.dx} dy={p.dy} />
+        ))}
+      </div>
+
+      {/* ── Rotating decorative border ── */}
+      <div className="absolute inset-0 pointer-events-none z-[4] overflow-hidden">
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] opacity-20"
+          style={{ animation: "rotate-border 60s linear infinite" }}
+        >
+          <svg viewBox="0 0 100 100" className="w-full h-full">
+            <path d="M50 5 A45 45 0 0 1 95 50 A45 45 0 0 1 50 95 A45 45 0 0 1 5 50 A45 45 0 0 1 50 5" fill="none" stroke="var(--primary)" strokeWidth="0.3" strokeDasharray="4 6" />
+            <path d="M50 5 A45 45 0 0 1 95 50 A45 45 0 0 1 50 95 A45 45 0 0 1 5 50 A45 45 0 0 1 50 5" fill="none" stroke="var(--secondary)" strokeWidth="0.2" strokeDasharray="2 8" transform="rotate(15 50 50)" />
+          </svg>
+        </div>
+      </div>
+
+      {/* Left ochre accent */}
+      <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-primary z-10" />
+
+      {/* Main copy — centered, with arch logo + mask slide text ── */}
       <div className="container relative z-10 pt-28 pb-20 flex justify-center">
         <div className="max-w-[720px] w-full mx-auto px-4 md:px-8">
-          <p className="text-[14px] font-normal tracking-[0.22em] uppercase text-[var(--on-dark)] mb-9"
+          {/* Arch logo with bounce — 圓拱門框 Logo 跳動效果 ── */}
+          <div className="flex justify-center mb-8">
+            <div
+              className="relative"
+              style={{
+                animation: "arch-bounce 2.5s ease-in-out infinite",
+              }}
+            >
+              <img
+                src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/YOOdRRgvjAwtBHHT.png"
+                alt="Portici DaDaocheng"
+                className="h-16 md:h-20 w-auto object-contain brightness-0 invert opacity-95"
+              />
+            </div>
+          </div>
+
+          <p className="text-[14px] font-normal tracking-[0.22em] uppercase text-[var(--on-dark)] mb-9 overflow-hidden"
             style={{ fontFamily: 'var(--font-ui)',
               opacity: mounted ? 1 : 0, transform: mounted ? "translateY(0)" : "translateY(16px)",
               transition: "opacity 0.7s ease 150ms, transform 0.7s ease 150ms" }}>
             Esperienze Culturali Comparate
           </p>
 
-          <h1 className="font-semibold text-[var(--on-dark)] mb-8"
+          <h1 className="font-semibold text-[var(--on-dark)] mb-8 overflow-hidden"
             style={{ fontFamily: 'var(--font-display)', fontSize: "clamp(2.4rem, 4.8vw, 3.1rem)", lineHeight: 1.1, letterSpacing: "-0.01em" }}>
-            {["Dove culture diverse", "interpretano", "la stessa cosa."].map((line, i) => (
-              <span key={i} className="block"
-                style={{ opacity: mounted ? 1 : 0, transform: mounted ? "translateY(0)" : "translateY(24px)",
-                  transition: `opacity 0.8s ease ${280 + i * 160}ms, transform 0.8s ease ${280 + i * 160}ms`,
-                  color: i === 1 ? "var(--primary)" : "var(--on-dark)",
-                  fontStyle: i === 1 ? "italic" : "normal" }}>
-                {line}
-              </span>
-            ))}
+            <MaskSlideText text="Dove culture diverse" delay={280} />
+            <MaskSlideText text="interpretano" delay={400} color="var(--primary)" italic />
+            <MaskSlideText text="la stessa cosa." delay={520} />
           </h1>
 
           <p className="text-[18px] text-[var(--on-dark)] leading-[1.75] mb-12 max-w-[540px]"
@@ -336,7 +454,7 @@ function HeroSection() {
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10"
         style={{ opacity: mounted ? 0.5 : 0, transition: "opacity 1s ease 1200ms" }}>
         <div className="w-px bg-primary"
           style={{ height: mounted ? "52px" : "0px", transition: "height 1s ease 1300ms" }} />
@@ -419,10 +537,23 @@ function WorkshopSection() {
         </Reveal>
       </div>
 
-      {/* Alternating rows */}
+      {/* Alternating rows — cards with hover float, pulsing frame, label delay */}
       {WORKSHOP_FEATURES.map((item, i) => (
         <Reveal key={item.title} delay={i * 80}>
-          <div className={`grid md:grid-cols-2 items-stretch ${item.reverse ? "md:[direction:rtl]" : ""}`}>
+          <div className={`group/card relative grid md:grid-cols-2 items-stretch transition-all duration-500 hover:-translate-y-3 hover:shadow-xl ${item.reverse ? "md:[direction:rtl]" : ""}`}>
+            {/* Pulsing decorative frame background */}
+            <div
+              className="absolute -inset-1 rounded-lg pointer-events-none -z-10 opacity-0 group-hover/card:opacity-100 transition-opacity duration-500"
+              style={{
+                background: `linear-gradient(135deg, ${item.accent}15, transparent 50%)`,
+                animation: "pulse-frame 2.5s ease-in-out infinite",
+              }}
+            />
+            <div
+              className="absolute -inset-2 rounded-xl border border-primary/20 pointer-events-none -z-10 opacity-40"
+              style={{ animation: "pulse-frame 3s ease-in-out infinite 0.5s" }}
+            />
+
             {/* Image */}
             <div className="relative overflow-hidden group" style={{ minHeight: "380px" }}>
               <img src={item.src} alt={item.alt}
@@ -431,8 +562,22 @@ function WorkshopSection() {
               {/* Ochre tint on hover */}
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-primary/10"
                 style={{ direction: "ltr" }} />
-              {/* Category badge */}
-              <div className="absolute top-6 left-6 z-10" style={{ direction: "ltr" }}>
+              {/* Hover overlay with detailed info */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6"
+                style={{ direction: "ltr" }}>
+                <p className="text-[var(--on-dark)] text-sm leading-relaxed max-w-md"
+                  style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+                  {item.body}
+                </p>
+              </div>
+              {/* Category badge — staggered delay animation */}
+              <div
+                className="absolute top-6 left-6 z-10"
+                style={{
+                  direction: "ltr",
+                  animation: `fade-slide-up 0.6s ease-out ${300 + i * 150}ms forwards`,
+                }}
+              >
                 <span className="text-[11px] tracking-[0.22em] uppercase text-[var(--on-dark)] bg-black/45 px-3 py-1.5"
                   style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>{item.categoryZh}</span>
               </div>

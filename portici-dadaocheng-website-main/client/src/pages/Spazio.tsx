@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { ArrowRight, MapPin, Instagram } from "lucide-react";
 import PhotoCarousel from "@/components/PhotoCarousel";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const GALLERY_SLIDES = [
   { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/noBAAdsQpHVXgrUG.png", label: "大稻埕", caption: "Dove la storia incontra il presente" },
@@ -18,6 +19,42 @@ const GALLERY_SLIDES = [
   { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/tIhnZPQxlSeAhdvy.png", label: "茶器", caption: "Gli strumenti del rito quotidiano" },
   { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/QlYNHHXFFlKYYNOQ.png", label: "文化", caption: "Scoprire l'altro per scoprire se stessi" },
 ];
+
+function SpazioCard({ sense, kanji, desc, delay }: { sense: string; kanji: string; desc: string; delay: number }) {
+  const { ref, visible } = useScrollReveal(0.12);
+  return (
+    <div
+      ref={ref as React.RefObject<HTMLDivElement>}
+      className="group relative bg-[oklch(89.5%_0.025_80)] p-8 text-center rounded-2xl border border-gray-100 shadow-sm transition-all duration-500 hover:-translate-y-3 hover:shadow-xl overflow-hidden"
+      style={{
+        opacity: visible ? undefined : 0,
+        transform: visible ? undefined : "scale(0.8) translateY(30px)",
+        animation: visible ? `elastic-in 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) ${delay}ms forwards` : "none",
+      }}
+    >
+      {/* Gradient overlay on hover */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#A67C52]/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+      <p
+        className="text-[2rem] mb-3 text-[#A67C52] relative z-10"
+        style={{ fontFamily: "'Spectral', Georgia, serif", fontWeight: 500 }}
+      >
+        {kanji}
+      </p>
+      <p
+        className="text-[15px] font-semibold text-[oklch(27.5%_0.000_0)] mb-2 relative z-10"
+        style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+      >
+        {sense}
+      </p>
+      <p
+        className="text-[15px] text-[oklch(50%_0.005_60)] leading-[1.7] relative z-10"
+        style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+      >
+        {desc}
+      </p>
+    </div>
+  );
+}
 
 export default function Spazio() {
   return (
@@ -55,9 +92,20 @@ export default function Spazio() {
         </div>
       </section>
 
-      {/* Five senses */}
-      <section className="py-24 bg-[oklch(96.5%_0.006_85)]">
-        <div className="container">
+      {/* Five senses — elastic entry, hover gradient overlay, rotating decorative ring */}
+      <section className="py-24 bg-[oklch(96.5%_0.006_85)] relative overflow-hidden">
+        {/* Rotating decorative ring in background */}
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] pointer-events-none opacity-[0.07]"
+          style={{ animation: "spin-slow 45s linear infinite" }}
+        >
+          <svg viewBox="0 0 100 100" className="w-full h-full">
+            <circle cx="50" cy="50" r="45" fill="none" stroke="#A67C52" strokeWidth="1" strokeDasharray="8 12" />
+            <circle cx="50" cy="50" r="40" fill="none" stroke="#A67C52" strokeWidth="0.5" strokeDasharray="4 8" transform="rotate(-30 50 50)" />
+          </svg>
+        </div>
+
+        <div className="container relative z-10">
           <div className="mb-14">
             <p
               className="text-xs font-semibold tracking-[0.2em] uppercase text-[#A67C52] mb-3"
@@ -81,31 +129,8 @@ export default function Spazio() {
               { sense: "Olfatto", kanji: "嗅", desc: "Hinoki (cipresso giapponese) e tè verde. Percezione graduale, non immediata." },
               { sense: "Tatto", kanji: "觸", desc: "Una scatola di materiali da toccare: carta, legno, lino, ceramica." },
               { sense: "Gusto", kanji: "味", desc: "All'entrata: 30ml di oolong freddo taiwanese in tazze ceramiche uniche." },
-            ].map(({ sense, kanji, desc }) => (
-              <div
-                key={sense}
-                className="bg-[oklch(89.5%_0.025_80)] p-8 text-center rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300"
-              >
-                {/* §9: No emoji — use CJK characters as visual elements */}
-                <p
-                  className="text-[2rem] mb-3 text-[#A67C52]"
-                  style={{ fontFamily: "'Spectral', Georgia, serif", fontWeight: 500 }}
-                >
-                  {kanji}
-                </p>
-                <p
-                  className="text-[15px] font-semibold text-[oklch(27.5%_0.000_0)] mb-2"
-                  style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
-                >
-                  {sense}
-                </p>
-                <p
-                  className="text-[15px] text-[oklch(50%_0.005_60)] leading-[1.7]"
-                  style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
-                >
-                  {desc}
-                </p>
-              </div>
+            ].map(({ sense, kanji, desc }, i) => (
+              <SpazioCard key={sense} sense={sense} kanji={kanji} desc={desc} delay={i * 80} />
             ))}
           </div>
         </div>

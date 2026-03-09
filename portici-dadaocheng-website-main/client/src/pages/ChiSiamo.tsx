@@ -1,20 +1,68 @@
 import { Link } from "wouter";
 import { ArrowRight } from "lucide-react";
+import { useState, useEffect } from "react";
+
+function FloatingLantern({ left, top, delay }: { left: string; top: string; delay: number }) {
+  return (
+    <div
+      className="absolute pointer-events-none"
+      style={{ left, top, animation: `lantern-float 4s ease-in-out ${delay}s infinite` }}
+    >
+      <svg width="20" height="26" viewBox="0 0 20 26" fill="none" className="drop-shadow-[0_0_6px_rgba(245,222,179,0.4)]">
+        <ellipse cx="10" cy="6" rx="8" ry="5" fill="rgba(245,222,179,0.85)" stroke="rgba(205,133,63,0.5)" strokeWidth="0.5" />
+        <path d="M10 10 L10 22 M8 13 L12 13" stroke="rgba(205,133,63,0.4)" strokeWidth="0.5" />
+      </svg>
+    </div>
+  );
+}
 
 export default function ChiSiamo() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { const t = setTimeout(() => setMounted(true), 100); return () => clearTimeout(t); }, []);
+
+  const titleLines = [
+    "Da DadaoCheng a Bologna:",
+    "Un Viaggio attraverso i Portici del Mondo",
+  ];
+
   return (
     <main>
-      {/* Hero */}
-      <section className="pt-32 pb-20 bg-[oklch(27.5%_0.000_0)]">
-        <div className="container max-w-3xl">
+      {/* Hero — glowing moon, floating lanterns, staggered title */}
+      <section className="pt-32 pb-20 bg-[oklch(27.5%_0.000_0)] relative overflow-hidden">
+        {/* Glowing moon */}
+        <div
+          className="absolute top-12 right-[12%] w-24 h-24 md:w-32 md:h-32 pointer-events-none"
+          style={{ animation: "moon-glow 3s ease-in-out infinite" }}
+        >
+          <div className="w-full h-full rounded-full bg-[oklch(92%_0.02_85)] shadow-[0_0_60px_rgba(245,222,179,0.5)]" />
+        </div>
+
+        {/* Floating lanterns */}
+        {[
+          { left: "8%", top: "25%", delay: 0 },
+          { left: "85%", top: "35%", delay: 0.8 },
+          { left: "15%", top: "60%", delay: 1.2 },
+          { left: "78%", top: "55%", delay: 0.4 },
+          { left: "92%", top: "75%", delay: 1.6 },
+          { left: "5%", top: "80%", delay: 1 },
+        ].map((l, i) => (
+          <FloatingLantern key={i} left={l.left} top={l.top} delay={l.delay} />
+        ))}
+
+        <div className="container max-w-3xl relative z-10">
           <p
             className="text-[15px] font-normal tracking-[0.22em] uppercase text-[#A67C52] mb-6"
-            style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+            style={{
+              fontFamily: "'Inter', system-ui, sans-serif",
+              opacity: mounted ? 1 : 0,
+              transform: mounted ? "translateY(0)" : "translateY(12px)",
+              transition: "opacity 0.6s ease 100ms, transform 0.6s ease 100ms",
+            }}
           >
             Chi Siamo
           </p>
           <h1
-            className="font-medium text-[oklch(96.5%_0.006_85)] mb-8"
+            className="font-medium text-[oklch(96.5%_0.006_85)] mb-8 overflow-hidden"
             style={{
               fontFamily: "'Spectral', Georgia, serif",
               fontSize: "clamp(2rem, 4vw, 3rem)",
@@ -22,11 +70,29 @@ export default function ChiSiamo() {
               lineHeight: 1.15,
             }}
           >
-            Da DadaoCheng a Bologna:
-            <br />
-            <em className="text-[#A67C52] not-italic">Un Viaggio attraverso i Portici del Mondo</em>
+            {titleLines.map((line, i) => (
+              <span
+                key={i}
+                className="block"
+                style={{
+                  opacity: mounted ? 1 : 0,
+                  transform: mounted ? "translateY(0)" : "translateY(20px)",
+                  transition: `opacity 0.7s ease ${200 + i * 150}ms, transform 0.7s ease ${200 + i * 150}ms`,
+                  color: i === 1 ? "var(--primary)" : "oklch(96.5%_0.006_85)",
+                  fontStyle: i === 1 ? "italic" : "normal",
+                }}
+              >
+                {line}
+              </span>
+            ))}
           </h1>
-          <div className="w-10 h-0.5 bg-[#A67C52]" />
+          <div
+            className="w-10 h-0.5 bg-[#A67C52]"
+            style={{
+              opacity: mounted ? 1 : 0,
+              transition: "opacity 0.6s ease 600ms",
+            }}
+          />
         </div>
       </section>
 

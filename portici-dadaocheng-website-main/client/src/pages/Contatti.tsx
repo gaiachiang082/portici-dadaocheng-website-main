@@ -1,11 +1,22 @@
-import { Instagram, Mail } from "lucide-react";
+import { useState } from "react";
+import { Instagram, Mail, Loader2 } from "lucide-react";
 
 const HERO_IMAGE =
   "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/JlGNTUqhPVkwUfEj.png";
 const LOGO_TILE =
   "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/YOOdRRgvjAwtBHHT.png";
 
+const formFieldClass = "w-full px-4 py-3 text-sm bg-white border border-gray-200 text-gray-900 placeholder:text-gray-400 rounded-xl resize-none transition-all duration-300 focus:outline-none focus:border-[#A67C52] focus:ring-2 focus:ring-[#A67C52]/25 focus:shadow-lg focus:shadow-[#A67C52]/10";
+
 export default function Contatti() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setTimeout(() => setIsSubmitting(false), 2000);
+  };
+
   return (
     <main className="bg-[oklch(96.5%_0.006_85)]">
       {/* Hero with image background and centered card */}
@@ -56,9 +67,16 @@ export default function Contatti() {
         </div>
       </section>
 
-      {/* Contact form + info */}
-      <section className="py-24">
-        <div className="container">
+      {/* Contact form + info — focus effects, loading animation, drifting background */}
+      <section className="py-24 relative overflow-hidden">
+        {/* Drifting background decorative elements */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-20 right-[10%] w-32 h-32 rounded-full bg-[#A67C52]/5" style={{ animation: "drift-bg 8s ease-in-out infinite" }} />
+          <div className="absolute bottom-40 left-[5%] w-24 h-24 rounded-full bg-[#A67C52]/8" style={{ animation: "drift-bg 10s ease-in-out infinite 1s" }} />
+          <div className="absolute top-1/2 right-[20%] w-16 h-16 rounded-full bg-[#A67C52]/4" style={{ animation: "drift-bg 12s ease-in-out infinite 2s" }} />
+        </div>
+
+        <div className="container relative z-10">
           <div className="grid md:grid-cols-2 gap-10 lg:gap-16">
             {/* Form */}
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300 p-8 md:p-10">
@@ -72,7 +90,7 @@ export default function Contatti() {
               >
                 Mandaci un Messaggio
               </h2>
-              <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-5">
+              <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <label
@@ -84,7 +102,7 @@ export default function Contatti() {
                     <input
                       type="text"
                       placeholder="Il tuo nome"
-                        className="w-full px-4 py-3 text-sm bg-white border border-gray-200 text-gray-900 placeholder:text-gray-400 rounded-xl focus:outline-none focus:border-[#A67C52] transition-colors"
+                      className={formFieldClass}
                       style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
                     />
                   </div>
@@ -98,7 +116,7 @@ export default function Contatti() {
                     <input
                       type="email"
                       placeholder="La tua email"
-                        className="w-full px-4 py-3 text-sm bg-white border border-gray-200 text-gray-900 placeholder:text-gray-400 rounded-xl focus:outline-none focus:border-[#A67C52] transition-colors"
+                      className={formFieldClass}
                       style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
                     />
                   </div>
@@ -112,7 +130,7 @@ export default function Contatti() {
                     Oggetto
                   </label>
                   <select
-                    className="w-full px-4 py-3 text-sm bg-white border border-gray-200 text-gray-900 rounded-xl focus:outline-none focus:border-[#A67C52] transition-colors appearance-none"
+                    className={formFieldClass}
                     style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
                   >
                     <option value="">Seleziona un argomento</option>
@@ -133,17 +151,23 @@ export default function Contatti() {
                   <textarea
                     rows={5}
                     placeholder="Raccontaci cosa hai in mente..."
-                    className="w-full px-4 py-3 text-sm bg-white border border-gray-200 text-gray-900 placeholder:text-gray-400 rounded-xl focus:outline-none focus:border-[#A67C52] transition-colors resize-none"
+                    className={formFieldClass}
                     style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="px-7 py-3.5 text-[16px] font-semibold bg-[#a2482b] text-[#F5F3EE] rounded-xl hover:opacity-85 transition-opacity self-start"
+                  disabled={isSubmitting}
+                  className="relative px-7 py-3.5 text-[16px] font-semibold bg-[#a2482b] text-[#F5F3EE] rounded-xl hover:opacity-85 transition-all duration-300 self-start disabled:opacity-80 disabled:cursor-not-allowed overflow-hidden"
                   style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
                 >
-                  Invia Messaggio
+                  {isSubmitting && (
+                    <span className="absolute inset-0 flex items-center justify-center bg-[#a2482b]">
+                      <Loader2 size={20} className="animate-spin text-white" />
+                    </span>
+                  )}
+                  <span className={isSubmitting ? "invisible" : ""}>Invia Messaggio</span>
                 </button>
               </form>
             </div>
