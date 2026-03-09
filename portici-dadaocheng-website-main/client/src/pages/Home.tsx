@@ -322,12 +322,12 @@ function HeroSection() {
             style={{ opacity: mounted ? 1 : 0, transform: mounted ? "translateY(0)" : "translateY(16px)",
               transition: "opacity 0.8s ease 880ms, transform 0.8s ease 880ms" }}>
             <Link href="/workshop"
-              className="inline-flex items-center gap-2 px-8 py-3.5 text-[16px] font-semibold transition-all duration-300 hover:opacity-85 hover:gap-3 bg-[#a2482b] text-[#F5F3EE]"
+              className="inline-flex items-center gap-2 px-8 py-3.5 text-[16px] font-semibold rounded-xl transition-all duration-300 hover:opacity-85 hover:gap-3 bg-[#a2482b] text-[#F5F3EE]"
               style={{ fontFamily: 'var(--font-ui)' }}>
               Scopri i Workshop <ArrowRight size={16} />
             </Link>
             <Link href="/chi-siamo"
-              className="inline-flex items-center gap-2 px-8 py-3.5 text-[16px] font-semibold border border-[#F5F3EE] text-[#F5F3EE] transition-all duration-300 hover:border-[#A67C52] hover:text-[#A67C52] hover:gap-3"
+              className="inline-flex items-center gap-2 px-8 py-3.5 text-[16px] font-semibold rounded-xl border border-[#F5F3EE] text-[#F5F3EE] transition-all duration-300 hover:border-[#A67C52] hover:text-[#A67C52] hover:gap-3"
               style={{ fontFamily: 'var(--font-ui)' }}>
               La Nostra Storia
             </Link>
@@ -629,7 +629,7 @@ function ArchGalleryStrip() {
   const images = [
     { src: IMG.dadaochengArcade, alt: "大稻埕亭仔腳", label: "亭仔腳 · Taipei" },
     { src: IMG.bolognaPortici,   alt: "Bologna Portici", label: "Portici · Bologna" },
-    { src: IMG.dadaochengTemple, alt: "廟宇屋頂", label: "廟 · Tempio" },
+    { src: IMG.dadaochengBaroque, alt: "廟宇建築", label: "廟 · Tempio" },
   ];
 
   return (

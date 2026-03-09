@@ -103,7 +103,7 @@ export default function Navigation() {
               <button
                 type="button"
                 onClick={() => setLang("it")}
-                className={`px-4 py-2 text-[13px] font-medium rounded-md transition-all duration-200 ${
+                className={`px-4 py-2 text-[13px] font-medium rounded-xl transition-all duration-200 ${
                   lang === "it"
                     ? isHome && !scrolled
                       ? "bg-white/20 text-[#F5F3EE]"
@@ -137,7 +137,7 @@ export default function Navigation() {
             {/* CTA — Desktop */}
             <Link
               href="/workshop"
-              className="hidden md:inline-flex items-center px-5 py-2 text-[15px] font-semibold transition-all duration-300 bg-[#a2482b] text-[#F5F3EE] hover:opacity-85 hover:px-6"
+              className="hidden md:inline-flex items-center px-5 py-2 text-[15px] font-semibold rounded-xl transition-all duration-300 bg-[#a2482b] text-[#F5F3EE] hover:opacity-85 hover:px-6"
               style={{
                 fontFamily: 'var(--font-ui)',
                 opacity: mounted ? 1 : 0,
@@ -198,7 +198,7 @@ export default function Navigation() {
           ))}
           <Link
             href="/workshops"
-            className="mt-2 inline-flex items-center justify-center px-5 py-2.5 text-[15px] font-semibold bg-[#a2482b] text-[#F5F3EE] hover:opacity-85 transition-opacity"
+            className="mt-2 inline-flex items-center justify-center px-5 py-2.5 text-[15px] font-semibold rounded-xl bg-[#a2482b] text-[#F5F3EE] hover:opacity-85 transition-opacity"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
           >
             Prenota Workshop
