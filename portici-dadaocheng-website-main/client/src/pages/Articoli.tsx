@@ -38,20 +38,19 @@ export default function Articoli() {
   return (
     <main>
       {/* Hero */}
-      <section className="pt-32 pb-20 bg-[oklch(27.5%_0.000_0)]">
-        <div className="container max-w-3xl">
+      <section className="pt-32 pb-24 px-8 bg-[oklch(27.5%_0.000_0)]">
+        <div className="container max-w-3xl mx-auto flex flex-col gap-8">
           <p
-            className="text-[15px] font-normal tracking-[0.22em] uppercase text-[#A67C52] mb-6"
+            className="text-[15px] font-normal tracking-[0.22em] uppercase text-[#A67C52]"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
           >
             Articoli
           </p>
           <h1
-            className="font-medium text-[oklch(96.5%_0.006_85)] mb-8"
+            className="font-bold text-[oklch(96.5%_0.006_85)]"
             style={{
               fontFamily: 'var(--font-display)',
               fontSize: "clamp(2rem, 4vw, 3rem)",
-              fontWeight: 500,
               lineHeight: 1.15,
             }}
           >
@@ -60,27 +59,27 @@ export default function Articoli() {
             <em className="text-[#A67C52] not-italic">come vedi il mondo.</em>
           </h1>
           <p
-            className="text-[18px] text-[oklch(72%_0.005_85)] leading-[1.75]"
+            className="text-lg text-[oklch(68%_0.005_85)] leading-[1.75]"
             style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
           >
             Ogni articolo segue il metodo 同中求異 — trovare le differenze nell'unità.
             Non informazioni, ma trasformazioni.
           </p>
-          <div className="w-10 h-0.5 bg-[#A67C52] mt-8" />
+          <div className="w-10 h-0.5 bg-[#A67C52]" />
         </div>
       </section>
 
       {/* Category filter */}
-      <section className="py-8 bg-[oklch(96.5%_0.006_85)] border-b border-[oklch(88%_0.010_80)]">
-        <div className="container">
-          <div className="flex flex-wrap gap-3">
+      <section className="py-10 px-8 bg-[oklch(96.5%_0.006_85)] border-b border-gray-100">
+        <div className="container mx-auto">
+          <div className="flex flex-wrap gap-4">
             {categories.map((cat) => (
               <button
                 key={cat}
-                className={`px-4 py-1.5 text-xs font-semibold tracking-wide rounded-sm transition-colors ${
+                className={`px-5 py-2.5 text-sm font-semibold tracking-wide rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all ${
                   cat === "Tutti"
                     ? "bg-[#a2482b] text-[#F5F3EE]"
-                    : "bg-[oklch(89.5%_0.025_80)] text-[oklch(40%_0.005_60)] hover:bg-[#a2482b] hover:text-[#F5F3EE]"
+                    : "bg-white text-gray-500 hover:bg-[#a2482b] hover:text-[#F5F3EE] hover:border-transparent"
                 }`}
                 style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
               >
@@ -92,57 +91,57 @@ export default function Articoli() {
       </section>
 
       {/* Articles grid */}
-      <section className="py-16 bg-[oklch(96.5%_0.006_85)]">
-        <div className="container">
+      <section className="py-20 px-8 bg-[oklch(96.5%_0.006_85)]">
+        <div className="container mx-auto">
           {loading ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[1, 2, 3].map((i) => (
                 <div
                   key={i}
-                  className="bg-white rounded-sm overflow-hidden shadow-[0_2px_12px_oklch(0%_0_0/0.06)] animate-pulse"
+                  className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm animate-pulse"
                 >
                   <div className="h-1.5 bg-[oklch(88%_0.010_80)]" />
-                  <div className="p-7 flex flex-col flex-1 gap-3">
-                    <div className="h-3 w-16 bg-[oklch(88%_0.010_80)] rounded" />
-                    <div className="h-5 w-full bg-[oklch(88%_0.010_80)] rounded" />
-                    <div className="h-4 w-full bg-[oklch(88%_0.010_80)] rounded" />
-                    <div className="h-4 w-3/4 bg-[oklch(88%_0.010_80)] rounded mt-2" />
-                    <div className="h-3 w-20 bg-[oklch(88%_0.010_80)] rounded mt-5" />
+                  <div className="p-8 flex flex-col flex-1 gap-6">
+                    <div className="h-3 w-16 bg-[oklch(88%_0.010_80)] rounded-xl" />
+                    <div className="h-5 w-full bg-[oklch(88%_0.010_80)] rounded-xl" />
+                    <div className="h-4 w-full bg-[oklch(88%_0.010_80)] rounded-xl" />
+                    <div className="h-4 w-3/4 bg-[oklch(88%_0.010_80)] rounded-xl" />
+                    <div className="h-3 w-20 bg-[oklch(88%_0.010_80)] rounded-xl" />
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {articles.map((article) => (
                 <Link
                   key={article._id}
                   href={`/articoli/${article._id}`}
-                  className="group bg-white rounded-sm overflow-hidden shadow-[0_2px_12px_oklch(0%_0_0/0.06)] hover:shadow-[0_4px_24px_oklch(0%_0_0/0.10)] transition-shadow flex flex-col"
+                  className="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all flex flex-col"
                 >
-                  <div className="h-1.5" style={{ backgroundColor: article.color ?? "#A67C52" }} />
-                  <div className="p-7 flex flex-col flex-1">
+                  <div className="h-1.5 rounded-t-2xl" style={{ backgroundColor: article.color ?? "#A67C52" }} />
+                  <div className="p-8 flex flex-col flex-1 gap-6">
                     <span
-                      className="text-xs font-semibold tracking-widest uppercase mb-4"
+                      className="text-xs font-semibold tracking-widest uppercase text-gray-500"
                       style={{ fontFamily: 'var(--font-ui)', color: article.color ?? "#A67C52" }}
                     >
                       {article.category ?? "Articolo"}
                     </span>
                     <h3
-                      className="text-[oklch(27.5%_0.000_0)] mb-3 group-hover:text-[#A67C52] transition-colors"
-                      style={{ fontFamily: 'var(--font-ui)', fontSize: "1.125rem", fontWeight: 600, lineHeight: 1.35 }}
+                      className="text-gray-900 font-bold group-hover:text-[#A67C52] transition-colors"
+                      style={{ fontFamily: 'var(--font-ui)', fontSize: "1.125rem", lineHeight: 1.35 }}
                     >
                       {article.title ?? ""}
                     </h3>
                     <p
-                      className="text-[17px] text-[oklch(50%_0.005_60)] leading-[1.75] flex-1"
+                      className="text-base text-gray-500 leading-[1.75] flex-1"
                       style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
                     >
                       {article.excerpt ?? ""}
                     </p>
-                    <div className="mt-5 flex items-center justify-between">
+                    <div className="flex items-center justify-between pt-2">
                       <span
-                        className="text-xs text-[oklch(60%_0.005_60)]"
+                        className="text-sm text-gray-500"
                         style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
                       >
                         {article.readTime ? `${article.readTime} di lettura` : "—"}
