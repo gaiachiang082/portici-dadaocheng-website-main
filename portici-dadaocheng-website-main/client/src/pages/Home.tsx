@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { trpc } from "@/lib/trpc";
 import { useScrollReveal, useParallax } from "@/hooks/useScrollReveal";
 import { ArchImage, ArchDecor, ArchDivider } from "@/components/ArchFrame";
+import { client } from "@/SanityClient";
 
 /* ─────────────────────────────────────────────────────────────────
    CDN IMAGE REGISTRY
@@ -662,21 +663,40 @@ function ArchGalleryStrip() {
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   FEATURED ARTICLES
+   FEATURED ARTICLES (from Sanity / Articoli page)
    ───────────────────────────────────────────────────────────────── */
-const placeholderArticles = [
-  { id: 1, category: "Rituali", title: "Il Silenzio Condiviso: Perché i Giapponesi Non Abbracciano",
-    excerpt: "Un'esplorazione di come culture diverse esprimono affetto, vicinanza e rispetto attraverso gesti che sembrano opposti ma nascondono la stessa radice.",
-    readTime: "8 min", accentColor: "oklch(57.5% 0.045 165)", image: null },
-  { id: 2, category: "Cibo", title: "Le Cinque Vite della Soia: Da Taipei a Tokyo a Seoul",
-    excerpt: "Uno stesso ingrediente, cinque trasformazioni culturali. Come il tofu, il miso, il doenjang e il tempeh raccontano storie di civiltà.",
-    readTime: "6 min", accentColor: "oklch(55.0% 0.075 55)", image: null },
-  { id: 3, category: "Spazio", title: "Anatomia di una Casa da Tè: Kyoto vs. Taipei",
-    excerpt: "Due spazi, due filosofie dell'ospitalità. Cosa ci insegna l'architettura del tè sulla differenza tra wabi-sabi e calore taiwanese.",
-    readTime: "10 min", accentColor: "oklch(70.0% 0.025 220)", image: null },
-];
+interface ArticlePreview {
+  _id: string;
+  category?: string;
+  title?: string;
+  excerpt?: string;
+  readTime?: string;
+  color?: string;
+}
 
 function FeaturedArticlesSection() {
+  const [articles, setArticles] = useState<ArticlePreview[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const data = await client.fetch<ArticlePreview[]>(
+          `*[_type == "article"] | order(_createdAt desc)[0...3]{ _id, category, "title": title.it, excerpt, readTime, color }`
+        );
+        setArticles(data ?? []);
+      } catch (err) {
+        console.error("Featured articles fetch error:", err);
+        setArticles([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchArticles();
+  }, []);
+
+  const accentColor = (color?: string) => color ?? "#A67C52";
+
   return (
     <section className="py-24 bg-[oklch(96.5%_0.006_85)]">
       <div className="container">
@@ -695,41 +715,53 @@ function FeaturedArticlesSection() {
           </Link>
         </Reveal>
 
-        <div className="grid md:grid-cols-3 gap-6">
-          {placeholderArticles.map((article, i) => (
-            <Reveal key={article.id} delay={i * 100}>
-              <Link href={`/articoli/${article.id}`}
-                className="group bg-[oklch(98.5%_0.003_85)] overflow-hidden shadow-[0_2px_16px_oklch(0%_0_0/0.05)] flex flex-col transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_8px_32px_oklch(0%_0_0/0.10)]">
-                {article.image ? (
-                  <div className="relative overflow-hidden" style={{ aspectRatio: "16/9" }}>
-                    <img src={article.image} alt={article.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                  </div>
-                ) : (
-                  <div className="h-1" style={{ backgroundColor: article.accentColor }} />
-                )}
-                <div className="p-8 flex flex-col flex-1">
-                  <span className="text-[13px] font-semibold tracking-[0.18em] uppercase mb-5"
-                    style={{ fontFamily: "'Inter', system-ui, sans-serif", color: article.accentColor }}>
-                    {article.category}
-                  </span>
-                  <h3 className="text-[oklch(27.5%_0.000_0)] mb-4 group-hover:text-[oklch(55.0%_0.075_55)] transition-colors duration-300"
-                    style={{ fontFamily: "'Inter', system-ui, sans-serif", fontSize: "1.125rem", fontWeight: 600, lineHeight: 1.35 }}>
-                    {article.title}
-                  </h3>
-                  <p className="text-[17px] text-[oklch(50%_0.005_60)] leading-[1.75] flex-1"
-                    style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>{article.excerpt}</p>
-                  <div className="mt-6 flex items-center justify-between">
-                    <span className="text-[13px] text-[oklch(60%_0.005_60)]"
-                      style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>{article.readTime} di lettura</span>
-                    <ArrowRight size={14} className="opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-1"
-                      style={{ color: "oklch(55.0% 0.075 55)" }} />
-                  </div>
+        {loading ? (
+          <div className="grid md:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="bg-[oklch(98.5%_0.003_85)] overflow-hidden shadow-[0_2px_16px_oklch(0%_0_0/0.05)] animate-pulse">
+                <div className="h-1 bg-[oklch(88%_0.010_80)]" />
+                <div className="p-8 flex flex-col gap-3">
+                  <div className="h-3 w-16 bg-[oklch(88%_0.010_80)] rounded" />
+                  <div className="h-5 w-full bg-[oklch(88%_0.010_80)] rounded" />
+                  <div className="h-4 w-full bg-[oklch(88%_0.010_80)] rounded" />
+                  <div className="h-4 w-3/4 bg-[oklch(88%_0.010_80)] rounded mt-2" />
+                  <div className="h-3 w-20 bg-[oklch(88%_0.010_80)] rounded mt-5" />
                 </div>
-              </Link>
-            </Reveal>
-          ))}
-        </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-3 gap-6">
+            {articles.map((article, i) => (
+              <Reveal key={article._id} delay={i * 100}>
+                <Link href={`/articoli/${article._id}`}
+                  className="group bg-[oklch(98.5%_0.003_85)] overflow-hidden shadow-[0_2px_16px_oklch(0%_0_0/0.05)] flex flex-col transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_8px_32px_oklch(0%_0_0/0.10)]">
+                  <div className="h-1" style={{ backgroundColor: accentColor(article.color) }} />
+                  <div className="p-8 flex flex-col flex-1">
+                    <span className="text-[13px] font-semibold tracking-[0.18em] uppercase mb-5"
+                      style={{ fontFamily: "'Inter', system-ui, sans-serif", color: accentColor(article.color) }}>
+                      {article.category ?? "Articolo"}
+                    </span>
+                    <h3 className="text-[oklch(27.5%_0.000_0)] mb-4 group-hover:text-[oklch(55.0%_0.075_55)] transition-colors duration-300"
+                      style={{ fontFamily: "'Inter', system-ui, sans-serif", fontSize: "1.125rem", fontWeight: 600, lineHeight: 1.35 }}>
+                      {article.title ?? ""}
+                    </h3>
+                    <p className="text-[17px] text-[oklch(50%_0.005_60)] leading-[1.75] flex-1"
+                      style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>{article.excerpt ?? ""}</p>
+                    <div className="mt-6 flex items-center justify-between">
+                      <span className="text-[13px] text-[oklch(60%_0.005_60)]"
+                        style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
+                        {article.readTime ? `${article.readTime} di lettura` : "—"}
+                      </span>
+                      <ArrowRight size={14} className="opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-1"
+                        style={{ color: "oklch(55.0% 0.075 55)" }} />
+                    </div>
+                  </div>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
