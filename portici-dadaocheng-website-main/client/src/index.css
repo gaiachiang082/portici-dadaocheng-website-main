@@ -36,11 +36,12 @@
   --color-input:                var(--input);
   --color-ring:                 var(--ring);
 
-  /* Typography — Poppins (Guida Tipografica Completa) */
+  /* Typography — Poppins (titoli/corpo) + Roboto Mono (小字樣) */
   --font-heading:  'Poppins', system-ui, sans-serif;
   --font-display:  'Poppins', system-ui, sans-serif;
   --font-body:     'Poppins', system-ui, sans-serif;
   --font-ui:       'Poppins', system-ui, sans-serif;
+  --font-small:    'Roboto Mono', 'Consolas', monospace;  /* 小字樣 / didascalia */
 
   /* Parametri dettagliati — Poppins (da Guida Tipografica) */
   /* H1 Titolo Principale: 48-56px | Bold 700 | Interlinea 1.1 | Spaziatura -0.3px */
@@ -264,11 +265,11 @@
     letter-spacing: var(--font-body-spacing);
   }
 
-  /* Testo Piccolo / Didascalia: 12-14px | Regular 400 | Interlinea 1.5 | Spaziatura 0.3px */
+  /* Testo Piccolo / Didascalia: 12-14px | Roboto Mono | Interlinea 1.5 | Spaziatura 0.3px */
   .text-small,
   .caption,
   figcaption {
-    font-family: var(--font-body);
+    font-family: var(--font-small);
     font-size: var(--font-small-size);
     font-weight: var(--font-small-weight);
     line-height: var(--font-small-line);
