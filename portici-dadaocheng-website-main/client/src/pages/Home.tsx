@@ -682,7 +682,7 @@ function FeaturedArticlesSection() {
     const fetchArticles = async () => {
       try {
         const data = await client.fetch<ArticlePreview[]>(
-          `*[_type == "article"] | order(_createdAt desc)[0...3]{ _id, category, "title": title.it, excerpt, readTime, color }`
+          `*[_type == "article"] | order(_createdAt desc)[0...1]{ _id, category, "title": title.it, excerpt, readTime, color }`
         );
         setArticles(data ?? []);
       } catch (err) {
@@ -716,22 +716,20 @@ function FeaturedArticlesSection() {
         </Reveal>
 
         {loading ? (
-          <div className="grid md:grid-cols-3 gap-6">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-[oklch(98.5%_0.003_85)] overflow-hidden shadow-[0_2px_16px_oklch(0%_0_0/0.05)] animate-pulse">
-                <div className="h-1 bg-[oklch(88%_0.010_80)]" />
-                <div className="p-8 flex flex-col gap-3">
-                  <div className="h-3 w-16 bg-[oklch(88%_0.010_80)] rounded" />
-                  <div className="h-5 w-full bg-[oklch(88%_0.010_80)] rounded" />
-                  <div className="h-4 w-full bg-[oklch(88%_0.010_80)] rounded" />
-                  <div className="h-4 w-3/4 bg-[oklch(88%_0.010_80)] rounded mt-2" />
-                  <div className="h-3 w-20 bg-[oklch(88%_0.010_80)] rounded mt-5" />
-                </div>
+          <div className="max-w-2xl">
+            <div className="bg-[oklch(98.5%_0.003_85)] overflow-hidden shadow-[0_2px_16px_oklch(0%_0_0/0.05)] animate-pulse">
+              <div className="h-1 bg-[oklch(88%_0.010_80)]" />
+              <div className="p-8 flex flex-col gap-3">
+                <div className="h-3 w-16 bg-[oklch(88%_0.010_80)] rounded" />
+                <div className="h-5 w-full bg-[oklch(88%_0.010_80)] rounded" />
+                <div className="h-4 w-full bg-[oklch(88%_0.010_80)] rounded" />
+                <div className="h-4 w-3/4 bg-[oklch(88%_0.010_80)] rounded mt-2" />
+                <div className="h-3 w-20 bg-[oklch(88%_0.010_80)] rounded mt-5" />
               </div>
-            ))}
+            </div>
           </div>
         ) : (
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 gap-6 max-w-2xl">
             {articles.map((article, i) => (
               <Reveal key={article._id} delay={i * 100}>
                 <Link href={`/articoli/${article._id}`}
