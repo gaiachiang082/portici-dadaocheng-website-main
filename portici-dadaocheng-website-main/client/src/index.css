@@ -90,7 +90,7 @@
   --radius: 0.5rem;   /* Rounded corners per UI Components spec */
 
   /* Heritage Style — Stile Mattone Rosso Classico */
-  --background:           #F5DEB3;   /* Sfondo Chiaro — Wheat, warm creamy */
+  --background:           #FFFFFF;   /* Sfondo — Bianco (底色維持原白色) */
   --foreground:           #3E2723;   /* Testo Scuro — deep warm brown */
   --card:                 #FDF8F0;   /* Slightly lighter for cards */
   --card-foreground:      #3E2723;
