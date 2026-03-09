@@ -122,7 +122,7 @@ export default function ArticoloDetail() {
             <img
               src={article.mainImage.asset.url}
               alt={article.title ?? ""}
-              className="w-full aspect-[16/10] object-cover rounded-sm shadow-[0_4px_24px_oklch(0%_0_0/0.15)]"
+              className="w-full aspect-[16/10] object-cover rounded-xl shadow-[0_4px_24px_oklch(0%_0_0/0.15)]"
             />
           </div>
         </section>
@@ -139,7 +139,7 @@ export default function ArticoloDetail() {
               prose-strong:text-[oklch(27.5%_0.000_0)]
               prose-blockquote:border-l-[#A67C52] prose-blockquote:italic prose-blockquote:text-[oklch(45%_0.005_60)]
               prose-hr:border-[oklch(88%_0.010_80)]
-              prose-img:rounded-sm prose-img:shadow-md"
+              prose-img:rounded-xl prose-img:shadow-md"
             style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
           >
             {article.body && <PortableText value={article.body} />}

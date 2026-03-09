@@ -33,10 +33,10 @@ function FooterNewsletter() {
         <form onSubmit={handleSubmit} className="flex flex-col gap-2">
           <input type="email" placeholder="La tua email" value={email}
             onChange={(e) => setEmail(e.target.value)} required
-            className="px-4 py-2.5 text-[15px] bg-[oklch(35%_0.000_0)] border border-[oklch(45%_0.000_0)] text-[oklch(90%_0.005_85)] placeholder:text-[oklch(55%_0.005_85)] focus:outline-none focus:border-[#a2482b] transition-colors"
+            className="px-4 py-2.5 text-[15px] bg-[oklch(35%_0.000_0)] border border-[oklch(45%_0.000_0)] text-[oklch(90%_0.005_85)] placeholder:text-[oklch(55%_0.005_85)] rounded-xl focus:outline-none focus:border-[#a2482b] transition-colors"
             style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }} />
           <button type="submit" disabled={subscribe.isPending}
-            className="px-4 py-2.5 text-[15px] font-semibold bg-[#a2482b] text-[#F5F3EE] hover:opacity-85 transition-opacity disabled:opacity-50"
+            className="px-4 py-2.5 text-[15px] font-semibold bg-[#a2482b] text-[#F5F3EE] rounded-xl hover:opacity-85 transition-opacity disabled:opacity-50"
             style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
             {subscribe.isPending ? "..." : "Iscriviti"}
           </button>

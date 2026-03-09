@@ -183,7 +183,7 @@ export default function Spazio() {
               href="https://instagram.com/portici.dadaocheng"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 text-[16px] font-semibold border border-[#a2482b] text-[#a2482b] hover:bg-[#a2482b] hover:text-[#F5F3EE] transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 text-[16px] font-semibold border border-[#a2482b] text-[#a2482b] rounded-xl hover:bg-[#a2482b] hover:text-[#F5F3EE] transition-colors"
               style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
             >
               <Instagram size={15} />

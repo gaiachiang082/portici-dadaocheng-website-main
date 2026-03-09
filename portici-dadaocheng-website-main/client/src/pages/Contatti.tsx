@@ -140,7 +140,7 @@ export default function Contatti() {
 
                 <button
                   type="submit"
-                  className="px-7 py-3.5 text-[16px] font-semibold bg-[#a2482b] text-[#F5F3EE] hover:opacity-85 transition-opacity self-start"
+                  className="px-7 py-3.5 text-[16px] font-semibold bg-[#a2482b] text-[#F5F3EE] rounded-xl hover:opacity-85 transition-opacity self-start"
                   style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
                 >
                   Invia Messaggio
@@ -276,7 +276,7 @@ export default function Contatti() {
               DADAOCHENG
             </div>
 
-            <div className="mt-6 overflow-hidden border border-gray-200">
+            <div className="mt-6 overflow-hidden rounded-xl border border-gray-200">
               <div className="grid grid-flow-col auto-cols-[32px]">
                 {Array.from({ length: 40 }).map((_, i) => (
                   <div

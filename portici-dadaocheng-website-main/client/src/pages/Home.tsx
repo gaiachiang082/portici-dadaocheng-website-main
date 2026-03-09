@@ -188,7 +188,7 @@ function Carousel({
       {[{ dir: "prev", Icon: ChevronLeft, onClick: prev, pos: "left-3 md:left-6" },
         { dir: "next", Icon: ChevronRight, onClick: next, pos: "right-3 md:right-6" }].map(({ dir, Icon, onClick, pos }) => (
         <button key={dir} onClick={onClick}
-          className={`absolute ${pos} top-1/2 -translate-y-1/2 z-20 w-9 h-9 flex items-center justify-center border border-[oklch(80%_0.005_85/0.4)] text-[oklch(90%_0.005_85)] hover:border-[oklch(55.0%_0.075_55)] hover:text-[oklch(55.0%_0.075_55)] transition-all duration-300 bg-[oklch(0%_0_0/0.25)]`}
+          className={`absolute ${pos} top-1/2 -translate-y-1/2 z-20 w-9 h-9 flex items-center justify-center rounded-xl border border-[oklch(80%_0.005_85/0.4)] text-[oklch(90%_0.005_85)] hover:border-[oklch(55.0%_0.075_55)] hover:text-[oklch(55.0%_0.075_55)] transition-all duration-300 bg-[oklch(0%_0_0/0.25)]`}
           aria-label={dir}>
           <Icon size={16} />
         </button>
@@ -717,7 +717,7 @@ function FeaturedArticlesSection() {
 
         {loading ? (
           <div className="max-w-2xl">
-            <div className="bg-[oklch(98.5%_0.003_85)] overflow-hidden shadow-[0_2px_16px_oklch(0%_0_0/0.05)] animate-pulse">
+            <div className="bg-[oklch(98.5%_0.003_85)] overflow-hidden rounded-2xl border border-gray-100 shadow-sm animate-pulse">
               <div className="h-1 bg-[oklch(88%_0.010_80)]" />
               <div className="p-8 flex flex-col gap-3">
                 <div className="h-3 w-16 bg-[oklch(88%_0.010_80)] rounded" />
@@ -733,7 +733,7 @@ function FeaturedArticlesSection() {
             {articles.map((article, i) => (
               <Reveal key={article._id} delay={i * 100}>
                 <Link href={`/articoli/${article._id}`}
-                  className="group bg-[oklch(98.5%_0.003_85)] overflow-hidden shadow-[0_2px_16px_oklch(0%_0_0/0.05)] flex flex-col transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_8px_32px_oklch(0%_0_0/0.10)]">
+                  className="group bg-[oklch(98.5%_0.003_85)] overflow-hidden rounded-2xl border border-gray-100 shadow-sm flex flex-col transition-all duration-400 hover:-translate-y-1.5 hover:shadow-md">
                   <div className="h-1" style={{ backgroundColor: accentColor(article.color) }} />
                   <div className="p-8 flex flex-col flex-1">
                     <span className="text-[13px] font-semibold tracking-[0.18em] uppercase mb-5"
@@ -801,7 +801,7 @@ function NewsletterSection() {
             Ricevi un articolo esclusivo, un'idea che cambierà come vedi qualcosa, e l'invito al prossimo evento. Niente spam. Solo cultura.
           </p>
           {submitted ? (
-            <div className="py-6 px-8 bg-[#F5F3EE] border border-[#E5D9C8] text-center">
+            <div className="py-6 px-8 bg-[#F5F3EE] border border-gray-100 rounded-xl text-center shadow-sm">
               <p className="text-[18px] text-[#1C1917] mb-1" style={{ fontFamily: 'var(--font-display)' }}>
                 Grazie per l'iscrizione!
               </p>
@@ -813,10 +813,10 @@ function NewsletterSection() {
             <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
               <input type="email" placeholder="La tua email" value={email} onChange={(e) => setEmail(e.target.value)}
                 required
-                className="flex-1 px-5 py-3.5 text-[16px] bg-[oklch(96.5%_0.006_85)] border border-[oklch(80%_0.015_80)] text-[oklch(27.5%_0.000_0)] placeholder:text-[oklch(65%_0.005_60)] focus:outline-none focus:border-[#a2482b] transition-colors"
+                className="flex-1 px-5 py-3.5 text-[16px] bg-[oklch(96.5%_0.006_85)] border border-gray-200 text-[oklch(27.5%_0.000_0)] placeholder:text-gray-400 rounded-xl focus:outline-none focus:border-[#a2482b] transition-colors"
                 style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }} />
               <button type="submit" disabled={subscribe.isPending}
-                className="px-8 py-3.5 text-[16px] font-semibold bg-[#a2482b] text-[#F5F3EE] hover:opacity-85 transition-opacity whitespace-nowrap disabled:opacity-50"
+                className="px-8 py-3.5 text-[16px] font-semibold bg-[#a2482b] text-[#F5F3EE] rounded-xl hover:opacity-85 transition-opacity whitespace-nowrap disabled:opacity-50"
                 style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
                 {subscribe.isPending ? "..." : "Iscriviti"}
               </button>

@@ -62,7 +62,7 @@ function WorkshopCalendarCard({
   const isFull = nextSession ? spotsLeft <= 0 : true;
 
   return (
-    <div className="bg-white overflow-hidden shadow-[0_2px_16px_oklch(0%_0_0/0.07)] grid md:grid-cols-[1fr_auto] transition-shadow duration-300 hover:shadow-[0_4px_24px_oklch(0%_0_0/0.12)]">
+    <div className="bg-white overflow-hidden rounded-2xl border border-gray-100 shadow-sm grid md:grid-cols-[1fr_auto] transition-shadow duration-300 hover:shadow-md">
       <div className="p-8">
         {/* Category + status badges */}
         <div className="flex flex-wrap items-center gap-3 mb-5">
@@ -136,7 +136,7 @@ function WorkshopCalendarCard({
               const left = s.spotsTotal - s.spotsBooked;
               return (
                 <div key={s.id}
-                  className="flex items-center justify-between py-2 px-3 bg-[oklch(97%_0.003_85)] border border-[oklch(90%_0.005_85)]">
+                  className="flex items-center justify-between py-2 px-3 bg-[oklch(97%_0.003_85)] border border-gray-100 rounded-xl">
                   <div className="flex items-center gap-4">
                     <Calendar size={13} className="text-[oklch(55.0%_0.075_55)] shrink-0" />
                     <span className="text-sm text-[oklch(35%_0.005_60)]"
@@ -185,7 +185,7 @@ function WorkshopCalendarCard({
       </div>
 
       {/* Right panel: price + CTA */}
-      <div className="bg-[oklch(96.5%_0.006_85)] p-8 flex flex-col items-center justify-center gap-4 border-t md:border-t-0 md:border-l border-[oklch(88%_0.010_80)] min-w-[200px]">
+      <div className="bg-[oklch(96.5%_0.006_85)] p-8 flex flex-col items-center justify-center gap-4 border-t md:border-t-0 md:border-l border-gray-100 min-w-[200px] md:rounded-r-2xl">
         <div className="text-center">
           <p className="text-xs text-[oklch(60%_0.005_60)] mb-1"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
@@ -338,7 +338,7 @@ export default function Workshop() {
           </div>
 
           {/* ── Filter Bar ── */}
-          <div className="bg-white border border-[oklch(88%_0.010_80)] p-5 mb-8 shadow-[0_1px_8px_oklch(0%_0_0/0.04)]">
+          <div className="bg-white rounded-2xl border border-gray-100 p-6 mb-8 shadow-sm">
             <div className="flex flex-wrap items-center gap-4">
               <div className="flex items-center gap-2 text-sm text-[oklch(50%_0.005_60)]"
                 style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
@@ -357,7 +357,7 @@ export default function Workshop() {
                 ].map(({ value, label }) => (
                   <button key={value}
                     onClick={() => setFilterCategory(value)}
-                    className="px-3 py-1.5 text-xs font-semibold tracking-wide transition-all duration-200"
+                    className="px-3 py-1.5 text-xs font-semibold tracking-wide rounded-xl transition-all duration-200"
                     style={{
                       fontFamily: "'Inter', system-ui, sans-serif",
                       background: filterCategory === value ? "#a2482b" : "oklch(96% 0.003 85)",
@@ -376,7 +376,7 @@ export default function Workshop() {
                   <div className="flex flex-wrap gap-2">
                     <button
                       onClick={() => setFilterMonth("all")}
-                      className="px-3 py-1.5 text-xs font-semibold tracking-wide transition-all duration-200"
+                      className="px-3 py-1.5 text-xs font-semibold tracking-wide rounded-xl transition-all duration-200"
                       style={{
                         fontFamily: "'Inter', system-ui, sans-serif",
                       background: filterMonth === "all" ? "#a2482b" : "oklch(96% 0.003 85)",
@@ -391,7 +391,7 @@ export default function Workshop() {
                       return (
                         <button key={mk}
                           onClick={() => setFilterMonth(mk)}
-                          className="px-3 py-1.5 text-xs font-semibold tracking-wide transition-all duration-200 capitalize"
+                          className="px-3 py-1.5 text-xs font-semibold tracking-wide rounded-xl transition-all duration-200 capitalize"
                           style={{
                             fontFamily: "'Inter', system-ui, sans-serif",
                             background: filterMonth === mk ? "#a2482b" : "oklch(96% 0.003 85)",

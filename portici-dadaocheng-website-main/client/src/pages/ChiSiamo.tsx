@@ -143,7 +143,7 @@ export default function ChiSiamo() {
               { it: "Trasformazione", zh: "轉化", desc: "Non ci interessa solo informare, ma trasformare." },
               { it: "Inclusività", zh: "包容", desc: "Un progetto per chiunque abbia curiosità, indipendentemente dal background." },
             ].map(({ it, zh, desc }) => (
-              <div key={it} className="bg-[oklch(96.5%_0.006_85)] p-6 rounded-sm">
+              <div key={it} className="bg-[oklch(96.5%_0.006_85)] p-6 rounded-xl border border-gray-100 shadow-sm">
                 <p
                   className="text-2xl text-[#A67C52] mb-1"
                   style={{ fontFamily: "'Spectral', Georgia, serif" }}
@@ -191,7 +191,7 @@ export default function ChiSiamo() {
           </p>
           <Link
             href="/workshop"
-            className="inline-flex items-center gap-2 px-8 py-3.5 text-[16px] font-semibold bg-[#a2482b] text-[#F5F3EE] rounded-sm hover:opacity-85 transition-opacity"
+            className="inline-flex items-center gap-2 px-8 py-3.5 text-[16px] font-semibold bg-[#a2482b] text-[#F5F3EE] rounded-xl hover:opacity-85 transition-opacity"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
           >
             Scopri i Workshop
