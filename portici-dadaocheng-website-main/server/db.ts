@@ -1,7 +1,7 @@
-import mysql from "mysql2/promise";
+
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import mysql from "mysql2/promise"; // 🌟 新增這一行：載入 mysql 驅動程式
+import mysql from "mysql2/promise"; // 確保以 promise 版本正確載入 mysql2
 import { InsertUser, users } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -11,10 +11,22 @@ let _db: ReturnType<typeof drizzle> | null = null;
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
-      // 🌟 修改這裡：先建立連線池，再交給 drizzle
-      const poolConnection = mysql.createPool(process.env.DATABASE_URL);
-      // Type assertion bridges duplicate drizzle-orm/mysql2 types across node_modules resolutions
-      _db = drizzle(poolConnection) as unknown as ReturnType<typeof drizzle>;
+      const dbUrl = new URL(process.env.DATABASE_URL);
+
+      const connection = await mysql.createConnection({
+        host: dbUrl.hostname,
+        port: dbUrl.port ? Number(dbUrl.port) : 3306,
+        user: decodeURIComponent(dbUrl.username),
+        password: decodeURIComponent(dbUrl.password),
+        database: dbUrl.pathname.replace(/^\//, ""),
+        ssl: {
+          minVersion: "TLSv1.2",
+          rejectUnauthorized: true,
+        },
+      });
+
+      // 使用單一連線並交給 drizzle 管理，透過 SSL 連線到 TiDB
+      _db = drizzle(connection) as unknown as ReturnType<typeof drizzle>;
     } catch (error) {
       console.warn("[Database] Failed to connect:", error);
       _db = null;
