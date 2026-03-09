@@ -22,7 +22,7 @@ export default function Articoli() {
     const fetchArticles = async () => {
       try {
         const data = await client.fetch<Article[]>(
-          `*[_type == "article"]{ _id, category, title, excerpt, readTime, color }`
+          `*[_type == "article"]{ _id, category, "title": title.it, excerpt, readTime, color }`
         );
         setArticles(data ?? []);
       } catch (err) {
