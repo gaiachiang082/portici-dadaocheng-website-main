@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portici Dadaocheng - Proposta di Redesign</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Poppins:wght@300;400;600;700&family=Quicksand:wght@300;400;600;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Intestazione */
+        .page-header {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            padding: 60px 40px;
+            border-radius: 16px;
+            margin-bottom: 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.3;
+        }
+
+        .page-header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Sezione di confronto */
+        .comparison-section {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            margin-bottom: 40px;
+        }
+
+        .comparison-section h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #8B4513;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .comparison-item {
+            border: 2px solid #ecf0f1;
+            border-radius: 12px;
+            padding: 30px;
+            background: #fafbfc;
+        }
+
+        .comparison-item h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .comparison-item.current h3 {
+            color: #e74c3c;
+        }
+
+        .comparison-item.proposed h3 {
+            color: #27ae60;
+        }
+
+        .detail-row {
+            margin-bottom: 15px;
+            padding: 12px;
+            background: white;
+            border-radius: 6px;
+            border-left: 3px solid #ecf0f1;
+        }
+
+        .detail-label {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.8rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .detail-value {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        /* Sezione di analisi */
+        .analysis-section {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            margin-bottom: 40px;
+        }
+
+        .analysis-section h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #8B4513;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .analysis-card {
+            border: 1px solid #ecf0f1;
+            border-radius: 12px;
+            padding: 25px;
+            background: #fafbfc;
+        }
+
+        .analysis-card h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .analysis-card p {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.7;
+        }
+
+        /* Sezione proposte */
+        .proposal-section {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            margin-bottom: 40px;
+        }
+
+        .proposal-section h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #8B4513;
+        }
+
+        .proposal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .proposal-card {
+            border: 2px solid #D2691E;
+            border-radius: 16px;
+            padding: 30px;
+            background: linear-gradient(135deg, #F5DEB3 0%, #F5F7FA 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .proposal-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #8B4513, #D2691E, #CD853F);
+        }
+
+        .proposal-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: #8B4513;
+        }
+
+        .proposal-card h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .proposal-card p {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Sezione esempi visivi */
+        .visual-section {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            margin-bottom: 40px;
+        }
+
+        .visual-section h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #8B4513;
+        }
+
+        .visual-example {
+            margin-bottom: 40px;
+            border: 1px solid #ecf0f1;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .visual-example h3 {
+            background: #f8f9fa;
+            padding: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+            color: #2c3e50;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .visual-preview {
+            padding: 40px;
+            background: white;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .visual-preview.current {
+            background: #fafbfc;
+        }
+
+        .visual-preview.proposed {
+            background: linear-gradient(135deg, #F5DEB3 0%, #F5F7FA 100%);
+        }
+
+        .visual-content {
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Palette di colori */
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .color-item {
+            text-align: center;
+        }
+
+        .color-box {
+            width: 100%;
+            height: 100px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border: 2px solid #ecf0f1;
+        }
+
+        .color-name {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.8rem;
+            color: #666;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .color-code {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.75rem;
+            color: #999;
+        }
+
+        /* Tabella raccomandazioni */
+        .recommendations-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .recommendations-table th {
+            background: #8B4513;
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .recommendations-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #ecf0f1;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .recommendations-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Casella di consiglio */
+        .tip-box {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .tip-box strong {
+            color: #0c5460;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .comparison-grid,
+            .analysis-grid,
+            .proposal-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .analysis-section h2,
+            .proposal-section h2,
+            .visual-section h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Decorazioni geometriche */
+        .arch-decoration {
+            display: inline-block;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #D2691E, transparent);
+            margin: 20px 0;
+            border-radius: 2px;
+        }
+
+        /* Sezione finale */
+        .conclusion-section {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .conclusion-section h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .conclusion-section p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Intestazione -->
+        <div class="page-header">
+            <h1>Proposta di Redesign</h1>
+            <p>Portici Dadaocheng — Valorizzare la Geometria e l'Identità Visiva</p>
+        </div>
+
+        <!-- Analisi dello Stato Attuale -->
+        <div class="analysis-section">
+            <h2>📊 Analisi dello Stato Attuale</h2>
+            <div class="analysis-grid">
+                <div class="analysis-card">
+                    <h3>🔤 Tipografia Incoerente</h3>
+                    <p>Il sito attualmente utilizza tre famiglie di caratteri diverse: Cooper Black (H1), Poppins (H2), e Roboto Mono (corpo). Questa combinazione crea una gerarchia visiva confusa e poco armonica.</p>
+                </div>
+                <div class="analysis-card">
+                    <h3>🎨 Mancanza di Identità Geometrica</h3>
+                    <p>Nonostante il tema sia "Portici" (拱廊 - archi), il design attuale non riflette adeguatamente questa immagine di forme curve e geometriche. Cooper Black è troppo tradizionale e pesante.</p>
+                </div>
+                <div class="analysis-card">
+                    <h3>⚠️ Problemi di Leggibilità</h3>
+                    <p>La combinazione di serif pesanti (Cooper Black) con monospaced (Roboto Mono) crea una tensione visiva che compromette la leggibilità e la fluidità di lettura.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confronto Prima/Dopo -->
+        <div class="comparison-section">
+            <h2>🔄 Confronto: Attuale vs. Proposto</h2>
+            <div class="comparison-grid">
+                <div class="comparison-item current">
+                    <h3>❌ Stato Attuale</h3>
+                    <div class="detail-row">
+                        <div class="detail-label">H1 (Titoli Principali)</div>
+                        <div class="detail-value" style="font-family: 'Cooper Black', serif;">Cooper Black</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">H2 (Sottotitoli)</div>
+                        <div class="detail-value" style="font-family: 'Poppins', sans-serif;">Poppins</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Corpo del Testo</div>
+                        <div class="detail-value" style="font-family: 'Roboto Mono', monospace;">Roboto Mono</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Colore Primario</div>
+                        <div class="detail-value" style="color: #F5DEB3;">Marrone Chiaro (#F5DEB3)</div>
+                    </div>
+                </div>
+
+                <div class="comparison-item proposed">
+                    <h3>✅ Proposta di Redesign</h3>
+                    <div class="detail-row">
+                        <div class="detail-label">H1 (Titoli Principali)</div>
+                        <div class="detail-value" style="font-family: 'Poppins', sans-serif;">Poppins Bold (700)</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">H2 (Sottotitoli)</div>
+                        <div class="detail-value" style="font-family: 'Montserrat', sans-serif;">Montserrat SemiBold (600)</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Corpo del Testo</div>
+                        <div class="detail-value" style="font-family: 'Roboto Mono', monospace;">Roboto Mono Regular (400)</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Colore Primario</div>
+                        <div class="detail-value" style="color: #8B4513;">Marrone Mattone (#8B4513)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Proposte di Miglioramento -->
+        <div class="proposal-section">
+            <h2>💡 Proposte di Miglioramento</h2>
+            <div class="proposal-grid">
+                <div class="proposal-card">
+                    <h3>1. Gerarchia Tipografica Coerente</h3>
+                    <p>Sostituire Cooper Black con Poppins Bold per i titoli principali. Questo crea una coerenza visiva con il resto del sito e enfatizza la geometria degli archi.</p>
+                    <h4>Benefici</h4>
+                    <p>✓ Gerarchia visiva più chiara<br>✓ Identità geometrica più forte<br>✓ Leggibilità migliorata</p>
+                </div>
+
+                <div class="proposal-card">
+                    <h3>2. Palette di Colori Rafforzata</h3>
+                    <p>Passare da un marrone chiaro a una palette più ricca con marrone mattone (#8B4513) come colore primario, richiamando gli archi storici della zona.</p>
+                    <h4>Benefici</h4>
+                    <p>✓ Identità visiva più forte<br>✓ Connessione con il tema "Portici"<br>✓ Contrasto migliorato</p>
+                </div>
+
+                <div class="proposal-card">
+                    <h3>3. Elementi Geometrici Decorativi</h3>
+                    <p>Aggiungere forme curve e archi come elementi decorativi nelle intestazioni, nei bordi delle carte e negli accenti visivi.</p>
+                    <h4>Benefici</h4>
+                    <p>✓ Rinforza il tema "Portici"<br>✓ Crea coesione visiva<br>✓ Aumenta l'engagement visivo</p>
+                </div>
+
+                <div class="proposal-card">
+                    <h3>4. Componenti Interattivi Migliorati</h3>
+                    <p>Ridisegnare pulsanti e componenti con border-radius più pronunciati e animazioni che richiamano il movimento degli archi.</p>
+                    <h4>Benefici</h4>
+                    <p>✓ Migliore esperienza utente<br>✓ Coerenza con il tema<br>✓ Interattività più intuitiva</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Palette di Colori Proposta -->
+        <div class="visual-section">
+            <h2>🎨 Palette di Colori Proposta</h2>
+            <div class="color-palette">
+                <div class="color-item">
+                    <div class="color-box" style="background: #8B4513;"></div>
+                    <div class="color-name">Primario</div>
+                    <div class="color-code">#8B4513</div>
+                </div>
+                <div class="color-item">
+                    <div class="color-box" style="background: #D2691E;"></div>
+                    <div class="color-name">Secondario</div>
+                    <div class="color-code">#D2691E</div>
+                </div>
+                <div class="color-item">
+                    <div class="color-box" style="background: #CD853F;"></div>
+                    <div class="color-name">Accento</div>
+                    <div class="color-code">#CD853F</div>
+                </div>
+                <div class="color-item">
+                    <div class="color-box" style="background: #F5DEB3;"></div>
+                    <div class="color-name">Sfondo Chiaro</div>
+                    <div class="color-code">#F5DEB3</div>
+                </div>
+                <div class="color-item">
+                    <div class="color-box" style="background: #F5F7FA;"></div>
+                    <div class="color-name">Sfondo Neutro</div>
+                    <div class="color-code">#F5F7FA</div>
+                </div>
+                <div class="color-item">
+                    <div class="color-box" style="background: #2C3E50;"></div>
+                    <div class="color-name">Testo Scuro</div>
+                    <div class="color-code">#2C3E50</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Esempi Visivi -->
+        <div class="visual-section">
+            <h2>👁️ Esempi Visivi di Sezioni Ridisegnate</h2>
+
+            <!-- Sezione Hero -->
+            <div class="visual-example">
+                <h3>Sezione Hero - Titolo Principale</h3>
+                <div class="visual-preview current">
+                    <div class="visual-content">
+                        <div style="font-family: 'Cooper Black', serif; font-size: 48px; color: #3E2723; margin-bottom: 10px;">Dove culture diverse</div>
+                        <div style="font-family: 'Roboto Mono', monospace; font-size: 16px; color: #666; line-height: 1.6;">Esperienze culturali che rivelano come Asia e Europa rispondono alle stesse domande umane in modi sorprendentemente diversi.</div>
+                    </div>
+                </div>
+                <div class="visual-preview proposed">
+                    <div class="visual-content">
+                        <div style="font-family: 'Poppins', sans-serif; font-size: 52px; font-weight: 700; color: #8B4513; line-height: 1.1; letter-spacing: -0.3px; margin-bottom: 10px;">Dove culture diverse</div>
+                        <div style="font-family: 'Roboto Mono', monospace; font-size: 16px; color: #666; line-height: 1.6;">Esperienze culturali che rivelano come Asia e Europa rispondono alle stesse domande umane in modi sorprendentemente diversi.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sezione Workshop -->
+            <div class="visual-example">
+                <h3>Sezione Workshop - Titolo Sottosezione</h3>
+                <div class="visual-preview current">
+                    <div class="visual-content">
+                        <div style="font-family: 'Poppins', sans-serif; font-size: 28px; color: #3E2723; margin-bottom: 10px;">Calligrafia & Inchiostro</div>
+                        <div style="font-family: 'Roboto Mono', monospace; font-size: 14px; color: #666; line-height: 1.6;">Attraverso il pennello e l'inchiostro, scopри come la calligrafia cinese trasforma ogni gesto in un atto di meditazione.</div>
+                    </div>
+                </div>
+                <div class="visual-preview proposed">
+                    <div class="visual-content">
+                        <div style="font-family: 'Montserrat', sans-serif; font-size: 32px; font-weight: 600; color: #D2691E; line-height: 1.2; letter-spacing: -0.25px; margin-bottom: 10px;">Calligrafia & Inchiostro</div>
+                        <div style="font-family: 'Roboto Mono', monospace; font-size: 14px; color: #666; line-height: 1.6;">Attraverso il pennello e l'inchiostro, scopri come la calligrafia cinese trasforma ogni gesto in un atto di meditazione.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sezione Filosofia -->
+            <div class="visual-example">
+                <h3>Sezione Filosofia - Citazione</h3>
+                <div class="visual-preview current">
+                    <div class="visual-content">
+                        <div style="font-family: 'Poppins', sans-serif; font-size: 24px; color: #3E2723; margin-bottom: 10px;">同中求異</div>
+                        <div style="font-family: 'Roboto Mono', monospace; font-size: 16px; color: #666; line-height: 1.6; font-style: italic;">Trovare le differenze nell'unità.</div>
+                    </div>
+                </div>
+                <div class="visual-preview proposed">
+                    <div class="visual-content" style="border: 3px solid #CD853F; border-radius: 16px; padding: 30px;">
+                        <div style="font-family: 'Poppins', sans-serif; font-size: 28px; font-weight: 700; color: #8B4513; margin-bottom: 10px;">同中求異</div>
+                        <div style="font-family: 'Roboto Mono', monospace; font-size: 16px; color: #666; line-height: 1.6; font-style: italic;">Trovare le differenze nell'unità.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabella di Implementazione -->
+        <div class="proposal-section">
+            <h2>📋 Tabella di Implementazione</h2>
+            <table class="recommendations-table">
+                <thead>
+                    <tr>
+                        <th>Elemento</th>
+                        <th>Attuale</th>
+                        <th>Proposto</th>
+                        <th>Priorità</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>H1 (Titoli Principali)</strong></td>
+                        <td>Cooper Black, 48px</td>
+                        <td>Poppins Bold 700, 52px, line-height 1.1, letter-spacing -0.3px</td>
+                        <td>🔴 Alta</td>
+                    </tr>
+                    <tr>
+                        <td><strong>H2 (Sottotitoli)</strong></td>
+                        <td>Poppins, 28px</td>
+                        <td>Montserrat SemiBold 600, 32px, line-height 1.2, letter-spacing -0.25px</td>
+                        <td>🔴 Alta</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Corpo del Testo</strong></td>
+                        <td>Roboto Mono, 16px</td>
+                        <td>Roboto Mono Regular 400, 16px, line-height 1.6, letter-spacing 0.3px</td>
+                        <td>🟡 Media</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Colore Primario</strong></td>
+                        <td>#F5DEB3 (Marrone Chiaro)</td>
+                        <td>#8B4513 (Marrone Mattone)</td>
+                        <td>🔴 Alta</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Elementi Geometrici</strong></td>
+                        <td>Nessuno</td>
+                        <td>Archi decorativi, border-radius 16px, animazioni</td>
+                        <td>🟡 Media</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pulsanti</strong></td>
+                        <td>Border-radius 4px, colore neutro</td>
+                        <td>Border-radius 12px, colore #8B4513, hover animazione</td>
+                        <td>🟡 Media</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Conclusione -->
+        <div class="conclusion-section">
+            <h2>🎯 Conclusione</h2>
+            <p>Questa proposta di redesign valorizza l'identità visiva di Portici Dadaocheng attraverso una tipografia coerente e geometrica, una palette di colori più ricca, e elementi decorativi che richiamano il tema degli archi. Il risultato sarà un sito più professionale, coeso e memorabile, che comunica efficacemente la missione culturale della piattaforma.</p>
+        </div>
+
+        <div class="tip-box">
+            <strong>💡 Prossimi Passi Suggeriti:</strong><br>
+            1. Implementare i cambiamenti tipografici (H1 e H2) come priorità alta<br>
+            2. Aggiornare la palette di colori primari<br>
+            3. Aggiungere elementi geometrici decorativi alle sezioni chiave<br>
+            4. Testare la leggibilità su dispositivi mobili<br>
+            5. Raccogliere feedback dagli utenti prima di un rollout completo
+        </div>
+    </div>
+</body>
+</html>
+
