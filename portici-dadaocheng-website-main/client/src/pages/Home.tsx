@@ -280,7 +280,7 @@ function Carousel({
 
 function HeroSection() {
   return (
-    <section className="bg-white text-[#2c3e50]">
+    <section className="bg-white text-[#2c3e50] pt-24 md:pt-28">
       <style>
         {`
         body {
@@ -314,8 +314,7 @@ function HeroSection() {
 
         .striped-bar {
           width: 100%;
-          background: #d0d0d0;
-          padding: 30px 60px;
+          padding: 24px 60px;
           position: relative;
           overflow: hidden;
           border-bottom: 2px solid #000000;
@@ -332,11 +331,27 @@ function HeroSection() {
           justify-content: flex-end;
         }
 
+        .striped-inner {
+          display: inline-flex;
+          align-items: center;
+          padding: 10px 26px;
+          border-radius: 999px;
+          box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .striped-inner.taipei-color {
+          background: #8B4513;
+        }
+
+        .striped-inner.bologna-color {
+          background: #D2691E;
+        }
+
         .pixel-text {
           font-family: 'Courier New', monospace;
-          font-size: 2.5rem;
+          font-size: 2.2rem;
           font-weight: 900;
-          color: #000000;
+          color: #F5F7FA;
           letter-spacing: 8px;
           position: relative;
           white-space: nowrap;
@@ -583,13 +598,17 @@ function HeroSection() {
         </div>
 
         <div className="striped-bar taipei">
-          <div className="pixel-text taipei-animate">Da TAIPEI</div>
+          <div className="striped-inner taipei-color">
+            <div className="pixel-text taipei-animate">Da TAIPEI</div>
+          </div>
         </div>
 
         <div className="animation-block block-1">[ANIMAZIONE AREA 1]</div>
 
         <div className="striped-bar bologna">
-          <div className="pixel-text bologna-animate">A BOLOGNA</div>
+          <div className="striped-inner bologna-color">
+            <div className="pixel-text bologna-animate">A BOLOGNA</div>
+          </div>
         </div>
 
         <div className="animation-block block-2">[ANIMAZIONE AREA 2]</div>
