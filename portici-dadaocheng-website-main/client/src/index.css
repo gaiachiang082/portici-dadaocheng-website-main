@@ -43,12 +43,12 @@
   --color-input:                var(--input);
   --color-ring:                 var(--ring);
 
-  /* Typography — Poppins (titoli/UI) + Roboto Mono (內文、小字樣) */
-  --font-heading:  'Poppins', system-ui, sans-serif;
-  --font-display:  'Poppins', system-ui, sans-serif;
+  /* Typography — Cooper Black (Logo/H1) + Poppins (副標題/UI) + Roboto Mono (內文/標註) */
+  --font-heading:  'Cooper Black', 'CooperBlack', 'Cooper Black BT', 'Cooper Std', system-ui, sans-serif; /* Logo / H1 */
+  --font-display:  'Poppins', system-ui, sans-serif;       /* 副標題 H2/H3 */
   --font-body:     'Roboto Mono', 'Consolas', monospace;   /* 內文 */
-  --font-ui:       'Poppins', system-ui, sans-serif;
-  --font-small:    'Roboto Mono', 'Consolas', monospace;  /* 小字樣 / didascalia */
+  --font-ui:       'Poppins', system-ui, sans-serif;       /* Web UI */
+  --font-small:    'Roboto Mono', 'Consolas', monospace;   /* 小字樣 / didascalia */
 
   /* Parametri dettagliati — Poppins (da Guida Tipografica) */
   /* H1 Titolo Principale: 48-56px | Bold 700 | Interlinea 1.1 | Spaziatura -0.3px */
@@ -141,9 +141,9 @@
     - We use !important so legacy inline fontFamily styles don't override the token system.
   */
 
-  /* H1 Titolo Principale: 48-56px | Bold 700 | Interlinea 1.1 | Spaziatura -0.3px */
+  /* H1 Titolo Principale / Logo: Cooper Black 48-56px | Bold 700 | Interlinea 1.1 | Spaziatura -0.3px */
   h1 {
-    font-family: var(--font-display) !important;
+    font-family: var(--font-heading) !important;
     font-size: var(--font-h1-size);
     font-weight: var(--font-h1-weight) !important;
     line-height: var(--font-h1-line);
@@ -161,9 +161,9 @@
     color: var(--foreground);
   }
 
-  /* H3 Sottotitolo Secondario: 24-28px | Roboto Mono | SemiBold 600 | Interlinea 1.3 | Spaziatura 0.1px */
+  /* H3 Sottotitolo Secondario: 24-28px | Poppins SemiBold 600 | Interlinea 1.3 | Spaziatura 0.1px */
   h3 {
-    font-family: var(--font-body) !important;
+    font-family: var(--font-display) !important;
     font-size: var(--font-h3-size);
     font-weight: var(--font-h3-weight) !important;
     line-height: var(--font-h3-line);
