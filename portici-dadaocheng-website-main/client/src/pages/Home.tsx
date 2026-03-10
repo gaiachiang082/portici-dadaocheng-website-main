@@ -398,57 +398,115 @@ function HeroSection() {
 
       {/* Main copy — centered, with arch logo + mask slide text ── */}
       <div className="container relative z-10 pt-28 pb-20 flex justify-center">
-        <div className="max-w-[720px] w-full mx-auto px-4 md:px-8">
-          {/* Arch logo with bounce — 圓拱門框 Logo 跳動效果 ── */}
-          <div className="flex justify-center mb-8">
+        <div
+          className="max-w-[720px] w-full mx-auto px-4 md:px-8"
+        >
+          {/* Hero arch frame around main copy */}
+          <div
+            className="relative mx-auto px-8 py-10 md:px-10 md:py-12 bg-[oklch(96.5%_0.006_85/0.96)]"
+            style={{
+              borderRadius: "56px 56px 28px 28px",
+              boxShadow: "0 18px 40px rgba(0,0,0,0.35)",
+              border: "2px solid rgba(139,69,19,0.2)",
+              opacity: mounted ? 1 : 0,
+              transform: mounted ? "translateY(0)" : "translateY(24px)",
+              transition: "opacity 0.8s ease 180ms, transform 0.8s ease 180ms",
+            }}
+          >
+            {/* Decorative curved separator */}
             <div
-              className="relative"
+              className="absolute inset-x-10 -top-2 h-1 rounded-full"
               style={{
-                animation: "arch-bounce 2.5s ease-in-out infinite",
+                background:
+                  "linear-gradient(90deg, #8B4513, #CD853F, #D2691E)",
+                opacity: 0.8,
+              }}
+            />
+
+            {/* Arch logo with bounce */}
+            <div className="flex justify-center mb-7 mt-1">
+              <div
+                className="relative"
+                style={{
+                  animation: "arch-bounce 2.5s ease-in-out infinite",
+                }}
+              >
+                <img
+                  src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/YOOdRRgvjAwtBHHT.png"
+                  alt="Portici DaDaocheng"
+                  className="h-16 md:h-20 w-auto object-contain"
+                />
+              </div>
+            </div>
+
+            <p
+              className="text-[14px] font-normal tracking-[0.22em] uppercase text-primary mb-7 overflow-hidden"
+              style={{
+                fontFamily: "var(--font-ui)",
+                opacity: mounted ? 1 : 0,
+                transform: mounted ? "translateY(0)" : "translateY(16px)",
+                transition:
+                  "opacity 0.7s ease 220ms, transform 0.7s ease 220ms",
               }}
             >
-              <img
-                src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/YOOdRRgvjAwtBHHT.png"
-                alt="Portici DaDaocheng"
-                className="h-16 md:h-20 w-auto object-contain brightness-0 invert opacity-95"
-              />
+              Esperienze Culturali Comparate
+            </p>
+
+            <h1
+              className="mb-7 overflow-hidden"
+              style={{
+                fontFamily: "var(--font-heading)",
+                fontSize: "56px",
+                lineHeight: 1.1,
+                letterSpacing: "-0.3px",
+                fontWeight: 700,
+                color: "#2C3E50",
+              }}
+            >
+              <MaskSlideText text="Dove culture diverse" delay={280} />
+              <MaskSlideText text="interpretano" delay={400} color="#8B4513" />
+              <MaskSlideText text="la stessa cosa." delay={520} />
+            </h1>
+
+            <p
+              className="text-[18px] leading-[1.75] mb-9 max-w-[540px]"
+              style={{
+                fontFamily: "var(--font-body)",
+                color: "#2C3E50",
+                opacity: mounted ? 1 : 0,
+                transform: mounted ? "translateY(0)" : "translateY(16px)",
+                transition:
+                  "opacity 0.8s ease 760ms, transform 0.8s ease 760ms",
+              }}
+            >
+              Esperienze culturali che rivelano come Asia e Europa rispondono
+              alle stesse domande umane in modi sorprendentemente diversi.
+            </p>
+
+            <div
+              className="flex flex-wrap gap-4"
+              style={{
+                opacity: mounted ? 1 : 0,
+                transform: mounted ? "translateY(0)" : "translateY(16px)",
+                transition:
+                  "opacity 0.8s ease 920ms, transform 0.8s ease 920ms",
+              }}
+            >
+              <Link
+                href="/workshop"
+                className="inline-flex items-center gap-2 px-8 py-3.5 text-[16px] font-semibold rounded-[12px] transition-all duration-200 bg-primary text-primary-foreground shadow-[0_14px_26px_rgba(139,69,19,0.45)] hover:shadow-[0_18px_30px_rgba(139,69,19,0.6)] hover:-translate-y-[1px] hover:gap-3"
+                style={{ fontFamily: "var(--font-ui)" }}
+              >
+                Scopri i Workshop <ArrowRight size={16} />
+              </Link>
+              <Link
+                href="/chi-siamo"
+                className="inline-flex items-center gap-2 px-8 py-3.5 text-[16px] font-semibold rounded-[12px] border border-[#2C3E50] text-[#2C3E50] bg-white/80 transition-all duration-200 hover:border-[#D2691E] hover:text-[#D2691E] hover:-translate-y-[1px] hover:gap-3"
+                style={{ fontFamily: "var(--font-ui)" }}
+              >
+                La Nostra Storia
+              </Link>
             </div>
-          </div>
-
-          <p className="text-[14px] font-normal tracking-[0.22em] uppercase text-[var(--on-dark)] mb-9 overflow-hidden"
-            style={{ fontFamily: 'var(--font-ui)',
-              opacity: mounted ? 1 : 0, transform: mounted ? "translateY(0)" : "translateY(16px)",
-              transition: "opacity 0.7s ease 150ms, transform 0.7s ease 150ms" }}>
-            Esperienze Culturali Comparate
-          </p>
-
-          <h1 className="font-semibold text-[var(--on-dark)] mb-8 overflow-hidden"
-            style={{ fontFamily: 'var(--font-display)', fontSize: "clamp(2.4rem, 4.8vw, 3.1rem)", lineHeight: 1.1, letterSpacing: "-0.01em" }}>
-            <MaskSlideText text="Dove culture diverse" delay={280} />
-            <MaskSlideText text="interpretano" delay={400} color="var(--primary)" />
-            <MaskSlideText text="la stessa cosa." delay={520} />
-          </h1>
-
-          <p className="text-[18px] text-[var(--on-dark)] leading-[1.75] mb-12 max-w-[540px]"
-            style={{ fontFamily: 'var(--font-body)',
-              opacity: mounted ? 1 : 0, transform: mounted ? "translateY(0)" : "translateY(16px)",
-              transition: "opacity 0.8s ease 700ms, transform 0.8s ease 700ms" }}>
-            Esperienze culturali che rivelano come Asia e Europa rispondono alle stesse domande umane in modi sorprendentemente diversi.
-          </p>
-
-          <div className="flex flex-wrap gap-4"
-            style={{ opacity: mounted ? 1 : 0, transform: mounted ? "translateY(0)" : "translateY(16px)",
-              transition: "opacity 0.8s ease 880ms, transform 0.8s ease 880ms" }}>
-            <Link href="/workshop"
-              className="inline-flex items-center gap-2 px-8 py-3.5 text-[16px] font-semibold rounded-xl transition-all duration-300 hover:opacity-85 hover:gap-3 bg-primary text-primary-foreground"
-              style={{ fontFamily: 'var(--font-ui)' }}>
-              Scopri i Workshop <ArrowRight size={16} />
-            </Link>
-            <Link href="/chi-siamo"
-              className="inline-flex items-center gap-2 px-8 py-3.5 text-[16px] font-semibold rounded-xl border border-[var(--on-dark)] text-[var(--on-dark)] transition-all duration-300 hover:border-secondary hover:text-secondary hover:gap-3"
-              style={{ fontFamily: 'var(--font-ui)' }}>
-              La Nostra Storia
-            </Link>
           </div>
         </div>
       </div>
@@ -530,32 +588,32 @@ function WorkshopSection() {
           <p className="text-[15px] font-normal tracking-[0.22em] uppercase text-primary mb-4"
             style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>Workshop</p>
           <h2 className="font-medium text-[oklch(27.5%_0.000_0)]"
-            style={{ fontFamily: "'Spectral', Georgia, serif", fontSize: "2rem", fontWeight: 500 }}>
+            style={{ fontFamily: "var(--font-display)", fontSize: "28px", fontWeight: 600, lineHeight: 1.2 }}>
             Esperienze che aprono nuove prospettive
           </h2>
           <div className="w-10 h-0.5 bg-primary mt-5" />
         </Reveal>
       </div>
 
-      {/* Alternating rows — cards with hover float, pulsing frame, label delay */}
+      {/* Alternating rows — cards with rounded corners and geometric shadow */}
       {WORKSHOP_FEATURES.map((item, i) => (
         <Reveal key={item.title} delay={i * 80}>
-          <div className={`group/card relative grid md:grid-cols-2 items-stretch transition-all duration-500 hover:-translate-y-3 hover:shadow-xl ${item.reverse ? "md:[direction:rtl]" : ""}`}>
+          <div className={`group/card relative grid md:grid-cols-2 items-stretch transition-all duration-500 hover:-translate-y-3 hover:shadow-[0_22px_40px_rgba(44,62,80,0.3)] rounded-[16px] overflow-hidden ${item.reverse ? "md:[direction:rtl]" : ""}`}>
             {/* Pulsing decorative frame background */}
             <div
-              className="absolute -inset-1 rounded-lg pointer-events-none -z-10 opacity-0 group-hover/card:opacity-100 transition-opacity duration-500"
+              className="absolute -inset-1 rounded-[20px] pointer-events-none -z-10 opacity-0 group-hover/card:opacity-100 transition-opacity duration-500"
               style={{
                 background: `linear-gradient(135deg, ${item.accent}15, transparent 50%)`,
                 animation: "pulse-frame 2.5s ease-in-out infinite",
               }}
             />
             <div
-              className="absolute -inset-2 rounded-xl border border-primary/20 pointer-events-none -z-10 opacity-40"
+              className="absolute -inset-2 rounded-[24px] border border-primary/20 pointer-events-none -z-10 opacity-40"
               style={{ animation: "pulse-frame 3s ease-in-out infinite 0.5s" }}
             />
 
             {/* Image */}
-            <div className="relative overflow-hidden group" style={{ minHeight: "380px" }}>
+            <div className="relative overflow-hidden group rounded-[16px_16px_0_0] md:rounded-[16px_0_0_16px]" style={{ minHeight: "380px" }}>
               <img src={item.src} alt={item.alt}
                 className="w-full h-full object-cover absolute inset-0 transition-transform duration-700 group-hover:scale-105"
                 style={{ direction: "ltr" }} />
@@ -584,7 +642,7 @@ function WorkshopSection() {
             </div>
 
             {/* Text */}
-            <div className="flex flex-col justify-center px-10 py-14 md:px-14 md:py-16 bg-card"
+            <div className="flex flex-col justify-center px-10 py-14 md:px-14 md:py-16 bg-card rounded-[0_0_16px_16px] md:rounded-[0_16px_16px_0]"
               style={{ direction: "ltr" }}>
               <span className="text-[13px] font-semibold tracking-[0.18em] uppercase mb-6"
                 style={{ fontFamily: "'Inter', system-ui, sans-serif", color: item.accent }}>
@@ -724,24 +782,57 @@ function BrandStoryStrip() {
       <div className="container relative z-10">
         <div className="grid md:grid-cols-2 gap-16 items-center">
           <Reveal>
-            <p className="text-[15px] font-normal tracking-[0.22em] uppercase text-primary mb-5"
-              style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>La Nostra Filosofia</p>
-            <h2 className="font-medium text-foreground mb-2"
-              style={{ fontFamily: "'Spectral', Georgia, serif", fontSize: "2rem", fontWeight: 500 }}>同中求異</h2>
-            <div className="w-10 h-0.5 bg-primary mb-7" />
-            <p className="text-[18px] text-muted-foreground leading-[1.8] mb-5"
-              style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-              <em>Trovare le differenze nell'unità.</em> Il nostro metodo parte sempre dalla stessa domanda: come rispondono culture diverse allo stesso bisogno umano?
-            </p>
-            <p className="text-[18px] text-muted-foreground leading-[1.8] mb-10"
-              style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-              Non per giudicare quale risposta sia migliore, ma per scoprire che la diversità stessa è la risposta più ricca che l'umanità abbia mai prodotto.
-            </p>
-            <Link href="/chi-siamo"
-              className="inline-flex items-center gap-2 text-[16px] font-semibold text-primary hover:opacity-70 hover:gap-3 transition-all duration-300"
-              style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
-              Scopri la nostra storia <ArrowRight size={14} />
-            </Link>
+            {/* Filosofia come citazione incorniciata da un arco */}
+            <div
+              className="relative mx-auto max-w-xl px-8 py-10 bg-card"
+              style={{
+                borderRadius: "52px 52px 28px 28px",
+                border: "2px solid rgba(139,69,19,0.35)",
+                boxShadow: "0 20px 40px rgba(44,62,80,0.25)",
+              }}
+            >
+              {/* Arco decorativo esterno */}
+              <div
+                className="absolute inset-x-6 -top-4 h-[60%] pointer-events-none"
+                style={{
+                  borderRadius: "60px 60px 30px 30px",
+                  border: "2px solid rgba(139,69,19,0.35)",
+                  borderBottom: "none",
+                  background:
+                    "radial-gradient(circle at 50% 0%, rgba(205,133,63,0.16), transparent 70%)",
+                }}
+              />
+
+              <p
+                className="text-[14px] font-normal tracking-[0.22em] uppercase text-primary mb-4 relative z-10"
+                style={{ fontFamily: "var(--font-ui)" }}
+              >
+                La Nostra Filosofia
+              </p>
+
+              <p
+                className="text-[18px] leading-[1.6] mb-5 italic relative z-10"
+                style={{ fontFamily: "var(--font-body)", color: "#2C3E50" }}
+              >
+                “Trovare le differenze nell&apos;unità. Il nostro metodo parte
+                sempre dalla stessa domanda: come rispondono culture diverse
+                allo stesso bisogno umano?”
+              </p>
+              <p
+                className="text-[18px] leading-[1.6] mb-6 relative z-10"
+                style={{ fontFamily: "var(--font-body)", color: "#2C3E50" }}
+              >
+                Non per giudicare quale risposta sia migliore, ma per scoprire
+                che la diversità stessa è la risposta più ricca che l&apos;umanità
+                abbia mai prodotto.
+              </p>
+              <p
+                className="text-right text-small text-primary relative z-10"
+                style={{ fontFamily: "var(--font-small)" }}
+              >
+                同中求異
+              </p>
+            </div>
           </Reveal>
 
           <Reveal delay={200}>

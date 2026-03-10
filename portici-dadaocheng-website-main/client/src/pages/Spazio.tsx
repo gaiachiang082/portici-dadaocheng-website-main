@@ -60,35 +60,58 @@ export default function Spazio() {
   return (
     <main>
       {/* Hero */}
-      <section className="pt-32 pb-20 bg-[oklch(27.5%_0.000_0)]">
+      <section className="pt-32 pb-20 bg-background">
         <div className="container max-w-3xl">
-          <p
-            className="text-[15px] font-normal tracking-[0.22em] uppercase text-[#A67C52] mb-6"
-            style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
-          >
-            Spazio
-          </p>
-          <h1
-            className="font-medium text-[oklch(96.5%_0.006_85)] mb-8"
+          <div
+            className="relative px-8 py-10 md:px-10 md:py-12 bg-card"
             style={{
-              fontFamily: "'Spectral', Georgia, serif",
-              fontSize: "clamp(2rem, 4vw, 3rem)",
-              fontWeight: 500,
-              lineHeight: 1.15,
+              borderRadius: "56px 56px 28px 28px",
+              boxShadow: "0 18px 40px rgba(44,62,80,0.25)",
+              border: "2px solid rgba(139,69,19,0.15)",
             }}
           >
-            Un'installazione esperienziale.
-            <br />
-            <em className="text-[#A67C52] not-italic">Non un negozio.</em>
-          </h1>
-          <p
-            className="text-[18px] text-[oklch(72%_0.005_85)] leading-[1.75]"
-            style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
-          >
-            Il nostro pop-up store è progettato per attivare tutti e cinque i sensi in
-            15–30 minuti. Ogni elemento è scelto per creare un momento di risonanza culturale.
-          </p>
-          <div className="w-10 h-0.5 bg-[#A67C52] mt-8" />
+            {/* Curved section divider */}
+            <div
+              className="absolute inset-x-10 -top-2 h-1 rounded-full"
+              style={{
+                background:
+                  "linear-gradient(90deg, #8B4513, #CD853F, #D2691E)",
+                opacity: 0.9,
+              }}
+            />
+
+            <p
+              className="text-[15px] font-normal tracking-[0.22em] uppercase text-primary mb-6"
+              style={{ fontFamily: "var(--font-ui)" }}
+            >
+              Spazio
+            </p>
+            <h1
+              className="mb-8"
+              style={{
+                fontFamily: "var(--font-heading)",
+                fontSize: "56px",
+                fontWeight: 700,
+                lineHeight: 1.1,
+                letterSpacing: "-0.3px",
+                color: "#2C3E50",
+              }}
+            >
+              Un&apos;installazione esperienziale.
+              <br />
+              <span className="text-secondary">
+                Non un negozio.
+              </span>
+            </h1>
+            <p
+              className="text-[18px] leading-[1.75]"
+              style={{ fontFamily: "var(--font-body)", color: "#2C3E50" }}
+            >
+              Il nostro pop-up store è progettato per attivare tutti e cinque i
+              sensi in 15–30 minuti. Ogni elemento è scelto per creare un
+              momento di risonanza culturale.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -137,21 +160,22 @@ export default function Spazio() {
       </section>
 
       {/* Locations */}
-      <section className="py-24 bg-[oklch(89.5%_0.025_80)]">
+      <section className="py-24 bg-[oklch(96.5%_0.006_85)]">
         <div className="container max-w-2xl">
           <div className="text-center mb-12">
             <p
-              className="text-xs font-semibold tracking-[0.2em] uppercase text-[#A67C52] mb-3"
-              style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+              className="text-xs font-semibold tracking-[0.2em] uppercase text-primary mb-3"
+              style={{ fontFamily: "var(--font-ui)" }}
             >
               Dove Siamo
             </p>
             <h2
-              className="font-medium text-[oklch(27.5%_0.000_0)]"
+              className="font-medium text-foreground"
               style={{
-                fontFamily: "'Spectral', Georgia, serif",
-                fontSize: "2rem",
-                fontWeight: 500,
+                fontFamily: "var(--font-display)",
+                fontSize: "28px",
+                fontWeight: 600,
+                lineHeight: 1.2,
               }}
             >
               Bologna & Pop-up in Europa
@@ -159,19 +183,19 @@ export default function Spazio() {
           </div>
 
             <div className="space-y-6">
-            <div className="bg-[oklch(96.5%_0.006_85)] p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+            <div className="bg-card p-8 rounded-2xl border border-border shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
               <div className="flex items-start gap-4">
                 <MapPin size={18} className="text-[#A67C52] mt-0.5 shrink-0" />
                 <div>
                   <p
-                    className="font-semibold text-[oklch(27.5%_0.000_0)] mb-1"
-                    style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+                    className="font-semibold text-foreground mb-1"
+                    style={{ fontFamily: "var(--font-ui)" }}
                   >
                     Bologna — Sede Principale
                   </p>
                   <p
-                    className="text-sm text-[oklch(50%_0.005_60)] leading-relaxed"
-                    style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                    className="text-sm text-muted-foreground leading-relaxed"
+                    style={{ fontFamily: "var(--font-body)" }}
                   >
                     Il nostro spazio fisso a Bologna. Qui si tengono i workshop regolari
                     e lo spazio è aperto durante gli eventi. Indirizzo esatto comunicato
@@ -181,19 +205,19 @@ export default function Spazio() {
               </div>
             </div>
 
-            <div className="bg-[oklch(96.5%_0.006_85)] p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+            <div className="bg-card p-8 rounded-2xl border border-border shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
               <div className="flex items-start gap-4">
                 <MapPin size={18} className="text-[#A67C52] mt-0.5 shrink-0" />
                 <div>
                   <p
-                    className="font-semibold text-[oklch(27.5%_0.000_0)] mb-1"
-                    style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+                    className="font-semibold text-foreground mb-1"
+                    style={{ fontFamily: "var(--font-ui)" }}
                   >
                     Pop-up — Milano, Berlino, Parigi
                   </p>
                   <p
-                    className="text-sm text-[oklch(50%_0.005_60)] leading-relaxed"
-                    style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                    className="text-sm text-muted-foreground leading-relaxed"
+                    style={{ fontFamily: "var(--font-body)" }}
                   >
                     Periodicamente portiamo lo spazio in altre città europee. Seguici su
                     Instagram per non perdere le date dei prossimi pop-up.
@@ -208,8 +232,8 @@ export default function Spazio() {
               href="https://instagram.com/portici.dadaocheng"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 text-[16px] font-semibold border border-[#a2482b] text-[#a2482b] rounded-xl hover:bg-[#a2482b] hover:text-[#F5F3EE] transition-colors"
-              style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+              className="inline-flex items-center gap-2 px-8 py-3.5 text-[16px] font-semibold border border-primary text-primary rounded-[12px] hover:bg-primary hover:text-primary-foreground transition-colors"
+              style={{ fontFamily: "var(--font-ui)" }}
             >
               <Instagram size={15} />
               Seguici per gli aggiornamenti

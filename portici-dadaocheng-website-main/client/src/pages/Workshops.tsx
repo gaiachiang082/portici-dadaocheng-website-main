@@ -53,7 +53,7 @@ function WorkshopCard({
 
   return (
     <div
-      className="group relative rounded-2xl overflow-hidden cursor-pointer border border-[oklch(25%_0_0)] hover:border-[oklch(55%_0.075_55)] transition-all duration-300"
+      className="group relative rounded-[16px] overflow-hidden cursor-pointer border border-[oklch(25%_0_0)] hover:border-[oklch(55%_0.075_55)] transition-all duration-300 hover:shadow-[0_22px_40px_rgba(0,0,0,0.35)]"
       style={{ background: "oklch(13% 0 0)" }}
       onClick={onSelect}
     >
@@ -78,7 +78,7 @@ function WorkshopCard({
       <div className="p-5">
         <h3
           className="text-lg font-medium text-[oklch(92%_0.005_85)] mb-1"
-          style={{ fontFamily: "'Spectral', Georgia, serif" }}
+          style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
         >
           {workshop.title}
         </h3>
@@ -103,7 +103,7 @@ function WorkshopCard({
         </div>
 
         <button
-          className="mt-4 w-full py-2.5 rounded-lg text-sm font-medium transition-all duration-200"
+          className="mt-4 w-full py-2.5 rounded-[12px] text-sm font-semibold transition-all duration-200 shadow-[0_10px_20px_rgba(139,69,19,0.3)] hover:-translate-y-[1px]"
           style={{
             background: "oklch(55% 0.075 55)",
             color: "oklch(98% 0 0)",
@@ -281,8 +281,8 @@ export default function WorkshopsPage() {
                 Esperienze Culturali
               </p>
               <h2
-                className="text-3xl md:text-4xl text-[oklch(92%_0.005_85)] mb-4"
-                style={{ fontFamily: 'var(--font-display)', fontWeight: 300 }}
+                className="text-[28px] md:text-[32px] text-[oklch(92%_0.005_85)] mb-4"
+                style={{ fontFamily: "var(--font-display)", fontWeight: 600, lineHeight: 1.2 }}
               >
                 I nostri Workshop
               </h2>
@@ -327,8 +327,8 @@ export default function WorkshopsPage() {
                 {CATEGORY_LABELS[workshop.category] ?? workshop.category}
               </span>
               <h2
-                className="text-2xl text-[oklch(92%_0.005_85)] mt-2 mb-1"
-                style={{ fontFamily: 'var(--font-display)', fontWeight: 300 }}
+                className="text-[24px] text-[oklch(92%_0.005_85)] mt-2 mb-1"
+                style={{ fontFamily: "var(--font-display)", fontWeight: 600, lineHeight: 1.2 }}
               >
                 {workshop.title}
               </h2>
@@ -358,7 +358,7 @@ export default function WorkshopsPage() {
             <button
               disabled={selectedSessionId === null}
               onClick={() => { if (selectedSessionId !== null) setStep("form"); }}
-              className="w-full py-3 rounded-xl font-medium transition-all duration-200 disabled:opacity-40"
+              className="w-full py-3 rounded-[12px] font-semibold transition-all duration-200 disabled:opacity-40 shadow-[0_10px_20px_rgba(139,69,19,0.3)] hover:-translate-y-[1px]"
               style={{
                 background: selectedSessionId ? "oklch(55% 0.075 55)" : "oklch(30% 0 0)",
                 color: "oklch(98% 0 0)",
@@ -380,8 +380,8 @@ export default function WorkshopsPage() {
             </button>
 
             <h2
-              className="text-2xl text-[oklch(92%_0.005_85)] mb-2"
-              style={{ fontFamily: 'var(--font-display)', fontWeight: 300 }}
+              className="text-[24px] text-[oklch(92%_0.005_85)] mb-2"
+              style={{ fontFamily: "var(--font-display)", fontWeight: 600, lineHeight: 1.2 }}
             >
               I tuoi dati
             </h2>
@@ -534,7 +534,7 @@ export default function WorkshopsPage() {
               <button
                 type="submit"
                 disabled={createBookingMutation.isPending}
-                className="w-full py-3 rounded-xl font-medium transition-all duration-200 disabled:opacity-60"
+              className="w-full py-3 rounded-[12px] font-semibold transition-all duration-200 disabled:opacity-60 shadow-[0_10px_20px_rgba(139,69,19,0.3)] hover:-translate-y-[1px]"
                 style={{
                   background: "oklch(55% 0.075 55)",
                   color: "oklch(98% 0 0)",
@@ -555,8 +555,8 @@ export default function WorkshopsPage() {
                 <span className="text-2xl">✓</span>
               </div>
               <h2
-                className="text-2xl text-[oklch(92%_0.005_85)] mb-2"
-                style={{ fontFamily: 'var(--font-display)', fontWeight: 300 }}
+                className="text-[24px] text-[oklch(92%_0.005_85)] mb-2"
+                style={{ fontFamily: "var(--font-display)", fontWeight: 600, lineHeight: 1.2 }}
               >
                 Prenotazione ricevuta!
               </h2>
@@ -613,7 +613,7 @@ export default function WorkshopsPage() {
             <button
               onClick={handlePayDeposit}
               disabled={createCheckoutMutation.isPending}
-              className="w-full py-3.5 rounded-xl font-medium text-base transition-all duration-200 disabled:opacity-60 mb-3"
+              className="w-full py-3.5 rounded-[12px] font-semibold text-base transition-all duration-200 disabled:opacity-60 mb-3 shadow-[0_10px_20px_rgba(139,69,19,0.3)] hover:-translate-y-[1px]"
               style={{
                 background: "oklch(55% 0.075 55)",
                 color: "oklch(98% 0 0)",

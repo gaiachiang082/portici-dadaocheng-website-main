@@ -43,12 +43,12 @@
   --color-input:                var(--input);
   --color-ring:                 var(--ring);
 
-  /* Typography — Cooper Black (Logo/H1) + Poppins (副標題/UI) + Roboto Mono (內文/標註) */
-  --font-heading:  'Cooper Black', 'CooperBlack', 'Cooper Black BT', 'Cooper Std', system-ui, sans-serif; /* Logo / H1 */
-  --font-display:  'Poppins', system-ui, sans-serif;       /* 副標題 H2/H3 */
-  --font-body:     'Roboto Mono', 'Consolas', monospace;   /* 內文 */
-  --font-ui:       'Poppins', system-ui, sans-serif;       /* Web UI */
-  --font-small:    'Roboto Mono', 'Consolas', monospace;   /* 小字樣 / didascalia */
+  /* Typography — Poppins (H1/UI) + Montserrat (H2) + Roboto Mono (Body) + Quicksand (Caption) */
+  --font-heading:  'Poppins', system-ui, sans-serif;              /* H1 / Titoli principali */
+  --font-display:  'Montserrat', system-ui, sans-serif;           /* H2 / Sottotitoli */
+  --font-body:     'Roboto Mono', 'Consolas', monospace;          /* Corpo testo */
+  --font-ui:       'Poppins', system-ui, sans-serif;              /* Componenti UI / pulsanti */
+  --font-small:    'Quicksand', system-ui, sans-serif;            /* Didascalie / accenti */
 
   /* Parametri dettagliati — Poppins (da Guida Tipografica) */
   /* H1 Titolo Principale: 48-56px | Bold 700 | Interlinea 1.1 | Spaziatura -0.3px */
@@ -90,25 +90,25 @@
   --radius: 0.5rem;   /* Rounded corners per UI Components spec */
 
   /* Heritage Style — Stile Mattone Rosso Classico */
-  --background:           #FFFFFF;   /* Sfondo — Bianco (底色維持原白色) */
-  --foreground:           #3E2723;   /* Testo Scuro — deep warm brown */
-  --card:                 #FDF8F0;   /* Slightly lighter for cards */
-  --card-foreground:      #3E2723;
-  --popover:              #FDF8F0;
-  --popover-foreground:   #3E2723;
+  --background:           #F5F7FA;   /* Sfondo — grigio molto chiaro */
+  --foreground:           #2C3E50;   /* Testo Scuro — grigio profondo e leggibile */
+  --card:                 #FFFFFF;   /* Card bianche su sfondo grigio chiaro */
+  --card-foreground:      #2C3E50;
+  --popover:              #FFFFFF;
+  --popover-foreground:   #2C3E50;
   --primary:              #8B4513;   /* Colore Primario — Saddle Brown */
   --primary-foreground:   #FFFFFF;   /* White on primary buttons */
   --ochre:                #D2691E;   /* Secondary / Chocolate */
   --secondary:            #CD853F;   /* Colore di Accento — Peru */
-  --secondary-foreground: #3E2723;
-  --muted:                #EDE4D4;   /* Warm muted */
-  --muted-foreground:     #5D4E37;
+  --secondary-foreground: #2C3E50;
+  --muted:                #E4EBF3;   /* Warm-muted ma vicino al grigio di background */
+  --muted-foreground:     #5D6D7E;
   --accent:               #CD853F;   /* Accent — Peru */
-  --accent-foreground:    #3E2723;
+  --accent-foreground:    #2C3E50;
   --destructive:          oklch(55.0% 0.180 25);
   --destructive-foreground: #FFFFFF;
-  --border:               #E8D5B7;   /* Warm border */
-  --input:                #E8D5B7;
+  --border:               #D0D7E2;   /* Border neutro su sfondo grigio chiaro */
+  --input:                #D0D7E2;
   --ring:                 #8B4513;   /* Primary */
   --on-dark:              #F5DEB3;   /* Light text on dark backgrounds (hero, footer) */
 }
