@@ -523,6 +523,44 @@ function HeroSection() {
           border-left-color: #a80000;
         }
 
+        .video-compare-link {
+          border-left: 4px solid #a80000;
+          margin-left: 0;
+        }
+
+        .video-compare-link .content-block {
+          border-left: none;
+        }
+
+        .content-section-tight {
+          padding-top: 24px;
+          padding-bottom: 0;
+        }
+
+        .workshop-section-header {
+          margin-bottom: 30px;
+        }
+
+        .workshop-section-header h3 {
+          font-family: 'Montserrat', system-ui, sans-serif;
+          font-size: 1rem;
+          color: #8B4513;
+          margin-bottom: 12px;
+          text-transform: uppercase;
+          letter-spacing: 2px;
+          font-weight: 700;
+        }
+
+        .workshop-section-header h2 {
+          margin-bottom: 12px;
+        }
+
+        .divider-short {
+          width: 60px;
+          height: 2px;
+          background: linear-gradient(90deg, #8B4513, #CD853F);
+        }
+
         @media (max-width: 768px) {
           .hero-header {
             padding: 30px 20px;
@@ -548,6 +586,10 @@ function HeroSection() {
 
           .content-section {
             padding: 40px 20px;
+          }
+
+          .content-section-tight {
+            padding-top: 16px;
           }
 
           .content-section h2 {
@@ -602,28 +644,37 @@ function HeroSection() {
           <div className="pixel-text bologna-animate">A BOLOGNA</div>
         </div>
 
-        <div className="animation-block block-2">
-          <video
-            className="absolute inset-0 w-full h-full object-cover"
-            src={VIDEO.area2}
-            autoPlay
-            muted
-            loop
-            playsInline
-            onError={(e) => { (e.currentTarget.style.display = "none"); e.currentTarget.nextElementSibling?.classList.remove("hidden"); }}
-          />
-          <span className="absolute inset-0 flex items-center justify-center text-white font-bold text-lg tracking-widest bg-[#a80000] hidden">[ANIMAZIONE AREA 2]</span>
+        <div className="video-compare-link">
+          <div className="animation-block block-2">
+            <video
+              className="absolute inset-0 w-full h-full object-cover"
+              src={VIDEO.area2}
+              autoPlay
+              muted
+              loop
+              playsInline
+              onError={(e) => { (e.currentTarget.style.display = "none"); e.currentTarget.nextElementSibling?.classList.remove("hidden"); }}
+            />
+            <span className="absolute inset-0 flex items-center justify-center text-white font-bold text-lg tracking-widest bg-[#a80000] hidden">[ANIMAZIONE AREA 2]</span>
+          </div>
+          <div className="content-section content-section-tight">
+            <div className="content-block">
+              <h2>Esperienze Culturali Comparate</h2>
+              <h3>Dove culture diverse interpretano la stessa cosa.</h3>
+              <p>
+                Esperienze culturali che rivelano come Asia e Europa rispondono alle stesse domande
+                umane in modi sorprendentemente diversi.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
       <div className="content-section">
-        <div className="content-block">
-          <h2>Esperienze Culturali Comparate</h2>
-          <h3>Dove culture diverse interpretano la stessa cosa.</h3>
-          <p>
-            Esperienze culturali che rivelano come Asia e Europa rispondono alle stesse domande
-            umane in modi sorprendentemente diversi.
-          </p>
+        <div className="workshop-section-header">
+          <h3>Workshop</h3>
+          <h2>Esperienze che aprono nuove prospettive</h2>
+          <div className="divider-short" />
         </div>
 
         <div className="divider" />
