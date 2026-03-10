@@ -304,7 +304,7 @@ function HeroSection() {
         }
 
         .hero-header h1 {
-          font-family: 'Cooper Black', serif;
+          font-family: 'Cooper Black','CooperBlack','Cooper Black BT','Cooper Std', system-ui, sans-serif;
           font-size: 4rem;
           font-weight: 900;
           color: #000000;
@@ -317,7 +317,6 @@ function HeroSection() {
           padding: 24px 60px;
           position: relative;
           overflow: hidden;
-          border-bottom: 2px solid #000000;
           min-height: 80px;
           display: flex;
           align-items: center;
@@ -331,31 +330,33 @@ function HeroSection() {
           justify-content: flex-end;
         }
 
-        .striped-inner {
-          display: inline-flex;
-          align-items: center;
-          padding: 10px 26px;
-          border-radius: 999px;
-          box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
-        }
-
-        .striped-inner.taipei-color {
-          background: #8B4513;
-        }
-
-        .striped-inner.bologna-color {
-          background: #D2691E;
-        }
-
         .pixel-text {
           font-family: 'Courier New', monospace;
           font-size: 2.2rem;
           font-weight: 900;
-          color: #F5F7FA;
+          color: #2c3e50;
           letter-spacing: 8px;
           position: relative;
           white-space: nowrap;
           text-transform: uppercase;
+        }
+
+        .pixel-text::before,
+        .pixel-text::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          right: 0;
+          height: 3px;
+          background: linear-gradient(90deg, #8B4513, #D2691E, #CD853F);
+        }
+
+        .pixel-text::before {
+          top: -10px;
+        }
+
+        .pixel-text::after {
+          bottom: -10px;
         }
 
         .pixel-text.taipei-animate {
@@ -598,17 +599,13 @@ function HeroSection() {
         </div>
 
         <div className="striped-bar taipei">
-          <div className="striped-inner taipei-color">
-            <div className="pixel-text taipei-animate">Da TAIPEI</div>
-          </div>
+          <div className="pixel-text taipei-animate">Da TAIPEI</div>
         </div>
 
         <div className="animation-block block-1">[ANIMAZIONE AREA 1]</div>
 
         <div className="striped-bar bologna">
-          <div className="striped-inner bologna-color">
-            <div className="pixel-text bologna-animate">A BOLOGNA</div>
-          </div>
+          <div className="pixel-text bologna-animate">A BOLOGNA</div>
         </div>
 
         <div className="animation-block block-2">[ANIMAZIONE AREA 2]</div>
