@@ -346,8 +346,8 @@ function HeroSection() {
         }
 
         .striped-bar.bologna .pixel-text {
-          right: 60px;
-          left: auto;
+          left: 100%;
+          transform: translateX(calc(-100% - 60px));
         }
 
         .pixel-text::before,
@@ -368,9 +368,9 @@ function HeroSection() {
           bottom: -10px;
         }
 
-        /* Da TAIPEI: 左 → 右 → 左 迴圈 */
+        /* Da TAIPEI: 左 → 右 → 左 迴圈，11s 一輪 */
         .pixel-text.taipei-animate {
-          animation: taipeiSlideAcross 8s ease-in-out infinite;
+          animation: taipeiSlideAcross 11s ease-in-out infinite;
         }
 
         @keyframes taipeiSlideAcross {
@@ -392,31 +392,27 @@ function HeroSection() {
           }
         }
 
-        /* A BOLOGNA: 右 → 左 → 右 迴圈 */
+        /* A BOLOGNA: 右 → 左 → 右 迴圈，11s 一輪（只用 left + transform 以正確插值） */
         .pixel-text.bologna-animate {
-          animation: bolognaSlideAcross 8s ease-in-out infinite;
+          animation: bolognaSlideAcross 11s ease-in-out infinite;
         }
 
         @keyframes bolognaSlideAcross {
           0% {
-            right: 60px;
-            left: auto;
-            transform: translateX(0);
+            left: 100%;
+            transform: translateX(calc(-100% - 60px));
           }
           45% {
             left: 60px;
-            right: auto;
             transform: translateX(0);
           }
           55% {
             left: 60px;
-            right: auto;
             transform: translateX(0);
           }
           100% {
-            right: 60px;
-            left: auto;
-            transform: translateX(0);
+            left: 100%;
+            transform: translateX(calc(-100% - 60px));
           }
         }
 
