@@ -278,244 +278,352 @@ function Carousel({
   );
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   HERO SECTION  — 雙城拱廊並排 + 淡入淡出輪播
-   ───────────────────────────────────────────────────────────────── */
-const HERO_SLIDES = [
-  {
-    leftSrc: IMG.dadaochengArcade,
-    leftAlt: "大稻埕亭仔腳 紅磚拱廊",
-    rightSrc: IMG.bolognaPortici,
-    rightAlt: "Bologna Portici 金色拱廊",
-    leftLabel: "台北", leftName: "大稻埕",
-    rightLabel: "Bologna", rightName: "Portici",
-  },
-  {
-    leftSrc: IMG.dadaochengTemple,
-    leftAlt: "大稻埕廟宇屋頂",
-    rightSrc: IMG.calligroupA,
-    rightAlt: "書法工作坊",
-    leftLabel: "廟宇", leftName: "神聖空間",
-    rightLabel: "Workshop", rightName: "Calligrafia",
-  },
-  {
-    leftSrc: IMG.dadaochengBaroque,
-    leftAlt: "大稻埕歷史建築",
-    rightSrc: IMG.inkFlower,
-    rightAlt: "水墨梅花",
-    leftLabel: "建築", leftName: "歷史記憶",
-    rightLabel: "Inchiostro", rightName: "水墨畫",
-  },
-];
-
 function HeroSection() {
-  const parallaxOffset = useParallax(0.3);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => { const t = setTimeout(() => setMounted(true), 80); return () => clearTimeout(t); }, []);
-
-  const LANTERN_COUNT = 22;
-  const PARTICLE_COUNT = 30;
-  const lanterns = useMemo(() =>
-    Array.from({ length: LANTERN_COUNT }, (_, i) => ({
-      delay: i * 0.8,
-      left: `${5 + (i * 4.2) % 90}%`,
-      duration: 12 + (i % 5),
-      drift: -20 + (i % 40),
-    })),
-    []
-  );
-  const particles = useMemo(() =>
-    Array.from({ length: PARTICLE_COUNT }, (_, i) => ({
-      left: `${(i * 7.3) % 100}%`,
-      top: `${(i * 11) % 100}%`,
-      delay: i * 0.15,
-      dx: -15 + (i % 30),
-      dy: -20 + (i % 25),
-    })),
-    []
-  );
-
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden bg-[oklch(10%_0_0)]">
+    <section className="bg-white text-[#2c3e50]">
+      <style>
+        {`
+        body {
+          font-family: 'Roboto Mono', monospace;
+          background: #ffffff;
+          color: #2c3e50;
+          line-height: 1.6;
+        }
 
-      {/* ── Split background: 大稻埕 left | Bologna right ── */}
-      <div className="absolute inset-0 will-change-transform"
-        style={{ transform: `translateY(${parallaxOffset}px)` }}>
+        .hero-container {
+          width: 100%;
+          background: #ffffff;
+          overflow: hidden;
+        }
 
-        {/* Left half — 大稻埕亭仔腳 紅磚拱廊（靜態） */}
-        <div className="absolute inset-0 w-1/2">
-          <img src={IMG.dadaochengArcade} alt="大稻埕亭仔腳 紅磚拱廊"
-            className="w-full h-full object-cover object-center scale-105" />
-          <div className="absolute inset-0" style={{ background: "linear-gradient(to right, oklch(8% 0 0 / 0.72) 0%, oklch(8% 0 0 / 0.50) 70%, oklch(8% 0 0 / 0.80) 100%)" }} />
+        .hero-header {
+          background: #ffffff;
+          padding: 40px 60px;
+          text-align: right;
+          border-bottom: 2px solid #000000;
+        }
+
+        .hero-header h1 {
+          font-family: 'Cooper Black', serif;
+          font-size: 4rem;
+          font-weight: 900;
+          color: #000000;
+          letter-spacing: -2px;
+          line-height: 1;
+        }
+
+        .striped-bar {
+          width: 100%;
+          background: #d0d0d0;
+          padding: 30px 60px;
+          position: relative;
+          overflow: hidden;
+          border-bottom: 2px solid #000000;
+          min-height: 80px;
+          display: flex;
+          align-items: center;
+        }
+
+        .striped-bar.taipei {
+          justify-content: flex-start;
+        }
+
+        .striped-bar.bologna {
+          justify-content: flex-end;
+        }
+
+        .pixel-text {
+          font-family: 'Courier New', monospace;
+          font-size: 2.5rem;
+          font-weight: 900;
+          color: #000000;
+          letter-spacing: 8px;
+          position: relative;
+          white-space: nowrap;
+          text-transform: uppercase;
+        }
+
+        .pixel-text.taipei-animate {
+          animation: pixelFlickerLeftToRight 4s infinite ease-in-out;
+        }
+
+        @keyframes pixelFlickerLeftToRight {
+          0% {
+            transform: translateX(-100px);
+            opacity: 0.3;
+            text-shadow:
+              2px 0 0 rgba(0, 0, 0, 0.2),
+              -2px 0 0 rgba(0, 0, 0, 0.2);
+          }
+          25% {
+            opacity: 0.6;
+            text-shadow:
+              2px 0 0 rgba(0, 0, 0, 0.4),
+              -2px 0 0 rgba(0, 0, 0, 0.4),
+              4px 0 0 rgba(0, 0, 0, 0.2);
+          }
+          50% {
+            opacity: 1;
+            text-shadow:
+              2px 0 0 rgba(0, 0, 0, 0.5),
+              -2px 0 0 rgba(0, 0, 0, 0.5),
+              4px 0 0 rgba(0, 0, 0, 0.3),
+              -4px 0 0 rgba(0, 0, 0, 0.3);
+          }
+          75% {
+            opacity: 0.6;
+            text-shadow:
+              2px 0 0 rgba(0, 0, 0, 0.4),
+              -2px 0 0 rgba(0, 0, 0, 0.4);
+          }
+          100% {
+            transform: translateX(100px);
+            opacity: 0.3;
+            text-shadow:
+              2px 0 0 rgba(0, 0, 0, 0.2),
+              -2px 0 0 rgba(0, 0, 0, 0.2);
+          }
+        }
+
+        .pixel-text.bologna-animate {
+          animation: pixelFlickerRightToLeft 4s infinite ease-in-out;
+        }
+
+        @keyframes pixelFlickerRightToLeft {
+          0% {
+            transform: translateX(100px);
+            opacity: 0.3;
+            text-shadow:
+              2px 0 0 rgba(0, 0, 0, 0.2),
+              -2px 0 0 rgba(0, 0, 0, 0.2);
+          }
+          25% {
+            opacity: 0.6;
+            text-shadow:
+              2px 0 0 rgba(0, 0, 0, 0.4),
+              -2px 0 0 rgba(0, 0, 0, 0.4),
+              4px 0 0 rgba(0, 0, 0, 0.2);
+          }
+          50% {
+            opacity: 1;
+            text-shadow:
+              2px 0 0 rgba(0, 0, 0, 0.5),
+              -2px 0 0 rgba(0, 0, 0, 0.5),
+              4px 0 0 rgba(0, 0, 0, 0.3),
+              -4px 0 0 rgba(0, 0, 0, 0.3);
+          }
+          75% {
+            opacity: 0.6;
+            text-shadow:
+              2px 0 0 rgba(0, 0, 0, 0.4),
+              -2px 0 0 rgba(0, 0, 0, 0.4);
+          }
+          100% {
+            transform: translateX(-100px);
+            opacity: 0.3;
+            text-shadow:
+              2px 0 0 rgba(0, 0, 0, 0.2),
+              -2px 0 0 rgba(0, 0, 0, 0.2);
+          }
+        }
+
+        .animation-block {
+          width: 100%;
+          height: 200px;
+          background: #a80000;
+          border-bottom: 2px solid #000000;
+          position: relative;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-size: 1.2rem;
+          font-weight: 700;
+          letter-spacing: 2px;
+        }
+
+        .animation-block.block-1 {
+          animation: pulseRed 2s infinite;
+        }
+
+        @keyframes pulseRed {
+          0%, 100% {
+            background: #a80000;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+          }
+          50% {
+            background: #cc0000;
+            box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.2);
+          }
+        }
+
+        .animation-block.block-2 {
+          animation: pulseRed2 2s infinite;
+          animation-delay: 1s;
+        }
+
+        @keyframes pulseRed2 {
+          0%, 100% {
+            background: #a80000;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+          }
+          50% {
+            background: #cc0000;
+            box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.2);
+          }
+        }
+
+        .content-section {
+          background: #ffffff;
+          padding: 60px 60px;
+          max-width: 1200px;
+          margin: 0 auto;
+        }
+
+        .content-section h2 {
+          font-family: 'Cooper Black', serif;
+          font-size: 2.5rem;
+          color: #000000;
+          margin-bottom: 30px;
+          letter-spacing: -1px;
+        }
+
+        .content-section h3 {
+          font-family: 'Montserrat', system-ui, sans-serif;
+          font-size: 1.3rem;
+          color: #666666;
+          margin-bottom: 20px;
+          text-transform: uppercase;
+          letter-spacing: 2px;
+          font-weight: 700;
+        }
+
+        .content-section p {
+          font-family: 'Roboto Mono', monospace;
+          font-size: 1rem;
+          color: #2c3e50;
+          line-height: 1.8;
+          margin-bottom: 20px;
+          text-align: justify;
+        }
+
+        .content-block {
+          margin-bottom: 50px;
+          padding: 30px;
+          background: #f5f5f5;
+          border-left: 4px solid #a80000;
+          border-radius: 4px;
+        }
+
+        .content-block:first-child {
+          border-left-color: #a80000;
+        }
+
+        .content-block:nth-child(2) {
+          border-left-color: #a80000;
+        }
+
+        @media (max-width: 768px) {
+          .hero-header {
+            padding: 30px 20px;
+          }
+
+          .hero-header h1 {
+            font-size: 2.5rem;
+          }
+
+          .striped-bar {
+            padding: 20px 20px;
+            min-height: 60px;
+          }
+
+          .pixel-text {
+            font-size: 1.5rem;
+            letter-spacing: 4px;
+          }
+
+          .animation-block {
+            height: 150px;
+          }
+
+          .content-section {
+            padding: 40px 20px;
+          }
+
+          .content-section h2 {
+            font-size: 1.8rem;
+          }
+
+          .content-section h3 {
+            font-size: 1rem;
+          }
+
+          .content-section p {
+            font-size: 0.9rem;
+          }
+        }
+
+        .divider {
+          width: 100%;
+          height: 2px;
+          background: linear-gradient(90deg, transparent, #a80000, transparent);
+          margin: 40px 0;
+        }
+        `}
+      </style>
+
+      <div className="hero-container">
+        <div className="hero-header">
+          <h1>
+            PORTICI
+            <br />
+            DADAOCHENG
+          </h1>
         </div>
 
-        {/* Right half — Bologna Portici 金色拱廊（靜態） */}
-        <div className="absolute inset-0 left-1/2">
-          <img src={IMG.bolognaPortici} alt="Bologna Portici 金色拱廊"
-            className="w-full h-full object-cover object-center scale-105" />
-          <div className="absolute" style={{ background: "linear-gradient(to left, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.50) 70%, rgba(0,0,0,0.80) 100%)", top: 0, bottom: 0, left: '-60px', right: 0 }} />
+        <div className="striped-bar taipei">
+          <div className="pixel-text taipei-animate">Da TAIPEI</div>
         </div>
 
-        {/* Centre vertical divider glow */}
-        <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-px"
-          style={{ background: "linear-gradient(to bottom, transparent, rgba(139,69,19,0.8) 30%, rgba(139,69,19,0.8) 70%, transparent)" }} />
+        <div className="animation-block block-1">[ANIMAZIONE AREA 1]</div>
 
-        {/* Bottom fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-48"
-          style={{ background: "linear-gradient(to bottom, transparent, oklch(10% 0 0 / 0.7))" }} />
-      </div>
-
-      {/* ── 20+ Sky lanterns floating up (平溪天燈) ── */}
-      <div className="absolute inset-0 pointer-events-none z-[5] overflow-hidden">
-        {lanterns.map((l, i) => (
-          <SkyLantern key={i} delay={l.delay} left={l.left} duration={l.duration} drift={l.drift} />
-        ))}
-      </div>
-
-      {/* ── 30 floating light particles ── */}
-      <div className="absolute inset-0 pointer-events-none z-[5]">
-        {particles.map((p, i) => (
-          <LightParticle key={i} left={p.left} top={p.top} delay={p.delay} dx={p.dx} dy={p.dy} />
-        ))}
-      </div>
-
-      {/* ── Rotating decorative border ── */}
-      <div className="absolute inset-0 pointer-events-none z-[4] overflow-hidden">
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] opacity-20"
-          style={{ animation: "rotate-border 60s linear infinite" }}
-        >
-          <svg viewBox="0 0 100 100" className="w-full h-full">
-            <path d="M50 5 A45 45 0 0 1 95 50 A45 45 0 0 1 50 95 A45 45 0 0 1 5 50 A45 45 0 0 1 50 5" fill="none" stroke="var(--primary)" strokeWidth="0.3" strokeDasharray="4 6" />
-            <path d="M50 5 A45 45 0 0 1 95 50 A45 45 0 0 1 50 95 A45 45 0 0 1 5 50 A45 45 0 0 1 50 5" fill="none" stroke="var(--secondary)" strokeWidth="0.2" strokeDasharray="2 8" transform="rotate(15 50 50)" />
-          </svg>
+        <div className="striped-bar bologna">
+          <div className="pixel-text bologna-animate">A BOLOGNA</div>
         </div>
+
+        <div className="animation-block block-2">[ANIMAZIONE AREA 2]</div>
       </div>
 
-      {/* Left ochre accent */}
-      <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-primary z-10" />
-
-      {/* Main copy — centered, with arch logo + mask slide text ── */}
-      <div className="container relative z-10 pt-28 pb-20 flex justify-center">
-        <div
-          className="max-w-[720px] w-full mx-auto px-4 md:px-8"
-        >
-          {/* Hero arch frame around main copy */}
-          <div
-            className="relative mx-auto px-8 py-10 md:px-10 md:py-12 bg-[oklch(96.5%_0.006_85/0.96)]"
-            style={{
-              borderRadius: "56px 56px 28px 28px",
-              boxShadow: "0 18px 40px rgba(0,0,0,0.35)",
-              border: "2px solid rgba(139,69,19,0.2)",
-              opacity: mounted ? 1 : 0,
-              transform: mounted ? "translateY(0)" : "translateY(24px)",
-              transition: "opacity 0.8s ease 180ms, transform 0.8s ease 180ms",
-            }}
-          >
-            {/* Decorative curved separator */}
-            <div
-              className="absolute inset-x-10 -top-2 h-1 rounded-full"
-              style={{
-                background:
-                  "linear-gradient(90deg, #8B4513, #CD853F, #D2691E)",
-                opacity: 0.8,
-              }}
-            />
-
-            {/* Arch logo with bounce */}
-            <div className="flex justify-center mb-7 mt-1">
-              <div
-                className="relative"
-                style={{
-                  animation: "arch-bounce 2.5s ease-in-out infinite",
-                }}
-              >
-                <img
-                  src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/YOOdRRgvjAwtBHHT.png"
-                  alt="Portici DaDaocheng"
-                  className="h-16 md:h-20 w-auto object-contain"
-                />
-              </div>
-            </div>
-
-            <p
-              className="text-[14px] font-normal tracking-[0.22em] uppercase text-primary mb-7 overflow-hidden"
-              style={{
-                fontFamily: "var(--font-ui)",
-                opacity: mounted ? 1 : 0,
-                transform: mounted ? "translateY(0)" : "translateY(16px)",
-                transition:
-                  "opacity 0.7s ease 220ms, transform 0.7s ease 220ms",
-              }}
-            >
-              Esperienze Culturali Comparate
-            </p>
-
-            <h1
-              className="mb-7 overflow-hidden"
-              style={{
-                fontFamily: "var(--font-heading)",
-                fontSize: "56px",
-                lineHeight: 1.1,
-                letterSpacing: "-0.3px",
-                fontWeight: 700,
-                color: "#2C3E50",
-              }}
-            >
-              <MaskSlideText text="Dove culture diverse" delay={280} />
-              <MaskSlideText text="interpretano" delay={400} color="#8B4513" />
-              <MaskSlideText text="la stessa cosa." delay={520} />
-            </h1>
-
-            <p
-              className="text-[18px] leading-[1.75] mb-9 max-w-[540px]"
-              style={{
-                fontFamily: "var(--font-body)",
-                color: "#2C3E50",
-                opacity: mounted ? 1 : 0,
-                transform: mounted ? "translateY(0)" : "translateY(16px)",
-                transition:
-                  "opacity 0.8s ease 760ms, transform 0.8s ease 760ms",
-              }}
-            >
-              Esperienze culturali che rivelano come Asia e Europa rispondono
-              alle stesse domande umane in modi sorprendentemente diversi.
-            </p>
-
-            <div
-              className="flex flex-wrap gap-4"
-              style={{
-                opacity: mounted ? 1 : 0,
-                transform: mounted ? "translateY(0)" : "translateY(16px)",
-                transition:
-                  "opacity 0.8s ease 920ms, transform 0.8s ease 920ms",
-              }}
-            >
-              <Link
-                href="/workshop"
-                className="inline-flex items-center gap-2 px-8 py-3.5 text-[16px] font-semibold rounded-[12px] transition-all duration-200 bg-primary text-primary-foreground shadow-[0_14px_26px_rgba(139,69,19,0.45)] hover:shadow-[0_18px_30px_rgba(139,69,19,0.6)] hover:-translate-y-[1px] hover:gap-3"
-                style={{ fontFamily: "var(--font-ui)" }}
-              >
-                Scopri i Workshop <ArrowRight size={16} />
-              </Link>
-              <Link
-                href="/chi-siamo"
-                className="inline-flex items-center gap-2 px-8 py-3.5 text-[16px] font-semibold rounded-[12px] border border-[#2C3E50] text-[#2C3E50] bg-white/80 transition-all duration-200 hover:border-[#D2691E] hover:text-[#D2691E] hover:-translate-y-[1px] hover:gap-3"
-                style={{ fontFamily: "var(--font-ui)" }}
-              >
-                La Nostra Storia
-              </Link>
-            </div>
-          </div>
+      <div className="content-section">
+        <div className="content-block">
+          <h2>Esperienze Culturali Comparate</h2>
+          <h3>Dove culture diverse interpretano la stessa cosa.</h3>
+          <p>
+            Esperienze culturali che rivelano come Asia e Europa rispondono alle stesse domande
+            umane in modi sorprendentemente diversi.
+          </p>
         </div>
-      </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10"
-        style={{ opacity: mounted ? 0.5 : 0, transition: "opacity 1s ease 1200ms" }}>
-        <div className="w-px bg-primary"
-          style={{ height: mounted ? "52px" : "0px", transition: "height 1s ease 1300ms" }} />
+        <div className="divider" />
+
+        <div className="content-block">
+          <h2>Esperienze che aprono nuove prospettive</h2>
+          <h3>Workshop e Laboratori Culturali</h3>
+          <p>
+            Attraverso il pennello e l&apos;inchiostro, scopri come la calligrafia cinese trasforma
+            ogni gesto in un atto di meditazione. Non si impara a copiare caratteri — si impara a
+            stare presenti.
+          </p>
+          <p>
+            Nella pittura a inchiostro non esiste correzione. Ogni pennellata è definitiva — come le
+            parole dette con sincerità. Un&apos;esperienza che insegna a fidarsi del proprio istinto.
+          </p>
+          <p>
+            Impastare ravioli o modellare baozi non è solo cucinare — è accedere a un codice
+            culturale che si tramanda attraverso le mani. Ogni piega racconta una storia.
+          </p>
+        </div>
       </div>
     </section>
   );
