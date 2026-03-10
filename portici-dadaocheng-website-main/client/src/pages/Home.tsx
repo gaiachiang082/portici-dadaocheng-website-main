@@ -304,7 +304,7 @@ function HeroSection() {
         }
 
         .hero-header h1 {
-          font-family: 'Cooper Black','CooperBlack','Cooper Black BT','Cooper Std', system-ui, sans-serif;
+          font-family: 'Cooper Black', 'CooperBlack', 'Cooper Black BT', 'Cooper Std', system-ui, sans-serif;
           font-size: 4rem;
           font-weight: 900;
           color: #000000;
@@ -336,9 +336,18 @@ function HeroSection() {
           font-weight: 900;
           color: #2c3e50;
           letter-spacing: 8px;
-          position: relative;
+          position: absolute;
           white-space: nowrap;
           text-transform: uppercase;
+        }
+
+        .striped-bar.taipei .pixel-text {
+          left: 60px;
+        }
+
+        .striped-bar.bologna .pixel-text {
+          right: 60px;
+          left: auto;
         }
 
         .pixel-text::before,
@@ -359,87 +368,55 @@ function HeroSection() {
           bottom: -10px;
         }
 
+        /* Da TAIPEI: 左 → 右 → 左 迴圈 */
         .pixel-text.taipei-animate {
-          animation: pixelFlickerLeftToRight 4s infinite ease-in-out;
+          animation: taipeiSlideAcross 8s ease-in-out infinite;
         }
 
-        @keyframes pixelFlickerLeftToRight {
+        @keyframes taipeiSlideAcross {
           0% {
-            transform: translateX(-100px);
-            opacity: 0.3;
-            text-shadow:
-              2px 0 0 rgba(0, 0, 0, 0.2),
-              -2px 0 0 rgba(0, 0, 0, 0.2);
+            left: 60px;
+            transform: translateX(0);
           }
-          25% {
-            opacity: 0.6;
-            text-shadow:
-              2px 0 0 rgba(0, 0, 0, 0.4),
-              -2px 0 0 rgba(0, 0, 0, 0.4),
-              4px 0 0 rgba(0, 0, 0, 0.2);
+          45% {
+            left: 100%;
+            transform: translateX(-100%);
           }
-          50% {
-            opacity: 1;
-            text-shadow:
-              2px 0 0 rgba(0, 0, 0, 0.5),
-              -2px 0 0 rgba(0, 0, 0, 0.5),
-              4px 0 0 rgba(0, 0, 0, 0.3),
-              -4px 0 0 rgba(0, 0, 0, 0.3);
-          }
-          75% {
-            opacity: 0.6;
-            text-shadow:
-              2px 0 0 rgba(0, 0, 0, 0.4),
-              -2px 0 0 rgba(0, 0, 0, 0.4);
+          55% {
+            left: 100%;
+            transform: translateX(-100%);
           }
           100% {
-            transform: translateX(100px);
-            opacity: 0.3;
-            text-shadow:
-              2px 0 0 rgba(0, 0, 0, 0.2),
-              -2px 0 0 rgba(0, 0, 0, 0.2);
+            left: 60px;
+            transform: translateX(0);
           }
         }
 
+        /* A BOLOGNA: 右 → 左 → 右 迴圈 */
         .pixel-text.bologna-animate {
-          animation: pixelFlickerRightToLeft 4s infinite ease-in-out;
+          animation: bolognaSlideAcross 8s ease-in-out infinite;
         }
 
-        @keyframes pixelFlickerRightToLeft {
+        @keyframes bolognaSlideAcross {
           0% {
-            transform: translateX(100px);
-            opacity: 0.3;
-            text-shadow:
-              2px 0 0 rgba(0, 0, 0, 0.2),
-              -2px 0 0 rgba(0, 0, 0, 0.2);
+            right: 60px;
+            left: auto;
+            transform: translateX(0);
           }
-          25% {
-            opacity: 0.6;
-            text-shadow:
-              2px 0 0 rgba(0, 0, 0, 0.4),
-              -2px 0 0 rgba(0, 0, 0, 0.4),
-              4px 0 0 rgba(0, 0, 0, 0.2);
+          45% {
+            left: 60px;
+            right: auto;
+            transform: translateX(0);
           }
-          50% {
-            opacity: 1;
-            text-shadow:
-              2px 0 0 rgba(0, 0, 0, 0.5),
-              -2px 0 0 rgba(0, 0, 0, 0.5),
-              4px 0 0 rgba(0, 0, 0, 0.3),
-              -4px 0 0 rgba(0, 0, 0, 0.3);
-          }
-          75% {
-            opacity: 0.6;
-            text-shadow:
-              2px 0 0 rgba(0, 0, 0, 0.4),
-              -2px 0 0 rgba(0, 0, 0, 0.4);
+          55% {
+            left: 60px;
+            right: auto;
+            transform: translateX(0);
           }
           100% {
-            transform: translateX(-100px);
-            opacity: 0.3;
-            text-shadow:
-              2px 0 0 rgba(0, 0, 0, 0.2),
-              -2px 0 0 rgba(0, 0, 0, 0.2);
+            right: 60px;
+            left: auto;
+            transform: translateX(0);
           }
         }
 
