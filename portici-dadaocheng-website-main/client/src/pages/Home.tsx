@@ -537,35 +537,6 @@ function HeroSection() {
           padding-bottom: 0;
         }
 
-        .workshop-section-header {
-          margin-bottom: 30px;
-        }
-
-        .workshop-section-header h3 {
-          font-family: 'Montserrat', system-ui, sans-serif;
-          font-size: 1rem;
-          color: #8B4513;
-          margin-bottom: 12px;
-          text-transform: uppercase;
-          letter-spacing: 2px;
-          font-weight: 700;
-        }
-
-        .workshop-section-header h2 {
-          margin-bottom: 12px;
-        }
-
-        .divider-short {
-          width: 60px;
-          height: 2px;
-          background: linear-gradient(90deg, #8B4513, #CD853F);
-        }
-
-        .content-section-workshop-intro {
-          padding-bottom: 32px;
-          margin-bottom: 0;
-        }
-
         @media (max-width: 768px) {
           .hero-header {
             padding: 30px 20px;
@@ -595,10 +566,6 @@ function HeroSection() {
 
           .content-section-tight {
             padding-top: 16px;
-          }
-
-          .content-section-workshop-intro {
-            padding-bottom: 24px;
           }
 
           .content-section h2 {
@@ -678,14 +645,6 @@ function HeroSection() {
           </div>
         </div>
       </div>
-
-      <div className="content-section content-section-workshop-intro">
-        <div className="workshop-section-header">
-          <h3>Workshop</h3>
-          <h2>Esperienze che aprono nuove prospettive</h2>
-          <div className="divider-short" />
-        </div>
-      </div>
     </section>
   );
 }
@@ -751,13 +710,13 @@ const WORKSHOP_FEATURES = [
 function WorkshopSection() {
   return (
     <section className="py-0 bg-background">
-      {/* Header */}
+      {/* Header — font sizes match former hero workshop intro (2.5rem title, 1rem label) */}
       <div className="container py-20">
         <Reveal>
-          <p className="text-[15px] font-normal tracking-[0.22em] uppercase text-primary mb-4"
-            style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>Workshop</p>
+          <p className="font-normal tracking-[0.22em] uppercase text-primary mb-4"
+            style={{ fontFamily: "'Montserrat', system-ui, sans-serif", fontSize: "1rem", fontWeight: 700 }}>Workshop</p>
           <h2 className="font-medium text-[oklch(27.5%_0.000_0)]"
-            style={{ fontFamily: "var(--font-display)", fontSize: "28px", fontWeight: 600, lineHeight: 1.2 }}>
+            style={{ fontFamily: "'Cooper Black', serif", fontSize: "clamp(1.75rem, 5vw, 2.5rem)", fontWeight: 400, lineHeight: 1.2, letterSpacing: "-1px" }}>
             Esperienze che aprono nuove prospettive
           </h2>
           <div className="w-10 h-0.5 bg-primary mt-5" />
