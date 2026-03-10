@@ -134,14 +134,18 @@ export default function Navigation() {
               </button>
             </div>
 
-            {/* CTA — Desktop */}
+            {/* CTA — Desktop：首頁剛顯示時與頁面底色一致（白底深字），捲動後為棕色按鈕 */}
             <Link
               href="/workshop"
-              className="hidden md:inline-flex items-center px-5 py-2 text-[15px] font-semibold rounded-xl transition-all duration-300 bg-primary text-primary-foreground hover:opacity-85 hover:px-6"
+              className={`hidden md:inline-flex items-center px-5 py-2 text-[15px] font-semibold rounded-xl transition-all duration-300 hover:opacity-85 hover:px-6 ${
+                isHome && !scrolled
+                  ? "bg-background text-foreground border border-border shadow-sm hover:bg-muted"
+                  : "bg-primary text-primary-foreground"
+              }`}
               style={{
                 fontFamily: 'var(--font-ui)',
                 opacity: mounted ? 1 : 0,
-                transition: `opacity 0.5s ease 700ms, padding 0.3s ease, background-color 0.3s ease`,
+                transition: `opacity 0.5s ease 700ms, padding 0.3s ease, background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease`,
               }}
             >
               Prenota Workshop
@@ -198,7 +202,9 @@ export default function Navigation() {
           ))}
           <Link
             href="/workshops"
-            className="mt-2 inline-flex items-center justify-center px-5 py-2.5 text-[15px] font-semibold rounded-xl bg-primary text-primary-foreground hover:opacity-85 transition-opacity"
+            className={`mt-2 inline-flex items-center justify-center px-5 py-2.5 text-[15px] font-semibold rounded-xl hover:opacity-85 transition-opacity ${
+              isHome && !scrolled ? "bg-background text-foreground border border-border" : "bg-primary text-primary-foreground"
+            }`}
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
           >
             Prenota Workshop

@@ -100,6 +100,16 @@ const IMG = {
 };
 
 /* ─────────────────────────────────────────────────────────────────
+   LANDING VIDEO AREAS (DA TAIPEI / A BOLOGNA)
+   本機影片置入方式：將 .mp4 檔放到 client/public/videos/ 資料夾，
+   命名為 area1.mp4（上）、area2.mp4（下），重新整理即可顯示。
+   ───────────────────────────────────────────────────────────────── */
+const VIDEO = {
+  area1: "/videos/area1.mp4", // [ANIMAZIONE AREA 1] — Da Taipei
+  area2: "/videos/area2.mp4", // [ANIMAZIONE AREA 2] — A Bologna
+};
+
+/* ─────────────────────────────────────────────────────────────────
    WORKSHOP CAROUSEL SLIDES  (書法 + 水墨 + 茶道)
    ───────────────────────────────────────────────────────────────── */
 const WORKSHOP_SLIDES = [
@@ -575,13 +585,35 @@ function HeroSection() {
           <div className="pixel-text taipei-animate">Da TAIPEI</div>
         </div>
 
-        <div className="animation-block block-1">[ANIMAZIONE AREA 1]</div>
+        <div className="animation-block block-1">
+          <video
+            className="absolute inset-0 w-full h-full object-cover"
+            src={VIDEO.area1}
+            autoPlay
+            muted
+            loop
+            playsInline
+            onError={(e) => { (e.currentTarget.style.display = "none"); e.currentTarget.nextElementSibling?.classList.remove("hidden"); }}
+          />
+          <span className="absolute inset-0 flex items-center justify-center text-white font-bold text-lg tracking-widest bg-[#a80000] hidden">[ANIMAZIONE AREA 1]</span>
+        </div>
 
         <div className="striped-bar bologna">
           <div className="pixel-text bologna-animate">A BOLOGNA</div>
         </div>
 
-        <div className="animation-block block-2">[ANIMAZIONE AREA 2]</div>
+        <div className="animation-block block-2">
+          <video
+            className="absolute inset-0 w-full h-full object-cover"
+            src={VIDEO.area2}
+            autoPlay
+            muted
+            loop
+            playsInline
+            onError={(e) => { (e.currentTarget.style.display = "none"); e.currentTarget.nextElementSibling?.classList.remove("hidden"); }}
+          />
+          <span className="absolute inset-0 flex items-center justify-center text-white font-bold text-lg tracking-widest bg-[#a80000] hidden">[ANIMAZIONE AREA 2]</span>
+        </div>
       </div>
 
       <div className="content-section">
