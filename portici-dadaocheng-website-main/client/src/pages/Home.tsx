@@ -561,6 +561,11 @@ function HeroSection() {
           background: linear-gradient(90deg, #8B4513, #CD853F);
         }
 
+        .content-section-workshop-intro {
+          padding-bottom: 32px;
+          margin-bottom: 0;
+        }
+
         @media (max-width: 768px) {
           .hero-header {
             padding: 30px 20px;
@@ -590,6 +595,10 @@ function HeroSection() {
 
           .content-section-tight {
             padding-top: 16px;
+          }
+
+          .content-section-workshop-intro {
+            padding-bottom: 24px;
           }
 
           .content-section h2 {
@@ -670,31 +679,11 @@ function HeroSection() {
         </div>
       </div>
 
-      <div className="content-section">
+      <div className="content-section content-section-workshop-intro">
         <div className="workshop-section-header">
           <h3>Workshop</h3>
           <h2>Esperienze che aprono nuove prospettive</h2>
           <div className="divider-short" />
-        </div>
-
-        <div className="divider" />
-
-        <div className="content-block">
-          <h2>Esperienze che aprono nuove prospettive</h2>
-          <h3>Workshop e Laboratori Culturali</h3>
-          <p>
-            Attraverso il pennello e l&apos;inchiostro, scopri come la calligrafia cinese trasforma
-            ogni gesto in un atto di meditazione. Non si impara a copiare caratteri — si impara a
-            stare presenti.
-          </p>
-          <p>
-            Nella pittura a inchiostro non esiste correzione. Ogni pennellata è definitiva — come le
-            parole dette con sincerità. Un&apos;esperienza che insegna a fidarsi del proprio istinto.
-          </p>
-          <p>
-            Impastare ravioli o modellare baozi non è solo cucinare — è accedere a un codice
-            culturale che si tramanda attraverso le mani. Ogni piega racconta una storia.
-          </p>
         </div>
       </div>
     </section>
