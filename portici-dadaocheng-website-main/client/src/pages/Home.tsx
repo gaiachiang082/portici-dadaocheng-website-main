@@ -425,7 +425,7 @@ function HeroSection() {
           <h1 className="font-semibold text-[var(--on-dark)] mb-8 overflow-hidden"
             style={{ fontFamily: 'var(--font-display)', fontSize: "clamp(2.4rem, 4.8vw, 3.1rem)", lineHeight: 1.1, letterSpacing: "-0.01em" }}>
             <MaskSlideText text="Dove culture diverse" delay={280} />
-            <MaskSlideText text="interpretano" delay={400} color="var(--primary)" italic />
+            <MaskSlideText text="interpretano" delay={400} color="var(--primary)" />
             <MaskSlideText text="la stessa cosa." delay={520} />
           </h1>
 
