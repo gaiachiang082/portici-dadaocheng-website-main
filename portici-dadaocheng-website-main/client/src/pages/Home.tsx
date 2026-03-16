@@ -906,7 +906,7 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
               })()}
             </svg>
 
-            {/* 光源：第一時刻隱藏，下拉後才從中心極小亮點開始擴張，無黑球 */}
+            {/* 光源：第一時刻隱藏，下拉後才從中心極小亮點開始擴張；初始為柔光放射、邊緣模糊 */}
             {glowVisible && (
               <div
                 className="absolute left-1/2 bottom-[4%] -translate-x-1/2 rounded-full pointer-events-none"
@@ -914,14 +914,15 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
                   width: `${glowSize}px`,
                   height: `${glowSize}px`,
                   opacity: progress <= 0 ? 0 : 1,
+                  filter: glowPhase === 0 ? "blur(14px)" : "none",
                   background:
                     glowPhase === 0
-                      ? "radial-gradient(ellipse 100% 100% at 50% 50%, rgba(255,252,248,0.95) 0%, rgba(255,252,248,0.4) 40%, transparent 72%)"
+                      ? "radial-gradient(ellipse 100% 100% at 50% 50%, rgba(255,252,248,0.85) 0%, rgba(255,252,248,0.5) 28%, rgba(255,252,248,0.2) 55%, rgba(255,252,248,0.06) 78%, transparent 95%)"
                       : "radial-gradient(ellipse 100% 100% at 50% 50%, rgba(255,252,248,0.99) 0%, rgba(255,252,248,0.85) 25%, rgba(255,252,248,0.5) 50%, rgba(255,252,248,0.12) 78%, transparent 100%)",
                   boxShadow:
                     glowPhase > 0
                       ? "0 0 180px rgba(255,252,248,0.9), 0 0 300px rgba(255,252,248,0.5)"
-                      : "0 0 60px rgba(255,252,248,0.4)",
+                      : "0 0 80px rgba(255,252,248,0.35), 0 0 140px rgba(255,252,248,0.15)",
                 }}
               />
             )}
