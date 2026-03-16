@@ -875,7 +875,7 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
             <svg viewBox="0 0 1200 820" className="absolute inset-0 w-full h-full">
               <rect x="0" y="0" width="1200" height="820" fill="#050607" />
               {(() => {
-                const total = 40; // 視覺上較平衡的層數
+                const total = 15;
                 const visible = Math.max(3, Math.round(3 + archPhase * (total - 3)));
                 const paths = [];
                 for (let i = 0; i < visible; i++) {
@@ -902,7 +902,7 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
               })()}
             </svg>
 
-            {/* Glow at tunnel end — 純 2D 米白高斯光源（無 3D 球體），僅在第二階段擴張 */}
+            {/* Glow at tunnel end — 純 2D 米白光暈，無任何暗心/3D 球體 */}
             <div
               className="absolute left-1/2 bottom-[4%] -translate-x-1/2 rounded-full pointer-events-none"
               style={{
@@ -910,13 +910,12 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
                 height: `${glowSize}px`,
                 background:
                   glowPhase === 0
-                    ? "radial-gradient(circle at 50% 30%, rgba(245,239,225,0.25), transparent 80%)"
-                    : "radial-gradient(circle at 50% 30%, rgba(245,239,225,0.98) 0%, rgba(245,239,225,0.7) 38%, rgba(245,239,225,0.22) 72%, transparent 92%)",
+                    ? "radial-gradient(ellipse 100% 100% at 50% 30%, rgba(252,250,245,0.35), transparent 70%)"
+                    : "radial-gradient(ellipse 100% 100% at 50% 30%, rgba(252,250,245,0.99) 0%, rgba(252,250,245,0.85) 25%, rgba(252,250,245,0.5) 50%, rgba(252,250,245,0.15) 75%, transparent 100%)",
                 boxShadow:
                   glowPhase > 0
-                    ? "0 0 160px rgba(245,239,225,0.95), 0 0 260px rgba(245,239,225,0.7)"
-                    : "0 0 40px rgba(245,239,225,0.4)",
-                mixBlendMode: "screen",
+                    ? "0 0 180px rgba(252,250,245,0.9), 0 0 300px rgba(252,250,245,0.5)"
+                    : "0 0 50px rgba(252,250,245,0.35)",
               }}
             />
           </div>
