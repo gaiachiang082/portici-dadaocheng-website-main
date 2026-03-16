@@ -839,7 +839,7 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
   const glowPhase = progress <= 0.7 ? 0 : Math.min((progress - 0.7) / 0.3, 1);
 
   const glowBase = 140;
-  const glowMaxExtra = 1300;
+  const glowMaxExtra = 1600;
   const glowSize = glowBase + glowPhase * glowMaxExtra;
 
   return (
@@ -863,8 +863,8 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
           <div
             className="relative w-full max-w-4xl aspect-[3/2]"
             style={{
-              // 拱門依滑動進度均速放大，與使用者下滑同步
-              transform: `scale(${1 + archPhase * 0.8})`,
+              // 拱門依滑動進度放大；速率為層數變化的兩倍
+              transform: `scale(${1 + archPhase * 1.6})`,
               transformOrigin: "center center",
             }}
           >
@@ -875,7 +875,7 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
             <svg viewBox="0 0 1200 820" className="absolute inset-0 w-full h-full">
               <rect x="0" y="0" width="1200" height="820" fill="#050607" />
               {(() => {
-                const total = 66;
+                const total = 40; // 視覺上較平衡的層數
                 const visible = Math.max(3, Math.round(3 + archPhase * (total - 3)));
                 const paths = [];
                 for (let i = 0; i < visible; i++) {
@@ -902,7 +902,7 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
               })()}
             </svg>
 
-            {/* Glow at tunnel end — 純 2D 米白高斯光源，僅在第二階段擴張 */}
+            {/* Glow at tunnel end — 純 2D 米白高斯光源（無 3D 球體），僅在第二階段擴張 */}
             <div
               className="absolute left-1/2 bottom-[4%] -translate-x-1/2 rounded-full pointer-events-none"
               style={{
@@ -910,8 +910,8 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
                 height: `${glowSize}px`,
                 background:
                   glowPhase === 0
-                    ? "radial-gradient(circle at 50% 25%, rgba(245,239,225,0.3), transparent 75%)"
-                    : "radial-gradient(circle at 50% 25%, rgba(245,239,225,0.98), rgba(245,239,225,0.65) 42%, transparent 82%)",
+                    ? "radial-gradient(circle at 50% 30%, rgba(245,239,225,0.25), transparent 80%)"
+                    : "radial-gradient(circle at 50% 30%, rgba(245,239,225,0.98) 0%, rgba(245,239,225,0.7) 38%, rgba(245,239,225,0.22) 72%, transparent 92%)",
                 boxShadow:
                   glowPhase > 0
                     ? "0 0 160px rgba(245,239,225,0.95), 0 0 260px rgba(245,239,225,0.7)"
