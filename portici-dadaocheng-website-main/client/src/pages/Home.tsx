@@ -860,36 +860,34 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
           </p>
           </div>
 
-          <div
-            className="relative w-full max-w-4xl aspect-[3/2]"
-            style={{
-              transform: "scale(1.2)",
-              transformOrigin: "center bottom",
-            }}
-          >
+          <div className="relative w-full max-w-4xl aspect-[3/2]">
             {/* Dark background */}
             <div className="absolute inset-0 bg-[#050607]" />
 
-            {/* Concentric arches — 數量會隨滑動漸增，並覆蓋整個畫面 */}
-            <svg viewBox="0 0 1200 900" className="absolute inset-0 w-full h-full">
-              <rect x="0" y="0" width="1200" height="900" fill="#050607" />
+            {/* Concentric arch doorways — 兩側有高度的圓拱門 */}
+            <svg viewBox="0 0 1200 820" className="absolute inset-0 w-full h-full">
+              <rect x="0" y="0" width="1200" height="820" fill="#050607" />
               {(() => {
-                const total = 64;
-                const visible = Math.max(6, Math.round(6 + archPhase * (total - 6)));
+                const total = 66;
+                const visible = Math.max(3, Math.round(3 + archPhase * (total - 3)));
                 const paths = [];
                 for (let i = 0; i < visible; i++) {
-                  const inset = 40 + i * 42; // 間距放大約三倍
-                  const stroke = "rgba(245,245,245,0.5)";
+                  const inset = 40 + i * 32;
+                  const stroke = "rgba(245,245,245,0.7)";
+                  const bottomY = 780; // 門腳高度
+                  const archY = 520;   // 拱頂起點高度
                   paths.push(
                     <path
                       key={i}
                       d={`
-                        M ${inset} 820
-                        A ${600 - inset} ${600 - inset} 0 0 1 ${1200 - inset} 820
+                        M ${inset} ${bottomY}
+                        L ${inset} ${archY}
+                        A ${600 - inset} ${520 - inset} 0 0 1 ${1200 - inset} ${archY}
+                        L ${1200 - inset} ${bottomY}
                       `}
                       fill="none"
                       stroke={stroke}
-                      strokeWidth={1.8}
+                      strokeWidth={1.5}
                     />,
                   );
                 }
