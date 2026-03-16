@@ -671,6 +671,123 @@ function HeroSection() {
           </div>
         )}
       </div>
+
+      {/* Mission (使命) — Japandi + Editorial section */}
+      <section
+        className="px-6 md:px-10 lg:px-20"
+        style={{
+          backgroundColor: "#F9F7F3", // warm oat / pearl grey
+          color: "#2A2A2A", // softened dark charcoal instead of pure black
+          paddingTop: "120px",
+          paddingBottom: "140px",
+        }}
+      >
+        <div
+          className="mx-auto grid gap-12 lg:gap-20 items-stretch"
+          style={{
+            maxWidth: "1120px",
+            gridTemplateColumns: "minmax(0, 1.1fr) minmax(0, 0.9fr)",
+          }}
+        >
+          {/* Text column */}
+          <div className="flex flex-col justify-center">
+            <p
+              className="mb-6"
+              style={{
+                fontFamily: "'Noto Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
+                fontSize: "11px",
+                letterSpacing: "0.28em",
+                textTransform: "uppercase",
+                color: "#7A7265",
+              }}
+            >
+              DA TAIPEI A BOLOGNA
+            </p>
+
+            <h2
+              className="mb-6"
+              style={{
+                fontFamily: "'Spectral', 'Iowan Old Style', 'Palatino', Georgia, 'Times New Roman', serif",
+                fontSize: "clamp(2.4rem, 4vw, 3rem)",
+                fontWeight: 500,
+                lineHeight: 1.18,
+                letterSpacing: "-0.03em",
+              }}
+            >
+              L&apos;Arte dell&apos;Incontro
+              <span style={{ fontSize: "0.9em", fontWeight: 400, opacity: 0.75 }}> · 相遇的藝術</span>
+            </h2>
+
+            <div
+              className="max-w-xl"
+              style={{
+                fontFamily: "'Noto Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
+                fontSize: "15px",
+                lineHeight: 1.7,
+                letterSpacing: "0.03em",
+                color: "#3A3732",
+              }}
+            >
+              <p>
+                Il nostro metodo parte sempre dalla stessa domanda: come rispondono culture diverse allo stesso
+                bisogno umano? Scopriamo che la diversità stessa è la risposta più ricca.
+              </p>
+            </div>
+          </div>
+
+          {/* Image column — portrait, slightly offset for asymmetry */}
+          <div
+            className="relative"
+            style={{
+              alignSelf: "flex-start",
+              marginTop: "-32px",
+            }}
+          >
+            {/* Subtle editorial frame behind image */}
+            <div
+              className="absolute inset-0 translate-x-[-10%] translate-y-[14%]"
+              style={{
+                border: "1px solid rgba(80, 72, 60, 0.28)",
+              }}
+            />
+
+            <div
+              className="overflow-hidden"
+              style={{
+                aspectRatio: "4 / 5",
+                backgroundImage:
+                  "linear-gradient(135deg, #EAE4D8 0%, #F5F1E8 40%, #E3DBCF 100%)",
+                borderRadius: 0, // keep magazine-sharp edges
+              }}
+            >
+              <div
+                className="w-full h-full"
+                style={{
+                  backgroundImage:
+                    "url('https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/QlYNHHXFFlKYYNOQ.png')",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  mixBlendMode: "multiply",
+                }}
+              />
+            </div>
+
+            {/* Small caption under image */}
+            <p
+              className="mt-4"
+              style={{
+                fontFamily: "'Noto Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
+                fontSize: "11px",
+                letterSpacing: "0.22em",
+                textTransform: "uppercase",
+                color: "#877C6E",
+              }}
+            >
+              Missione · L&apos;Arte dell&apos;Incontro
+            </p>
+          </div>
+        </div>
+      </section>
     </section>
   );
 }
@@ -686,11 +803,17 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
   useEffect(() => {
     const handleScroll = () => {
       const viewportH = window.innerHeight || document.documentElement.clientHeight;
-
-      // Use global scroll position so at page load progress === 0
       const scrollY = window.scrollY || window.pageYOffset || 0;
-      const maxScroll = viewportH * 1.2; // how far to scroll before effect completes
-      const raw = scrollY / maxScroll;
+
+      const el = containerRef.current;
+      if (!el) return;
+
+      // Local progress: 當前滾動相對於本區塊頂端的位置
+      const sectionTop = el.offsetTop;
+      const localScroll = scrollY - sectionTop;
+      const maxScroll = viewportH * 2.5; // 需滾動的距離，約等於 2.5 個視窗高度
+
+      const raw = localScroll / maxScroll;
       const clamped = Math.min(1, Math.max(0, raw));
       setProgress(clamped);
 
@@ -715,10 +838,6 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
   const archPhase = Math.min(progress / 0.7, 1);
   const glowPhase = progress <= 0.7 ? 0 : Math.min((progress - 0.7) / 0.3, 1);
 
-  const maxScale = 2.4;
-  const scale = 1 + archPhase * (maxScale - 1);
-  const translateY = archPhase * -60;
-
   const glowBase = 140;
   const glowMaxExtra = 1100;
   const glowSize = glowBase + glowPhase * glowMaxExtra;
@@ -726,74 +845,73 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
   return (
     <section
       ref={containerRef}
-      className="relative bg-[#050607] min-h-screen flex items-center overflow-hidden"
+      className="relative bg-[#050607] h-[260vh]"
       aria-hidden="true"
     >
-      <div className="container flex flex-col items-center">
-        <div className="mb-10 text-center">
+      {/* Sticky 3D scene：在整個區塊滾動期間固定在視窗內 */}
+      <div className="sticky top-0 h-screen flex items-center overflow-hidden">
+        <div className="container flex flex-col items-center">
+          <div className="mb-10 text-center">
           <p
             className="text-[12px] tracking-[0.28em] uppercase text-[oklch(72%_0.005_85)]/70"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
           >
             Entrata nel Portale
           </p>
-        </div>
+          </div>
 
-        <div
-          className="relative w-full max-w-4xl aspect-[3/2]"
-          style={{
-            transform: `scale(${scale}) translateY(${translateY}px)`,
-            transformOrigin: "center bottom",
-            transition: "transform 0.06s linear",
-          }}
-        >
-          {/* Dark background */}
-          <div className="absolute inset-0 bg-[#050607]" />
+          <div className="relative w-full max-w-4xl aspect-[3/2]">
+            {/* Dark background */}
+            <div className="absolute inset-0 bg-[#050607]" />
 
-          {/* Concentric arches — 數量會隨滑動漸增，並覆蓋整個畫面 */}
-          <svg viewBox="0 0 1200 900" className="absolute inset-0 w-full h-full">
-            <rect x="0" y="0" width="1200" height="900" fill="#050607" />
-            {(() => {
-              const total = 22;
-              const visible = Math.max(3, Math.round(3 + archPhase * (total - 3)));
-              const paths = [];
-              for (let i = 0; i < visible; i++) {
-                const inset = 40 + i * 18;
-                const stroke = "rgba(245,245,245,0.35)";
-                paths.push(
-                  <path
-                    key={i}
-                    d={`
-                      M ${inset} 640
-                      A ${600 - inset} ${600 - inset} 0 0 1 ${1200 - inset} 640
-                      L ${1200 - inset} 900
-                      L ${inset} 900
-                      Z
-                    `}
-                    fill="none"
-                    stroke={stroke}
-                    strokeWidth={1}
-                  />,
-                );
-              }
-              return paths;
-            })()}
-          </svg>
+            {/* Concentric arches — 數量會隨滑動漸增，並覆蓋整個畫面 */}
+            <svg viewBox="0 0 1200 900" className="absolute inset-0 w-full h-full">
+              <rect x="0" y="0" width="1200" height="900" fill="#050607" />
+              {(() => {
+                const total = 32;
+                const visible = Math.max(4, Math.round(4 + archPhase * (total - 4)));
+                const paths = [];
+                for (let i = 0; i < visible; i++) {
+                  const inset = 20 + i * 14;
+                  const stroke = "rgba(245,245,245,0.45)";
+                  paths.push(
+                    <path
+                      key={i}
+                      d={`
+                        M ${inset} 640
+                        A ${600 - inset} ${600 - inset} 0 0 1 ${1200 - inset} 640
+                        L ${1200 - inset} 900
+                        L ${inset} 900
+                        Z
+                      `}
+                      fill="none"
+                      stroke={stroke}
+                      strokeWidth={0.9}
+                    />,
+                  );
+                }
+                return paths;
+              })()}
+            </svg>
 
-          {/* Glow at tunnel end — 高斯式米白光源，僅在第二階段擴張 */}
-          <div
-            className="absolute left-1/2 bottom-[6%] -translate-x-1/2 rounded-full pointer-events-none"
-            style={{
-              width: `${glowSize}px`,
-              height: `${glowSize}px`,
-              background:
-                glowPhase === 0
-                  ? "radial-gradient(circle at 50% 20%, rgba(245,239,225,0.3), transparent 70%)"
-                  : "radial-gradient(circle at 50% 20%, rgba(245,239,225,0.95), rgba(245,239,225,0.5) 40%, transparent 78%)",
-              boxShadow: glowPhase > 0 ? "0 0 120px rgba(245,239,225,0.9)" : "0 0 40px rgba(245,239,225,0.4)",
-              mixBlendMode: "screen",
-            }}
-          />
+            {/* Glow at tunnel end — 純 2D 米白高斯光源，僅在第二階段擴張 */}
+            <div
+              className="absolute left-1/2 bottom-[4%] -translate-x-1/2 rounded-full pointer-events-none"
+              style={{
+                width: `${glowSize}px`,
+                height: `${glowSize}px`,
+                background:
+                  glowPhase === 0
+                    ? "radial-gradient(circle at 50% 25%, rgba(245,239,225,0.3), transparent 75%)"
+                    : "radial-gradient(circle at 50% 25%, rgba(245,239,225,0.98), rgba(245,239,225,0.65) 42%, transparent 82%)",
+                boxShadow:
+                  glowPhase > 0
+                    ? "0 0 160px rgba(245,239,225,0.95), 0 0 260px rgba(245,239,225,0.7)"
+                    : "0 0 40px rgba(245,239,225,0.4)",
+                mixBlendMode: "screen",
+              }}
+            />
+          </div>
         </div>
       </div>
     </section>
