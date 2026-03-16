@@ -685,15 +685,12 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
 
   useEffect(() => {
     const handleScroll = () => {
-      const el = containerRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
       const viewportH = window.innerHeight || document.documentElement.clientHeight;
 
-      // Map section entering viewport (bottom → middle) to 0 → 1
-      const start = viewportH * 0.9;
-      const end = viewportH * 0.3;
-      const raw = (start - rect.top) / (start - end);
+      // Use global scroll position so at page load progress === 0
+      const scrollY = window.scrollY || window.pageYOffset || 0;
+      const maxScroll = viewportH * 1.2; // how far to scroll before effect completes
+      const raw = scrollY / maxScroll;
       const clamped = Math.min(1, Math.max(0, raw));
       setProgress(clamped);
 
@@ -722,7 +719,7 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
   return (
     <section
       ref={containerRef}
-      className="relative bg-[#050607] py-24 md:py-28 overflow-hidden"
+      className="relative bg-[#050607] min-h-screen flex items-center overflow-hidden"
       aria-hidden="true"
     >
       <div className="container flex flex-col items-center">
