@@ -650,6 +650,113 @@ function HeroSection() {
 }
 
 /* ─────────────────────────────────────────────────────────────────
+   SCROLL ARCH SECTION — geometric arch that scales on scroll
+   ───────────────────────────────────────────────────────────────── */
+function ScrollArchSection() {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const el = containerRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const viewportH = window.innerHeight || document.documentElement.clientHeight;
+
+      // Map section entering viewport (bottom → middle) to 0 → 1
+      const start = viewportH * 0.9;
+      const end = viewportH * 0.3;
+      const raw = (start - rect.top) / (start - end);
+      const clamped = Math.min(1, Math.max(0, raw));
+      setProgress(clamped);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, []);
+
+  // At the end of scroll, tunnel dramatically enlarges so the glow fills viewport
+  const maxScale = 3;
+  const scale = 1 + progress * (maxScale - 1);
+  const translateY = progress * -80;
+  const glowBase = 220;
+  const glowSize = glowBase + progress * 900;
+
+  return (
+    <section
+      ref={containerRef}
+      className="relative bg-[#050607] py-24 md:py-28 overflow-hidden"
+      aria-hidden="true"
+    >
+      <div className="container flex flex-col items-center">
+        <div className="mb-10 text-center">
+          <p
+            className="text-[12px] tracking-[0.28em] uppercase text-[oklch(72%_0.005_85)]/70"
+            style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+          >
+            Entrata nel Portale
+          </p>
+        </div>
+
+        <div
+          className="relative w-full max-w-4xl aspect-[3/2]"
+          style={{
+            transform: `scale(${scale}) translateY(${translateY}px)`,
+            transformOrigin: "center bottom",
+            transition: "transform 0.06s linear",
+          }}
+        >
+          {/* Dark background */}
+          <div className="absolute inset-0 bg-[#050607]" />
+
+          {/* Concentric arches */}
+          <svg viewBox="0 0 1200 800" className="absolute inset-0 w-full h-full">
+            <rect x="0" y="0" width="1200" height="800" fill="#050607" />
+            {Array.from({ length: 11 }).map((_, i) => {
+              const inset = 40 + i * 32;
+              const stroke = "rgba(255,255,255,0.24)";
+              return (
+                <path
+                  key={i}
+                  d={`
+                    M ${inset} 520
+                    A ${600 - inset} ${520 - inset} 0 0 1 ${1200 - inset} 520
+                    L ${1200 - inset} 800
+                    L ${inset} 800
+                    Z
+                  `}
+                  fill="none"
+                  stroke={stroke}
+                  strokeWidth={1.2}
+                />
+              );
+            })}
+          </svg>
+
+          {/* Glow at tunnel end */}
+          <div
+            className="absolute left-1/2 bottom-[6%] -translate-x-1/2 rounded-full pointer-events-none"
+            style={{
+              width: `${glowSize}px`,
+              height: `${glowSize}px`,
+              background:
+                "radial-gradient(circle at 50% 15%, rgba(255,115,80,0.95), rgba(255,115,80,0.28) 45%, transparent 75%)",
+              boxShadow: "0 0 60px rgba(255,115,80,0.8)",
+              mixBlendMode: "screen",
+            }}
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
    FULL-WIDTH GALLERY CAROUSEL  (all 15 photos)
    ───────────────────────────────────────────────────────────────── */
 function GalleryCarousel() {
@@ -1204,6 +1311,7 @@ export default function Home() {
   return (
     <main>
       <HeroSection />
+      <ScrollArchSection />
       <BrandStoryStrip />
       <ArchGalleryStrip />
       <FeaturedArticlesSection />
