@@ -861,9 +861,9 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
           </div>
 
           <div
-            className="relative w-full max-w-6xl aspect-[4/3]"
+            className="relative w-full max-w-4xl aspect-[3/2]"
             style={{
-              transform: "scale(1.5)",
+              transform: "scale(1.2)",
               transformOrigin: "center bottom",
             }}
           >
