@@ -860,7 +860,14 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
           </p>
           </div>
 
-          <div className="relative w-full max-w-4xl aspect-[3/2]">
+          <div
+            className="relative w-full max-w-4xl aspect-[3/2]"
+            style={{
+              // 拱門依滑動進度均速放大，與使用者下滑同步
+              transform: `scale(${1 + archPhase * 0.8})`,
+              transformOrigin: "center center",
+            }}
+          >
             {/* Dark background */}
             <div className="absolute inset-0 bg-[#050607]" />
 
