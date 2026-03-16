@@ -289,6 +289,15 @@ function Carousel({
 }
 
 function HeroSection() {
+  const [titleVisible, setTitleVisible] = useState(false);
+  const [stripesVisible, setStripesVisible] = useState(false);
+
+  useEffect(() => {
+    setTitleVisible(true);
+    const id = window.setTimeout(() => setStripesVisible(true), 650);
+    return () => window.clearTimeout(id);
+  }, []);
+
   return (
     <section className="bg-white text-[#2c3e50] pt-24 md:pt-28">
       <style>
@@ -591,7 +600,14 @@ function HeroSection() {
       </style>
 
       <div className="hero-container">
-        <div className="hero-header">
+        <div
+          className="hero-header"
+          style={{
+            opacity: titleVisible ? 1 : 0,
+            transform: titleVisible ? "translateY(0)" : "translateY(24px)",
+            transition: "opacity 0.6s ease, transform 0.6s ease",
+          }}
+        >
           <h1>
             PORTICI
             <br />
@@ -599,51 +615,61 @@ function HeroSection() {
           </h1>
         </div>
 
-        <div className="striped-bar taipei">
-          <div className="pixel-text taipei-animate">Da TAIPEI</div>
-        </div>
+        {stripesVisible && (
+          <div
+            style={{
+              opacity: stripesVisible ? 1 : 0,
+              transform: stripesVisible ? "translateY(0)" : "translateY(24px)",
+              transition: "opacity 0.6s ease 0.1s, transform 0.6s ease 0.1s",
+            }}
+          >
+            <div className="striped-bar taipei">
+              <div className="pixel-text taipei-animate">Da TAIPEI</div>
+            </div>
 
-        <div className="animation-block block-1">
-          <video
-            className="absolute inset-0 w-full h-full object-cover"
-            src={VIDEO.area1}
-            autoPlay
-            muted
-            loop
-            playsInline
-            onError={(e) => { (e.currentTarget.style.display = "none"); e.currentTarget.nextElementSibling?.classList.remove("hidden"); }}
-          />
-          <span className="absolute inset-0 flex items-center justify-center text-white font-bold text-lg tracking-widest bg-[#a80000] hidden">[ANIMAZIONE AREA 1]</span>
-        </div>
+            <div className="animation-block block-1">
+              <video
+                className="absolute inset-0 w-full h-full object-cover"
+                src={VIDEO.area1}
+                autoPlay
+                muted
+                loop
+                playsInline
+                onError={(e) => { (e.currentTarget.style.display = "none"); e.currentTarget.nextElementSibling?.classList.remove("hidden"); }}
+              />
+              <span className="absolute inset-0 flex items-center justify-center text-white font-bold text-lg tracking-widest bg-[#a80000] hidden">[ANIMAZIONE AREA 1]</span>
+            </div>
 
-        <div className="striped-bar bologna">
-          <div className="pixel-text bologna-animate">A BOLOGNA</div>
-        </div>
+            <div className="striped-bar bologna">
+              <div className="pixel-text bologna-animate">A BOLOGNA</div>
+            </div>
 
-        <div className="video-compare-link">
-          <div className="animation-block block-2">
-            <video
-              className="absolute inset-0 w-full h-full object-cover"
-              src={VIDEO.area2}
-              autoPlay
-              muted
-              loop
-              playsInline
-              onError={(e) => { (e.currentTarget.style.display = "none"); e.currentTarget.nextElementSibling?.classList.remove("hidden"); }}
-            />
-            <span className="absolute inset-0 flex items-center justify-center text-white font-bold text-lg tracking-widest bg-[#a80000] hidden">[ANIMAZIONE AREA 2]</span>
-          </div>
-          <div className="content-section content-section-tight">
-            <div className="content-block">
-              <h2>Esperienze Culturali Comparate</h2>
-              <h3>Dove culture diverse interpretano la stessa cosa.</h3>
-              <p>
-                Esperienze culturali che rivelano come Asia e Europa rispondono alle stesse domande
-                umane in modi sorprendentemente diversi.
-              </p>
+            <div className="video-compare-link">
+              <div className="animation-block block-2">
+                <video
+                  className="absolute inset-0 w-full h-full object-cover"
+                  src={VIDEO.area2}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  onError={(e) => { (e.currentTarget.style.display = "none"); e.currentTarget.nextElementSibling?.classList.remove("hidden"); }}
+                />
+                <span className="absolute inset-0 flex items-center justify-center text-white font-bold text-lg tracking-widest bg-[#a80000] hidden">[ANIMAZIONE AREA 2]</span>
+              </div>
+              <div className="content-section content-section-tight">
+                <div className="content-block">
+                  <h2>Esperienze Culturali Comparate</h2>
+                  <h3>Dove culture diverse interpretano la stessa cosa.</h3>
+                  <p>
+                    Esperienze culturali che rivelano come Asia e Europa rispondono alle stesse domande
+                    umane in modi sorprendentemente diversi.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );
@@ -652,9 +678,10 @@ function HeroSection() {
 /* ─────────────────────────────────────────────────────────────────
    SCROLL ARCH SECTION — geometric arch that scales on scroll
    ───────────────────────────────────────────────────────────────── */
-function ScrollArchSection() {
+function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [progress, setProgress] = useState(0);
+  const [notified, setNotified] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -669,6 +696,11 @@ function ScrollArchSection() {
       const raw = (start - rect.top) / (start - end);
       const clamped = Math.min(1, Math.max(0, raw));
       setProgress(clamped);
+
+      if (!notified && clamped >= 0.98) {
+        setNotified(true);
+        onRevealHero?.();
+      }
     };
 
     handleScroll();
@@ -1308,10 +1340,12 @@ function NewsletterSection() {
    PAGE
    ───────────────────────────────────────────────────────────────── */
 export default function Home() {
+  const [heroVisible, setHeroVisible] = useState(false);
+
   return (
     <main>
-      <HeroSection />
-      <ScrollArchSection />
+      <ScrollArchSection onRevealHero={() => setHeroVisible(true)} />
+      {heroVisible && <HeroSection />}
       <BrandStoryStrip />
       <ArchGalleryStrip />
       <FeaturedArticlesSection />
