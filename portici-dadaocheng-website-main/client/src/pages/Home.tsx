@@ -709,12 +709,19 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
     };
   }, []);
 
-  // At the end of scroll, tunnel dramatically enlarges so the glow fills viewport
-  const maxScale = 3;
-  const scale = 1 + progress * (maxScale - 1);
-  const translateY = progress * -80;
-  const glowBase = 220;
-  const glowSize = glowBase + progress * 900;
+  // Split動畫成兩段：
+  // 0 → 0.7：拱門層數 + 尺度增加
+  // 0.7 → 1：光源高斯擴張覆蓋整個畫面
+  const archPhase = Math.min(progress / 0.7, 1);
+  const glowPhase = progress <= 0.7 ? 0 : Math.min((progress - 0.7) / 0.3, 1);
+
+  const maxScale = 2.4;
+  const scale = 1 + archPhase * (maxScale - 1);
+  const translateY = archPhase * -60;
+
+  const glowBase = 140;
+  const glowMaxExtra = 1100;
+  const glowSize = glowBase + glowPhase * glowMaxExtra;
 
   return (
     <section
@@ -743,39 +750,47 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
           {/* Dark background */}
           <div className="absolute inset-0 bg-[#050607]" />
 
-          {/* Concentric arches */}
-          <svg viewBox="0 0 1200 800" className="absolute inset-0 w-full h-full">
-            <rect x="0" y="0" width="1200" height="800" fill="#050607" />
-            {Array.from({ length: 11 }).map((_, i) => {
-              const inset = 40 + i * 32;
-              const stroke = "rgba(255,255,255,0.24)";
-              return (
-                <path
-                  key={i}
-                  d={`
-                    M ${inset} 520
-                    A ${600 - inset} ${520 - inset} 0 0 1 ${1200 - inset} 520
-                    L ${1200 - inset} 800
-                    L ${inset} 800
-                    Z
-                  `}
-                  fill="none"
-                  stroke={stroke}
-                  strokeWidth={1.2}
-                />
-              );
-            })}
+          {/* Concentric arches — 數量會隨滑動漸增，並覆蓋整個畫面 */}
+          <svg viewBox="0 0 1200 900" className="absolute inset-0 w-full h-full">
+            <rect x="0" y="0" width="1200" height="900" fill="#050607" />
+            {(() => {
+              const total = 22;
+              const visible = Math.max(3, Math.round(3 + archPhase * (total - 3)));
+              const paths = [];
+              for (let i = 0; i < visible; i++) {
+                const inset = 40 + i * 18;
+                const stroke = "rgba(245,245,245,0.35)";
+                paths.push(
+                  <path
+                    key={i}
+                    d={`
+                      M ${inset} 640
+                      A ${600 - inset} ${600 - inset} 0 0 1 ${1200 - inset} 640
+                      L ${1200 - inset} 900
+                      L ${inset} 900
+                      Z
+                    `}
+                    fill="none"
+                    stroke={stroke}
+                    strokeWidth={1}
+                  />,
+                );
+              }
+              return paths;
+            })()}
           </svg>
 
-          {/* Glow at tunnel end */}
+          {/* Glow at tunnel end — 高斯式米白光源，僅在第二階段擴張 */}
           <div
             className="absolute left-1/2 bottom-[6%] -translate-x-1/2 rounded-full pointer-events-none"
             style={{
               width: `${glowSize}px`,
               height: `${glowSize}px`,
               background:
-                "radial-gradient(circle at 50% 15%, rgba(255,115,80,0.95), rgba(255,115,80,0.28) 45%, transparent 75%)",
-              boxShadow: "0 0 60px rgba(255,115,80,0.8)",
+                glowPhase === 0
+                  ? "radial-gradient(circle at 50% 20%, rgba(245,239,225,0.3), transparent 70%)"
+                  : "radial-gradient(circle at 50% 20%, rgba(245,239,225,0.95), rgba(245,239,225,0.5) 40%, transparent 78%)",
+              boxShadow: glowPhase > 0 ? "0 0 120px rgba(245,239,225,0.9)" : "0 0 40px rgba(245,239,225,0.4)",
               mixBlendMode: "screen",
             }}
           />
