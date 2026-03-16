@@ -886,9 +886,6 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
                       d={`
                         M ${inset} 820
                         A ${600 - inset} ${600 - inset} 0 0 1 ${1200 - inset} 820
-                        L ${1200 - inset} 860
-                        L ${inset} 860
-                        Z
                       `}
                       fill="none"
                       stroke={stroke}
