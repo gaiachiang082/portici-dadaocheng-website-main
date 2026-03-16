@@ -1204,7 +1204,6 @@ export default function Home() {
   return (
     <main>
       <HeroSection />
-      <WorkshopSection />
       <BrandStoryStrip />
       <ArchGalleryStrip />
       <FeaturedArticlesSection />

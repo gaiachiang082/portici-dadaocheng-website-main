@@ -1,7 +1,424 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { Link, useLocation } from "wouter";
 import { Calendar, MapPin, Users, Clock, ArrowRight, Filter, X } from "lucide-react";
 import { trpc } from "@/lib/trpc";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+
+/* ─── Shared visual components from Home Workshop section ─── */
+
+const IMG = {
+  dadaochengArcade:  "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/noBAAdsQpHVXgrUG.png",
+  bolognaPortici:   "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/WFoweFZbdbtPoFjX.png",
+  dadaochengTemple:  "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/fJQLNNktTOZKWVkY.png",
+  dadaochengBaroque: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/yHHrSUbnQhNbXYxP.png",
+  calligroupA:       "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/vLnJyrtRLIpbvnYg.png",
+  calliInkBrush:     "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/dFdjgXVTblMasniP.png",
+  calliEuroMan:      "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/EizOfazFNGcbaYxm.png",
+  calliFlowerGirls:  "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/CWqYQNYqpYltaUBn.png",
+  calliClassroom:    "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/pmoSxbLCOlhTAXWL.png",
+  inkFlower:         "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/PAfFLmeFyGztnQqK.png",
+  teaSettle:         "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/bglhzhpRWfrDXIyk.png",
+  workshop:          "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/vVbLoAhQOXtqsgRp.png",
+  teaWare:           "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/tIhnZPQxlSeAhdvy.png",
+  matcha:            "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/vWhTfjQHHShnwmTa.png",
+  dadaochengMarket:  "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/LDbCEzwVXwntKepU.png",
+  teaRoomInterior:   "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/moKMdnvvYcKhiErW.png",
+  teaTrayCloseup:    "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/VmUsguHFlqXOZXyu.png",
+  dumplingWorkshop:  "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/YMRvdgKpLhmaPWyF.png",
+  baozi:             "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/TyMWdcUtnQcKPoYO.png",
+  dadaochengStreet:  "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/JlGNTUqhPVkwUfEj.png",
+  teaCeremony:       "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/FvnvFYxyZBtkoWGM.png",
+  highResScene:      "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/QlYNHHXFFlKYYNOQ.png",
+  scenePhoto:        "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/KpoiAaEWTttzycOO.png",
+};
+
+const WORKSHOP_SLIDES = [
+  { src: IMG.calligroupA,      label: "書法",     caption: "Calligrafia — Scrivere il tempo" },
+  { src: IMG.calliEuroMan,     label: "水墨",     caption: "Inchiostro — Il gesto che non mente" },
+  { src: IMG.calliClassroom,   label: "課堂",     caption: "Insieme — Imparare è un atto sociale" },
+  { src: IMG.calliFlowerGirls, label: "花鳥",     caption: "Fiori — La natura come vocabolario" },
+  { src: IMG.calliInkBrush,    label: "筆",       caption: "Il pennello — Strumento di meditazione" },
+  { src: IMG.inkFlower,        label: "梅",       caption: "Susino — Bellezza nella semplicità" },
+  { src: IMG.dumplingWorkshop, label: "餃子",     caption: "Ravioli — Cultura che si mangia" },
+  { src: IMG.baozi,            label: "包子",     caption: "Baozi — Le mani che trasmettono" },
+  { src: IMG.teaTrayCloseup,   label: "茶",       caption: "Tè — Tre filosofie, una tazza" },
+  { src: IMG.teaCeremony,      label: "茶道",     caption: "Cerimonia — Il rito trasforma" },
+];
+
+function Reveal({ children, delay = 0, className = "" }: {
+  children: React.ReactNode; delay?: number; className?: string;
+}) {
+  const { ref, visible } = useScrollReveal(0.12);
+  return (
+    <div
+      ref={ref as React.Ref<HTMLDivElement>}
+      className={className}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(28px)",
+        transition: `opacity 0.75s ease ${delay}ms, transform 0.75s ease ${delay}ms`,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+function Carousel({
+  slides,
+  height = "clamp(380px, 52vh, 620px)",
+  interval = 4500,
+  showDots = true,
+  showProgress = true,
+  showCounter = true,
+  overlayGradient = "linear-gradient(to bottom, oklch(0% 0 0 / 0.1) 0%, oklch(0% 0 0 / 0.55) 100%)",
+}: {
+  slides: { src: string; label: string; caption: string }[];
+  height?: string;
+  interval?: number;
+  showDots?: boolean;
+  showProgress?: boolean;
+  showCounter?: boolean;
+  overlayGradient?: string;
+}) {
+  const [current, setCurrent] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [captionVisible, setCaptionVisible] = useState(true);
+  const total = slides.length;
+
+  const goTo = useCallback(
+    (index: number) => {
+      if (isTransitioning) return;
+      setIsTransitioning(true);
+      setCaptionVisible(false);
+      setTimeout(() => {
+        setCurrent(index);
+        setIsTransitioning(false);
+        setTimeout(() => setCaptionVisible(true), 80);
+      }, 500);
+    },
+    [isTransitioning],
+  );
+
+  const next = useCallback(() => goTo((current + 1) % total), [current, total, goTo]);
+  const prev = useCallback(() => goTo((current - 1 + total) % total), [current, total, goTo]);
+
+  useEffect(() => {
+    if (isPaused) return;
+    const id = setInterval(next, interval);
+    return () => clearInterval(id);
+  }, [isPaused, next, interval]);
+
+  const slide = slides[current];
+
+  return (
+    <div
+      className="relative overflow-hidden"
+      style={{ height }}
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      {slides.map((s, i) => (
+        <div
+          key={i}
+          className="absolute inset-0 transition-opacity duration-700"
+          style={{ opacity: i === current ? 1 : 0, zIndex: i === current ? 1 : 0 }}
+        >
+          <img src={s.src} alt={s.label} className="w-full h-full object-cover" loading={i <= 2 ? "eager" : "lazy"} />
+          <div className="absolute inset-0" style={{ background: overlayGradient }} />
+        </div>
+      ))}
+
+      <div
+        className="absolute bottom-0 left-0 right-0 z-10 px-6 py-7 md:px-12 md:py-9"
+        style={{
+          opacity: captionVisible ? 1 : 0,
+          transform: captionVisible ? "translateY(0)" : "translateY(10px)",
+          transition: "opacity 0.45s ease, transform 0.45s ease",
+        }}
+      >
+        <div className="flex items-end justify-between max-w-5xl mx-auto">
+          <div>
+            <p
+              className="text-[12px] tracking-[0.24em] uppercase text-primary mb-1.5"
+              style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+            >
+              {slide.label}
+            </p>
+            <p
+              className="text-[var(--on-dark)] max-w-[440px]"
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(1rem, 2vw, 1.35rem)",
+                fontWeight: 400,
+                lineHeight: 1.35,
+              }}
+            >
+              {slide.caption}
+            </p>
+          </div>
+          {showCounter && (
+            <p
+              className="text-[var(--on-dark)]/70 hidden md:block"
+              style={{ fontFamily: "var(--font-ui)", fontSize: "12px" }}
+            >
+              {String(current + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+            </p>
+          )}
+        </div>
+      </div>
+
+      {[{ dir: "prev", Icon: Calendar, onClick: prev, pos: "left-3 md:left-6" },
+        { dir: "next", Icon: MapPin, onClick: next, pos: "right-3 md:right-6" }].map(({ dir, Icon, onClick, pos }) => (
+        <button
+          key={dir}
+          onClick={onClick}
+          className={`absolute ${pos} top-1/2 -translate-y-1/2 z-20 w-9 h-9 flex items-center justify-center rounded-xl border border-[var(--on-dark)]/40 text-[var(--on-dark)] hover:border-primary hover:text-primary transition-all duration-300 bg-black/25`}
+          aria-label={dir}
+        >
+          <Icon size={16} />
+        </button>
+      ))}
+
+      {showDots && (
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex gap-1.5">
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => goTo(i)}
+              className="transition-all duration-300"
+              style={{
+                width: i === current ? "20px" : "5px",
+                height: "5px",
+                backgroundColor: i === current ? "var(--primary)" : "rgba(245,222,179,0.5)",
+              }}
+              aria-label={`${i + 1}`}
+            />
+          ))}
+        </div>
+      )}
+
+      {showProgress && (
+        <div className="absolute top-0 left-0 right-0 h-0.5 z-20 bg-[var(--on-dark)]/15">
+          <div
+            className="h-full bg-primary"
+            style={{ width: `${((current + 1) / total) * 100}%`, transition: "width 0.5s ease" }}
+          />
+        </div>
+      )}
+    </div>
+  );
+}
+
+const WORKSHOP_FEATURES = [
+  {
+    category: "Calligrafia & Inchiostro",
+    categoryZh: "書法水墨",
+    title: "Scrivere è pensare con il corpo",
+    body: "Attraverso il pennello e l'inchiostro, scopri come la calligrafia cinese trasforma ogni gesto in un atto di meditazione. Non si impara a copiare caratteri — si impara a stare presenti.",
+    cta: "Scopri il Workshop",
+    href: "/workshop/calligraphy",
+    src: IMG.calligroupA,
+    alt: "Workshop di calligrafia — gruppo intorno al tavolo",
+    reverse: false,
+    accent: "var(--primary)",
+  },
+  {
+    category: "Pittura ad Inchiostro",
+    categoryZh: "水墨畫",
+    title: "Il gesto che non mente",
+    body: "Nella pittura a inchiostro non esiste correzione. Ogni pennellata è definitiva — come le parole dette con sincerità. Un'esperienza che insegna a fidarsi del proprio istinto.",
+    cta: "Prenota un Posto",
+    href: "/workshop",
+    src: IMG.inkFlower,
+    alt: "Mano che dipinge fiori di susino con inchiostro",
+    reverse: true,
+    accent: "var(--secondary)",
+  },
+  {
+    category: "Cucina Culturale",
+    categoryZh: "飲食文化",
+    title: "Cultura che si mangia",
+    body: "Impastare ravioli o modellare baozi non è solo cucinare — è accedere a un codice culturale che si tramanda attraverso le mani. Ogni piega racconta una storia.",
+    cta: "Vedi il Programma",
+    href: "/workshop",
+    src: IMG.dumplingWorkshop,
+    alt: "Famiglia italiana impara a fare i ravioli cinesi",
+    reverse: false,
+    accent: "var(--accent)",
+  },
+];
+
+function WorkshopHighlightSection() {
+  return (
+    <section className="py-0 bg-background">
+      <div className="container py-20">
+        <Reveal>
+          <p
+            className="font-normal tracking-[0.22em] uppercase text-primary mb-4"
+            style={{ fontFamily: "'Montserrat', system-ui, sans-serif", fontSize: "1rem", fontWeight: 700 }}
+          >
+            Workshop
+          </p>
+          <h2
+            className="font-medium text-[oklch(27.5%_0.000_0)]"
+            style={{
+              fontFamily: "'Cooper Black', serif",
+              fontSize: "clamp(1.75rem, 5vw, 2.5rem)",
+              fontWeight: 400,
+              lineHeight: 1.2,
+              letterSpacing: "-1px",
+            }}
+          >
+            Esperienze che aprono nuove prospettive
+          </h2>
+          <div className="w-10 h-0.5 bg-primary mt-5" />
+        </Reveal>
+      </div>
+
+      {WORKSHOP_FEATURES.map((item, i) => (
+        <Reveal key={item.title} delay={i * 80}>
+          <div
+            className={`group/card relative grid md:grid-cols-2 items-stretch transition-all duration-500 hover:-translate-y-3 hover:shadow-[0_22px_40px_rgba(44,62,80,0.3)] rounded-[16px] overflow-hidden ${
+              item.reverse ? "md:[direction:rtl]" : ""
+            }`}
+          >
+            <div
+              className="absolute -inset-1 rounded-[20px] pointer-events-none -z-10 opacity-0 group-hover/card:opacity-100 transition-opacity duration-500"
+              style={{
+                background: `linear-gradient(135deg, ${item.accent}15, transparent 50%)`,
+                animation: "pulse-frame 2.5s ease-in-out infinite",
+              }}
+            />
+            <div
+              className="absolute -inset-2 rounded-[24px] border border-primary/20 pointer-events-none -z-10 opacity-40"
+              style={{ animation: "pulse-frame 3s ease-in-out infinite 0.5s" }}
+            />
+
+            <div
+              className="relative overflow-hidden group rounded-[16px_16px_0_0] md:rounded-[16px_0_0_16px]"
+              style={{ minHeight: "380px" }}
+            >
+              <img
+                src={item.src}
+                alt={item.alt}
+                className="w-full h-full object-cover absolute inset-0 transition-transform duration-700 group-hover:scale-105"
+                style={{ direction: "ltr" }}
+              />
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-primary/10"
+                style={{ direction: "ltr" }}
+              />
+              <div
+                className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6"
+                style={{ direction: "ltr" }}
+              >
+                <p
+                  className="text-[var(--on-dark)] text-sm leading-relaxed max-w-md"
+                  style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+                >
+                  {item.body}
+                </p>
+              </div>
+              <div
+                className="absolute top-6 left-6 z-10"
+                style={{
+                  direction: "ltr",
+                  animation: `fade-slide-up 0.6s ease-out ${300 + i * 150}ms forwards`,
+                }}
+              >
+                <span
+                  className="text-[11px] tracking-[0.22em] uppercase text-[var(--on-dark)] bg-black/45 px-3 py-1.5"
+                  style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+                >
+                  {item.categoryZh}
+                </span>
+              </div>
+            </div>
+
+            <div
+              className="flex flex-col justify-center px-10 py-14 md:px-14 md:py-16 bg-card rounded-[0_0_16px_16px] md:rounded-[0_16px_16px_0]"
+              style={{ direction: "ltr" }}
+            >
+              <span
+                className="text-[13px] font-semibold tracking-[0.18em] uppercase mb-6"
+                style={{ fontFamily: "'Inter', system-ui, sans-serif", color: item.accent }}
+              >
+                {item.category}
+              </span>
+              <h3
+                className="text-foreground mb-5"
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "clamp(1.35rem, 2.4vw, 1.75rem)",
+                  fontWeight: 500,
+                  lineHeight: 1.25,
+                }}
+              >
+                {item.title}
+              </h3>
+              <p
+                className="text-[18px] text-muted-foreground leading-[1.8] mb-9"
+                style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+              >
+                {item.body}
+              </p>
+              <div className="flex flex-wrap gap-4 items-center">
+                <Link
+                  href={item.href}
+                  className="inline-flex items-center gap-2 text-[15px] font-semibold hover:gap-3 transition-all duration-300"
+                  style={{ fontFamily: "'Inter', system-ui, sans-serif", color: item.accent }}
+                >
+                  {item.cta} <ArrowRight size={14} />
+                </Link>
+                {item.href === "/workshop/calligraphy" && (
+                  <Link
+                    href="/workshop/calligraphy"
+                    className="inline-flex items-center gap-2 text-[14px] font-semibold px-5 py-2.5 border border-primary/40 text-primary transition-all duration-300 hover:gap-3"
+                    style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+                  >
+                    Vedi tutte le foto del corso <ArrowRight size={13} />
+                  </Link>
+                )}
+              </div>
+            </div>
+          </div>
+        </Reveal>
+      ))}
+
+      <div className="bg-[oklch(14%_0_0)] mt-0">
+        <div className="container py-10">
+          <Reveal>
+            <p
+              className="text-[12px] tracking-[0.28em] uppercase text-primary mb-4"
+              style={{ fontFamily: "'Inter', system-ui, sans-serif", fontSize: "14px" }}
+            >
+              Momenti dai Workshop
+            </p>
+          </Reveal>
+        </div>
+        <Carousel
+          slides={WORKSHOP_SLIDES}
+          height="clamp(300px, 42vh, 520px)"
+          interval={3800}
+          overlayGradient="linear-gradient(to bottom, oklch(0% 0 0 / 0.05) 0%, oklch(0% 0 0 / 0.6) 100%)"
+        />
+        <div className="container pb-12 pt-8 text-center">
+          <Reveal>
+            <Link
+              href="/workshop"
+              className="inline-flex items-center gap-2 text-[15px] font-semibold text-primary hover:opacity-70 hover:gap-3 transition-all duration-300"
+              style={{ fontFamily: "'Noto Sans', system-ui, sans-serif", fontSize: "17px" }}
+            >
+              Vedi tutti i workshop <ArrowRight size={14} />
+            </Link>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 /* ─── Constants ─── */
 const CATEGORY_LABELS: Record<string, string> = {
@@ -487,6 +904,9 @@ export default function Workshop() {
           </Link>
         </div>
       </section>
+
+      {/* Highlight strip moved from Home page */}
+      <WorkshopHighlightSection />
     </main>
   );
 }
