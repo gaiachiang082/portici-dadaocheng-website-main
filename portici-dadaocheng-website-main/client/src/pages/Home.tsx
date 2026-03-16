@@ -860,7 +860,13 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
           </p>
           </div>
 
-          <div className="relative w-full max-w-4xl aspect-[3/2]">
+          <div
+            className="relative w-full max-w-6xl aspect-[4/3]"
+            style={{
+              transform: "scale(1.5)",
+              transformOrigin: "center bottom",
+            }}
+          >
             {/* Dark background */}
             <div className="absolute inset-0 bg-[#050607]" />
 
