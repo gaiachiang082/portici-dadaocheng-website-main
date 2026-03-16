@@ -811,7 +811,7 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
       // Local progress: 當前滾動相對於本區塊頂端的位置
       const sectionTop = el.offsetTop;
       const localScroll = scrollY - sectionTop;
-      const maxScroll = viewportH * 2.5; // 需滾動的距離，約等於 2.5 個視窗高度
+      const maxScroll = viewportH * 3.5; // 需滾動的距離，約等於 3.5 個視窗高度（更長動畫）
 
       const raw = localScroll / maxScroll;
       const clamped = Math.min(1, Math.max(0, raw));
@@ -839,13 +839,13 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
   const glowPhase = progress <= 0.7 ? 0 : Math.min((progress - 0.7) / 0.3, 1);
 
   const glowBase = 140;
-  const glowMaxExtra = 1100;
+  const glowMaxExtra = 1300;
   const glowSize = glowBase + glowPhase * glowMaxExtra;
 
   return (
     <section
       ref={containerRef}
-      className="relative bg-[#050607] h-[260vh]"
+      className="relative bg-[#050607] h-[320vh]"
       aria-hidden="true"
     >
       {/* Sticky 3D scene：在整個區塊滾動期間固定在視窗內 */}
@@ -868,25 +868,25 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
             <svg viewBox="0 0 1200 900" className="absolute inset-0 w-full h-full">
               <rect x="0" y="0" width="1200" height="900" fill="#050607" />
               {(() => {
-                const total = 32;
-                const visible = Math.max(4, Math.round(4 + archPhase * (total - 4)));
+                const total = 64;
+                const visible = Math.max(6, Math.round(6 + archPhase * (total - 6)));
                 const paths = [];
                 for (let i = 0; i < visible; i++) {
-                  const inset = 20 + i * 14;
-                  const stroke = "rgba(245,245,245,0.45)";
+                  const inset = 40 + i * 42; // 間距放大約三倍
+                  const stroke = "rgba(245,245,245,0.5)";
                   paths.push(
                     <path
                       key={i}
                       d={`
-                        M ${inset} 640
-                        A ${600 - inset} ${600 - inset} 0 0 1 ${1200 - inset} 640
-                        L ${1200 - inset} 900
-                        L ${inset} 900
+                        M ${inset} 820
+                        A ${600 - inset} ${600 - inset} 0 0 1 ${1200 - inset} 820
+                        L ${1200 - inset} 860
+                        L ${inset} 860
                         Z
                       `}
                       fill="none"
                       stroke={stroke}
-                      strokeWidth={0.9}
+                      strokeWidth={1.8}
                     />,
                   );
                 }
