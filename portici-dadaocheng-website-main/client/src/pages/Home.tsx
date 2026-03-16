@@ -832,15 +832,19 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
     };
   }, []);
 
-  // Split動畫成兩段：
-  // 0 → 0.7：拱門層數 + 尺度增加
+  // 0 → 0.7：拱門層數 + 尺度增加；光源從極小點隨下滑開始點亮並變大
   // 0.7 → 1：光源高斯擴張覆蓋整個畫面
   const archPhase = Math.min(progress / 0.7, 1);
   const glowPhase = progress <= 0.7 ? 0 : Math.min((progress - 0.7) / 0.3, 1);
 
-  const glowBase = 140;
-  const glowMaxExtra = 1600;
-  const glowSize = glowBase + glowPhase * glowMaxExtra;
+  // 第一時刻 progress=0 時不顯示光源，避免任何黑球感；下拉後從極小亮點開始擴張
+  const glowSize =
+    progress <= 0
+      ? 0
+      : progress <= 0.7
+        ? 4 + progress * 180 // 下拉後從 4px 亮點開始長大
+        : 130 + glowPhase * 1600;
+  const glowVisible = progress > 0.002;
 
   return (
     <section
@@ -902,22 +906,25 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
               })()}
             </svg>
 
-            {/* Glow at tunnel end — 純 2D 米白光暈，無任何暗心/3D 球體 */}
-            <div
-              className="absolute left-1/2 bottom-[4%] -translate-x-1/2 rounded-full pointer-events-none"
-              style={{
-                width: `${glowSize}px`,
-                height: `${glowSize}px`,
-                background:
-                  glowPhase === 0
-                    ? "radial-gradient(ellipse 100% 100% at 50% 30%, rgba(252,250,245,0.35), transparent 70%)"
-                    : "radial-gradient(ellipse 100% 100% at 50% 30%, rgba(252,250,245,0.99) 0%, rgba(252,250,245,0.85) 25%, rgba(252,250,245,0.5) 50%, rgba(252,250,245,0.15) 75%, transparent 100%)",
-                boxShadow:
-                  glowPhase > 0
-                    ? "0 0 180px rgba(252,250,245,0.9), 0 0 300px rgba(252,250,245,0.5)"
-                    : "0 0 50px rgba(252,250,245,0.35)",
-              }}
-            />
+            {/* 光源：第一時刻隱藏，下拉後才從中心極小亮點開始擴張，無黑球 */}
+            {glowVisible && (
+              <div
+                className="absolute left-1/2 bottom-[4%] -translate-x-1/2 rounded-full pointer-events-none"
+                style={{
+                  width: `${glowSize}px`,
+                  height: `${glowSize}px`,
+                  opacity: progress <= 0 ? 0 : 1,
+                  background:
+                    glowPhase === 0
+                      ? "radial-gradient(ellipse 100% 100% at 50% 50%, rgba(255,252,248,0.95) 0%, rgba(255,252,248,0.4) 40%, transparent 72%)"
+                      : "radial-gradient(ellipse 100% 100% at 50% 50%, rgba(255,252,248,0.99) 0%, rgba(255,252,248,0.85) 25%, rgba(255,252,248,0.5) 50%, rgba(255,252,248,0.12) 78%, transparent 100%)",
+                  boxShadow:
+                    glowPhase > 0
+                      ? "0 0 180px rgba(255,252,248,0.9), 0 0 300px rgba(255,252,248,0.5)"
+                      : "0 0 60px rgba(255,252,248,0.4)",
+                }}
+              />
+            )}
           </div>
         </div>
       </div>
