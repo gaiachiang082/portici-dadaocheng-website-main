@@ -3,7 +3,8 @@ import { Link } from "wouter";
 import { ArrowRight } from "lucide-react";
 import { client } from "../SanityClient";
 
-const categories = ["Tutti", "Rituali", "Cibo", "Spazio", "Filosofia"];
+/** Rubriche editoriali (solo etichette, senza filtro). */
+const RUBRIC_LABELS = ["Rituali", "Cibo", "Spazio", "Filosofia"] as const;
 
 interface Article {
   _id: string;
@@ -69,24 +70,33 @@ export default function Articoli() {
         </div>
       </section>
 
-      {/* Category filter */}
+      {/* Rubriche — etichette editoriali (nessun filtro) */}
       <section className="py-12 px-6 md:px-10 bg-background">
         <div className="container mx-auto">
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm flex flex-wrap gap-3 md:gap-4 px-6 py-4 md:px-8 md:py-5">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                className={`px-5 py-2.5 text-sm font-semibold tracking-wide rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all ${
-                  cat === "Tutti"
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-white text-gray-500 hover:bg-primary hover:text-primary-foreground hover:border-transparent"
-                }`}
-                style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
-              >
-                {cat}
-              </button>
+          <p
+            className="text-[15px] font-normal tracking-[0.22em] uppercase text-secondary mb-4"
+            style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+          >
+            Rubriche
+          </p>
+          <p
+            className="text-base text-[oklch(40%_0.005_60)] leading-[1.85] max-w-3xl"
+            style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+          >
+            I testi si distinguono per tono e materia. Rubriche di riferimento:{" "}
+            {RUBRIC_LABELS.map((label, i) => (
+              <span key={label}>
+                {i > 0 && <span className="text-secondary"> · </span>}
+                <span
+                  className="font-medium text-[oklch(27.5%_0.000_0)]"
+                  style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+                >
+                  {label}
+                </span>
+              </span>
             ))}
-          </div>
+            .
+          </p>
         </div>
       </section>
 

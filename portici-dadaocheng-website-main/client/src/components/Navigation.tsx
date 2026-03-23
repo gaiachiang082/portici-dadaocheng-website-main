@@ -14,7 +14,6 @@ export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [lang, setLang] = useState<"it" | "en">("it");
   const [location] = useLocation();
 
   useEffect(() => {
@@ -97,42 +96,6 @@ export default function Navigation() {
                 </li>
               ))}
             </ul>
-
-            {/* IT/EN 語言切換 — 首頁深色底用白字，捲動後用深字 */}
-            <div className="hidden md:flex items-center gap-0.5 shrink-0">
-              <button
-                type="button"
-                onClick={() => setLang("it")}
-                className={`px-4 py-2 text-[13px] font-medium rounded-xl transition-all duration-200 ${
-                  lang === "it"
-                    ? isHome && !scrolled
-                      ? "bg-white/20 text-[var(--on-dark)]"
-                      : "bg-muted text-foreground"
-                    : isHome && !scrolled
-                      ? "text-[var(--on-dark)]/80 hover:text-[var(--on-dark)] hover:bg-white/10"
-                      : "text-muted-foreground hover:text-foreground hover:bg-background"
-                }`}
-                style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
-              >
-                IT Italiano
-              </button>
-              <button
-                type="button"
-                onClick={() => setLang("en")}
-                className={`px-4 py-2 text-[13px] font-medium rounded-md transition-all duration-200 ${
-                  lang === "en"
-                    ? isHome && !scrolled
-                      ? "bg-white/20 text-[var(--on-dark)]"
-                      : "bg-muted text-foreground"
-                    : isHome && !scrolled
-                      ? "text-[var(--on-dark)]/80 hover:text-[var(--on-dark)] hover:bg-white/10"
-                      : "text-muted-foreground hover:text-foreground hover:bg-background"
-                }`}
-                style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
-              >
-                GB English
-              </button>
-            </div>
 
             {/* CTA — Desktop：首頁剛顯示時與頁面底色一致（白底深字），捲動後為棕色按鈕 */}
             <Link
