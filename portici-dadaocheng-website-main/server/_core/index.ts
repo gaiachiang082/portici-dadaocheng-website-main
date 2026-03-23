@@ -28,9 +28,12 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
   throw new Error(`No available port found starting from ${startPort}`);
 }
 
-async function startServer() {
+/**
+ * Shared Express app: API routes and parsers only (no Vite / static frontend).
+ * Middleware order must stay: Stripe raw webhook → json/urlencoded → OAuth → tRPC.
+ */
+function createApp() {
   const app = express();
-  const server = createServer(app);
   // Stripe Webhook — MUST use raw body parser BEFORE express.json() for this route
   // Stripe requires the raw request body to verify the signature
   app.post(
@@ -52,6 +55,13 @@ async function startServer() {
       createContext,
     })
   );
+
+  return app;
+}
+
+async function startServer() {
+  const app = createApp();
+  const server = createServer(app);
   // development mode uses Vite, production mode uses static files
   if (process.env.NODE_ENV === "development") {
     await setupVite(app, server);
@@ -73,13 +83,8 @@ async function startServer() {
 
 startServer().catch(console.error);
 
-// 在檔案最後加上這個，讓 Vercel Serverless 能用
-const app = express();
-app.post("/api/stripe/webhook", express.raw({ type: "application/json" }), handleStripeWebhook);
-app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ limit: "50mb", extended: true }));
-registerOAuthRoutes(app);
-app.use("/api/trpc", createExpressMiddleware({ router: appRouter, createContext }));
+// Default export for Vercel Serverless: same API stack + static SPA (no Vite, no listen).
+const app = createApp();
 serveStatic(app);
 
 export default app;
