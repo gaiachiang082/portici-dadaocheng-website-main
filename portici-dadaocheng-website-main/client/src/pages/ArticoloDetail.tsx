@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "wouter";
 import { ArrowLeft } from "lucide-react";
-import { PortableText } from "@portabletext/react";
+import { PortableText, type PortableTextBlock } from "@portabletext/react";
 import { client } from "../SanityClient";
 
+/** Shape of `*[_type == "article" && _id == $id][0]{ ... }` including Italian block body from Sanity. */
 interface ArticleDetail {
   _id: string;
   title?: string;
-  body?: unknown;
+  /** Mapped from Sanity `content_it` (`array` of `block`). */
+  body?: PortableTextBlock[] | null;
   category?: string;
   mainImage?: {
     asset?: { url?: string };
