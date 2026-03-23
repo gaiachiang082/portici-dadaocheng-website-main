@@ -75,7 +75,7 @@ function WorkshopCard({
         </div>
       )}
 
-      <div className="p-5">
+      <div className="p-5 flex flex-col gap-0">
         <h3
           className="text-lg font-medium text-[oklch(92%_0.005_85)] mb-1"
           style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
@@ -85,31 +85,33 @@ function WorkshopCard({
         {workshop.titleZh && (
           <p className="text-sm text-[oklch(55%_0.075_55)] mb-3">{workshop.titleZh}</p>
         )}
-        <p className="text-sm text-[oklch(65%_0.005_85)] line-clamp-3 mb-4">
+        <p className="text-[15px] text-[oklch(72%_0.005_85)] leading-relaxed line-clamp-3 mb-5">
           {workshop.description}
         </p>
 
-        <div className="flex items-center justify-between">
-          <div>
-            <span className="text-2xl font-light text-[oklch(92%_0.005_85)]">
-              €{parseFloat(workshop.priceEur).toFixed(0)}
-            </span>
-            <span className="text-xs text-[oklch(50%_0.005_85)] ml-1">/ persona</span>
-          </div>
-          <div className="text-right">
-            <p className="text-xs text-[oklch(50%_0.005_85)]">{workshop.durationMinutes} min</p>
-            <p className="text-xs text-[oklch(50%_0.005_85)]">{spotsLabel}</p>
+        <div className="mt-auto pt-4 border-t border-[oklch(25%_0_0)] flex flex-wrap items-end justify-between gap-3 text-[11px] uppercase tracking-wider text-[oklch(50%_0.005_85)]">
+          <div className="space-y-0.5 normal-case tracking-normal">
+            <p>
+              <span className="text-[oklch(85%_0.005_85)] text-base font-medium tabular-nums">
+                €{parseFloat(workshop.priceEur).toFixed(0)}
+              </span>
+              <span className="text-[oklch(48%_0.005_85)]"> / persona</span>
+            </p>
+            <p>
+              {workshop.durationMinutes} min · {spotsLabel}
+            </p>
           </div>
         </div>
 
         <button
-          className="mt-4 w-full py-2.5 rounded-[12px] text-sm font-semibold transition-all duration-200 shadow-[0_10px_20px_rgba(139,69,19,0.3)] hover:-translate-y-[1px]"
+          type="button"
+          className="mt-4 w-full py-2.5 rounded-[12px] text-sm font-semibold transition-all duration-200 hover:opacity-90"
           style={{
             background: "oklch(55% 0.075 55)",
             color: "oklch(98% 0 0)",
           }}
         >
-          Prenota ora →
+          Scegli una data
         </button>
       </div>
     </div>
@@ -286,9 +288,10 @@ export default function WorkshopsPage() {
               >
                 I nostri Workshop
               </h2>
-              <p className="text-[oklch(60%_0.005_85)] max-w-xl">
-                Ogni workshop è un dialogo tra due culture. Prenota il tuo posto e porta a casa
-                un'esperienza che non dimenticherai. Il deposito del 50% è richiesto alla prenotazione.
+              <p className="text-[oklch(60%_0.005_85)] max-w-xl leading-relaxed">
+                Ogni workshop è un dialogo tra due culture. Scegliete un incontro dal calendario; il
+                deposito del 50% conferma la partecipazione e il posto è vostro fino al giorno
+                dell&apos;incontro.
               </p>
             </div>
 
@@ -335,11 +338,19 @@ export default function WorkshopsPage() {
               {workshop.titleZh && (
                 <p className="text-[oklch(55%_0.075_55)]">{workshop.titleZh}</p>
               )}
-              <p className="text-sm text-[oklch(60%_0.005_85)] mt-3">{workshop.description}</p>
-              <div className="flex gap-6 mt-4 text-sm text-[oklch(55%_0.005_85)]">
-                <span>⏱ {workshop.durationMinutes} min</span>
-                <span>👥 Max {workshop.maxParticipants} persone</span>
-                <span>📍 {workshop.location}</span>
+              <p className="text-[15px] text-[oklch(68%_0.005_85)] mt-4 leading-relaxed">
+                {workshop.description}
+              </p>
+              <div className="flex flex-wrap gap-x-6 gap-y-2 mt-6 pt-4 border-t border-[oklch(22%_0_0)] text-xs uppercase tracking-wider text-[oklch(48%_0.005_85)]">
+                <span className="normal-case tracking-normal">
+                  {workshop.durationMinutes} min
+                </span>
+                <span className="normal-case tracking-normal">
+                  Fino a {workshop.maxParticipants} persone
+                </span>
+                {workshop.location && (
+                  <span className="normal-case tracking-normal">{workshop.location}</span>
+                )}
               </div>
             </div>
 
@@ -358,13 +369,13 @@ export default function WorkshopsPage() {
             <button
               disabled={selectedSessionId === null}
               onClick={() => { if (selectedSessionId !== null) setStep("form"); }}
-              className="w-full py-3 rounded-[12px] font-semibold transition-all duration-200 disabled:opacity-40 shadow-[0_10px_20px_rgba(139,69,19,0.3)] hover:-translate-y-[1px]"
+              className="w-full py-3 rounded-[12px] font-semibold transition-all duration-200 disabled:opacity-40 hover:opacity-95"
               style={{
                 background: selectedSessionId ? "oklch(55% 0.075 55)" : "oklch(30% 0 0)",
                 color: "oklch(98% 0 0)",
               }}
             >
-              Continua →
+              Avanti — i vostri dati
             </button>
           </div>
         )}
@@ -540,7 +551,9 @@ export default function WorkshopsPage() {
                   color: "oklch(98% 0 0)",
                 }}
               >
-                {createBookingMutation.isPending ? "Elaborazione..." : "Conferma e paga il deposito →"}
+                {createBookingMutation.isPending
+                  ? "Elaborazione..."
+                  : "Conferma la richiesta e il deposito (50%)"}
               </button>
             </form>
           </div>
@@ -558,7 +571,7 @@ export default function WorkshopsPage() {
                 className="text-[24px] text-[oklch(92%_0.005_85)] mb-2"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600, lineHeight: 1.2 }}
               >
-                Prenotazione ricevuta!
+                Posto riservato
               </h2>
               <p className="text-[oklch(60%_0.005_85)] text-sm">
                 Il tuo codice di prenotazione è:
@@ -621,7 +634,7 @@ export default function WorkshopsPage() {
             >
               {createCheckoutMutation.isPending
                 ? "Reindirizzamento a Stripe..."
-                : `Paga il deposito €${bookingResult.depositAmountEur.toFixed(2)} →`}
+                : `Procedi al deposito · €${bookingResult.depositAmountEur.toFixed(2)}`}
             </button>
             <p className="text-xs text-[oklch(40%_0.005_85)]">
               Sarai reindirizzato a Stripe per il pagamento sicuro. Usa la carta di test: 4242 4242 4242 4242.

@@ -27,8 +27,12 @@ function FooterNewsletter() {
         Una prospettiva diversa, ogni mese. Niente spam. Solo cultura.
       </p>
       {submitted ? (
-        <p className="text-[15px] text-secondary" style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
-          ✓ Grazie! Controlla la tua email.
+        <p
+          className="text-[15px] text-[var(--on-dark)]/85 leading-[1.75]"
+          style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+        >
+          Grazie per esservi iscritti. Troverete a breve un messaggio in posta: niente fretta, è solo un
+          promemoria gentile.
         </p>
       ) : (
         <form onSubmit={handleSubmit} className="flex flex-col gap-2">

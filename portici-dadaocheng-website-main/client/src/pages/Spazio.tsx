@@ -25,7 +25,7 @@ function SpazioCard({ sense, kanji, desc, delay }: { sense: string; kanji: strin
   return (
     <div
       ref={ref as React.RefObject<HTMLDivElement>}
-      className="group relative bg-[oklch(89.5%_0.025_80)] p-8 text-center rounded-2xl border border-gray-100 shadow-sm transition-all duration-500 hover:-translate-y-3 hover:shadow-xl overflow-hidden"
+      className="group relative bg-muted p-8 text-center rounded-2xl border border-border transition-all duration-300 hover:-translate-y-1 hover:border-secondary/40 overflow-hidden"
       style={{
         opacity: visible ? undefined : 0,
         transform: visible ? undefined : "scale(0.8) translateY(30px)",
@@ -33,22 +33,22 @@ function SpazioCard({ sense, kanji, desc, delay }: { sense: string; kanji: strin
       }}
     >
       {/* Gradient overlay on hover */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#A67C52]/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-secondary/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
       <p
-        className="text-[2rem] mb-3 text-[#A67C52] relative z-10"
-        style={{ fontFamily: "'Spectral', Georgia, serif", fontWeight: 500 }}
+        className="text-[2rem] mb-3 text-secondary relative z-10"
+        style={{ fontFamily: "var(--font-display)", fontWeight: 500 }}
       >
         {kanji}
       </p>
       <p
-        className="text-[15px] font-semibold text-[oklch(27.5%_0.000_0)] mb-2 relative z-10"
-        style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+        className="text-[15px] font-semibold text-foreground mb-2 relative z-10"
+        style={{ fontFamily: "var(--font-ui)" }}
       >
         {sense}
       </p>
       <p
-        className="text-[15px] text-[oklch(50%_0.005_60)] leading-[1.7] relative z-10"
-        style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+        className="text-[15px] text-muted-foreground leading-[1.7] relative z-10"
+        style={{ fontFamily: "var(--font-body)" }}
       >
         {desc}
       </p>
@@ -62,50 +62,33 @@ export default function Spazio() {
       {/* Hero */}
       <section className="pt-32 pb-20 bg-background">
         <div className="container max-w-3xl">
-          <div
-            className="relative px-8 py-10 md:px-10 md:py-12 bg-card"
-            style={{
-              borderRadius: "56px 56px 28px 28px",
-              boxShadow: "0 18px 40px rgba(44,62,80,0.25)",
-              border: "2px solid rgba(139,69,19,0.15)",
-            }}
-          >
-            {/* Curved section divider */}
-            <div
-              className="absolute inset-x-10 -top-2 h-1 rounded-full"
-              style={{
-                background:
-                  "linear-gradient(90deg, #8B4513, #CD853F, #D2691E)",
-                opacity: 0.9,
-              }}
-            />
+          <div className="relative px-8 py-10 md:px-10 md:py-12 bg-card rounded-[2rem] rounded-b-[1.25rem] border border-border shadow-sm">
+            <div className="w-10 h-0.5 bg-secondary mb-6" />
 
             <p
-              className="text-[15px] font-normal tracking-[0.22em] uppercase text-primary mb-6"
+              className="text-[15px] font-normal tracking-[0.22em] uppercase text-secondary mb-6"
               style={{ fontFamily: "var(--font-ui)" }}
             >
               Spazio
             </p>
             <h1
-              className="mb-8"
+              className="mb-8 text-foreground"
               style={{
-                fontFamily: "var(--font-heading)",
-                fontSize: "56px",
-                fontWeight: 700,
-                lineHeight: 1.1,
-                letterSpacing: "-0.3px",
-                color: "#2C3E50",
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(2rem, 4vw, 3rem)",
+                fontWeight: 600,
+                lineHeight: 1.15,
               }}
             >
               Un&apos;installazione esperienziale.
               <br />
-              <span className="text-secondary">
+              <span className="text-secondary not-italic">
                 Non un negozio.
               </span>
             </h1>
             <p
-              className="text-[18px] leading-[1.75]"
-              style={{ fontFamily: "var(--font-body)", color: "#2C3E50" }}
+              className="text-[18px] leading-[1.75] text-muted-foreground"
+              style={{ fontFamily: "var(--font-body)" }}
             >
               Il nostro pop-up store è progettato per attivare tutti e cinque i
               sensi in 15–30 minuti. Ogni elemento è scelto per creare un
@@ -122,27 +105,32 @@ export default function Spazio() {
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] pointer-events-none opacity-[0.07]"
           style={{ animation: "spin-slow 45s linear infinite" }}
         >
-          <svg viewBox="0 0 100 100" className="w-full h-full">
-            <circle cx="50" cy="50" r="45" fill="none" stroke="#A67C52" strokeWidth="1" strokeDasharray="8 12" />
-            <circle cx="50" cy="50" r="40" fill="none" stroke="#A67C52" strokeWidth="0.5" strokeDasharray="4 8" transform="rotate(-30 50 50)" />
+          <svg viewBox="0 0 100 100" className="w-full h-full text-secondary">
+            <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="8 12" opacity={0.9} />
+            <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" strokeWidth="0.5" strokeDasharray="4 8" transform="rotate(-30 50 50)" opacity={0.55} />
           </svg>
         </div>
 
         <div className="container relative z-10">
           <div className="mb-14">
             <p
-              className="text-xs font-semibold tracking-[0.2em] uppercase text-[#A67C52] mb-3"
-              style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+              className="text-xs font-semibold tracking-[0.2em] uppercase text-secondary mb-3"
+              style={{ fontFamily: "var(--font-ui)" }}
             >
               Il Concept
             </p>
             <h2
-              className="font-display font-medium text-[oklch(27.5%_0.000_0)]"
-              style={{ fontFamily: "'Spectral', Georgia, serif" }}
+              className="font-medium text-foreground"
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(1.5rem, 3vw, 2rem)",
+                fontWeight: 600,
+                lineHeight: 1.2,
+              }}
             >
               Attraversare il Portale
             </h2>
-            <div className="w-10 h-0.5 bg-[#A67C52] mt-4" />
+            <div className="w-10 h-0.5 bg-secondary mt-4" />
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
@@ -164,7 +152,7 @@ export default function Spazio() {
         <div className="container max-w-2xl">
           <div className="text-center mb-12">
             <p
-              className="text-xs font-semibold tracking-[0.2em] uppercase text-primary mb-3"
+              className="text-xs font-semibold tracking-[0.2em] uppercase text-secondary mb-3"
               style={{ fontFamily: "var(--font-ui)" }}
             >
               Dove Siamo
@@ -173,7 +161,7 @@ export default function Spazio() {
               className="font-medium text-foreground"
               style={{
                 fontFamily: "var(--font-display)",
-                fontSize: "28px",
+                fontSize: "clamp(1.35rem, 2.5vw, 1.75rem)",
                 fontWeight: 600,
                 lineHeight: 1.2,
               }}
@@ -183,9 +171,9 @@ export default function Spazio() {
           </div>
 
             <div className="space-y-6">
-            <div className="bg-card p-8 rounded-2xl border border-border shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+            <div className="bg-card p-8 rounded-2xl border border-border transition-colors duration-300 hover:border-secondary/35">
               <div className="flex items-start gap-4">
-                <MapPin size={18} className="text-[#A67C52] mt-0.5 shrink-0" />
+                <MapPin size={18} className="text-secondary mt-0.5 shrink-0" />
                 <div>
                   <p
                     className="font-semibold text-foreground mb-1"
@@ -205,9 +193,9 @@ export default function Spazio() {
               </div>
             </div>
 
-            <div className="bg-card p-8 rounded-2xl border border-border shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+            <div className="bg-card p-8 rounded-2xl border border-border transition-colors duration-300 hover:border-secondary/35">
               <div className="flex items-start gap-4">
-                <MapPin size={18} className="text-[#A67C52] mt-0.5 shrink-0" />
+                <MapPin size={18} className="text-secondary mt-0.5 shrink-0" />
                 <div>
                   <p
                     className="font-semibold text-foreground mb-1"
@@ -261,8 +249,8 @@ export default function Spazio() {
             "Benvenuti nel nostro spazio di risonanza culturale."
           </p>
           <p
-            className="text-sm text-[#A67C52] tracking-widest"
-            style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+            className="text-sm text-secondary tracking-widest"
+            style={{ fontFamily: "var(--font-ui)" }}
           >
             歡迎來到我們的文化共鳴空間
           </p>
