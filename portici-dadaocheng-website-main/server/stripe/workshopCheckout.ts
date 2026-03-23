@@ -1,5 +1,4 @@
 import Stripe from "stripe";
-import { ENV } from "../_core/env";
 
 function getStripeClient() {
   const secretKey = process.env.STRIPE_SECRET_KEY;
