@@ -68,9 +68,9 @@ function Carousel({
   slides,
   height = "clamp(380px, 52vh, 620px)",
   interval = 4500,
-  showDots = true,
-  showProgress = true,
-  showCounter = true,
+  showDots = false,
+  showProgress = false,
+  showCounter = false,
   overlayGradient = "linear-gradient(to bottom, oklch(0% 0 0 / 0.1) 0%, oklch(0% 0 0 / 0.55) 100%)",
 }: {
   slides: { src: string; label: string; caption: string }[];

@@ -172,9 +172,9 @@ function Carousel({
   slides,
   height = "clamp(380px, 52vh, 620px)",
   interval = 4500,
-  showDots = true,
-  showProgress = true,
-  showCounter = true,
+  showDots = false,
+  showProgress = false,
+  showCounter = false,
   overlayGradient = "linear-gradient(to bottom, oklch(0% 0 0 / 0.1) 0%, oklch(0% 0 0 / 0.55) 100%)",
 }: {
   slides: { src: string; label: string; caption: string }[];
@@ -302,17 +302,13 @@ function HeroSection() {
     <section className="bg-white text-[#2c3e50] pt-24 md:pt-28">
       <style>
         {`
-        body {
-          font-family: 'Roboto Mono', monospace;
-          background: #ffffff;
-          color: #2c3e50;
-          line-height: 1.6;
-        }
-
+        /* Scoped to .hero-container only — do not override global body typography */
         .hero-container {
           width: 100%;
           background: #ffffff;
           overflow: hidden;
+          color: #2c3e50;
+          line-height: 1.6;
         }
 
         .hero-header {
@@ -491,29 +487,30 @@ function HeroSection() {
 
         .content-section h2 {
           font-family: 'Cooper Black', serif;
-          font-size: 2.5rem;
-          color: #000000;
-          margin-bottom: 30px;
-          letter-spacing: -1px;
+          font-size: 1.85rem;
+          color: #1a1a1a;
+          margin-bottom: 20px;
+          letter-spacing: -0.5px;
+          font-weight: 400;
         }
 
         .content-section h3 {
-          font-family: 'Montserrat', system-ui, sans-serif;
-          font-size: 1.3rem;
-          color: #666666;
-          margin-bottom: 20px;
-          text-transform: uppercase;
-          letter-spacing: 2px;
-          font-weight: 700;
+          font-family: 'Inter', system-ui, sans-serif;
+          font-size: 1.05rem;
+          color: #5c5c5c;
+          margin-bottom: 16px;
+          text-transform: none;
+          letter-spacing: 0.02em;
+          font-weight: 600;
         }
 
         .content-section p {
-          font-family: 'Roboto Mono', monospace;
-          font-size: 1rem;
-          color: #2c3e50;
-          line-height: 1.8;
-          margin-bottom: 20px;
-          text-align: justify;
+          font-family: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+          font-size: 0.95rem;
+          color: #3d3d3d;
+          line-height: 1.75;
+          margin-bottom: 18px;
+          text-align: left;
         }
 
         .content-block {
@@ -530,6 +527,23 @@ function HeroSection() {
 
         .content-block:nth-child(2) {
           border-left-color: #a80000;
+        }
+
+        /* Demoted vs. primary CTA: lighter frame, smaller type in video column */
+        .hero-container .video-compare-link .content-section h2 {
+          font-size: 1.35rem;
+          margin-bottom: 10px;
+        }
+        .hero-container .video-compare-link .content-section h3 {
+          font-size: 0.9rem;
+          font-weight: 500;
+          color: #6e6e6e;
+        }
+        .hero-container .video-compare-link .content-block {
+          background: #fafafa;
+          border-left-width: 2px;
+          border-left-color: #c4c4c4;
+          padding: 22px 24px;
         }
 
         .video-compare-link {
@@ -613,6 +627,24 @@ function HeroSection() {
             <br />
             DADAOCHENG
           </h1>
+        </div>
+
+        <div
+          className="border-b-2 border-black bg-white px-5 py-5 md:px-[60px] md:py-6 text-right"
+          style={{
+            opacity: titleVisible ? 1 : 0,
+            transform: titleVisible ? "translateY(0)" : "translateY(16px)",
+            transition: "opacity 0.55s ease 80ms, transform 0.55s ease 80ms",
+          }}
+        >
+          <Link
+            href="/workshop"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-[15px] font-semibold text-primary-foreground shadow-sm transition-opacity hover:opacity-90"
+            style={{ fontFamily: "var(--font-ui)" }}
+          >
+            Calendario workshop
+            <ArrowRight size={16} strokeWidth={2} />
+          </Link>
         </div>
 
         {stripesVisible && (
@@ -811,13 +843,13 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
       // Local progress: 當前滾動相對於本區塊頂端的位置
       const sectionTop = el.offsetTop;
       const localScroll = scrollY - sectionTop;
-      const maxScroll = viewportH * 3.5; // 需滾動的距離，約等於 3.5 個視窗高度（更長動畫）
+      const maxScroll = viewportH * 2.25; // ~2.25 viewports — shorter than before; hero reveals sooner
 
       const raw = localScroll / maxScroll;
       const clamped = Math.min(1, Math.max(0, raw));
       setProgress(clamped);
 
-      if (!notified && clamped >= 0.98) {
+      if (!notified && clamped >= 0.9) {
         setNotified(true);
         onRevealHero?.();
       }
@@ -849,7 +881,7 @@ function ScrollArchSection({ onRevealHero }: { onRevealHero?: () => void }) {
   return (
     <section
       ref={containerRef}
-      className="relative bg-[#050607] h-[320vh]"
+      className="relative bg-[#050607] h-[220vh]"
       aria-hidden="true"
     >
       {/* Sticky 3D scene：在整個區塊滾動期間固定在視窗內 */}
