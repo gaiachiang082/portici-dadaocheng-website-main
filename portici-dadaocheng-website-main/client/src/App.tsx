@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import Fondatrici from "./pages/Fondatrici";
 import ChiSiamoRedirect from "./pages/ChiSiamoRedirect";
 import Workshop from "./pages/Workshop";
+import Eventi from "./pages/Eventi";
 import Magazine from "./pages/Magazine";
 import ArticoliListRedirect from "./pages/ArticoliListRedirect";
 import ArticoloDetail from "./pages/ArticoloDetail";
@@ -27,6 +28,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/fondatrici" component={Fondatrici} />
       <Route path="/chi-siamo" component={ChiSiamoRedirect} />
+      <Route path="/eventi" component={Eventi} />
       <Route path="/workshop" component={Workshop} />
       <Route path="/magazine" component={Magazine} />
       <Route path="/newsletter" component={Newsletter} />

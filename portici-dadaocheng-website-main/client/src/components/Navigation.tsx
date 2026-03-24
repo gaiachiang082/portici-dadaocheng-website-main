@@ -4,6 +4,7 @@ import { Menu, X } from "lucide-react";
 
 const navLinks = [
   { href: "/fondatrici", label: "Fondatrici" },
+  { href: "/eventi", label: "Eventi" },
   { href: "/workshop", label: "Workshop" },
   { href: "/magazine", label: "Magazine" },
   { href: "/newsletter", label: "Newsletter" },
@@ -14,6 +15,9 @@ const navLinks = [
 function navItemIsActive(href: string, location: string): boolean {
   if (href === "/magazine") {
     return location === "/magazine" || location.startsWith("/articoli/");
+  }
+  if (href === "/eventi") {
+    return location === "/eventi";
   }
   if (href === "/workshop") {
     return location === "/workshop" || location.startsWith("/workshop/");
