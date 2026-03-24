@@ -70,7 +70,7 @@ export default function Footer() {
   const navLinks = [
     { href: "/chi-siamo", label: "Chi Siamo" },
     { href: "/workshop", label: "Workshop" },
-    { href: "/articoli", label: "Articoli" },
+    { href: "/magazine", label: "Magazine" },
     { href: "/spazio", label: "Spazio" },
     { href: "/contatti", label: "Contatti" },
   ];

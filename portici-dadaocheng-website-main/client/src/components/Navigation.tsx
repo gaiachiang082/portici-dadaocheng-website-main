@@ -5,10 +5,20 @@ import { Menu, X } from "lucide-react";
 const navLinks = [
   { href: "/chi-siamo", label: "Chi Siamo" },
   { href: "/workshop", label: "Workshop" },
-  { href: "/articoli", label: "Articoli" },
+  { href: "/magazine", label: "Magazine" },
   { href: "/spazio", label: "Spazio" },
   { href: "/contatti", label: "Contatti" },
 ];
+
+function navItemIsActive(href: string, location: string): boolean {
+  if (href === "/magazine") {
+    return location === "/magazine" || location.startsWith("/articoli/");
+  }
+  if (href === "/workshop") {
+    return location === "/workshop" || location.startsWith("/workshop/");
+  }
+  return location === href;
+}
 
 export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -79,7 +89,7 @@ export default function Navigation() {
                   <Link
                     href={href}
                     className={`text-[15px] tracking-wide transition-all duration-200 relative group ${
-                      location === href || (href === "/workshop" && location.startsWith("/workshop"))
+                      navItemIsActive(href, location)
                         ? "text-primary"
                         : isHome && !scrolled
                           ? "text-[var(--on-dark)] hover:text-primary"
@@ -90,7 +100,7 @@ export default function Navigation() {
                     {label}
                     <span
                       className="absolute -bottom-0.5 left-0 h-px bg-primary transition-all duration-300"
-                      style={{ width: location === href || (href === "/workshop" && location.startsWith("/workshop")) ? "100%" : "0%" }}
+                      style={{ width: navItemIsActive(href, location) ? "100%" : "0%" }}
                     />
                   </Link>
                 </li>
@@ -149,7 +159,7 @@ export default function Navigation() {
               key={href}
               href={href}
               className={`text-[16px] transition-colors duration-200 ${
-                location === href || (href === "/workshop" && location.startsWith("/workshop"))
+                navItemIsActive(href, location)
                   ? "text-primary"
                   : "text-foreground hover:text-primary"
               }`}

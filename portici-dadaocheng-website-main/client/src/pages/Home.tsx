@@ -1339,7 +1339,7 @@ function ArchGalleryStrip() {
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   FEATURED ARTICLES (from Sanity / Articoli page)
+   FEATURED ARTICLES (from Sanity / Magazine index)
    ───────────────────────────────────────────────────────────────── */
 interface ArticlePreview {
   _id: string;
@@ -1379,15 +1379,15 @@ function FeaturedArticlesSection() {
         <Reveal className="flex items-end justify-between mb-16 flex-wrap gap-4">
           <div>
             <p className="text-[15px] font-normal tracking-[0.22em] uppercase text-primary mb-4"
-              style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>Articoli</p>
+              style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>Magazine</p>
             <h2 className="font-medium text-foreground"
               style={{ fontFamily: "'Spectral', Georgia, serif", fontSize: "2rem", fontWeight: 500 }}>Letture Recenti</h2>
             <div className="w-10 h-0.5 bg-primary mt-5" />
           </div>
-          <Link href="/articoli"
+          <Link href="/magazine"
             className="inline-flex items-center gap-2 text-[15px] text-primary hover:opacity-70 hover:gap-3 transition-all duration-300"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
-            Tutti gli articoli <ArrowRight size={14} />
+            Vai al Magazine <ArrowRight size={14} />
           </Link>
         </Reveal>
 

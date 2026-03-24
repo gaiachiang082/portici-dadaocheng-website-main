@@ -8,7 +8,8 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import ChiSiamo from "./pages/ChiSiamo";
 import Workshop from "./pages/Workshop";
-import Articoli from "./pages/Articoli";
+import Magazine from "./pages/Magazine";
+import ArticoliListRedirect from "./pages/ArticoliListRedirect";
 import ArticoloDetail from "./pages/ArticoloDetail";
 import Spazio from "./pages/Spazio";
 import Contatti from "./pages/Contatti";
@@ -24,8 +25,9 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/chi-siamo" component={ChiSiamo} />
       <Route path="/workshop" component={Workshop} />
-      <Route path="/articoli" component={Articoli} />
+      <Route path="/magazine" component={Magazine} />
       <Route path="/articoli/:id" component={ArticoloDetail} />
+      <Route path="/articoli" component={ArticoliListRedirect} />
       <Route path="/spazio" component={Spazio} />
       <Route path="/contatti" component={Contatti} />
       <Route path="/workshop/calligraphy" component={CalligraphyWorkshop} />

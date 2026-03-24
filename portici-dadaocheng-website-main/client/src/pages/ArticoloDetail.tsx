@@ -31,7 +31,13 @@ export default function ArticoloDetail() {
     const fetchArticle = async () => {
       try {
         const data = await client.fetch<ArticleDetail | null>(
-          `*[_type == "article" && _id == $id][0]{ _id, "title": title.it, "body": content_it, category, mainImage }`,
+          `*[_type == "article" && _id == $id][0]{
+            _id,
+            "title": title.it,
+            "body": content_it,
+            category,
+            mainImage { asset->{ url } }
+          }`,
           { id }
         );
         setArticle(data ?? null);
@@ -71,9 +77,9 @@ export default function ArticoloDetail() {
             <p className="text-[oklch(72%_0.005_85)] mb-6" style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
               {error ?? "Articolo non trovato."}
             </p>
-            <Link href="/articoli" className="inline-flex items-center gap-2 text-[#A67C52] hover:underline">
+            <Link href="/magazine" className="inline-flex items-center gap-2 text-secondary hover:underline">
               <ArrowLeft size={18} />
-              Torna agli articoli
+              Torna al Magazine
             </Link>
           </div>
         </section>
@@ -87,12 +93,12 @@ export default function ArticoloDetail() {
       <section className="pt-32 pb-12 bg-[oklch(27.5%_0.000_0)]">
         <div className="container max-w-3xl">
           <Link
-            href="/articoli"
-            className="inline-flex items-center gap-2 text-[15px] text-[#A67C52] hover:underline mb-8"
+            href="/magazine"
+            className="inline-flex items-center gap-2 text-[15px] text-secondary hover:underline mb-8"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
           >
             <ArrowLeft size={16} />
-            Articoli
+            Magazine
           </Link>
           {article.category && (
             <span
