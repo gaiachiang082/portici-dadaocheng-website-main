@@ -39,7 +39,7 @@ function Reveal({ children, delay = 0, className = "" }: {
 function HomeHero() {
   return (
     <section
-      className="pt-28 pb-12 md:pt-32 md:pb-16 px-6 md:px-10 bg-background border-b border-border"
+      className="pt-[7.75rem] pb-12 md:pt-[8.5rem] md:pb-16 px-6 md:px-10 bg-background border-b border-border"
       aria-labelledby="home-hero-heading"
     >
       <div className="container max-w-6xl mx-auto">
@@ -135,7 +135,7 @@ function HomeHero() {
               aria-label="Copertina editoriale"
             >
               <header className="flex items-start justify-between gap-4 px-5 pt-5 pb-4 border-b border-border/60">
-                <BrandMark tone="ink" className="h-11 w-auto shrink-0" />
+                <BrandMark tone="ink" emphasis className="h-[66px] w-auto shrink-0" />
                 <div className="text-right min-w-0">
                   <p
                     className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-1"

@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { Instagram, Mail, Loader2 } from "lucide-react";
-import { BrandMark } from "@/components/BrandMark";
-
 const HERO_IMAGE =
   "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/JlGNTUqhPVkwUfEj.png";
 
@@ -299,23 +297,8 @@ export default function Contatti() {
               DADAOCHENG
             </div>
 
-            <div className="mt-6 overflow-hidden rounded-xl border border-gray-200">
-              <div className="grid grid-flow-col auto-cols-[32px]">
-                {Array.from({ length: 40 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className={`flex items-center justify-center aspect-square ${
-                      i % 2 === 0 ? "bg-[oklch(27.5%_0.000_0)]" : "bg-[oklch(96.5%_0.006_85)]"
-                    }`}
-                  >
-                    <BrandMark tone={i % 2 === 0 ? "paper" : "ink"} className="w-5 h-5" aria-hidden />
-                  </div>
-                ))}
-              </div>
-            </div>
-
             <p
-              className="mt-4 text-[11px] tracking-[0.22em] uppercase text-gray-400"
+              className="mt-6 text-[11px] tracking-[0.22em] uppercase text-gray-400"
               style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
             >
               © {new Date().getFullYear()} Portici DaDaocheng · Tutti i diritti riservati
