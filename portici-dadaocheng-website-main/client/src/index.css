@@ -3,26 +3,19 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* ─── Portici DaDaocheng Brand Tokens ──────────────────────────────── */
-/* Stile Mattone Rosso Classico (Heritage Style) — Dadaocheng 大稻埕     */
-/* Warm tones: red brick, yellow earth, dark brown — nostalgic heritage */
+/* ─── Paper / Riso design tokens (Tailwind @theme) ───────────────────── */
 @theme inline {
-  /* Heritage Style Colour Palette */
-  --color-primary:         #8B4513;   /* Colore Primario — Saddle Brown, dark reddish-brown */
-  --color-secondary:       #D2691E;   /* Colore Secondario — Chocolate, terracotta */
-  --color-accent:          #CD853F;   /* Colore di Accento — Peru, warm medium brown */
-  --color-bg-light:        #F5DEB3;   /* Sfondo Chiaro — Wheat, creamy off-white */
-  --color-text-dark:       #3E2723;   /* Testo Scuro — deep warm brown */
-  /* Legacy aliases for compatibility */
-  --color-moon-white:      #F5DEB3;   /* Aligned with light background */
-  --color-rengairo:        #8B4513;   /* Primary */
-  --color-ochre-brown:     #D2691E;   /* Secondary */
-  --color-ink-grey:        #3E2723;   /* Dark text */
-  --color-bamboo-green:    oklch(57.5% 0.045 165);  /* #6B8E7F */
-  --color-mist-blue:       oklch(70.0% 0.025 220);  /* #9CADB7 */
-  --color-mulberry-paper:  #F5DEB3;   /* Light background */
+  --color-paper:        var(--paper);
+  --color-paper-warm:   var(--paper-warm);
+  --color-paper-deep:   var(--paper-deep);
+  --color-ink:          var(--ink);
+  --color-ink-soft:     var(--ink-soft);
+  --color-riso-red:     var(--riso-red);
+  --color-riso-blue:    var(--riso-blue);
+  --color-riso-teal:    var(--riso-teal);
+  --color-riso-peach:   var(--riso-peach);
+  --color-riso-gold:    var(--riso-gold);
 
-  /* Semantic Colour Tokens */
   --color-background:           var(--background);
   --color-foreground:           var(--foreground);
   --color-card:                 var(--card);
@@ -43,77 +36,112 @@
   --color-input:                var(--input);
   --color-ring:                 var(--ring);
 
-  /* Typography — Poppins (H1/UI) + Montserrat (H2) + Roboto Mono (Body) + Quicksand (Caption) */
-  --font-heading:  'Poppins', system-ui, sans-serif;              /* H1 / Titoli principali */
-  --font-display:  'Montserrat', system-ui, sans-serif;           /* H2 / Sottotitoli */
-  --font-body:     'Roboto Mono', 'Consolas', monospace;          /* Corpo testo */
-  --font-ui:       'Poppins', system-ui, sans-serif;              /* Componenti UI / pulsanti */
-  --font-small:    'Quicksand', system-ui, sans-serif;            /* Didascalie / accenti */
+  /* Legacy heritage names → map to new system */
+  --color-moon-white:     var(--paper);
+  --color-rengairo:       var(--ink);
+  --color-ochre-brown:    var(--riso-gold);
+  --color-ink-grey:       var(--ink-soft);
+  --color-bamboo-green:   var(--riso-teal);
+  --color-mist-blue:      var(--riso-blue);
+  --color-mulberry-paper: var(--paper-warm);
+  --color-bg-light:       var(--paper);
+  --color-text-dark:      var(--ink);
 
-  /* Parametri dettagliati — Poppins (da Guida Tipografica) */
-  /* H1 Titolo Principale: 48-56px | Bold 700 | Interlinea 1.1 | Spaziatura -0.3px */
-  --font-h1-size:     clamp(3rem, 5vw, 3.5rem);       /* 48-56px */
-  --font-h1-weight:    700;
-  --font-h1-line:      1.1;
-  --font-h1-spacing:   -0.3px;
-  /* H2 Sottotitolo: 32-40px | SemiBold 600 | Interlinea 1.2 | Spaziatura 0px */
-  --font-h2-size:     clamp(2rem, 3vw, 2.5rem);     /* 32-40px */
-  --font-h2-weight:    600;
-  --font-h2-line:      1.2;
-  --font-h2-spacing:   0px;
-  /* H3 Sottotitolo Secondario: 24-28px | SemiBold 600 | Interlinea 1.3 | Spaziatura 0.1px */
-  --font-h3-size:     clamp(1.5rem, 2vw, 1.75rem);  /* 24-28px */
-  --font-h3-weight:    600;
-  --font-h3-line:      1.3;
-  --font-h3-spacing:   0.1px;
-  /* Corpo del Testo: 16-18px | Regular 400 | Interlinea 1.6 | Spaziatura 0.2px */
-  --font-body-size:   1rem;                         /* 16px base */
-  --font-body-size-lg: 1.125rem;                    /* 18px */
+  /* Typography roles */
+  --font-heading:  var(--font-serif-display);
+  --font-display:  var(--font-serif-display);
+  --font-body:     var(--font-serif-display);
+  --font-ui:       var(--font-mono);
+  --font-small:    var(--font-mono);
+
+  --font-h1-size:     clamp(2.5rem, 6vw, 3.5rem);
+  --font-h1-weight:   400;
+  --font-h1-line:     1.08;
+  --font-h1-spacing:  -0.02em;
+  --font-h2-size:     clamp(1.85rem, 4vw, 2.65rem);
+  --font-h2-weight:   400;
+  --font-h2-line:     1.12;
+  --font-h2-spacing:  -0.01em;
+  --font-h3-size:     clamp(1.35rem, 2.5vw, 1.85rem);
+  --font-h3-weight:   500;
+  --font-h3-line:     1.2;
+  --font-h3-spacing:  0;
+  --font-body-size:   1rem;
+  --font-body-size-lg: 1.0625rem;
   --font-body-weight:  400;
-  --font-body-line:    1.6;
-  --font-body-spacing: 0.2px;
-  /* Testo Piccolo / Didascalia: 12-14px | Regular 400 | Interlinea 1.5 | Spaziatura 0.3px */
-  --font-small-size:   clamp(0.75rem, 1.5vw, 0.875rem);  /* 12-14px */
+  --font-body-line:    1.7;
+  --font-body-spacing: 0.01em;
+  --font-small-size:   clamp(0.6875rem, 1.2vw, 0.75rem);
   --font-small-weight:  400;
   --font-small-line:    1.5;
-  --font-small-spacing: 0.3px;
+  --font-small-spacing: 0.08em;
 
-  /* Radius */
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* ─── Light Theme (Default) — Heritage Style ─────────────────────────── */
+/* ─── Primitive + semantic tokens ────────────────────────────────────── */
 :root {
-  --radius: 0.5rem;   /* Rounded corners per UI Components spec */
+  --paper:        #f5f0e8;
+  --paper-warm:   #ede7d6;
+  --paper-deep:   #e0d8c4;
+  --ink:          #1a1714;
+  --ink-soft:     #3d3830;
+  --riso-red:     #e8463c;
+  --riso-blue:    #2d5fa6;
+  --riso-teal:    #1d8c72;
+  --riso-peach:   #f5a084;
+  --riso-gold:    #c9922a;
 
-  /* Heritage Style — Stile Mattone Rosso Classico */
-  --background:           #F5F7FA;   /* Sfondo — grigio molto chiaro */
-  --foreground:           #2C3E50;   /* Testo Scuro — grigio profondo e leggibile */
-  --card:                 #FFFFFF;   /* Card bianche su sfondo grigio chiaro */
-  --card-foreground:      #2C3E50;
-  --popover:              #FFFFFF;
-  --popover-foreground:   #2C3E50;
-  --primary:              #8B4513;   /* Colore Primario — Saddle Brown */
-  --primary-foreground:   #FFFFFF;   /* White on primary buttons */
-  --ochre:                #D2691E;   /* Secondary / Chocolate */
-  --secondary:            #CD853F;   /* Colore di Accento — Peru */
-  --secondary-foreground: #2C3E50;
-  --muted:                #E4EBF3;   /* Warm-muted ma vicino al grigio di background */
-  --muted-foreground:     #5D6D7E;
-  --accent:               #CD853F;   /* Accent — Peru */
-  --accent-foreground:    #2C3E50;
-  --destructive:          oklch(55.0% 0.180 25);
-  --destructive-foreground: #FFFFFF;
-  --border:               #D0D7E2;   /* Border neutro su sfondo grigio chiaro */
-  --input:                #D0D7E2;
-  --ring:                 #8B4513;   /* Primary */
-  --on-dark:              #F5DEB3;   /* Light text on dark backgrounds (hero, footer) */
+  --font-serif-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-mono:          "DM Mono", ui-monospace, monospace;
+  --font-cjk:           "Noto Serif TC", serif;
+
+  --radius: 0.25rem;
+
+  --background:           var(--paper);
+  --foreground:           var(--ink);
+  --card:                 var(--paper-warm);
+  --card-foreground:      var(--ink);
+  --popover:              var(--paper-warm);
+  --popover-foreground:   var(--ink);
+  --primary:              var(--ink);
+  --primary-foreground:   var(--paper);
+  --secondary:            var(--paper-warm);
+  --secondary-foreground: var(--ink);
+  --muted:                var(--paper-deep);
+  --muted-foreground:     var(--ink-soft);
+  --accent:               var(--paper-deep);
+  --accent-foreground:    var(--ink);
+  --destructive:          var(--riso-red);
+  --destructive-foreground: #fffefb;
+  --border:               color-mix(in srgb, var(--ink) 12%, transparent);
+  --input:                color-mix(in srgb, var(--ink) 12%, transparent);
+  --ring:                 var(--riso-red);
+  --on-dark:              var(--paper);
 }
 
-/* ─── Base Styles ───────────────────────────────────────────────────── */
+/* ─── Global grain (subtle; below app chrome z-50) ─────────────────────── */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  border: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.22;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    opacity: 0.08;
+  }
+}
+
+/* ─── Base Styles ─────────────────────────────────────────────────────── */
 @layer base {
   *, *::before, *::after {
     @apply border-border outline-ring/50;
@@ -136,12 +164,6 @@
     min-height: 100vh;
   }
 
-  /*
-    Typography enforcement — Parametri dettagliati Poppins:
-    - We use !important so legacy inline fontFamily styles don't override the token system.
-  */
-
-  /* H1 Titolo Principale / Logo: Cooper Black 48-56px | Bold 700 | Interlinea 1.1 | Spaziatura -0.3px */
   h1 {
     font-family: var(--font-heading) !important;
     font-size: var(--font-h1-size);
@@ -151,7 +173,6 @@
     color: var(--foreground);
   }
 
-  /* H2 Sottotitolo: 32-40px | SemiBold 600 | Interlinea 1.2 | Spaziatura 0px */
   h2 {
     font-family: var(--font-display) !important;
     font-size: var(--font-h2-size);
@@ -161,7 +182,6 @@
     color: var(--foreground);
   }
 
-  /* H3 Sottotitolo Secondario: 24-28px | Poppins SemiBold 600 | Interlinea 1.3 | Spaziatura 0.1px */
   h3 {
     font-family: var(--font-display) !important;
     font-size: var(--font-h3-size);
@@ -171,9 +191,9 @@
     color: var(--foreground);
   }
 
-  /* H4–H6 + UI labels */
+  /* h4–h6: stay serif for long-form readability (pragmatic vs full mono UI) */
   h4, h5, h6 {
-    font-family: var(--font-ui) !important;
+    font-family: var(--font-display) !important;
     font-weight: 600 !important;
     line-height: 1.35;
     color: var(--foreground);
@@ -181,7 +201,6 @@
 
   h4 { font-size: 1.125rem; }
 
-  /* Corpo del Testo: 16-18px | Regular 400 | Interlinea 1.6 | Spaziatura 0.2px */
   p {
     font-family: var(--font-body) !important;
     font-size: var(--font-body-size-lg);
@@ -198,7 +217,6 @@
     letter-spacing: var(--font-body-spacing);
   }
 
-  a,
   button,
   input,
   select,
@@ -208,16 +226,35 @@
   }
 
   a {
-    color: var(--primary);
+    color: var(--foreground);
     text-decoration: none;
-    transition: opacity 0.2s ease;
+    transition: color 0.2s ease, opacity 0.2s ease;
   }
-  a:hover { opacity: 0.72; }
+
+  a:hover {
+    color: var(--ink-soft);
+  }
+
+  p a,
+  li a,
+  .prose a {
+    font-family: var(--font-body) !important;
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--riso-red) 45%, transparent);
+    text-underline-offset: 0.2em;
+  }
+
+  p a:hover,
+  li a:hover,
+  .prose a:hover {
+    color: var(--ink);
+    text-decoration-color: var(--riso-red);
+  }
 
   img, video { max-width: 100%; height: auto; display: block; }
 
   :focus-visible {
-    outline: 2px solid var(--primary);
+    outline: 2px solid var(--ring);
     outline-offset: 3px;
     border-radius: var(--radius);
   }
@@ -240,32 +277,28 @@
   }
 }
 
-/* ─── Component Overrides ───────────────────────────────────────────── */
+/* ─── Component patterns ────────────────────────────────────────────── */
 @layer components {
-  /* Container: max 1200px, centred, responsive padding */
   .container {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1080px;
     margin-inline: auto;
     padding-inline: 1rem;
   }
-  @media (min-width: 640px)  { .container { padding-inline: 1.5rem; } }
-  @media (min-width: 1024px) { .container { padding-inline: 2rem; } }
+  @media (min-width: 640px)  { .container { padding-inline: clamp(1rem, 4vw, 2.5rem); } }
+  @media (min-width: 1024px) { .container { padding-inline: clamp(1rem, 4vw, 2.5rem); } }
 
-  /* Flex: prevent overflow collapse */
   .flex { min-height: 0; min-width: 0; }
 
-  /* Ochre accent divider */
   .brand-divider {
-    width: 2.5rem;
-    height: 2px;
-    background-color: var(--primary);
-    border-radius: 1px;
+    width: 3rem;
+    height: 1px;
+    background-color: var(--riso-red);
+    border-radius: 0;
   }
 
-  /* Readable prose column — Corpo del Testo 16-18px */
   .prose-brand {
-    max-width: 68ch;
+    max-width: 62ch;
     font-family: var(--font-body);
     font-size: var(--font-body-size-lg);
     font-weight: var(--font-body-weight);
@@ -273,7 +306,6 @@
     letter-spacing: var(--font-body-spacing);
   }
 
-  /* Testo Piccolo / Didascalia: 12-14px | Roboto Mono | Interlinea 1.5 | Spaziatura 0.3px */
   .text-small,
   .caption,
   figcaption {
@@ -282,45 +314,45 @@
     font-weight: var(--font-small-weight);
     line-height: var(--font-small-line);
     letter-spacing: var(--font-small-spacing);
+    text-transform: uppercase;
   }
 
-  /* Heritage Card — Design della Scheda (UI Components) */
-  /* Creamy background, left border in warm brown, rounded corners, historical sense */
   .card-heritage {
     background-color: var(--card);
     border-radius: var(--radius-lg);
-    border-left: 4px solid var(--primary);
-    padding: 1.5rem 1.5rem 1.5rem 1.5rem;
-    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05);
+    border-left: 3px solid var(--riso-red);
+    padding: 1.5rem;
+    box-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 6%, transparent);
   }
 
-  /* Heritage Tags — Etichette di classificazione (Sito Storico, Commercio, Cultura) */
-  /* Pill-shaped, warm tones, white text */
   .tag-heritage {
     display: inline-flex;
     align-items: center;
     padding: 0.25rem 0.75rem;
     border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: white;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    color: var(--primary-foreground);
     font-family: var(--font-ui);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
-  .tag-heritage-primary { background-color: var(--primary); }
-  .tag-heritage-secondary { background-color: var(--secondary); }
-  .tag-heritage-accent { background-color: var(--accent); }
+  .tag-heritage-primary { background-color: var(--ink); }
+  .tag-heritage-secondary { background-color: var(--riso-teal); }
+  .tag-heritage-accent { background-color: var(--riso-gold); color: var(--ink); }
 }
 
-/* ─── Utility Helpers ───────────────────────────────────────────────── */
+/* ─── Utility Helpers ─────────────────────────────────────────────────── */
 @layer utilities {
-  .font-display { font-family: var(--font-display); font-weight: 600; }
+  .font-display { font-family: var(--font-display); font-weight: 400; }
   .font-body    { font-family: var(--font-body); }
-  .font-ui      { font-family: var(--font-ui); font-weight: 600; }
+  .font-ui      { font-family: var(--font-ui); font-weight: 500; }
+  .font-cjk     { font-family: var(--font-cjk); font-weight: 300; }
   .text-small   { font-size: var(--font-small-size); line-height: var(--font-small-line); letter-spacing: var(--font-small-spacing); }
 
-  .text-ochre       { color: var(--secondary); }
-  .text-bamboo      { color: oklch(57.5% 0.045 165); }
-  .text-mist        { color: oklch(70.0% 0.025 220); }
+  .text-ochre       { color: var(--riso-gold); }
+  .text-bamboo      { color: var(--riso-teal); }
+  .text-mist        { color: var(--riso-blue); }
   .bg-mulberry      { background-color: var(--card); }
   .bg-moon          { background-color: var(--background); }
   .bg-ochre         { background-color: var(--primary); }
