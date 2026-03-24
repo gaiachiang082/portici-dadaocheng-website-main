@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import { PageHeader } from "@/components/PageHeader";
 import { NewsletterSubscribeForm } from "@/components/NewsletterSubscribeForm";
 
 const VALUE_BLOCKS = [
@@ -25,58 +26,17 @@ const ARCHIVE_PLACEHOLDER = [
 export default function Newsletter() {
   return (
     <main className="bg-background">
-      <section className="pt-32 pb-14 md:pb-16 px-6 md:px-10 bg-foreground text-background">
-        <div className="container max-w-3xl mx-auto">
-          <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between md:gap-8 mb-8">
-            <p
-              className="text-[15px] font-normal tracking-[0.22em] uppercase text-secondary"
-              style={{ fontFamily: "var(--font-ui)" }}
-            >
-              Newsletter
-            </p>
-            <p
-              className="text-[13px] tracking-[0.18em] uppercase text-[oklch(68%_0.005_85)]"
-              style={{ fontFamily: "var(--font-ui)" }}
-            >
-              Lettera aperta · Portici
-            </p>
-          </div>
-          <h1
-            className="font-medium text-[oklch(96.5%_0.006_85)] mb-6"
-            style={{
-              fontFamily: "'Spectral', Georgia, serif",
-              fontSize: "clamp(1.875rem, 4vw, 2.75rem)",
-              fontWeight: 500,
-              lineHeight: 1.2,
-            }}
-          >
-            Una prospettiva diversa, ogni mese
-          </h1>
-          <p
-            className="text-[17px] text-[oklch(82%_0.005_85)] leading-[1.75] max-w-2xl mb-4"
-            style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
-          >
-            Ricevete un articolo o una riflessione che non pubblichiamo altrove, un’idea per guardare meglio ciò che vi
-            circonda, e di tanto in tanto l’invito a un incontro dal vivo.
-          </p>
-          <p
-            className="text-[16px] text-[oklch(72%_0.005_85)] leading-[1.7] max-w-2xl"
-            style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
-          >
-            Niente spam. Solo cultura, nel rispetto del vostro tempo.
-          </p>
-          <div className="w-10 h-0.5 bg-secondary mt-8" />
-        </div>
-      </section>
+      <PageHeader eyebrow="Newsletter" meta="Lettera aperta · Portici" title="Una prospettiva diversa, ogni mese">
+        <p>
+          Ricevete un articolo o una riflessione che non pubblichiamo altrove, un’idea per guardare meglio ciò che vi
+          circonda, e di tanto in tanto l’invito a un incontro dal vivo.
+        </p>
+        <p className="text-page-header-dim">Niente spam. Solo cultura, nel rispetto del vostro tempo.</p>
+      </PageHeader>
 
       <section className="py-14 md:py-16 border-b border-border">
         <div className="container max-w-3xl mx-auto px-6 md:px-10">
-          <h2
-            className="font-medium text-foreground mb-6"
-            style={{ fontFamily: "'Spectral', Georgia, serif", fontSize: "1.35rem", fontWeight: 500 }}
-          >
-            Iscriviti
-          </h2>
+          <h2 className="font-medium text-foreground mb-6 text-[1.35rem] [font-family:var(--font-display)]">Iscriviti</h2>
           <NewsletterSubscribeForm source="newsletter" variant="page" showUnsubscribeHint />
         </div>
       </section>
@@ -85,19 +45,14 @@ export default function Newsletter() {
         <div className="container max-w-3xl mx-auto px-6 md:px-10">
           <div className="space-y-10">
             {VALUE_BLOCKS.map(({ title, text }) => (
-              <div key={title} className="border-l-2 border-secondary pl-6">
-                <p
-                  className="text-xs font-semibold tracking-[0.2em] uppercase text-secondary mb-2"
-                  style={{ fontFamily: "var(--font-ui)" }}
-                >
+              <div
+                key={title}
+                className="border-l-2 border-[color-mix(in_srgb,var(--riso-red)_40%,transparent)] pl-6"
+              >
+                <p className="text-xs font-semibold tracking-[0.2em] uppercase text-secondary mb-2 [font-family:var(--font-mono)]">
                   {title}
                 </p>
-                <p
-                  className="text-[17px] text-muted-foreground leading-relaxed"
-                  style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
-                >
-                  {text}
-                </p>
+                <p className="text-[17px] text-muted-foreground leading-relaxed [font-family:var(--font-body)]">{text}</p>
               </div>
             ))}
           </div>
@@ -106,12 +61,7 @@ export default function Newsletter() {
 
       <section className="py-14 md:py-16 border-t border-border">
         <div className="container max-w-3xl mx-auto px-6 md:px-10">
-          <h2
-            className="font-medium text-foreground mb-2"
-            style={{ fontFamily: "'Spectral', Georgia, serif", fontSize: "1.25rem", fontWeight: 500 }}
-          >
-            Archivio
-          </h2>
+          <h2 className="font-medium text-foreground mb-2 text-[1.25rem] [font-family:var(--font-display)]">Archivio</h2>
           <p
             className="text-sm text-muted-foreground mb-8"
             style={{ fontFamily: "var(--font-ui)" }}
