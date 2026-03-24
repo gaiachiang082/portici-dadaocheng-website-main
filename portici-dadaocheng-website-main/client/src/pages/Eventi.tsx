@@ -59,7 +59,7 @@ export default function Eventi() {
             </Link>
             <Link
               href="/workshop"
-              className="inline-flex items-center gap-2 text-[15px] font-medium text-secondary hover:underline underline-offset-4 pt-2 sm:pt-3"
+              className="inline-flex items-center gap-2 text-[15px] font-medium text-primary hover:underline underline-offset-4 pt-2 sm:pt-3"
               style={{ fontFamily: "var(--font-ui)" }}
             >
               Scopri la pagina Workshop
@@ -84,7 +84,7 @@ export default function Eventi() {
             {STEPS.map(({ n, title, text }) => (
               <li key={n} className="flex gap-5">
                 <span
-                  className="shrink-0 w-9 h-9 rounded-full border border-secondary text-secondary flex items-center justify-center text-sm font-semibold"
+                  className="shrink-0 w-9 h-9 rounded-full border border-border text-foreground flex items-center justify-center text-sm font-semibold"
                   style={{ fontFamily: "var(--font-ui)" }}
                   aria-hidden
                 >
@@ -113,7 +113,7 @@ export default function Eventi() {
           <ul className="space-y-6">
             <li className="border-l-2 border-[color-mix(in_srgb,var(--riso-red)_40%,transparent)] pl-5">
               <p
-                className="text-xs font-semibold tracking-[0.2em] uppercase text-secondary mb-1"
+                className="text-xs font-semibold tracking-[0.2em] uppercase text-muted-foreground mb-1"
                 style={{ fontFamily: "var(--font-ui)" }}
               >
                 Panorama
@@ -123,7 +123,7 @@ export default function Eventi() {
               </p>
               <Link
                 href="/workshop"
-                className="text-[15px] font-medium text-secondary hover:underline underline-offset-4 inline-flex items-center gap-1"
+                className="text-[15px] font-medium text-primary hover:underline underline-offset-4 inline-flex items-center gap-1"
                 style={{ fontFamily: "var(--font-ui)" }}
               >
                 Pagina Workshop <ArrowRight size={14} />
@@ -131,7 +131,7 @@ export default function Eventi() {
             </li>
             <li className="border-l-2 border-[color-mix(in_srgb,var(--riso-red)_40%,transparent)] pl-5">
               <p
-                className="text-xs font-semibold tracking-[0.2em] uppercase text-secondary mb-1"
+                className="text-xs font-semibold tracking-[0.2em] uppercase text-muted-foreground mb-1"
                 style={{ fontFamily: "var(--font-ui)" }}
               >
                 Calligrafia e inchiostro
@@ -141,7 +141,7 @@ export default function Eventi() {
               </p>
               <Link
                 href="/workshop/calligraphy"
-                className="text-[15px] font-medium text-secondary hover:underline underline-offset-4 inline-flex items-center gap-1"
+                className="text-[15px] font-medium text-primary hover:underline underline-offset-4 inline-flex items-center gap-1"
                 style={{ fontFamily: "var(--font-ui)" }}
               >
                 Calligrafia <ArrowRight size={14} />
@@ -162,7 +162,7 @@ export default function Eventi() {
           </p>
           <Link
             href="/spazio"
-            className="text-[15px] font-medium text-secondary hover:underline underline-offset-4 inline-flex items-center gap-1"
+            className="text-[15px] font-medium text-primary hover:underline underline-offset-4 inline-flex items-center gap-1"
             style={{ fontFamily: "var(--font-ui)" }}
           >
             Spazio e concept <ArrowRight size={14} />
@@ -177,7 +177,7 @@ export default function Eventi() {
           </p>
           <Link
             href="/magazine"
-            className="text-sm font-medium text-secondary hover:underline underline-offset-4"
+            className="text-sm font-medium text-primary hover:underline underline-offset-4"
             style={{ fontFamily: "var(--font-ui)" }}
           >
             Magazine
@@ -185,7 +185,7 @@ export default function Eventi() {
           <span className="hidden sm:inline text-border">·</span>
           <Link
             href="/newsletter"
-            className="text-sm font-medium text-secondary hover:underline underline-offset-4"
+            className="text-sm font-medium text-primary hover:underline underline-offset-4"
             style={{ fontFamily: "var(--font-ui)" }}
           >
             Newsletter
@@ -193,7 +193,7 @@ export default function Eventi() {
           <span className="hidden sm:inline text-border">·</span>
           <Link
             href="/contatti"
-            className="text-sm font-medium text-secondary hover:underline underline-offset-4"
+            className="text-sm font-medium text-primary hover:underline underline-offset-4"
             style={{ fontFamily: "var(--font-ui)" }}
           >
             Contatti

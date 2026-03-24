@@ -188,7 +188,7 @@ export default function Contatti() {
                     className="flex items-center gap-4 group"
                   >
                     <div className="w-10 h-10 rounded-xl bg-[oklch(89.5%_0.025_80)] flex items-center justify-center shrink-0 group-hover:bg-[#a2482b] transition-colors">
-                      <Mail size={16} className="text-[#A67C52] group-hover:text-[oklch(96.5%_0.006_85)] transition-colors" />
+                      <Mail size={16} className="text-[#A67C52] group-hover:text-white transition-colors" />
                     </div>
                     <div>
                       <p
@@ -213,7 +213,7 @@ export default function Contatti() {
                     className="flex items-center gap-4 group"
                   >
                     <div className="w-10 h-10 rounded-xl bg-[oklch(89.5%_0.025_80)] flex items-center justify-center shrink-0 group-hover:bg-[#a2482b] transition-colors">
-                      <Instagram size={16} className="text-[#A67C52] group-hover:text-[oklch(96.5%_0.006_85)] transition-colors" />
+                      <Instagram size={16} className="text-[#A67C52] group-hover:text-white transition-colors" />
                     </div>
                     <div>
                       <p

@@ -355,7 +355,7 @@ function NewsletterSection() {
       <div className="container">
         <Reveal className="max-w-[560px] mx-auto text-center">
           <p
-            className="text-[15px] font-normal tracking-[0.22em] uppercase text-secondary mb-4"
+            className="text-[15px] font-normal tracking-[0.22em] uppercase text-muted-foreground mb-4"
             style={{ fontFamily: "var(--font-ui)" }}
           >
             Newsletter
@@ -378,7 +378,7 @@ function NewsletterSection() {
           </p>
           <Link
             href="/newsletter"
-            className="inline-flex items-center gap-1.5 text-[15px] font-medium text-secondary hover:opacity-80 transition-opacity mb-8"
+            className="inline-flex items-center gap-1.5 text-[15px] font-medium text-primary hover:opacity-80 transition-opacity mb-8"
             style={{ fontFamily: "var(--font-ui)" }}
           >
             Leggi la promessa <ArrowRight size={14} />

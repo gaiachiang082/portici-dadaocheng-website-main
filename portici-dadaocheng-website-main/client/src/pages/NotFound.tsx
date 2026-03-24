@@ -5,7 +5,7 @@ export default function NotFound() {
     <div className="min-h-screen w-full flex items-center justify-center bg-[oklch(96.5%_0.006_85)] px-4">
       <div className="w-full max-w-lg mx-4 text-center">
         <p
-          className="text-[15px] font-normal tracking-[0.22em] uppercase text-secondary mb-6"
+          className="text-[15px] font-normal tracking-[0.22em] uppercase text-muted-foreground mb-6"
           style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
         >
           Errore 404

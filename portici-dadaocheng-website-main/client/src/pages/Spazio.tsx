@@ -35,7 +35,7 @@ function SpazioCard({ sense, kanji, desc, delay }: { sense: string; kanji: strin
       {/* Gradient overlay on hover */}
       <div className="absolute inset-0 bg-gradient-to-t from-secondary/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
       <p
-        className="text-[2rem] mb-3 text-secondary relative z-10"
+        className="text-[2rem] mb-3 text-foreground relative z-10"
         style={{ fontFamily: "var(--font-display)", fontWeight: 500 }}
       >
         {kanji}
@@ -66,7 +66,7 @@ export default function Spazio() {
             <div className="w-10 h-0.5 bg-secondary mb-6" />
 
             <p
-              className="text-[15px] font-normal tracking-[0.22em] uppercase text-secondary mb-6"
+              className="text-[15px] font-normal tracking-[0.22em] uppercase text-muted-foreground mb-6"
               style={{ fontFamily: "var(--font-ui)" }}
             >
               Spazio
@@ -82,7 +82,7 @@ export default function Spazio() {
             >
               Un&apos;installazione esperienziale.
               <br />
-              <span className="text-secondary not-italic">
+              <span className="text-[var(--riso-gold)] not-italic">
                 Non un negozio.
               </span>
             </h1>
@@ -105,7 +105,7 @@ export default function Spazio() {
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] pointer-events-none opacity-[0.07]"
           style={{ animation: "spin-slow 45s linear infinite" }}
         >
-          <svg viewBox="0 0 100 100" className="w-full h-full text-secondary">
+          <svg viewBox="0 0 100 100" className="w-full h-full text-foreground/10">
             <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="8 12" opacity={0.9} />
             <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" strokeWidth="0.5" strokeDasharray="4 8" transform="rotate(-30 50 50)" opacity={0.55} />
           </svg>
@@ -114,7 +114,7 @@ export default function Spazio() {
         <div className="container relative z-10">
           <div className="mb-14">
             <p
-              className="text-xs font-semibold tracking-[0.2em] uppercase text-secondary mb-3"
+              className="text-xs font-semibold tracking-[0.2em] uppercase text-muted-foreground mb-3"
               style={{ fontFamily: "var(--font-ui)" }}
             >
               Il Concept
@@ -152,7 +152,7 @@ export default function Spazio() {
         <div className="container max-w-2xl">
           <div className="text-center mb-12">
             <p
-              className="text-xs font-semibold tracking-[0.2em] uppercase text-secondary mb-3"
+              className="text-xs font-semibold tracking-[0.2em] uppercase text-muted-foreground mb-3"
               style={{ fontFamily: "var(--font-ui)" }}
             >
               Dove Siamo
@@ -173,7 +173,7 @@ export default function Spazio() {
             <div className="space-y-6">
             <div className="bg-card p-8 rounded-2xl border border-border transition-colors duration-300 hover:border-secondary/35">
               <div className="flex items-start gap-4">
-                <MapPin size={18} className="text-secondary mt-0.5 shrink-0" />
+                <MapPin size={18} className="text-[var(--riso-gold)] mt-0.5 shrink-0" />
                 <div>
                   <p
                     className="font-semibold text-foreground mb-1"
@@ -195,7 +195,7 @@ export default function Spazio() {
 
             <div className="bg-card p-8 rounded-2xl border border-border transition-colors duration-300 hover:border-secondary/35">
               <div className="flex items-start gap-4">
-                <MapPin size={18} className="text-secondary mt-0.5 shrink-0" />
+                <MapPin size={18} className="text-[var(--riso-gold)] mt-0.5 shrink-0" />
                 <div>
                   <p
                     className="font-semibold text-foreground mb-1"

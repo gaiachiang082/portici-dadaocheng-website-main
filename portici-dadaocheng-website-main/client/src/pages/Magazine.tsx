@@ -115,14 +115,14 @@ export default function Magazine() {
               <div className="flex flex-col gap-4">
                 {featured.category && (
                   <span
-                    className="text-xs font-semibold tracking-[0.22em] uppercase text-secondary"
+                    className="text-xs font-semibold tracking-[0.22em] uppercase text-muted-foreground"
                     style={{ fontFamily: "var(--font-ui)" }}
                   >
                     {featured.category}
                   </span>
                 )}
                 <h2
-                  className="text-foreground text-2xl md:text-[1.75rem] font-semibold leading-tight group-hover:text-secondary transition-colors"
+                  className="text-foreground text-2xl md:text-[1.75rem] font-semibold leading-tight group-hover:text-[var(--riso-red)] transition-colors"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {featured.title ?? "Senza titolo"}
@@ -155,7 +155,7 @@ export default function Magazine() {
             Rubriche di riferimento:{" "}
             {RUBRIC_LABELS.map((label, i) => (
               <span key={label}>
-                {i > 0 && <span className="text-secondary"> · </span>}
+                {i > 0 && <span className="text-muted-foreground"> · </span>}
                 <span className="font-medium text-foreground [font-family:var(--font-body)]">{label}</span>
               </span>
             ))}
@@ -221,12 +221,12 @@ export default function Magazine() {
                         className="text-xs font-semibold tracking-widest uppercase text-gray-500"
                         style={{
                           fontFamily: "var(--font-ui)",
-                          color: article.color ?? "var(--secondary)",
+                          color: article.color ?? "var(--muted-foreground)",
                         }}
                       >
                         {article.category ?? "Articolo"}
                       </span>
-                      <h3 className="text-foreground font-semibold text-[1.125rem] leading-snug group-hover:text-secondary transition-colors [font-family:var(--font-display)]">
+                      <h3 className="text-foreground font-semibold text-[1.125rem] leading-snug group-hover:text-[var(--riso-red)] transition-colors [font-family:var(--font-display)]">
                         {article.title ?? ""}
                       </h3>
                       <p className="text-base text-muted-foreground leading-[1.75] flex-1 line-clamp-3 [font-family:var(--font-body)]">
@@ -238,7 +238,7 @@ export default function Magazine() {
                         </span>
                         <ArrowRight
                           size={14}
-                          className="text-secondary opacity-0 group-hover:opacity-100 transition-opacity"
+                          className="text-primary opacity-0 group-hover:opacity-100 transition-opacity"
                         />
                       </div>
                     </div>
@@ -255,7 +255,7 @@ export default function Magazine() {
         <div className="container mx-auto max-w-2xl text-center">
           <p className="text-[15px] text-muted-foreground leading-relaxed [font-family:var(--font-body)]">
             Volete restare nel racconto: trovate la{" "}
-            <Link href="/newsletter" className="text-secondary underline-offset-4 hover:underline">
+            <Link href="/newsletter" className="text-primary underline-offset-4 hover:underline">
               pagina newsletter
             </Link>
             , oppure il modulo nel piè di pagina — una mail al mese e niente pressione.

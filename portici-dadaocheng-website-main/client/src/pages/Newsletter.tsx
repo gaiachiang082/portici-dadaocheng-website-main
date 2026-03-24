@@ -49,7 +49,7 @@ export default function Newsletter() {
                 key={title}
                 className="border-l-2 border-[color-mix(in_srgb,var(--riso-red)_40%,transparent)] pl-6"
               >
-                <p className="text-xs font-semibold tracking-[0.2em] uppercase text-secondary mb-2 [font-family:var(--font-mono)]">
+                <p className="text-xs font-semibold tracking-[0.2em] uppercase text-muted-foreground mb-2 [font-family:var(--font-mono)]">
                   {title}
                 </p>
                 <p className="text-[17px] text-muted-foreground leading-relaxed [font-family:var(--font-body)]">{text}</p>
@@ -96,7 +96,7 @@ export default function Newsletter() {
           </p>
           <Link
             href="/magazine"
-            className="text-sm font-medium text-secondary hover:underline underline-offset-4"
+            className="text-sm font-medium text-primary hover:underline underline-offset-4"
             style={{ fontFamily: "var(--font-ui)" }}
           >
             Magazine

@@ -67,7 +67,7 @@ export default function Fondatrici() {
                 Ritratto (in arrivo)
               </div>
               <p
-                className="text-xs font-semibold tracking-[0.2em] uppercase text-secondary mb-2"
+                className="text-xs font-semibold tracking-[0.2em] uppercase text-muted-foreground mb-2"
                 style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
               >
                 Co-fondatrice
@@ -104,7 +104,7 @@ export default function Fondatrici() {
                 Ritratto (in arrivo)
               </div>
               <p
-                className="text-xs font-semibold tracking-[0.2em] uppercase text-secondary mb-2"
+                className="text-xs font-semibold tracking-[0.2em] uppercase text-muted-foreground mb-2"
                 style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
               >
                 Co-fondatrice
@@ -174,7 +174,7 @@ export default function Fondatrici() {
             {MISSION_VISION_METHOD.map(({ label, text }) => (
               <div key={label} className="border-l-2 border-secondary pl-6">
                 <p
-                  className="text-xs font-semibold tracking-widest uppercase text-secondary mb-2"
+                  className="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-2"
                   style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
                 >
                   {label}
@@ -196,7 +196,7 @@ export default function Fondatrici() {
         <div className="container max-w-6xl">
           <div className="mb-12 md:mb-14">
             <p
-              className="text-xs font-semibold tracking-[0.2em] uppercase text-secondary mb-3"
+              className="text-xs font-semibold tracking-[0.2em] uppercase text-muted-foreground mb-3"
               style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
             >
               I nostri valori
@@ -214,7 +214,7 @@ export default function Fondatrici() {
                 key={it}
                 className="bg-card p-5 md:p-6 rounded-xl border border-border"
               >
-                <p className="text-xl text-secondary mb-1" style={{ fontFamily: "'Spectral', Georgia, serif" }}>
+                <p className="text-xl text-foreground mb-1" style={{ fontFamily: "'Spectral', Georgia, serif" }}>
                   {zh}
                 </p>
                 <p
@@ -246,7 +246,7 @@ export default function Fondatrici() {
           </p>
           <Link
             href="/magazine"
-            className="text-sm font-medium text-secondary hover:underline underline-offset-4"
+            className="text-sm font-medium text-primary hover:underline underline-offset-4"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
           >
             Magazine
@@ -254,7 +254,7 @@ export default function Fondatrici() {
           <span className="hidden sm:inline text-border">·</span>
           <Link
             href="/workshop"
-            className="text-sm font-medium text-secondary hover:underline underline-offset-4"
+            className="text-sm font-medium text-primary hover:underline underline-offset-4"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
           >
             Workshop
@@ -262,7 +262,7 @@ export default function Fondatrici() {
           <span className="hidden sm:inline text-border">·</span>
           <Link
             href="/workshops"
-            className="text-sm font-medium text-secondary hover:underline underline-offset-4"
+            className="text-sm font-medium text-primary hover:underline underline-offset-4"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
           >
             Calendario workshop

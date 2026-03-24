@@ -155,6 +155,21 @@ body::before {
   color: color-mix(in srgb, var(--paper) 72%, transparent);
 }
 
+/* Global `a { color: foreground }` overrides inherited paper on dark mastheads */
+.page-header-masthead .page-header-intro a {
+  color: color-mix(in srgb, var(--paper) 88%, transparent);
+}
+
+.page-header-masthead .page-header-intro a:hover {
+  color: var(--paper);
+}
+
+.page-header-masthead .page-header-intro p a:hover,
+.page-header-masthead .page-header-intro li a:hover {
+  color: var(--paper);
+  text-decoration-color: color-mix(in srgb, var(--paper) 50%, transparent);
+}
+
 /* ─── Base Styles ─────────────────────────────────────────────────────── */
 @layer base {
   *, *::before, *::after {
