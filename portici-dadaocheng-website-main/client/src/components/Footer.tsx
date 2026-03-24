@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { useState, useEffect } from "react";
 import { Instagram, ArrowUp } from "lucide-react";
+import { BrandMark } from "@/components/BrandMark";
 import { NewsletterSubscribeForm } from "@/components/NewsletterSubscribeForm";
 
 const footerMono = "[font-family:var(--font-mono)] text-[11px] font-medium uppercase tracking-[0.1em]";
@@ -61,12 +62,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
-              <img
-                src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/DGnfpAmJtelEAnyF.png"
-                alt="Portici DaDaocheng"
-                className="h-16 w-auto object-contain"
-                style={{ filter: "brightness(0) invert(1)" }}
-              />
+              <BrandMark className="h-16 w-auto text-[var(--paper)]" aria-hidden />
               <div className="flex flex-col leading-none">
                 <span className="tracking-[0.12em] text-[var(--paper)] text-[1.05rem] [font-family:var(--font-display)] font-medium">
                   PORTICI

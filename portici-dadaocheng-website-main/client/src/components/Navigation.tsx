@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
+import { BrandMark } from "@/components/BrandMark";
 
 const navLinks = [
   { href: "/fondatrici", label: "Fondatrici" },
@@ -70,17 +71,15 @@ export default function Navigation() {
     >
       <div className="container">
         <nav className="flex flex-nowrap justify-between items-center h-16 md:h-20">
-          <Link href="/" className="flex items-center shrink-0 group transition-opacity duration-300 hover:opacity-80">
-            <img
-              src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/YOOdRRgvjAwtBHHT.png"
-              alt="Portici DaDaocheng"
-              className={`w-auto object-contain transition-[height] duration-400 ease-out ${
-                scrolled ? "h-12 md:h-[52px]" : "h-14 md:h-[72px]"
-              }`}
-              style={{
-                filter: isHome && !scrolled ? "brightness(0) invert(1)" : "brightness(0) saturate(1.2)",
-                opacity: 0.95,
-              }}
+          <Link
+            href="/"
+            className="flex items-center shrink-0 group transition-opacity duration-300 hover:opacity-80"
+            aria-label="Portici DaDaocheng — Home"
+          >
+            <BrandMark
+              className={`w-auto transition-[height,width] duration-400 ease-out opacity-95 ${
+                isHome && !scrolled ? "text-[var(--paper)]" : "text-[var(--ink)]"
+              } ${scrolled ? "h-12 md:h-[52px]" : "h-14 md:h-[72px]"}`}
             />
           </Link>
 

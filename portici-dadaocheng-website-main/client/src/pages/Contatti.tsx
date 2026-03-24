@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { Instagram, Mail, Loader2 } from "lucide-react";
+import { BrandMark } from "@/components/BrandMark";
 
 const HERO_IMAGE =
   "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/JlGNTUqhPVkwUfEj.png";
-const LOGO_TILE =
-  "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/YOOdRRgvjAwtBHHT.png";
 
 const formFieldClass = "w-full px-4 py-3 text-sm bg-white border border-gray-200 text-gray-900 placeholder:text-gray-400 rounded-xl resize-none transition-all duration-300 focus:outline-none focus:border-[#A67C52] focus:ring-2 focus:ring-[#A67C52]/25 focus:shadow-lg focus:shadow-[#A67C52]/10";
 
@@ -309,11 +308,9 @@ export default function Contatti() {
                       i % 2 === 0 ? "bg-[oklch(27.5%_0.000_0)]" : "bg-[oklch(96.5%_0.006_85)]"
                     }`}
                   >
-                    <img
-                      src={LOGO_TILE}
-                      alt="Portici DaDaocheng logo"
-                      className="w-5 h-5 object-contain"
-                      style={{ filter: i % 2 === 0 ? "brightness(0) invert(1)" : "brightness(0) saturate(1.2)" }}
+                    <BrandMark
+                      className={`w-5 h-5 ${i % 2 === 0 ? "text-[var(--paper)]" : "text-[var(--ink)]"}`}
+                      aria-hidden
                     />
                   </div>
                 ))}
