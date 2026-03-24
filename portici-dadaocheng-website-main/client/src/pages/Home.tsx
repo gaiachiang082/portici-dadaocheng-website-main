@@ -1,9 +1,9 @@
 import { Link } from "wouter";
 import { ArrowRight, Calendar, MapPin, ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { trpc } from "@/lib/trpc";
 import { useScrollReveal, useParallax } from "@/hooks/useScrollReveal";
-import { ArchImage, ArchDecor, ArchDivider } from "@/components/ArchFrame";
+import { ArchImage, ArchDecor } from "@/components/ArchFrame";
+import { NewsletterSubscribeForm } from "@/components/NewsletterSubscribeForm";
 import { client } from "@/SanityClient";
 
 /* ── Sky lantern SVG (平溪天燈) ── */
@@ -1444,69 +1444,36 @@ function FeaturedArticlesSection() {
    NEWSLETTER
    ───────────────────────────────────────────────────────────────── */
 function NewsletterSection() {
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const subscribe = trpc.newsletter.subscribe.useMutation({
-    onSuccess: (data) => {
-      setSubmitted(true);
-      setEmail("");
-    },
-    onError: () => {},
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email.trim()) return;
-    subscribe.mutate({ email: email.trim(), source: "home" });
-  };
-
   return (
-    <section className="py-24 bg-muted">
+    <section className="py-16 md:py-20 bg-muted">
       <div className="container">
         <Reveal className="max-w-[560px] mx-auto text-center">
-          <div className="flex justify-center mb-8"><ArchDivider count={3} color="#8B4513" /></div>
-          <p className="text-[15px] font-normal tracking-[0.22em] uppercase text-secondary mb-5"
-            style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>Newsletter</p>
-          <h2 className="font-medium text-foreground mb-5"
-            style={{ fontFamily: "'Spectral', Georgia, serif", fontSize: "2rem", fontWeight: 500 }}>
-            Una Prospettiva Diversa,<br />Ogni Mese
-          </h2>
-          <p className="text-[18px] text-muted-foreground leading-[1.8] mb-10"
-            style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-            Ricevi un articolo esclusivo, un'idea che cambierà come vedi qualcosa, e l'invito al prossimo evento. Niente spam. Solo cultura.
+          <p
+            className="text-[15px] font-normal tracking-[0.22em] uppercase text-secondary mb-4"
+            style={{ fontFamily: "var(--font-ui)" }}
+          >
+            Newsletter
           </p>
-          {submitted ? (
-            <div className="py-6 px-8 bg-card border border-border rounded-xl text-center shadow-sm">
-              <p className="text-[18px] text-foreground mb-1" style={{ fontFamily: 'var(--font-display)' }}>
-                Grazie per l'iscrizione!
-              </p>
-              <p className="text-[15px] text-muted-foreground" style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
-                Ti abbiamo inviato un'email di benvenuto.
-              </p>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
-              <input type="email" placeholder="La tua email" value={email} onChange={(e) => setEmail(e.target.value)}
-                required
-                className="flex-1 px-5 py-3.5 text-[16px] bg-background border border-border text-foreground placeholder:text-muted-foreground rounded-xl focus:outline-none focus:border-primary transition-colors"
-                style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }} />
-              <button type="submit" disabled={subscribe.isPending}
-                className="px-8 py-3.5 text-[16px] font-semibold bg-primary text-primary-foreground rounded-xl hover:opacity-85 transition-opacity whitespace-nowrap disabled:opacity-50"
-                style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
-                {subscribe.isPending ? "..." : "Iscriviti"}
-              </button>
-            </form>
-          )}
-          {subscribe.error && (
-            <p className="mt-3 text-sm text-primary" style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
-              {subscribe.error.message}
-            </p>
-          )}
-          {!submitted && (
-            <p className="mt-5 text-[15px] text-muted-foreground" style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
-              Puoi cancellarti quando vuoi. Ma scommettiamo che non lo farai.
-            </p>
-          )}
+          <h2
+            className="font-medium text-foreground mb-3"
+            style={{ fontFamily: "'Spectral', Georgia, serif", fontSize: "clamp(1.35rem, 3vw, 1.75rem)", fontWeight: 500 }}
+          >
+            Restate nel racconto
+          </h2>
+          <p
+            className="text-[16px] text-muted-foreground leading-[1.75] mb-6"
+            style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+          >
+            Una mail al mese, senza spam. Per cosa riceverete e come ci iscriviamo noi, c&apos;è la pagina dedicata.
+          </p>
+          <Link
+            href="/newsletter"
+            className="inline-flex items-center gap-1.5 text-[15px] font-medium text-secondary hover:opacity-80 transition-opacity mb-8"
+            style={{ fontFamily: "var(--font-ui)" }}
+          >
+            Leggi la promessa <ArrowRight size={14} />
+          </Link>
+          <NewsletterSubscribeForm source="home" variant="home" showUnsubscribeHint />
         </Reveal>
       </div>
     </section>

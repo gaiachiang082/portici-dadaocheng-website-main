@@ -2,7 +2,7 @@ import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 
 /** Standardized across footer, home teaser, and /newsletter page. */
-export const NEWSLETTER_SUCCESS_TITLE = "Grazie per l'iscrizione.";
+export const NEWSLETTER_SUCCESS_TITLE = "Grazie per l\u2019iscrizione.";
 export const NEWSLETTER_SUCCESS_BODY =
   "A breve troverete in posta un messaggio di benvenuto. Niente fretta: è solo un promemoria gentile.";
 

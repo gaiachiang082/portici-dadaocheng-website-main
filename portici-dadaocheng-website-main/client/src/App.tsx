@@ -14,6 +14,7 @@ import ArticoliListRedirect from "./pages/ArticoliListRedirect";
 import ArticoloDetail from "./pages/ArticoloDetail";
 import Spazio from "./pages/Spazio";
 import Contatti from "./pages/Contatti";
+import Newsletter from "./pages/Newsletter";
 import NotFound from "./pages/NotFound";
 import CalligraphyWorkshop from "./pages/CalligraphyWorkshop";
 import WorkshopsPage from "./pages/Workshops";
@@ -28,6 +29,7 @@ function Router() {
       <Route path="/chi-siamo" component={ChiSiamoRedirect} />
       <Route path="/workshop" component={Workshop} />
       <Route path="/magazine" component={Magazine} />
+      <Route path="/newsletter" component={Newsletter} />
       <Route path="/articoli/:id" component={ArticoloDetail} />
       <Route path="/articoli" component={ArticoliListRedirect} />
       <Route path="/spazio" component={Spazio} />

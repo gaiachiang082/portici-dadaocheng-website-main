@@ -1,57 +1,31 @@
 import { Link } from "wouter";
 import { useState, useEffect } from "react";
-import { ArchDecor } from "@/components/ArchFrame";
-import { trpc } from "@/lib/trpc";
 import { Instagram, ArrowUp } from "lucide-react";
+import { NewsletterSubscribeForm } from "@/components/NewsletterSubscribeForm";
 
 function FooterNewsletter() {
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const subscribe = trpc.newsletter.subscribe.useMutation({
-    onSuccess: () => { setSubmitted(true); setEmail(""); },
-    onError: () => {},
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email.trim()) return;
-    subscribe.mutate({ email: email.trim(), source: "footer" });
-  };
-
   return (
     <div>
-      <p className="text-[15px] font-normal tracking-[0.22em] uppercase text-secondary mb-5"
-        style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>Newsletter</p>
-      <p className="text-[16px] text-[var(--on-dark)]/80 leading-[1.75] mb-4"
-        style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-        Una prospettiva diversa, ogni mese. Niente spam. Solo cultura.
+      <p
+        className="text-[15px] font-normal tracking-[0.22em] uppercase text-secondary mb-4"
+        style={{ fontFamily: "var(--font-ui)" }}
+      >
+        Newsletter
       </p>
-      {submitted ? (
-        <p
-          className="text-[15px] text-[var(--on-dark)]/85 leading-[1.75]"
-          style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
-        >
-          Grazie per esservi iscritti. Troverete a breve un messaggio in posta: niente fretta, è solo un
-          promemoria gentile.
-        </p>
-      ) : (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-          <input type="email" placeholder="La tua email" value={email}
-            onChange={(e) => setEmail(e.target.value)} required
-            className="px-4 py-2.5 text-[15px] bg-[oklch(35%_0.000_0)] border border-[oklch(45%_0.000_0)] text-[var(--on-dark)] placeholder:text-[var(--on-dark)]/60 rounded-xl focus:outline-none focus:border-primary transition-colors"
-            style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }} />
-          <button type="submit" disabled={subscribe.isPending}
-            className="px-4 py-2.5 text-[15px] font-semibold bg-primary text-primary-foreground rounded-xl hover:opacity-85 transition-opacity disabled:opacity-50"
-            style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
-            {subscribe.isPending ? "..." : "Iscriviti"}
-          </button>
-        </form>
-      )}
-      {subscribe.error && (
-        <p className="mt-2 text-xs text-[#F87171]" style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
-          {subscribe.error.message}
-        </p>
-      )}
+      <p
+        className="text-[15px] text-[var(--on-dark)]/80 leading-[1.7] mb-4"
+        style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+      >
+        Una mail al mese. Per il resto, la pagina dedicata.
+      </p>
+      <NewsletterSubscribeForm source="footer" variant="footer" />
+      <Link
+        href="/newsletter"
+        className="mt-3 inline-block text-[13px] text-secondary hover:text-[var(--on-dark)] underline-offset-4 hover:underline transition-colors"
+        style={{ fontFamily: "var(--font-ui)" }}
+      >
+        Perché iscriversi
+      </Link>
     </div>
   );
 }
@@ -71,6 +45,7 @@ export default function Footer() {
     { href: "/fondatrici", label: "Fondatrici" },
     { href: "/workshop", label: "Workshop" },
     { href: "/magazine", label: "Magazine" },
+    { href: "/newsletter", label: "Newsletter" },
     { href: "/spazio", label: "Spazio" },
     { href: "/contatti", label: "Contatti" },
   ];

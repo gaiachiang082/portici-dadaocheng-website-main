@@ -6,6 +6,7 @@ const navLinks = [
   { href: "/fondatrici", label: "Fondatrici" },
   { href: "/workshop", label: "Workshop" },
   { href: "/magazine", label: "Magazine" },
+  { href: "/newsletter", label: "Newsletter" },
   { href: "/spazio", label: "Spazio" },
   { href: "/contatti", label: "Contatti" },
 ];

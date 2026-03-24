@@ -315,8 +315,11 @@ export default function Magazine() {
             className="text-[15px] text-muted-foreground leading-relaxed"
             style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
           >
-            Volete restare nel racconto: la newsletter è nel piè di pagina di ogni schermata, con una mail al
-            mese e niente pressione.
+            Volete restare nel racconto: trovate la{" "}
+            <Link href="/newsletter" className="text-secondary underline-offset-4 hover:underline">
+              pagina newsletter
+            </Link>
+            , oppure il modulo nel piè di pagina — una mail al mese e niente pressione.
           </p>
         </div>
       </section>
