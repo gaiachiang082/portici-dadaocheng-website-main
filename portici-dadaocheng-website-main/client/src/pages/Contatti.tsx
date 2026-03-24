@@ -308,10 +308,7 @@ export default function Contatti() {
                       i % 2 === 0 ? "bg-[oklch(27.5%_0.000_0)]" : "bg-[oklch(96.5%_0.006_85)]"
                     }`}
                   >
-                    <BrandMark
-                      className={`w-5 h-5 ${i % 2 === 0 ? "text-[var(--paper)]" : "text-[var(--ink)]"}`}
-                      aria-hidden
-                    />
+                    <BrandMark tone={i % 2 === 0 ? "paper" : "ink"} className="w-5 h-5" aria-hidden />
                   </div>
                 ))}
               </div>

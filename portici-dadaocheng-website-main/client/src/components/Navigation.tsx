@@ -77,9 +77,10 @@ export default function Navigation() {
             aria-label="Portici DaDaocheng — Home"
           >
             <BrandMark
+              tone={isHome && !scrolled ? "paper" : "ink"}
               className={`w-auto transition-[height,width] duration-400 ease-out opacity-95 ${
-                isHome && !scrolled ? "text-[var(--paper)]" : "text-[var(--ink)]"
-              } ${scrolled ? "h-12 md:h-[52px]" : "h-14 md:h-[72px]"}`}
+                scrolled ? "h-12 md:h-[52px]" : "h-14 md:h-[72px]"
+              }`}
             />
           </Link>
 

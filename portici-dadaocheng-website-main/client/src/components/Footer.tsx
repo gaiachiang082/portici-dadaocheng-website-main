@@ -62,7 +62,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
-              <BrandMark className="h-16 w-auto text-[var(--paper)]" aria-hidden />
+              <BrandMark tone="paper" className="h-16 w-auto" aria-hidden />
               <div className="flex flex-col leading-none">
                 <span className="tracking-[0.12em] text-[var(--paper)] text-[1.05rem] [font-family:var(--font-display)] font-medium">
                   PORTICI

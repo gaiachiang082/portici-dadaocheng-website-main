@@ -135,7 +135,7 @@ function HomeHero() {
               aria-label="Copertina editoriale"
             >
               <header className="flex items-start justify-between gap-4 px-5 pt-5 pb-4 border-b border-border/60">
-                <BrandMark className="h-11 w-auto shrink-0 text-[var(--ink)]" title="Portici DaDaocheng" />
+                <BrandMark tone="ink" className="h-11 w-auto shrink-0" />
                 <div className="text-right min-w-0">
                   <p
                     className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-1"
@@ -191,7 +191,8 @@ function HomeManifestoStrip() {
       aria-labelledby="home-manifesto-heading"
     >
       <BrandMark
-        className="pointer-events-none absolute -right-8 top-1/2 h-[min(420px,55vw)] w-auto -translate-y-1/2 text-[var(--paper)] opacity-[0.06]"
+        tone="paper"
+        className="pointer-events-none absolute -right-8 top-1/2 h-[min(420px,55vw)] w-auto -translate-y-1/2 opacity-[0.06]"
         aria-hidden
       />
       <div className="container relative z-10 max-w-3xl mx-auto px-6 md:px-10">

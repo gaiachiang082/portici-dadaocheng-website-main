@@ -1,51 +1,33 @@
 import { cn } from "@/lib/utils";
 
-type BrandMarkProps = React.SVGProps<SVGSVGElement> & {
-  /** Accessible name when used alone as the brand control */
-  title?: string;
+/** `ink` = mark as exported (dark on transparent). `paper` = inverted for dark backgrounds (nav hero, footer). */
+export type BrandMarkTone = "ink" | "paper";
+
+export type BrandMarkProps = Omit<React.ImgHTMLAttributes<HTMLImageElement>, "src" | "alt"> & {
+  tone?: BrandMarkTone;
+};
+
+const toneFilter: Record<BrandMarkTone, string | undefined> = {
+  ink: undefined,
+  paper: "brightness(0) invert(1)",
 };
 
 /**
- * Portici mark — official proportions: short top bar, shallow wide arc, tall portal (flat/butt caps).
- * Strokes use `currentColor` → pair with `text-[var(--ink)]`, `text-[var(--paper)]`, etc.
+ * Official brand mark from `/brand/logo-official.svg` (designer export — correct proportions).
+ * Raster-in-SVG; color is controlled with `tone` + optional `style.filter`, not `text-*` classes.
  */
-export function BrandMark({ className, title, ...props }: BrandMarkProps) {
-  const sw = 3.25;
+export function BrandMark({ className, tone = "ink", style, ...props }: BrandMarkProps) {
+  const f = toneFilter[tone];
   return (
-    <svg
-      viewBox="0 0 56 100"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={cn("shrink-0", className)}
-      role={title ? "img" : "presentation"}
-      aria-hidden={title ? undefined : true}
+    <img
+      src="/brand/logo-official.svg"
+      alt=""
+      role="presentation"
+      aria-hidden
+      decoding="async"
+      className={cn("object-contain object-left shrink-0", className)}
+      style={{ ...(f ? { filter: f } : {}), ...style }}
       {...props}
-    >
-      {title ? <title>{title}</title> : null}
-      <line
-        x1="22.5"
-        y1="11"
-        x2="33.5"
-        y2="11"
-        stroke="currentColor"
-        strokeWidth={sw}
-        strokeLinecap="butt"
-      />
-      <path
-        d="M 9 30 Q 28 23.5 47 30"
-        stroke="currentColor"
-        strokeWidth={sw}
-        strokeLinecap="butt"
-        fill="none"
-      />
-      <path
-        d="M 17.625 100 L 17.625 60.25 A 10.375 10.375 0 0 1 38.375 60.25 L 38.375 100"
-        stroke="currentColor"
-        strokeWidth={sw}
-        strokeLinecap="butt"
-        strokeLinejoin="miter"
-        fill="none"
-      />
-    </svg>
+    />
   );
 }
