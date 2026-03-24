@@ -15,6 +15,18 @@ interface NewsletterSubscribeFormProps {
   showUnsubscribeHint?: boolean;
 }
 
+const inputLight =
+  "rounded-sm border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--riso-red)]/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-[color,box-shadow] disabled:opacity-50";
+
+const inputFooterDark =
+  "rounded-sm border border-[color-mix(in_srgb,var(--paper)_22%,transparent)] bg-[color-mix(in_srgb,var(--paper)_7%,var(--ink))] text-[var(--paper)] placeholder:text-[color-mix(in_srgb,var(--paper)_48%,transparent)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--riso-red)]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--ink)] transition-[color,box-shadow] disabled:opacity-50";
+
+const buttonLight =
+  "rounded-sm border border-primary bg-primary text-primary-foreground uppercase text-xs font-medium tracking-[0.08em] [font-family:var(--font-mono)] hover:bg-primary/88 transition-colors disabled:opacity-50";
+
+const buttonFooterDark =
+  "rounded-sm border border-[color-mix(in_srgb,var(--paper)_55%,transparent)] bg-transparent text-[var(--paper)] uppercase text-xs font-medium tracking-[0.08em] [font-family:var(--font-mono)] hover:bg-[var(--paper)] hover:text-[var(--ink)] transition-colors disabled:opacity-50";
+
 export function NewsletterSubscribeForm({
   source,
   variant,
@@ -40,16 +52,10 @@ export function NewsletterSubscribeForm({
     if (variant === "footer") {
       return (
         <div className="space-y-2">
-          <p
-            className="text-[15px] text-[var(--on-dark)]/90 font-medium"
-            style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
-          >
+          <p className="text-[1.0625rem] text-[color-mix(in_srgb,var(--paper)_92%,transparent)] font-medium [font-family:var(--font-body)]">
             {NEWSLETTER_SUCCESS_TITLE}
           </p>
-          <p
-            className="text-[15px] text-[var(--on-dark)]/85 leading-[1.75]"
-            style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
-          >
+          <p className="text-[1.0625rem] text-[color-mix(in_srgb,var(--paper)_80%,transparent)] leading-[1.75] [font-family:var(--font-body)]">
             {NEWSLETTER_SUCCESS_BODY}
           </p>
         </div>
@@ -57,27 +63,19 @@ export function NewsletterSubscribeForm({
     }
     return (
       <div
-        className={`py-5 px-6 bg-card border border-border rounded-xl ${
+        className={`py-5 px-6 bg-card border border-border rounded-sm ${
           variant === "home" ? "text-center" : "text-left max-w-xl"
         }`}
       >
-        <p
-          className="text-[17px] text-foreground mb-1 font-medium"
-          style={{ fontFamily: "var(--font-display)" }}
-        >
+        <p className="text-[1.0625rem] text-foreground mb-1 font-medium [font-family:var(--font-display)]">
           {NEWSLETTER_SUCCESS_TITLE}
         </p>
-        <p className="text-[15px] text-muted-foreground" style={{ fontFamily: "var(--font-ui)" }}>
+        <p className="text-[15px] text-muted-foreground [font-family:var(--font-body)] leading-[1.7]">
           {NEWSLETTER_SUCCESS_BODY}
         </p>
       </div>
     );
   }
-
-  const inputBase =
-    "rounded-xl focus:outline-none focus:border-primary transition-colors disabled:opacity-50";
-  const buttonBase =
-    "font-semibold bg-primary text-primary-foreground rounded-xl hover:opacity-90 transition-opacity disabled:opacity-50";
 
   if (variant === "footer") {
     return (
@@ -89,22 +87,14 @@ export function NewsletterSubscribeForm({
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className={`px-4 py-2.5 text-[15px] bg-[oklch(35%_0.000_0)] border border-[oklch(45%_0.000_0)] text-[var(--on-dark)] placeholder:text-[var(--on-dark)]/60 ${inputBase}`}
-            style={{ fontFamily: "var(--font-ui)" }}
+            className={`px-4 py-2.5 text-[15px] [font-family:var(--font-mono)] ${inputFooterDark}`}
           />
-          <button
-            type="submit"
-            disabled={subscribe.isPending}
-            className={`px-4 py-2.5 text-[15px] ${buttonBase}`}
-            style={{ fontFamily: "var(--font-ui)" }}
-          >
+          <button type="submit" disabled={subscribe.isPending} className={`px-4 py-2.5 ${buttonFooterDark}`}>
             {subscribe.isPending ? "…" : "Iscriviti"}
           </button>
         </form>
         {subscribe.error && (
-          <p className="mt-2 text-xs text-destructive" style={{ fontFamily: "var(--font-ui)" }}>
-            {subscribe.error.message}
-          </p>
+          <p className="mt-2 text-xs text-destructive [font-family:var(--font-mono)]">{subscribe.error.message}</p>
         )}
       </div>
     );
@@ -120,28 +110,17 @@ export function NewsletterSubscribeForm({
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className={`flex-1 px-5 py-3.5 text-[16px] bg-background border border-border text-foreground placeholder:text-muted-foreground ${inputBase}`}
-            style={{ fontFamily: "var(--font-ui)" }}
+            className={`flex-1 px-5 py-3.5 text-[15px] [font-family:var(--font-mono)] ${inputLight}`}
           />
-          <button
-            type="submit"
-            disabled={subscribe.isPending}
-            className={`px-8 py-3.5 text-[16px] whitespace-nowrap ${buttonBase}`}
-            style={{ fontFamily: "var(--font-ui)" }}
-          >
+          <button type="submit" disabled={subscribe.isPending} className={`px-8 py-3.5 whitespace-nowrap ${buttonLight}`}>
             {subscribe.isPending ? "…" : "Iscriviti"}
           </button>
         </form>
         {subscribe.error && (
-          <p className="mt-3 text-sm text-destructive text-center" style={{ fontFamily: "var(--font-ui)" }}>
-            {subscribe.error.message}
-          </p>
+          <p className="mt-3 text-sm text-destructive text-center [font-family:var(--font-mono)]">{subscribe.error.message}</p>
         )}
         {showUnsubscribeHint && (
-          <p
-            className="mt-4 text-[14px] text-muted-foreground text-center"
-            style={{ fontFamily: "var(--font-ui)" }}
-          >
+          <p className="mt-4 text-sm text-muted-foreground text-center [font-family:var(--font-body)]">
             Potete cancellarvi in qualsiasi momento.
           </p>
         )}
@@ -149,7 +128,6 @@ export function NewsletterSubscribeForm({
     );
   }
 
-  /* page */
   return (
     <div>
       <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-xl">
@@ -159,25 +137,17 @@ export function NewsletterSubscribeForm({
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className={`flex-1 px-5 py-3.5 text-[16px] bg-background border border-border text-foreground placeholder:text-muted-foreground ${inputBase}`}
-          style={{ fontFamily: "var(--font-ui)" }}
+          className={`flex-1 px-5 py-3.5 text-[15px] [font-family:var(--font-mono)] ${inputLight}`}
         />
-        <button
-          type="submit"
-          disabled={subscribe.isPending}
-          className={`px-8 py-3.5 text-[16px] whitespace-nowrap ${buttonBase}`}
-          style={{ fontFamily: "var(--font-ui)" }}
-        >
+        <button type="submit" disabled={subscribe.isPending} className={`px-8 py-3.5 whitespace-nowrap ${buttonLight}`}>
           {subscribe.isPending ? "…" : "Iscriviti"}
         </button>
       </form>
       {subscribe.error && (
-        <p className="mt-3 text-sm text-destructive" style={{ fontFamily: "var(--font-ui)" }}>
-          {subscribe.error.message}
-        </p>
+        <p className="mt-3 text-sm text-destructive [font-family:var(--font-mono)]">{subscribe.error.message}</p>
       )}
       {showUnsubscribeHint && (
-        <p className="mt-4 text-[15px] text-muted-foreground" style={{ fontFamily: "var(--font-ui)" }}>
+        <p className="mt-4 text-sm text-muted-foreground [font-family:var(--font-body)]">
           Potete cancellarvi in qualsiasi momento.
         </p>
       )}

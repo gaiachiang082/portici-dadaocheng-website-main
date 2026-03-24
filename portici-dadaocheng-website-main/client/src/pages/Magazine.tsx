@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { ArrowRight } from "lucide-react";
+import { PageHeader } from "@/components/PageHeader";
 import { client } from "../SanityClient";
 
 /** Rubriche editoriali (sommario statico). */
@@ -64,62 +65,33 @@ export default function Magazine() {
 
   return (
     <main className="bg-background">
-      {/* A–C: Masthead, cover headline, editorial intro */}
-      <section className="pt-32 pb-16 px-6 md:px-10 bg-foreground">
-        <div className="container max-w-3xl mx-auto flex flex-col gap-8">
-          <div className="flex flex-col gap-3 md:flex-row md:items-baseline md:justify-between md:gap-8">
-            <p
-              className="text-[15px] font-normal tracking-[0.22em] uppercase text-secondary"
-              style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
-            >
-              Magazine
-            </p>
-            <p
-              className="text-[13px] tracking-[0.18em] uppercase text-[oklch(68%_0.005_85)]"
-              style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
-            >
-              {MAGAZINE_ISSUE_LINE}
-            </p>
-          </div>
-          <h1
-            className="font-bold text-[var(--on-dark)]"
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "clamp(2.15rem, 4.5vw, 3.25rem)",
-              lineHeight: 1.12,
-            }}
-          >
+      <PageHeader
+        eyebrow="Magazine"
+        meta={MAGAZINE_ISSUE_LINE}
+        className="pb-16"
+        titleClassName="text-[clamp(2.15rem,4.5vw,3.25rem)] leading-[1.12]"
+        title={
+          <>
             Incontri di lettura
             <br />
-            <em className="text-secondary not-italic font-semibold">tra culture.</em>
-          </h1>
-          <div className="space-y-4 max-w-2xl">
-            <p
-              className="text-lg text-[oklch(68%_0.005_85)] leading-[1.75]"
-              style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
-            >
-              Ogni testo applica il metodo 同中求異: partiamo da una stessa domanda umana e osserviamo
-              come culture diverse le rispondono. Non accumulo di notizie, ma spostamento dello sguardo.
-            </p>
-            <p
-              className="text-base text-[oklch(62%_0.005_85)] leading-[1.75]"
-              style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
-            >
-              Scorrete il sommario, aprite un articolo, tornate quando volete: il numero resta aperto.
-            </p>
-          </div>
-          <div className="w-10 h-0.5 bg-secondary" />
-        </div>
-      </section>
+            <em className="text-[var(--riso-peach)] not-italic font-medium">tra culture.</em>
+          </>
+        }
+      >
+        <p>
+          Ogni testo applica il metodo 同中求異: partiamo da una stessa domanda umana e osserviamo come culture diverse le
+          rispondono. Non accumulo di notizie, ma spostamento dello sguardo.
+        </p>
+        <p className="text-page-header-dim">
+          Scorrete il sommario, aprite un articolo, tornate quando volete: il numero resta aperto.
+        </p>
+      </PageHeader>
 
       {/* D: Copertina — articolo in evidenza */}
       {!loading && featured && (
         <section className="py-14 px-6 md:px-10 bg-background border-b border-border">
           <div className="container mx-auto max-w-5xl">
-            <p
-              className="text-[12px] font-semibold tracking-[0.28em] uppercase text-secondary mb-6"
-              style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
-            >
+            <p className="text-[11px] font-medium tracking-[0.1em] uppercase text-muted-foreground mb-6 [font-family:var(--font-mono)]">
               In copertina
             </p>
             <Link
@@ -156,10 +128,7 @@ export default function Magazine() {
                   {featured.title ?? "Senza titolo"}
                 </h2>
                 {featured.excerpt && (
-                  <p
-                    className="text-muted-foreground leading-relaxed line-clamp-4"
-                    style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
-                  >
+                  <p className="text-muted-foreground leading-relaxed line-clamp-4 [font-family:var(--font-body)]">
                     {featured.excerpt}
                   </p>
                 )}
@@ -179,26 +148,15 @@ export default function Magazine() {
       {/* E: Sommario / rubriche */}
       <section className="py-12 px-6 md:px-10 bg-background">
         <div className="container mx-auto">
-          <p
-            className="text-[15px] font-normal tracking-[0.22em] uppercase text-secondary mb-4"
-            style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
-          >
+          <p className="text-[11px] font-medium tracking-[0.1em] uppercase text-muted-foreground mb-4 [font-family:var(--font-mono)]">
             Sommario
           </p>
-          <p
-            className="text-base text-[oklch(40%_0.005_60)] leading-[1.85] max-w-3xl"
-            style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
-          >
+          <p className="text-base text-muted-foreground leading-[1.85] max-w-3xl [font-family:var(--font-body)]">
             Rubriche di riferimento:{" "}
             {RUBRIC_LABELS.map((label, i) => (
               <span key={label}>
                 {i > 0 && <span className="text-secondary"> · </span>}
-                <span
-                  className="font-medium text-[oklch(27.5%_0.000_0)]"
-                  style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
-                >
-                  {label}
-                </span>
+                <span className="font-medium text-foreground [font-family:var(--font-body)]">{label}</span>
               </span>
             ))}
             .
@@ -210,10 +168,7 @@ export default function Magazine() {
       <section className="py-20 px-6 md:px-10 bg-background">
         <div className="container mx-auto">
           {indexArticles.length > 0 && (
-            <h2
-              className="text-[15px] font-normal tracking-[0.22em] uppercase text-secondary mb-10"
-              style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
-            >
+            <h2 className="text-[11px] font-medium tracking-[0.1em] uppercase text-muted-foreground mb-10 [font-family:var(--font-mono)]">
               Nel numero
             </h2>
           )}
@@ -234,7 +189,7 @@ export default function Magazine() {
               ))}
             </div>
           ) : articles.length === 0 ? (
-            <p className="text-muted-foreground" style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+            <p className="text-muted-foreground [font-family:var(--font-body)]">
               Nessun articolo pubblicato al momento.
             </p>
           ) : indexArticles.length === 0 ? null : (
@@ -271,27 +226,14 @@ export default function Magazine() {
                       >
                         {article.category ?? "Articolo"}
                       </span>
-                      <h3
-                        className="text-gray-900 font-bold group-hover:text-secondary transition-colors"
-                        style={{
-                          fontFamily: "var(--font-ui)",
-                          fontSize: "1.125rem",
-                          lineHeight: 1.35,
-                        }}
-                      >
+                      <h3 className="text-foreground font-semibold text-[1.125rem] leading-snug group-hover:text-secondary transition-colors [font-family:var(--font-display)]">
                         {article.title ?? ""}
                       </h3>
-                      <p
-                        className="text-base text-gray-500 leading-[1.75] flex-1 line-clamp-3"
-                        style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
-                      >
+                      <p className="text-base text-muted-foreground leading-[1.75] flex-1 line-clamp-3 [font-family:var(--font-body)]">
                         {article.excerpt ?? ""}
                       </p>
                       <div className="flex items-center justify-between pt-2">
-                        <span
-                          className="text-sm text-gray-500"
-                          style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
-                        >
+                        <span className="text-xs text-muted-foreground [font-family:var(--font-mono)] tracking-wide">
                           {article.readTime ? `${article.readTime} di lettura` : "—"}
                         </span>
                         <ArrowRight
@@ -311,10 +253,7 @@ export default function Magazine() {
       {/* G: Chiusura editoriale */}
       <section className="py-16 px-6 md:px-10 bg-muted border-t border-border">
         <div className="container mx-auto max-w-2xl text-center">
-          <p
-            className="text-[15px] text-muted-foreground leading-relaxed"
-            style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
-          >
+          <p className="text-[15px] text-muted-foreground leading-relaxed [font-family:var(--font-body)]">
             Volete restare nel racconto: trovate la{" "}
             <Link href="/newsletter" className="text-secondary underline-offset-4 hover:underline">
               pagina newsletter

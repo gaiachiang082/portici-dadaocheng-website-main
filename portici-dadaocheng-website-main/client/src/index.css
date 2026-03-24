@@ -132,13 +132,27 @@ body::before {
   pointer-events: none;
   border: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  opacity: 0.22;
+  opacity: 0.17;
 }
 
 @media (prefers-reduced-motion: reduce) {
   body::before {
-    opacity: 0.08;
+    opacity: 0.07;
   }
+}
+
+/* Dark masthead: global h1 forces ink — restore paper titles here */
+.page-header-masthead h1 {
+  color: var(--paper) !important;
+}
+
+.page-header-masthead .page-header-intro,
+.page-header-masthead .page-header-intro p {
+  color: color-mix(in srgb, var(--paper) 84%, transparent);
+}
+
+.page-header-masthead .page-header-intro p.text-page-header-dim {
+  color: color-mix(in srgb, var(--paper) 72%, transparent);
 }
 
 /* ─── Base Styles ─────────────────────────────────────────────────────── */
@@ -290,11 +304,20 @@ body::before {
 
   .flex { min-height: 0; min-width: 0; }
 
-  .brand-divider {
+  /* Riso rule — use for mastheads, section breaks, editorial rhythm */
+  .brand-divider,
+  .editorial-rule {
     width: 3rem;
     height: 1px;
     background-color: var(--riso-red);
     border-radius: 0;
+  }
+
+  .editorial-rule-wide {
+    width: 100%;
+    max-width: 12rem;
+    height: 1px;
+    background-color: var(--riso-red);
   }
 
   .prose-brand {

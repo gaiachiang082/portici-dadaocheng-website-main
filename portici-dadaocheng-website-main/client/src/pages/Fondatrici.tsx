@@ -1,5 +1,6 @@
 import { Link } from "wouter";
 import { ArrowRight } from "lucide-react";
+import { PageHeader } from "@/components/PageHeader";
 
 const MISSION_VISION_METHOD = [
   {
@@ -24,59 +25,29 @@ const VALUES = [
   { it: "Inclusività", zh: "包容", desc: "Un progetto per chiunque abbia curiosità, indipendentemente dal background." },
 ] as const;
 
-const serifBody = "text-[18px] text-[oklch(40%_0.005_60)] leading-[1.85]";
-const serifBodyStrong = "text-[oklch(27.5%_0.000_0)] font-medium";
+const serifBody = "text-[18px] text-muted-foreground leading-[1.85] [font-family:var(--font-body)]";
+const serifBodyStrong = "text-foreground font-medium";
 
 export default function Fondatrici() {
   return (
     <main className="bg-background">
-      {/* Masthead + opening frame */}
-      <section className="pt-32 pb-16 md:pb-20 px-6 md:px-10 bg-foreground text-background">
-        <div className="container max-w-3xl mx-auto">
-          <div className="flex flex-col gap-3 md:flex-row md:items-baseline md:justify-between md:gap-8 mb-8">
-            <p
-              className="text-[15px] font-normal tracking-[0.22em] uppercase text-secondary"
-              style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
-            >
-              Fondatrici
-            </p>
-            <p
-              className="text-[13px] tracking-[0.18em] uppercase text-[oklch(68%_0.005_85)]"
-              style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
-            >
-              Portici DaDaocheng
-            </p>
-          </div>
-          <h1
-            className="font-medium text-[oklch(96.5%_0.006_85)] mb-6"
-            style={{
-              fontFamily: "'Spectral', Georgia, serif",
-              fontSize: "clamp(1.875rem, 4vw, 2.75rem)",
-              fontWeight: 500,
-              lineHeight: 1.2,
-            }}
-          >
-            Due persone, un solo invito: restare curiosi tra culture
-          </h1>
-          <p
-            className="text-[17px] text-[oklch(82%_0.005_85)] leading-[1.75] max-w-2xl mb-8"
-            style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
-          >
-            Abbiamo immaginato Portici DaDaocheng come uno spazio lento, dove si raccontano incontri veri — non cataloghi di
-            esotismi. Qui trovate chi siamo, perché esiste questo progetto, e come potete entrarci.
-          </p>
-          <div className="w-10 h-0.5 bg-secondary" />
-        </div>
-      </section>
+      <PageHeader
+        eyebrow="Fondatrici"
+        meta="Portici DaDaocheng"
+        className="pb-16 md:pb-20"
+        title="Due persone, un solo invito: restare curiosi tra culture"
+      >
+        <p>
+          Abbiamo immaginato Portici DaDaocheng come uno spazio lento, dove si raccontano incontri veri — non cataloghi di
+          esotismi. Qui trovate chi siamo, perché esiste questo progetto, e come potete entrarci.
+        </p>
+      </PageHeader>
 
       {/* Manifesto / quote */}
       <section className="py-14 md:py-16 bg-muted/40 border-y border-border">
         <div className="container max-w-2xl mx-auto px-6 md:px-10">
-          <blockquote
-            className="text-[1.125rem] md:text-[1.25rem] text-foreground leading-[1.65] border-l-2 border-secondary pl-6 md:pl-8"
-            style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
-          >
-            <span className="text-secondary not-italic font-normal tracking-wide">同中求異</span>
+          <blockquote className="text-[1.125rem] md:text-[1.25rem] text-foreground leading-[1.65] border-l-2 border-[var(--riso-red)] pl-6 md:pl-8 [font-family:var(--font-body)]">
+            <span className="text-[var(--riso-gold)] not-italic font-normal tracking-wide">同中求異</span>
             <span className="text-muted-foreground"> — </span>
             Trovare le differenze nell&apos;unità. Partiamo dalla stessa domanda: come rispondono culture diverse allo stesso
             bisogno umano?
@@ -113,7 +84,7 @@ export default function Fondatrici() {
               >
                 Taipei · memoria viva, tè, artigianato
               </p>
-              <div className={`space-y-4 ${serifBody}`} style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+              <div className={`space-y-4 ${serifBody}`}>
                 <p>
                   Porto con me la curiosità per i quartieri che non smettono di reinventarsi: dove il commercio, il rito e la
                   quotidianità si mescolano senza slogan. Il mio lavoro qui è tenere aperta la conversazione tra radici e
@@ -150,7 +121,7 @@ export default function Fondatrici() {
               >
                 Bologna · portici, accoglienza, patrimonio UNESCO
               </p>
-              <div className={`space-y-4 ${serifBody}`} style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+              <div className={`space-y-4 ${serifBody}`}>
                 <p>
                   I portici mi hanno insegnato che si può camminare insieme restando diversi: un riparo condiviso, non una gabbia
                   di consenso. Da qui nasce il desiderio di offrire laboratori e testi che odorano di città reale, non di
@@ -175,19 +146,19 @@ export default function Fondatrici() {
           >
             Il nostro brand nasce dall&apos;incontro di due luoghi
           </h2>
-          <div className="w-10 h-0.5 bg-secondary mb-8" />
+          <div className="brand-divider mb-8" role="presentation" aria-hidden />
           <div className="space-y-4">
-            <p className={serifBody} style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+            <p className={serifBody}>
               <strong className={serifBodyStrong}>大稻埕 (DadaoCheng)</strong> è un quartiere storico di Taipei dove dal XIX
               secolo commercianti da Cina, Giappone e Occidente si incontravano per scambiare tè, tessuti e idee. Un luogo dove
               antico e nuovo convivono, dove la tradizione e la modernità non sono in conflitto ma in conversazione.
             </p>
-            <p className={serifBody} style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+            <p className={serifBody}>
               <strong className={serifBodyStrong}>Bologna</strong> — città di portici, la più lunga rete di passaggi coperti al
               mondo (38 km), dichiarata patrimonio UNESCO. Una città che, come DadaoCheng, sa come accogliere lo straniero senza
               perdere la propria identità.
             </p>
-            <p className={serifBody} style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+            <p className={serifBody}>
               Il nostro brand nasce dall&apos;incontro di questi due luoghi. I portici sono spazi intermedi — né dentro né fuori.
               Sono la metafora perfetta per ciò che vogliamo essere: uno spazio dove culture diverse possono incontrarsi e
               scoprire che fanno domande simili.
