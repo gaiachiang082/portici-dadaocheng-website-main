@@ -1,21 +1,21 @@
 import { Link } from "wouter";
-import { ArrowRight, Calendar, BookOpen } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import { ArchImage, ArchDecor } from "@/components/ArchFrame";
+import { BrandMark } from "@/components/BrandMark";
 import { NewsletterSubscribeForm } from "@/components/NewsletterSubscribeForm";
 import { client } from "@/SanityClient";
 
-const IMG = {
-  teaSettle:
-    "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/bglhzhpRWfrDXIyk.png",
-};
+const COVER_IMG =
+  "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/bglhzhpRWfrDXIyk.png";
 
 /* ─────────────────────────────────────────────────────────────────
-   SCROLL REVEAL WRAPPER
+   NEWSLETTER — unchanged block (includes light reveal)
    ───────────────────────────────────────────────────────────────── */
 function Reveal({ children, delay = 0, className = "" }: {
-  children: React.ReactNode; delay?: number; className?: string;
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
 }) {
   const { ref, visible } = useScrollReveal(0.12);
   return (
@@ -34,161 +34,147 @@ function Reveal({ children, delay = 0, className = "" }: {
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   HOME ORIENTATION HERO — immediate clarity, no scroll gate
+   EDITORIAL HERO — two columns, cover block, no scroll gate
    ───────────────────────────────────────────────────────────────── */
-function HomeOrientationHero() {
+function HomeHero() {
   return (
-    <section className="pt-28 pb-14 md:pt-32 md:pb-16 px-6 md:px-10 bg-background border-b border-border">
-      <div className="container max-w-3xl mx-auto">
-        <p
-          className="text-[15px] font-normal tracking-[0.22em] uppercase text-secondary mb-5"
-          style={{ fontFamily: "var(--font-ui)" }}
-        >
-          Portici DaDaocheng
-        </p>
-        <h1
-          className="font-medium text-foreground mb-5"
-          style={{
-            fontFamily: "'Spectral', Georgia, serif",
-            fontSize: "clamp(1.85rem, 4.2vw, 2.65rem)",
-            fontWeight: 500,
-            lineHeight: 1.15,
-          }}
-        >
-          Dove culture diverse interpretano la stessa cosa in modi sorprendentemente diversi.
-        </h1>
-        <p
-          className="text-[17px] text-muted-foreground leading-[1.75] mb-10 max-w-2xl"
-          style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
-        >
-          Laboratori a Bologna, letture sul Magazine, voci delle fondatrici: entrate dove preferite — questo è solo
-          l&apos;ingresso.
-        </p>
-
-        <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 mb-10">
-          <Link
-            href="/eventi"
-            className="inline-flex items-center justify-center gap-2 px-7 py-3.5 text-[16px] font-semibold bg-primary text-primary-foreground rounded-xl hover:opacity-90 transition-opacity shadow-sm"
-            style={{ fontFamily: "var(--font-ui)" }}
-          >
-            <Calendar size={18} strokeWidth={2} aria-hidden />
-            Eventi
-          </Link>
-          <Link
-            href="/magazine"
-            className="inline-flex items-center justify-center gap-2 px-7 py-3.5 text-[16px] font-semibold bg-primary text-primary-foreground rounded-xl hover:opacity-90 transition-opacity shadow-sm"
-            style={{ fontFamily: "var(--font-ui)" }}
-          >
-            <BookOpen size={18} strokeWidth={2} aria-hidden />
-            Magazine
-          </Link>
-        </div>
-
-        <div
-          className="flex flex-wrap gap-x-6 gap-y-2 text-[14px] text-muted-foreground"
-          style={{ fontFamily: "var(--font-ui)" }}
-        >
-          <Link href="/fondatrici" className="hover:text-secondary transition-colors underline-offset-4 hover:underline">
-            Fondatrici
-          </Link>
-          <Link href="/newsletter" className="hover:text-secondary transition-colors underline-offset-4 hover:underline">
-            Newsletter
-          </Link>
-          <Link href="/workshop" className="hover:text-secondary transition-colors underline-offset-4 hover:underline">
-            Workshop
-          </Link>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────────
-   BRAND STORY STRIP — single manifesto / world-building layer
-   ───────────────────────────────────────────────────────────────── */
-function BrandStoryStrip() {
-  return (
-    <section className="py-20 md:py-24 relative overflow-hidden bg-muted">
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage:
-            "radial-gradient(ellipse 120% 80% at 80% 50%, rgba(205,133,63,0.3) 0%, transparent 70%)",
-        }}
-      />
-      <div className="container relative z-10">
-        <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
-          <Reveal>
-            <div
-              className="relative mx-auto max-w-xl px-8 py-10 bg-card"
+    <section
+      className="pt-28 pb-12 md:pt-32 md:pb-16 px-6 md:px-10 bg-background border-b border-border"
+      aria-labelledby="home-hero-heading"
+    >
+      <div className="container max-w-6xl mx-auto">
+        <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)] gap-12 lg:gap-14 xl:gap-16 items-start">
+          <div className="min-w-0">
+            <p
+              className="text-[13px] font-normal tracking-[0.22em] uppercase text-muted-foreground mb-5"
+              style={{ fontFamily: "var(--font-ui)" }}
+            >
+              Portici DaDaocheng
+            </p>
+            <h1
+              id="home-hero-heading"
+              className="font-medium text-foreground mb-4"
               style={{
-                borderRadius: "52px 52px 28px 28px",
-                border: "2px solid rgba(139,69,19,0.35)",
-                boxShadow: "0 20px 40px rgba(44,62,80,0.25)",
+                fontFamily: "'Spectral', Georgia, serif",
+                fontSize: "clamp(2rem, 4.8vw, 3.15rem)",
+                fontWeight: 500,
+                lineHeight: 1.12,
+                letterSpacing: "-0.02em",
               }}
             >
-              <div
-                className="absolute inset-x-6 -top-4 h-[60%] pointer-events-none"
-                style={{
-                  borderRadius: "60px 60px 30px 30px",
-                  border: "2px solid rgba(139,69,19,0.35)",
-                  borderBottom: "none",
-                  background:
-                    "radial-gradient(circle at 50% 0%, rgba(205,133,63,0.16), transparent 70%)",
-                }}
-              />
+              Dove culture diverse interpretano la stessa cosa in modi sorprendentemente diversi.
+            </h1>
+            <p
+              className="text-[1.05rem] md:text-lg text-foreground/85 leading-snug mb-5"
+              style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+              lang="zh-Hant"
+            >
+              異中求同，同中求異。
+            </p>
+            <p
+              className="text-[17px] text-muted-foreground leading-[1.75] mb-10 max-w-xl"
+              style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+            >
+              Laboratori a Bologna, letture sul Magazine, voci delle fondatrici: entrate dove preferite — questo è solo
+              l&apos;ingresso.
+            </p>
 
-              <p
-                className="text-[14px] font-normal tracking-[0.22em] uppercase text-primary mb-4 relative z-10"
+            <div
+              className="flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-8 mb-8"
+              role="group"
+              aria-label="Ingressi principali"
+            >
+              <Link
+                href="/eventi"
+                className="group inline-flex flex-col gap-1 w-fit focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--ink)]"
                 style={{ fontFamily: "var(--font-ui)" }}
               >
-                La nostra filosofia
-              </p>
-
-              <p
-                className="text-[18px] leading-[1.6] mb-5 italic relative z-10"
-                style={{ fontFamily: "var(--font-body)", color: "#2C3E50" }}
+                <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Calendario</span>
+                <span className="text-[17px] font-medium text-foreground border-b border-foreground/25 pb-0.5 group-hover:border-foreground transition-colors">
+                  Eventi
+                </span>
+              </Link>
+              <Link
+                href="/magazine"
+                className="group inline-flex flex-col gap-1 w-fit focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--ink)]"
+                style={{ fontFamily: "var(--font-ui)" }}
               >
-                &ldquo;Trovare le differenze nell&apos;unità. Il nostro metodo parte sempre dalla stessa domanda: come
-                rispondono culture diverse allo stesso bisogno umano?&rdquo;
-              </p>
-              <p
-                className="text-[18px] leading-[1.6] mb-6 relative z-10"
-                style={{ fontFamily: "var(--font-body)", color: "#2C3E50" }}
-              >
-                Non per giudicare quale risposta sia migliore, ma per scoprire che la diversità stessa è la risposta più
-                ricca che l&apos;umanità abbia mai prodotto.
-              </p>
-              <p
-                className="text-right text-small text-primary relative z-10"
-                style={{ fontFamily: "var(--font-small)" }}
-              >
-                同中求異
-              </p>
+                <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Letture</span>
+                <span className="text-[17px] font-medium text-foreground border-b border-foreground/25 pb-0.5 group-hover:border-foreground transition-colors">
+                  Magazine
+                </span>
+              </Link>
             </div>
-          </Reveal>
 
-          <Reveal delay={200}>
-            <div className="flex items-center justify-center">
-              <div className="relative group" style={{ width: "280px" }}>
-                <ArchImage
-                  src={IMG.teaSettle}
-                  alt="Cerimonia del tè — armonia"
-                  aspectRatio="3/4"
-                  borderColor="rgba(139,69,19,0.5)"
-                />
-                <div className="absolute -bottom-4 -right-4 -z-10">
-                  <ArchDecor size="lg" color="#8B4513" opacity={0.15} />
+            <nav
+              className="flex flex-wrap gap-x-5 gap-y-1 text-[12px] text-muted-foreground/80"
+              style={{ fontFamily: "var(--font-ui)" }}
+              aria-label="Altri collegamenti"
+            >
+              <Link href="/fondatrici" className="hover:text-foreground transition-colors underline-offset-4 hover:underline">
+                Fondatrici
+              </Link>
+              <span className="text-border select-none" aria-hidden>
+                ·
+              </span>
+              <Link href="/newsletter" className="hover:text-foreground transition-colors underline-offset-4 hover:underline">
+                Newsletter
+              </Link>
+              <span className="text-border select-none" aria-hidden>
+                ·
+              </span>
+              <Link href="/workshop" className="hover:text-foreground transition-colors underline-offset-4 hover:underline">
+                Workshop
+              </Link>
+            </nav>
+          </div>
+
+          <div className="min-w-0 lg:pt-2">
+            <article
+              className="relative border border-border bg-[var(--paper-warm)]"
+              aria-label="Copertina editoriale"
+            >
+              <header className="flex items-start justify-between gap-4 px-5 pt-5 pb-4 border-b border-border/60">
+                <BrandMark className="h-11 w-auto shrink-0 text-[var(--ink)]" title="Portici DaDaocheng" />
+                <div className="text-right min-w-0">
+                  <p
+                    className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-1"
+                    style={{ fontFamily: "var(--font-ui)" }}
+                  >
+                    Front page
+                  </p>
+                  <p
+                    className="text-[13px] text-foreground/90 leading-tight"
+                    style={{ fontFamily: "'Spectral', Georgia, serif" }}
+                  >
+                    Cultura · dialogo · pratica
+                  </p>
                 </div>
-                <p
-                  className="mt-4 text-center text-[13px] tracking-[0.18em] uppercase text-muted-foreground"
-                  style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
-                >
-                  Il rito del tè
-                </p>
+              </header>
+              <div className="relative aspect-[4/5] max-h-[min(52vh,520px)] bg-[var(--paper-deep)]">
+                <img
+                  src={COVER_IMG}
+                  alt="Cerimonia del tè — armonia"
+                  className="absolute inset-0 h-full w-full object-cover object-center opacity-[0.92]"
+                />
+                <div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    background:
+                      "linear-gradient(to top, color-mix(in srgb, var(--ink) 35%, transparent) 0%, transparent 45%)",
+                  }}
+                />
               </div>
-            </div>
-          </Reveal>
+              <footer className="px-5 py-4 border-t border-border/60">
+                <p
+                  className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground"
+                  style={{ fontFamily: "var(--font-ui)" }}
+                >
+                  Il rito del tè — colophon
+                </p>
+              </footer>
+            </article>
+          </div>
         </div>
       </div>
     </section>
@@ -196,135 +182,164 @@ function BrandStoryStrip() {
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   FEATURED ARTICLES (from Sanity / Magazine index)
+   MANIFESTO — dark ink band, bilingual, static (no reveal)
+   ───────────────────────────────────────────────────────────────── */
+function HomeManifestoStrip() {
+  return (
+    <section
+      className="relative overflow-hidden py-14 md:py-20 bg-[var(--ink)] text-[var(--paper)]"
+      aria-labelledby="home-manifesto-heading"
+    >
+      <BrandMark
+        className="pointer-events-none absolute -right-8 top-1/2 h-[min(420px,55vw)] w-auto -translate-y-1/2 text-[var(--paper)] opacity-[0.06]"
+        aria-hidden
+      />
+      <div className="container relative z-10 max-w-3xl mx-auto px-6 md:px-10">
+        <p
+          id="home-manifesto-heading"
+          className="text-[11px] uppercase tracking-[0.24em] text-[color-mix(in_srgb,var(--paper)_55%,transparent)] mb-8"
+          style={{ fontFamily: "var(--font-ui)" }}
+        >
+          La nostra filosofia
+        </p>
+        <blockquote className="border-l-2 border-[color-mix(in_srgb,var(--paper)_35%,transparent)] pl-6 md:pl-8">
+          <p
+            className="text-[clamp(1.05rem,2.2vw,1.2rem)] leading-[1.65] mb-6 text-[color-mix(in_srgb,var(--paper)_92%,transparent)]"
+            style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+            lang="it"
+          >
+            Trovare le differenze nell&apos;unità. Il nostro metodo parte dalla stessa domanda: come rispondono culture
+            diverse allo stesso bisogno umano? Non per giudicare quale risposta sia migliore, ma per scoprire che la
+            diversità stessa è la risposta più ricca che l&apos;umanità abbia mai prodotto.
+          </p>
+          <p
+            className="text-[1.35rem] md:text-[1.5rem] leading-relaxed text-[var(--paper)]"
+            style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+            lang="zh-Hant"
+          >
+            同中求異
+          </p>
+        </blockquote>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   TWO-PANEL ENTRY — Magazine & Eventi (chapter-like)
    ───────────────────────────────────────────────────────────────── */
 interface ArticlePreview {
   _id: string;
   category?: string;
   title?: string;
   excerpt?: string;
-  readTime?: string;
-  color?: string;
 }
 
-function FeaturedArticlesSection() {
-  const [articles, setArticles] = useState<ArticlePreview[]>([]);
+function HomeEntryPanels() {
+  const [article, setArticle] = useState<ArticlePreview | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchArticles = async () => {
+    const fetchArticle = async () => {
       try {
-        const data = await client.fetch<ArticlePreview[]>(
-          `*[_type == "article"] | order(_createdAt desc)[0...1]{ _id, category, "title": title.it, excerpt, readTime, color }`
+        const data = await client.fetch<ArticlePreview | null>(
+          `*[_type == "article"] | order(_createdAt desc)[0]{ _id, category, "title": title.it, excerpt }`
         );
-        setArticles(data ?? []);
+        setArticle(data ?? null);
       } catch (err) {
-        console.error("Featured articles fetch error:", err);
-        setArticles([]);
+        console.error("Home magazine teaser fetch error:", err);
+        setArticle(null);
       } finally {
         setLoading(false);
       }
     };
-    fetchArticles();
+    fetchArticle();
   }, []);
 
-  const accentColor = (color?: string) => color ?? "var(--secondary)";
-
   return (
-    <section className="py-16 md:py-20 bg-background">
-      <div className="container">
-        <Reveal className="flex items-end justify-between mb-10 flex-wrap gap-4">
-          <div>
-            <p
-              className="text-[15px] font-normal tracking-[0.22em] uppercase text-primary mb-3"
-              style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
-            >
-              Magazine
-            </p>
-            <h2
-              className="font-medium text-foreground"
-              style={{ fontFamily: "'Spectral', Georgia, serif", fontSize: "1.65rem", fontWeight: 500 }}
-            >
-              Dal numero
-            </h2>
-            <div className="w-10 h-0.5 bg-primary mt-4" />
-          </div>
+    <section className="py-16 md:py-20 bg-background" aria-labelledby="home-entry-heading">
+      <h2 id="home-entry-heading" className="sr-only">
+        Ingresso Magazine ed Eventi
+      </h2>
+      <div className="container max-w-6xl mx-auto px-6 md:px-10">
+        <div className="grid md:grid-cols-2 gap-0 md:gap-px bg-border/40 border border-border/50">
           <Link
             href="/magazine"
-            className="inline-flex items-center gap-2 text-[15px] text-primary hover:opacity-70 hover:gap-3 transition-all duration-300"
-            style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+            className="group block bg-background p-8 md:p-10 min-h-[280px] md:min-h-[320px] flex flex-col justify-between focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--ink)] transition-colors hover:bg-[var(--paper-warm)]/50"
           >
-            Vai al Magazine <ArrowRight size={14} />
-          </Link>
-        </Reveal>
-
-        {loading ? (
-          <div className="max-w-2xl">
-            <div className="bg-card overflow-hidden rounded-2xl border border-border shadow-sm animate-pulse">
-              <div className="h-1 bg-border" />
-              <div className="p-6 flex flex-col gap-3">
-                <div className="h-3 w-16 bg-border rounded" />
-                <div className="h-5 w-full bg-border rounded" />
-                <div className="h-4 w-full bg-border rounded" />
-                <div className="h-4 w-3/4 bg-border rounded mt-2" />
-                <div className="h-3 w-20 bg-border rounded mt-4" />
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-6 max-w-2xl">
-            {articles.map((article, i) => (
-              <Reveal key={article._id} delay={i * 80}>
-                <Link
-                  href={`/articoli/${article._id}`}
-                  className="group bg-card overflow-hidden rounded-2xl border border-border shadow-sm flex flex-col transition-all duration-400 hover:-translate-y-1 hover:shadow-md"
+            <div>
+              <p
+                className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-4"
+                style={{ fontFamily: "var(--font-ui)" }}
+              >
+                I — Magazine
+              </p>
+              <p
+                className="text-[clamp(1.5rem,3vw,1.85rem)] font-medium text-foreground leading-tight mb-6"
+                style={{ fontFamily: "'Spectral', Georgia, serif" }}
+              >
+                Letture, saggi e voci che attraversano confini.
+              </p>
+              {!loading && article?.title ? (
+                <p
+                  className="text-[13px] leading-relaxed text-muted-foreground/90 max-w-md line-clamp-3 border-l border-border pl-4"
+                  style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
                 >
-                  <div className="h-1" style={{ backgroundColor: accentColor(article.color) }} />
-                  <div className="p-6 md:p-7 flex flex-col flex-1">
-                    <span
-                      className="text-[12px] font-semibold tracking-[0.18em] uppercase mb-4"
-                      style={{
-                        fontFamily: "'Inter', system-ui, sans-serif",
-                        color: accentColor(article.color),
-                      }}
-                    >
-                      {article.category ?? "Articolo"}
-                    </span>
-                    <h3
-                      className="text-foreground mb-3 group-hover:text-primary transition-colors duration-300"
-                      style={{
-                        fontFamily: "'Inter', system-ui, sans-serif",
-                        fontSize: "1.05rem",
-                        fontWeight: 600,
-                        lineHeight: 1.35,
-                      }}
-                    >
-                      {article.title ?? ""}
-                    </h3>
-                    <p
-                      className="text-[16px] text-muted-foreground leading-[1.7] flex-1 line-clamp-4"
-                      style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
-                    >
-                      {article.excerpt ?? ""}
-                    </p>
-                    <div className="mt-5 flex items-center justify-between">
-                      <span
-                        className="text-[12px] text-muted-foreground"
-                        style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
-                      >
-                        {article.readTime ? `${article.readTime} di lettura` : "—"}
-                      </span>
-                      <ArrowRight
-                        size={14}
-                        className="text-primary opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-1"
-                      />
-                    </div>
-                  </div>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-        )}
+                  <span className="block text-[10px] uppercase tracking-[0.16em] text-muted-foreground/70 mb-1.5 font-sans">
+                    {article.category ?? "Dal numero"}
+                  </span>
+                  {article.title}
+                </p>
+              ) : loading ? (
+                <div className="max-w-md border-l border-transparent pl-4 space-y-2" aria-hidden>
+                  <div className="h-2.5 w-20 bg-muted animate-pulse rounded-sm" />
+                  <div className="h-3 w-full bg-muted animate-pulse rounded-sm max-w-[90%]" />
+                  <div className="h-3 w-full bg-muted animate-pulse rounded-sm max-w-[70%]" />
+                </div>
+              ) : null}
+            </div>
+            <p
+              className="mt-8 text-[13px] uppercase tracking-[0.14em] text-foreground group-hover:translate-x-0.5 transition-transform inline-flex items-center gap-2"
+              style={{ fontFamily: "var(--font-ui)" }}
+            >
+              Entra nel Magazine
+              <ArrowRight size={14} strokeWidth={1.75} className="opacity-70" aria-hidden />
+            </p>
+          </Link>
+
+          <Link
+            href="/eventi"
+            className="group block bg-background p-8 md:p-10 min-h-[280px] md:min-h-[320px] flex flex-col justify-between border-t border-border/50 md:border-t-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--ink)] transition-colors hover:bg-[var(--paper-warm)]/50"
+          >
+            <div>
+              <p
+                className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-4"
+                style={{ fontFamily: "var(--font-ui)" }}
+              >
+                II — Eventi
+              </p>
+              <p
+                className="text-[clamp(1.5rem,3vw,1.85rem)] font-medium text-foreground leading-tight mb-6"
+                style={{ fontFamily: "'Spectral', Georgia, serif" }}
+              >
+                Laboratori e incontri a Bologna.
+              </p>
+              <p
+                className="text-[15px] leading-relaxed text-muted-foreground max-w-md"
+                style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+              >
+                Calendario, iscrizioni e filo conduttore degli incontri — tutto nella sezione dedicata.
+              </p>
+            </div>
+            <p
+              className="mt-8 text-[13px] uppercase tracking-[0.14em] text-foreground group-hover:translate-x-0.5 transition-transform inline-flex items-center gap-2"
+              style={{ fontFamily: "var(--font-ui)" }}
+            >
+              Vai agli eventi
+              <ArrowRight size={14} strokeWidth={1.75} className="opacity-70" aria-hidden />
+            </p>
+          </Link>
+        </div>
       </div>
     </section>
   );
@@ -380,9 +395,9 @@ function NewsletterSection() {
 export default function Home() {
   return (
     <main>
-      <HomeOrientationHero />
-      <BrandStoryStrip />
-      <FeaturedArticlesSection />
+      <HomeHero />
+      <HomeManifestoStrip />
+      <HomeEntryPanels />
       <NewsletterSection />
     </main>
   );
