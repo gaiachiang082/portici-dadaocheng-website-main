@@ -72,11 +72,7 @@ export default function Navigation() {
       <div className="container">
         <nav
           className={`flex flex-nowrap justify-between items-center ${
-            isHome
-              ? scrolled
-                ? "min-h-[4.5rem] md:min-h-[5.25rem] py-1"
-                : "min-h-[5.5rem] md:min-h-[7.25rem] py-1"
-              : "h-16 md:h-20"
+            scrolled ? "min-h-[4.5rem] md:min-h-[5.25rem] py-1" : "min-h-[5.5rem] md:min-h-[7.25rem] py-1"
           }`}
         >
           <Link
@@ -86,13 +82,9 @@ export default function Navigation() {
           >
             <BrandMark
               tone={isHome && !scrolled ? "paper" : "ink"}
-              emphasis={isHome}
+              emphasis
               className={`w-auto transition-[height,width] duration-400 ease-out opacity-95 ${
-                isHome
-                  ? scrolled
-                    ? "h-[72px] md:h-[78px]"
-                    : "h-[84px] md:h-[108px]"
-                  : "h-12 md:h-[52px]"
+                scrolled ? "h-[72px] md:h-[78px]" : "h-[84px] md:h-[108px]"
               }`}
             />
           </Link>
