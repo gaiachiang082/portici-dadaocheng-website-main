@@ -6,7 +6,8 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
-import ChiSiamo from "./pages/ChiSiamo";
+import Fondatrici from "./pages/Fondatrici";
+import ChiSiamoRedirect from "./pages/ChiSiamoRedirect";
 import Workshop from "./pages/Workshop";
 import Magazine from "./pages/Magazine";
 import ArticoliListRedirect from "./pages/ArticoliListRedirect";
@@ -23,7 +24,8 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
-      <Route path="/chi-siamo" component={ChiSiamo} />
+      <Route path="/fondatrici" component={Fondatrici} />
+      <Route path="/chi-siamo" component={ChiSiamoRedirect} />
       <Route path="/workshop" component={Workshop} />
       <Route path="/magazine" component={Magazine} />
       <Route path="/articoli/:id" component={ArticoloDetail} />

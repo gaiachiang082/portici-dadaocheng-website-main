@@ -68,7 +68,7 @@ export default function Footer() {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   const navLinks = [
-    { href: "/chi-siamo", label: "Chi Siamo" },
+    { href: "/fondatrici", label: "Fondatrici" },
     { href: "/workshop", label: "Workshop" },
     { href: "/magazine", label: "Magazine" },
     { href: "/spazio", label: "Spazio" },

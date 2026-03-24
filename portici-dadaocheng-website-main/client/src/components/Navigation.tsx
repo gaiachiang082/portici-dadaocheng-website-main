@@ -3,7 +3,7 @@ import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
-  { href: "/chi-siamo", label: "Chi Siamo" },
+  { href: "/fondatrici", label: "Fondatrici" },
   { href: "/workshop", label: "Workshop" },
   { href: "/magazine", label: "Magazine" },
   { href: "/spazio", label: "Spazio" },
@@ -16,6 +16,9 @@ function navItemIsActive(href: string, location: string): boolean {
   }
   if (href === "/workshop") {
     return location === "/workshop" || location.startsWith("/workshop/");
+  }
+  if (href === "/fondatrici") {
+    return location === "/fondatrici" || location === "/chi-siamo";
   }
   return location === href;
 }
