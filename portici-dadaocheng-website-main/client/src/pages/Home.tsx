@@ -86,7 +86,7 @@ function HomeHero() {
             >
               <Link
                 href="/eventi"
-                className="group inline-flex flex-col gap-1 w-fit focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--ink)]"
+                className="group inline-flex flex-col gap-1 w-fit focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground"
                 style={{ fontFamily: "var(--font-ui)" }}
               >
                 <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Calendario</span>
@@ -96,7 +96,7 @@ function HomeHero() {
               </Link>
               <Link
                 href="/magazine"
-                className="group inline-flex flex-col gap-1 w-fit focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--ink)]"
+                className="group inline-flex flex-col gap-1 w-fit focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground"
                 style={{ fontFamily: "var(--font-ui)" }}
               >
                 <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Letture</span>
@@ -161,7 +161,7 @@ function HomeHero() {
                   className="absolute inset-0 pointer-events-none"
                   style={{
                     background:
-                      "linear-gradient(to top, color-mix(in srgb, var(--ink) 35%, transparent) 0%, transparent 45%)",
+                      "linear-gradient(to top, color-mix(in srgb, var(--forest-deep) 35%, transparent) 0%, transparent 45%)",
                   }}
                 />
               </div>
@@ -187,7 +187,7 @@ function HomeHero() {
 function HomeManifestoStrip() {
   return (
     <section
-      className="relative overflow-hidden py-14 md:py-20 bg-[var(--ink)] text-[var(--paper)]"
+      className="relative overflow-hidden py-14 md:py-20 bg-forest text-[var(--paper)]"
       aria-labelledby="home-manifesto-heading"
     >
       <BrandMark
@@ -266,7 +266,7 @@ function HomeEntryPanels() {
         <div className="grid md:grid-cols-2 gap-0 md:gap-px bg-border/40 border border-border/50">
           <Link
             href="/magazine"
-            className="group block bg-background p-8 md:p-10 min-h-[280px] md:min-h-[320px] flex flex-col justify-between focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--ink)] transition-colors hover:bg-[var(--paper-warm)]/50"
+            className="group block bg-background p-8 md:p-10 min-h-[280px] md:min-h-[320px] flex flex-col justify-between focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-foreground transition-colors hover:bg-[var(--paper-warm)]/50"
           >
             <div>
               <p
@@ -310,7 +310,7 @@ function HomeEntryPanels() {
 
           <Link
             href="/eventi"
-            className="group block bg-background p-8 md:p-10 min-h-[280px] md:min-h-[320px] flex flex-col justify-between border-t border-border/50 md:border-t-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--ink)] transition-colors hover:bg-[var(--paper-warm)]/50"
+            className="group block bg-background p-8 md:p-10 min-h-[280px] md:min-h-[320px] flex flex-col justify-between border-t border-border/50 md:border-t-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-foreground transition-colors hover:bg-[var(--paper-warm)]/50"
           >
             <div>
               <p

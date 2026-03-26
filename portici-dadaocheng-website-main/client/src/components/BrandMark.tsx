@@ -11,7 +11,7 @@ export type BrandMarkProps = Omit<React.ImgHTMLAttributes<HTMLImageElement>, "sr
 
 /** Simulate heavier line weight on embedded raster logo */
 const EMPHASIS_INK =
-  "drop-shadow(0 0 0.5px #1a1714) drop-shadow(0 0 0.5px #1a1714) drop-shadow(0 0 1px rgba(26,23,20,0.2))";
+  "drop-shadow(0 0 0.5px #494435) drop-shadow(0 0 0.5px #494435) drop-shadow(0 0 1px rgba(73,68,53,0.22))";
 const EMPHASIS_PAPER =
   "drop-shadow(0 0 1px rgba(255,255,255,0.92)) drop-shadow(0 0 2px rgba(255,255,255,0.55))";
 

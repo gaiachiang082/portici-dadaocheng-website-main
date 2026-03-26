@@ -19,13 +19,13 @@ const inputLight =
   "rounded-sm border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--riso-red)]/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-[color,box-shadow] disabled:opacity-50";
 
 const inputFooterDark =
-  "rounded-sm border border-[color-mix(in_srgb,var(--paper)_22%,transparent)] bg-[color-mix(in_srgb,var(--paper)_7%,var(--ink))] text-[var(--paper)] placeholder:text-[color-mix(in_srgb,var(--paper)_48%,transparent)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--riso-red)]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--ink)] transition-[color,box-shadow] disabled:opacity-50";
+  "rounded-sm border border-[color-mix(in_srgb,var(--paper)_22%,transparent)] bg-[color-mix(in_srgb,var(--paper)_7%,var(--forest-deep))] text-[var(--paper)] placeholder:text-[color-mix(in_srgb,var(--paper)_48%,transparent)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--riso-red)]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--forest-deep)] transition-[color,box-shadow] disabled:opacity-50";
 
 const buttonLight =
   "rounded-sm border border-primary bg-primary text-primary-foreground uppercase text-xs font-medium tracking-[0.08em] [font-family:var(--font-mono)] hover:bg-primary/88 transition-colors disabled:opacity-50";
 
 const buttonFooterDark =
-  "rounded-sm border border-[color-mix(in_srgb,var(--paper)_55%,transparent)] bg-transparent text-[var(--paper)] uppercase text-xs font-medium tracking-[0.08em] [font-family:var(--font-mono)] hover:bg-[var(--paper)] hover:text-[var(--ink)] transition-colors disabled:opacity-50";
+  "rounded-sm border border-[color-mix(in_srgb,var(--paper)_55%,transparent)] bg-transparent text-[var(--paper)] uppercase text-xs font-medium tracking-[0.08em] [font-family:var(--font-mono)] hover:bg-[var(--paper)] hover:text-[var(--foreground)] transition-colors disabled:opacity-50";
 
 export function NewsletterSubscribeForm({
   source,

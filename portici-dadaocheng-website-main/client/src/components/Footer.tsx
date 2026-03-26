@@ -46,11 +46,11 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-foreground text-[var(--on-dark)] relative border-t border-[color-mix(in_srgb,var(--paper)_12%,transparent)]">
+    <footer className="bg-forest text-[var(--on-dark)] relative border-t border-[color-mix(in_srgb,var(--paper)_12%,transparent)]">
       <button
         type="button"
         onClick={scrollToTop}
-        className={`fixed bottom-8 right-8 z-[45] w-12 h-12 rounded-full border border-[color-mix(in_srgb,var(--paper)_35%,transparent)] bg-[color-mix(in_srgb,var(--paper)_6%,var(--ink))] text-[var(--paper)] flex items-center justify-center transition-all duration-300 hover:bg-[var(--paper)] hover:text-[var(--ink)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--riso-red)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--ink)] ${
+        className={`fixed bottom-8 right-8 z-[45] w-12 h-12 rounded-full border border-[color-mix(in_srgb,var(--paper)_35%,transparent)] bg-[color-mix(in_srgb,var(--paper)_6%,var(--forest-deep))] text-[var(--paper)] flex items-center justify-center transition-all duration-300 hover:bg-[var(--paper)] hover:text-[var(--foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--riso-red)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--forest-deep)] ${
           showBackToTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
         }`}
         aria-label="Torna su"

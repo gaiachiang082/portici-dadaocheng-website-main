@@ -3,7 +3,17 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* ─── Paper / Riso design tokens (Tailwind @theme) ───────────────────── */
+/*
+  Brand color voice (not a recolour — semantic temperament):
+  cultural editorial · print-like · low saturation · mineral / earthy / textured
+  · calm but distinctive · historical warmth + contemporary restraint
+
+  Avoid: tech/SaaS brightness, cold blue-white fields, neon accents, “conversion-first”
+  CTA contrast. Distinction comes from material hierarchy and ink-like restraint,
+  not from loud saturation or pure white vs pure black pairs.
+*/
+
+/* ─── Design tokens → Tailwind @theme ─────────────────────────────────── */
 @theme inline {
   --color-paper:        var(--paper);
   --color-paper-warm:   var(--paper-warm);
@@ -15,6 +25,34 @@
   --color-riso-teal:    var(--riso-teal);
   --color-riso-peach:   var(--riso-peach);
   --color-riso-gold:    var(--riso-gold);
+
+  /* Brand reference (editorial / mineral / print) */
+  --color-forest-deep:    var(--forest-deep);
+  --color-terracotta:     var(--terracotta-clay);
+  --color-mineral-white:  var(--mineral-white);
+  --color-olive-smoke:    var(--olive-smoke);
+  --color-overlay-brown:  var(--overlay-brown);
+  /* Legacy moodboard aliases (map into reference system) */
+  --color-forest:         var(--forest);
+  --color-forest-raised:  var(--forest-raised);
+  --color-moss:           var(--moss);
+  --color-copper:         var(--copper);
+  --color-copper-deep:    var(--copper-deep);
+  --color-chocolate:      var(--chocolate);
+  --color-chocolate-ink:  var(--chocolate-ink);
+  --color-silver-frost:   var(--silver-frost);
+
+  /* Semantic: conversion CTA + layered surfaces + type on ink (heroes) */
+  --color-editorial-mark:       var(--editorial-mark);
+  --color-brand-cta:            var(--brand-cta);
+  --color-brand-cta-foreground: var(--brand-cta-foreground);
+  --color-surface-raised:       var(--surface-raised);
+  --color-surface-inset:        var(--surface-inset);
+  --color-surface-section-tint: var(--surface-section-tint);
+  --color-on-ink:               var(--on-ink);
+  --color-on-ink-muted:         var(--on-ink-muted);
+  --color-on-ink-subtle:        var(--on-ink-subtle);
+  --color-on-ink-accent:        var(--on-ink-accent);
 
   --color-background:           var(--background);
   --color-foreground:           var(--foreground);
@@ -84,16 +122,38 @@
 
 /* ─── Primitive + semantic tokens ────────────────────────────────────── */
 :root {
-  --paper:        #f5f0e8;
-  --paper-warm:   #ede7d6;
-  --paper-deep:   #e0d8c4;
-  --ink:          #1a1714;
-  --ink-soft:     #3d3830;
-  --riso-red:     #e8463c;
-  --riso-blue:    #2d5fa6;
-  --riso-teal:    #1d8c72;
-  --riso-peach:   #f5a084;
-  --riso-gold:    #c9922a;
+  /* ── Canonical reference palette (source of truth) ── */
+  --forest-deep:     #33463b;
+  --terracotta-clay: #bc633c;
+  --mineral-white:   #d9dbd8;
+  --olive-smoke:     #494435;
+  --overlay-brown:   #6c5038;
+  --brick-warm:      color-mix(in srgb, #8f4a42 48%, var(--overlay-brown) 52%);
+
+  /* Paper stack = mineral base + subtle warmth (print / stone) */
+  --paper:        var(--mineral-white);
+  --paper-warm:   color-mix(in srgb, var(--mineral-white) 90%, color-mix(in srgb, var(--terracotta-clay) 55%, var(--overlay-brown) 45%) 10%);
+  --paper-deep:   color-mix(in srgb, var(--overlay-brown) 14%, var(--mineral-white));
+  /* Body & UI “ink” = olive (not hero band fill — use --forest) */
+  --ink:          var(--olive-smoke);
+  --ink-soft:     color-mix(in srgb, var(--overlay-brown) 55%, var(--olive-smoke));
+  /* Spot “inks” = subdued secondaries (archive / workshop tags), never SaaS primaries */
+  --editorial-mark: color-mix(in srgb, var(--terracotta-clay) 52%, var(--overlay-brown) 48%);
+  --riso-red:       color-mix(in srgb, var(--editorial-mark) 88%, var(--forest-deep) 12%);
+  --riso-blue:      color-mix(in srgb, #3d5a6e 48%, var(--forest-deep) 52%);
+  --riso-teal:      color-mix(in srgb, #3d6b5c 45%, var(--forest-deep) 55%);
+  --riso-peach:     color-mix(in srgb, var(--terracotta-clay) 42%, var(--paper-warm) 58%);
+  --riso-gold:      color-mix(in srgb, var(--overlay-brown) 38%, #a67c52 62%);
+
+  /* Dark surfaces & depth (hero bands, footer, dark theme base) */
+  --forest:         var(--forest-deep);
+  --forest-raised:  color-mix(in srgb, var(--forest-deep) 82%, white 18%);
+  --moss:           color-mix(in srgb, var(--forest-deep) 55%, var(--olive-smoke) 45%);
+  --copper:         var(--terracotta-clay);
+  --copper-deep:    color-mix(in srgb, var(--terracotta-clay) 70%, var(--overlay-brown) 30%);
+  --chocolate:      color-mix(in srgb, var(--overlay-brown) 65%, black 35%);
+  --chocolate-ink:  color-mix(in srgb, var(--forest-deep) 45%, black 55%);
+  --silver-frost:   var(--mineral-white);
 
   --font-serif-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
   --font-mono:          "DM Mono", ui-monospace, monospace;
@@ -115,12 +175,72 @@
   --muted-foreground:     var(--ink-soft);
   --accent:               var(--paper-deep);
   --accent-foreground:    var(--ink);
-  --destructive:          var(--riso-red);
-  --destructive-foreground: #fffefb;
-  --border:               color-mix(in srgb, var(--ink) 12%, transparent);
-  --input:                color-mix(in srgb, var(--ink) 12%, transparent);
-  --ring:                 var(--riso-red);
+  --destructive:          var(--brick-warm);
+  --destructive-foreground: var(--paper);
+  --border:               color-mix(in srgb, var(--overlay-brown) 20%, transparent);
+  --input:                color-mix(in srgb, var(--overlay-brown) 16%, transparent);
+  --ring:                 color-mix(in srgb, var(--terracotta-clay) 58%, var(--overlay-brown) 42%);
   --on-dark:              var(--paper);
+
+  /*
+    Role split (voice-aligned):
+    - Rules / prose emphasis: --editorial-mark (earth + clay, not alarm red)
+    - Default chrome: olive on mineral (restraint, not “black button”)
+    - Intent / booking: --brand-cta = dusted clay fill + warm mineral type (no jet-on-orange)
+    - Surfaces: only mineral / paper stack — no optical white or cool gray slabs
+  */
+  --brand-cta:            color-mix(in srgb, var(--terracotta-clay) 76%, var(--overlay-brown) 24%);
+  --brand-cta-foreground: color-mix(in srgb, var(--paper) 90%, var(--olive-smoke) 10%);
+  --brand-cta-hover:      color-mix(in srgb, var(--terracotta-clay) 68%, var(--forest-deep) 32%);
+  --surface-raised:       var(--paper-warm);
+  --surface-inset:        color-mix(in srgb, var(--mineral-white) 68%, var(--paper-deep) 32%);
+  --surface-section-tint: color-mix(in srgb, var(--forest-deep) 5%, color-mix(in srgb, var(--terracotta-clay) 4%, var(--paper-warm)));
+  --on-ink:               var(--mineral-white);
+  --on-ink-muted:         color-mix(in srgb, var(--mineral-white) 76%, var(--forest-deep) 24%);
+  --on-ink-subtle:        color-mix(in srgb, var(--mineral-white) 58%, var(--forest-deep) 42%);
+  --on-ink-accent:        color-mix(in srgb, var(--editorial-mark) 55%, var(--mineral-white) 45%);
+  --link-hover:           var(--ink-soft);
+  --link-prose-hover:     var(--ink);
+}
+
+/*
+  Dark theme = reference “forest + copper” (class on html from ThemeContext).
+  Light theme keeps paper/riso editorial; toggling dark switches surfaces + type.
+*/
+.dark {
+  --background:           var(--forest-deep);
+  --foreground:           var(--mineral-white);
+  --card:                 var(--forest-raised);
+  --card-foreground:      var(--mineral-white);
+  --popover:              var(--forest-raised);
+  --popover-foreground:   var(--mineral-white);
+  --primary:              var(--mineral-white);
+  --primary-foreground:   var(--forest-deep);
+  --secondary:            color-mix(in srgb, var(--moss) 32%, var(--forest-deep));
+  --secondary-foreground: var(--mineral-white);
+  --muted:                color-mix(in srgb, var(--moss) 22%, var(--forest-deep));
+  --muted-foreground:     color-mix(in srgb, var(--mineral-white) 58%, var(--forest-deep));
+  --accent:               color-mix(in srgb, var(--moss) 26%, var(--forest-deep));
+  --accent-foreground:    var(--mineral-white);
+  --destructive:          color-mix(in srgb, var(--brick-warm) 70%, var(--forest-deep) 30%);
+  --destructive-foreground: var(--mineral-white);
+  --border:               color-mix(in srgb, var(--overlay-brown) 34%, transparent);
+  --input:                color-mix(in srgb, var(--mineral-white) 10%, transparent);
+  --ring:                 color-mix(in srgb, var(--terracotta-clay) 52%, var(--overlay-brown) 48%);
+  --on-dark:              var(--mineral-white);
+
+  --brand-cta:            color-mix(in srgb, var(--terracotta-clay) 74%, var(--overlay-brown) 26%);
+  --brand-cta-foreground: color-mix(in srgb, var(--mineral-white) 86%, var(--forest-deep) 14%);
+  --brand-cta-hover:      color-mix(in srgb, var(--terracotta-clay) 62%, var(--forest-deep) 38%);
+  --surface-raised:       var(--forest-raised);
+  --surface-inset:        color-mix(in srgb, var(--mineral-white) 6%, var(--forest-deep));
+  --surface-section-tint: color-mix(in srgb, var(--moss) 18%, var(--forest-deep));
+  --on-ink:               var(--mineral-white);
+  --on-ink-muted:         color-mix(in srgb, var(--mineral-white) 74%, var(--forest-deep));
+  --on-ink-subtle:        color-mix(in srgb, var(--mineral-white) 52%, var(--forest-deep));
+  --on-ink-accent:        color-mix(in srgb, var(--editorial-mark) 48%, var(--mineral-white) 52%);
+  --link-hover:           color-mix(in srgb, var(--mineral-white) 78%, var(--terracotta-clay));
+  --link-prose-hover:     color-mix(in srgb, var(--mineral-white) 70%, var(--terracotta-clay));
 }
 
 /* ─── Global grain (subtle; below app chrome z-50) ─────────────────────── */
@@ -132,13 +252,18 @@ body::before {
   pointer-events: none;
   border: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  opacity: 0.17;
+  opacity: 0.2;
 }
 
 @media (prefers-reduced-motion: reduce) {
   body::before {
     opacity: 0.07;
   }
+}
+
+html.dark body::before {
+  opacity: 0.24;
+  filter: saturate(0.85);
 }
 
 /* Dark masthead: global h1 forces ink — restore paper titles here */
@@ -173,7 +298,7 @@ body::before {
 /* ─── Base Styles ─────────────────────────────────────────────────────── */
 @layer base {
   *, *::before, *::after {
-    @apply border-border outline-ring/50;
+    @apply border-border outline-ring/35;
     box-sizing: border-box;
   }
 
@@ -261,7 +386,7 @@ body::before {
   }
 
   a:hover {
-    color: var(--ink-soft);
+    color: var(--link-hover);
   }
 
   p a,
@@ -269,21 +394,21 @@ body::before {
   .prose a {
     font-family: var(--font-body) !important;
     text-decoration: underline;
-    text-decoration-color: color-mix(in srgb, var(--riso-red) 45%, transparent);
+    text-decoration-color: color-mix(in srgb, var(--editorial-mark) 38%, transparent);
     text-underline-offset: 0.2em;
   }
 
   p a:hover,
   li a:hover,
   .prose a:hover {
-    color: var(--ink);
-    text-decoration-color: var(--riso-red);
+    color: var(--link-prose-hover);
+    text-decoration-color: color-mix(in srgb, var(--editorial-mark) 72%, transparent);
   }
 
   img, video { max-width: 100%; height: auto; display: block; }
 
   :focus-visible {
-    outline: 2px solid var(--ring);
+    outline: 2px solid color-mix(in srgb, var(--ring) 72%, transparent);
     outline-offset: 3px;
     border-radius: var(--radius);
   }
@@ -324,7 +449,7 @@ body::before {
   .editorial-rule {
     width: 3rem;
     height: 1px;
-    background-color: var(--riso-red);
+    background-color: var(--editorial-mark);
     border-radius: 0;
   }
 
@@ -332,7 +457,7 @@ body::before {
     width: 100%;
     max-width: 12rem;
     height: 1px;
-    background-color: var(--riso-red);
+    background-color: var(--editorial-mark);
   }
 
   .prose-brand {
@@ -358,9 +483,9 @@ body::before {
   .card-heritage {
     background-color: var(--card);
     border-radius: var(--radius-lg);
-    border-left: 3px solid var(--riso-red);
+    border-left: 3px solid var(--editorial-mark);
     padding: 1.5rem;
-    box-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 6%, transparent);
+    box-shadow: 0 1px 2px color-mix(in srgb, var(--foreground) 8%, transparent);
   }
 
   .tag-heritage {
@@ -378,6 +503,16 @@ body::before {
   .tag-heritage-primary { background-color: var(--ink); }
   .tag-heritage-secondary { background-color: var(--riso-teal); }
   .tag-heritage-accent { background-color: var(--riso-gold); color: var(--ink); }
+
+  /*
+    Component → token (quick map):
+    - Button default: olive / mineral (restrained); destructive = brick-warm, not system red
+    - Editorial rules / card rail / prose underlines: editorial-mark (clay + overlay)
+    - Nav active stroke: riso-red (muted spot ink); CTA fill: brand-cta (dusted clay + warm mineral type)
+    - Raised panels / cards: card or surface-raised; inset rows: surface-inset
+    - Dark hero bands: bg-forest (--forest-deep) + on-ink*; footer: bg-forest (not bg-foreground)
+    - Moodboard: forest / moss / copper / silver-frost primitives for custom sections
+  */
 }
 
 /* ─── Utility Helpers ─────────────────────────────────────────────────── */

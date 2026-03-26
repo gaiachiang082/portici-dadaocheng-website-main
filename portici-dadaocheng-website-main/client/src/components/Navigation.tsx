@@ -59,7 +59,7 @@ export default function Navigation() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled || !isHome
-          ? "bg-background/95 backdrop-blur-[2px] border-b border-border shadow-[0_1px_8px_rgba(26,23,20,0.06)]"
+          ? "bg-background/95 backdrop-blur-[2px] border-b border-border shadow-[0_1px_8px_color-mix(in_srgb,var(--foreground)_6%,transparent)]"
           : "bg-transparent"
       }`}
       style={{
@@ -114,7 +114,7 @@ export default function Navigation() {
                     >
                       {label}
                       <span
-                        className={`absolute -bottom-0.5 left-0 right-0 h-px bg-[var(--riso-red)] origin-left transition-transform duration-300 ease-out ${
+                        className={`absolute -bottom-0.5 left-0 right-0 h-px bg-editorial-mark origin-left transition-transform duration-300 ease-out ${
                           active ? "scale-x-100" : "scale-x-0 group-hover/nav:scale-x-100"
                         }`}
                       />
@@ -180,8 +180,8 @@ export default function Navigation() {
                 href={href}
                 className={`${navMono} pl-2 border-l-2 transition-colors duration-200 ${
                   active
-                    ? "text-foreground border-[var(--riso-red)]"
-                    : "text-muted-foreground border-transparent hover:text-foreground hover:border-[color-mix(in_srgb,var(--ink)_22%,transparent)]"
+                    ? "text-foreground border-editorial-mark"
+                    : "text-muted-foreground border-transparent hover:text-foreground hover:border-[color-mix(in_srgb,var(--editorial-mark)_42%,transparent)]"
                 }`}
                 style={{
                   opacity: menuOpen ? 1 : 0,

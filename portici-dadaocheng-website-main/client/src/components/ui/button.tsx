@@ -5,20 +5,20 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm text-xs font-medium uppercase tracking-[0.08em] transition-colors disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--riso-red)]/35 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive [font-family:var(--font-mono)]",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm text-xs font-medium uppercase tracking-[0.08em] transition-colors disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-[3px] focus-visible:ring-ring/28 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive [font-family:var(--font-mono)]",
   {
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground border border-primary hover:bg-primary/88",
+          "bg-primary text-primary-foreground border border-primary/90 hover:bg-primary/78",
         destructive:
-          "bg-destructive text-white border border-destructive hover:bg-destructive/90 focus-visible:ring-destructive/25 dark:bg-destructive/60",
+          "bg-destructive text-destructive-foreground border border-destructive hover:bg-destructive/88 focus-visible:ring-destructive/22 dark:bg-destructive/58",
         outline:
           "border border-primary bg-transparent text-primary shadow-none hover:bg-muted/80 dark:border-primary dark:text-primary dark:hover:bg-muted/50",
         secondary:
           "bg-secondary text-secondary-foreground border border-transparent hover:bg-secondary/85",
         ghost: "border border-transparent hover:bg-muted/90 dark:hover:bg-muted/50",
-        link: "border-0 text-primary underline-offset-4 hover:underline decoration-[var(--riso-red)]",
+        link: "border-0 text-primary underline-offset-4 hover:underline decoration-[color-mix(in_srgb,var(--editorial-mark)_70%,transparent)]",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

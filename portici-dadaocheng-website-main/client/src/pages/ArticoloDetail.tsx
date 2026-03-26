@@ -54,14 +54,14 @@ export default function ArticoloDetail() {
   if (loading) {
     return (
       <main>
-        <section className="pt-32 pb-20 bg-[oklch(27.5%_0.000_0)] min-h-[50vh]">
+        <section className="pt-32 pb-20 bg-forest min-h-[50vh]">
           <div className="container max-w-3xl">
             <div className="animate-pulse space-y-6">
-              <div className="h-4 w-24 bg-[oklch(40%_0.005_60)] rounded" />
-              <div className="h-12 w-3/4 bg-[oklch(40%_0.005_60)] rounded" />
-              <div className="h-64 w-full bg-[oklch(40%_0.005_60)] rounded" />
-              <div className="h-4 w-full bg-[oklch(40%_0.005_60)] rounded" />
-              <div className="h-4 w-full bg-[oklch(40%_0.005_60)] rounded" />
+              <div className="h-4 w-24 bg-[color-mix(in_srgb,var(--paper)_20%,transparent)] rounded" />
+              <div className="h-12 w-3/4 bg-[color-mix(in_srgb,var(--paper)_20%,transparent)] rounded" />
+              <div className="h-64 w-full bg-[color-mix(in_srgb,var(--paper)_20%,transparent)] rounded" />
+              <div className="h-4 w-full bg-[color-mix(in_srgb,var(--paper)_20%,transparent)] rounded" />
+              <div className="h-4 w-full bg-[color-mix(in_srgb,var(--paper)_20%,transparent)] rounded" />
             </div>
           </div>
         </section>
@@ -72,12 +72,18 @@ export default function ArticoloDetail() {
   if (error || !article) {
     return (
       <main>
-        <section className="pt-32 pb-20 bg-[oklch(27.5%_0.000_0)] min-h-[50vh]">
+        <section className="pt-32 pb-20 bg-forest min-h-[50vh]">
           <div className="container max-w-3xl text-center">
-            <p className="text-[oklch(72%_0.005_85)] mb-6" style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+            <p
+              className="text-on-ink-muted mb-6"
+              style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+            >
               {error ?? "Articolo non trovato."}
             </p>
-            <Link href="/magazine" className="inline-flex items-center gap-2 text-secondary hover:underline">
+            <Link
+              href="/magazine"
+              className="inline-flex items-center gap-2 text-on-ink-muted underline-offset-4 hover:text-on-ink hover:underline"
+            >
               <ArrowLeft size={18} />
               Torna al Magazine
             </Link>
@@ -90,11 +96,11 @@ export default function ArticoloDetail() {
   return (
     <main>
       {/* Hero */}
-      <section className="pt-32 pb-12 bg-[oklch(27.5%_0.000_0)]">
+      <section className="pt-32 pb-12 bg-forest">
         <div className="container max-w-3xl">
           <Link
             href="/magazine"
-            className="inline-flex items-center gap-2 text-[15px] text-secondary hover:underline mb-8"
+            className="inline-flex items-center gap-2 text-[15px] text-on-ink-muted underline-offset-4 hover:text-on-ink hover:underline mb-8"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
           >
             <ArrowLeft size={16} />
@@ -102,14 +108,14 @@ export default function ArticoloDetail() {
           </Link>
           {article.category && (
             <span
-              className="block text-xs font-semibold tracking-[0.22em] uppercase text-[#A67C52] mb-4"
+              className="block text-xs font-semibold tracking-[0.22em] uppercase text-on-ink-accent mb-4"
               style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
             >
               {article.category}
             </span>
           )}
           <h1
-            className="font-medium text-[oklch(96.5%_0.006_85)] mb-6"
+            className="font-medium text-on-ink mb-6"
             style={{
               fontFamily: "var(--font-display)",
               fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
@@ -119,35 +125,35 @@ export default function ArticoloDetail() {
           >
             {article.title ?? "Senza titolo"}
           </h1>
-          <div className="w-10 h-0.5 bg-[#A67C52]" />
+          <div className="w-10 h-0.5 bg-editorial-mark" />
         </div>
       </section>
 
       {/* Main image */}
       {article.mainImage?.asset?.url && (
-        <section className="bg-[oklch(27.5%_0.000_0)] pb-12">
+        <section className="bg-forest pb-12">
           <div className="container max-w-4xl">
             <img
               src={article.mainImage.asset.url}
               alt={article.title ?? ""}
-              className="w-full aspect-[16/10] object-cover rounded-xl shadow-[0_4px_24px_oklch(0%_0_0/0.15)]"
+              className="w-full aspect-[16/10] object-cover rounded-xl shadow-[0_4px_28px_color-mix(in_srgb,var(--forest-deep)_55%,transparent)]"
             />
           </div>
         </section>
       )}
 
       {/* Body content */}
-      <section className="py-16 bg-[oklch(96.5%_0.006_85)]">
+      <section className="py-16 bg-background">
         <div className="container max-w-2xl">
           <article
-            className="prose prose-lg prose-neutral max-w-none
-              prose-headings:font-[family-name:var(--font-display)] prose-headings:text-[oklch(27.5%_0.000_0)]
-              prose-p:text-[oklch(35%_0.005_60)] prose-p:leading-[1.85] prose-p:font-[family-name:'Source_Serif_4',Georgia,serif]
-              prose-a:text-[#A67C52] prose-a:no-underline hover:prose-a:underline
-              prose-strong:text-[oklch(27.5%_0.000_0)]
-              prose-blockquote:border-l-[#A67C52] prose-blockquote:italic prose-blockquote:text-[oklch(45%_0.005_60)]
-              prose-hr:border-[oklch(88%_0.010_80)]
-              prose-img:rounded-xl prose-img:shadow-md"
+            className="prose prose-lg max-w-none
+              prose-headings:font-[family-name:var(--font-display)] prose-headings:text-foreground
+              prose-p:text-muted-foreground prose-p:leading-[1.85] prose-p:font-[family-name:'Source_Serif_4',Georgia,serif]
+              prose-a:text-editorial-mark prose-a:no-underline hover:prose-a:underline prose-a:decoration-editorial-mark/45
+              prose-strong:text-foreground
+              prose-blockquote:border-editorial-mark prose-blockquote:border-l-2 prose-blockquote:italic prose-blockquote:text-muted-foreground
+              prose-hr:border-border
+              prose-img:rounded-xl prose-img:shadow-sm"
             style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
           >
             {article.body && <PortableText value={article.body} />}
