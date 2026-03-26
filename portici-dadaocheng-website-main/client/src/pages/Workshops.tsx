@@ -21,12 +21,16 @@ const CATEGORY_LABELS: Record<string, string> = {
   food: "飲食 · Cucina",
 };
 
-const CATEGORY_COLORS: Record<string, string> = {
-  calligraphy: "oklch(35% 0.06 30)",
-  ink: "oklch(30% 0.02 240)",
-  tea: "oklch(38% 0.08 140)",
-  food: "oklch(38% 0.09 55)",
+/** Category chips on imagery: riso spot-inks mixed into forest (editorial, not flat UI swatches). */
+const CATEGORY_SURFACE: Record<string, string> = {
+  calligraphy: "color-mix(in srgb, var(--riso-gold) 32%, var(--forest-deep))",
+  ink: "color-mix(in srgb, var(--riso-blue) 28%, var(--forest-deep))",
+  tea: "color-mix(in srgb, var(--riso-teal) 28%, var(--forest-deep))",
+  food: "color-mix(in srgb, var(--riso-peach) 30%, var(--forest-deep))",
 };
+
+const inputDarkClass =
+  "w-full px-4 py-2.5 rounded-lg border text-sm outline-none transition-colors bg-[color-mix(in_srgb,var(--paper)_9%,var(--forest-deep))] border-border text-on-ink placeholder:text-on-ink-subtle focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/20";
 
 function formatDate(d: Date | string) {
   return new Date(d).toLocaleDateString("it-IT", {
@@ -49,12 +53,13 @@ function WorkshopCard({
 }) {
   const spotsLabel =
     workshop.maxParticipants <= 8 ? "Piccolo gruppo" : "Gruppo standard";
-  const catColor = CATEGORY_COLORS[workshop.category] ?? "oklch(35% 0.06 30)";
+  const catSurface =
+    CATEGORY_SURFACE[workshop.category] ??
+    "color-mix(in srgb, var(--editorial-mark) 25%, var(--forest-deep))";
 
   return (
     <div
-      className="group relative rounded-[16px] overflow-hidden cursor-pointer border border-[oklch(25%_0_0)] hover:border-[oklch(55%_0.075_55)] transition-all duration-300 hover:shadow-[0_22px_40px_rgba(0,0,0,0.35)]"
-      style={{ background: "oklch(13% 0 0)" }}
+      className="group relative rounded-[16px] overflow-hidden cursor-pointer bg-forest-raised border border-border hover:border-editorial-mark transition-all duration-300 hover:shadow-[0_12px_32px_color-mix(in_srgb,var(--forest-deep)_65%,transparent)]"
       onClick={onSelect}
     >
       {/* Image */}
@@ -65,10 +70,10 @@ function WorkshopCard({
             alt={workshop.title}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[oklch(13%_0_0)] via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-forest via-transparent to-transparent" />
           <span
-            className="absolute top-3 left-3 px-2 py-1 rounded text-[10px] tracking-widest uppercase text-white"
-            style={{ background: catColor }}
+            className="absolute top-3 left-3 px-2 py-1 rounded text-[10px] tracking-widest uppercase text-on-ink"
+            style={{ background: catSurface }}
           >
             {CATEGORY_LABELS[workshop.category] ?? workshop.category}
           </span>
@@ -77,25 +82,25 @@ function WorkshopCard({
 
       <div className="p-5 flex flex-col gap-0">
         <h3
-          className="text-lg font-medium text-[oklch(92%_0.005_85)] mb-1"
+          className="text-lg font-medium text-on-ink mb-1"
           style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
         >
           {workshop.title}
         </h3>
         {workshop.titleZh && (
-          <p className="text-sm text-[oklch(55%_0.075_55)] mb-3">{workshop.titleZh}</p>
+          <p className="text-sm text-on-ink-accent mb-3">{workshop.titleZh}</p>
         )}
-        <p className="text-[15px] text-[oklch(72%_0.005_85)] leading-relaxed line-clamp-3 mb-5">
+        <p className="text-[15px] text-on-ink-muted leading-relaxed line-clamp-3 mb-5">
           {workshop.description}
         </p>
 
-        <div className="mt-auto pt-4 border-t border-[oklch(25%_0_0)] flex flex-wrap items-end justify-between gap-3 text-[11px] uppercase tracking-wider text-[oklch(50%_0.005_85)]">
+        <div className="mt-auto pt-4 border-t border-border flex flex-wrap items-end justify-between gap-3 text-[11px] uppercase tracking-wider text-on-ink-subtle">
           <div className="space-y-0.5 normal-case tracking-normal">
             <p>
-              <span className="text-[oklch(85%_0.005_85)] text-base font-medium tabular-nums">
+              <span className="text-on-ink text-base font-medium tabular-nums">
                 €{parseFloat(workshop.priceEur).toFixed(0)}
               </span>
-              <span className="text-[oklch(48%_0.005_85)]"> / persona</span>
+              <span className="text-on-ink-muted"> / persona</span>
             </p>
             <p>
               {workshop.durationMinutes} min · {spotsLabel}
@@ -105,11 +110,7 @@ function WorkshopCard({
 
         <button
           type="button"
-          className="mt-4 w-full py-2.5 rounded-[12px] text-sm font-semibold transition-all duration-200 hover:opacity-90"
-          style={{
-            background: "oklch(55% 0.075 55)",
-            color: "oklch(98% 0 0)",
-          }}
+          className="mt-4 w-full py-2.5 rounded-[12px] text-sm font-semibold bg-brand-cta text-brand-cta-foreground transition-opacity duration-200 hover:opacity-90"
         >
           Scegli una data
         </button>
@@ -130,7 +131,7 @@ function SessionPicker({
 }) {
   if (sessions.length === 0) {
     return (
-      <p className="text-[oklch(55%_0.005_85)] text-sm py-4">
+      <p className="text-on-ink-muted text-sm py-4">
         Nessuna sessione disponibile al momento. Contattaci per organizzare una data privata.
       </p>
     );
@@ -147,24 +148,24 @@ function SessionPicker({
             key={s.id}
             disabled={isFull}
             onClick={() => !isFull && onSelect(s.id)}
-            className="flex items-center justify-between p-4 rounded-xl border text-left transition-all duration-200"
-            style={{
-              background: isSelected ? "oklch(55% 0.075 55 / 0.15)" : "oklch(16% 0 0)",
-              borderColor: isSelected ? "oklch(55% 0.075 55)" : "oklch(25% 0 0)",
-              opacity: isFull ? 0.4 : 1,
-              cursor: isFull ? "not-allowed" : "pointer",
-            }}
+            className={`flex items-center justify-between p-4 rounded-xl border text-left transition-colors duration-200 ${
+              isSelected
+                ? "bg-[color-mix(in_srgb,var(--brand-cta)_14%,transparent)] border-editorial-mark"
+                : "bg-[color-mix(in_srgb,var(--paper)_6%,var(--forest-deep))] border-border hover:border-[color-mix(in_srgb,var(--editorial-mark)_38%,transparent)]"
+            } ${isFull ? "opacity-40 cursor-not-allowed" : "cursor-pointer"}`}
           >
             <div>
-              <p className="text-[oklch(90%_0.005_85)] text-sm font-medium">
+              <p className="text-on-ink text-sm font-medium">
                 {formatDate(s.sessionDate)}
               </p>
-              <p className="text-xs text-[oklch(55%_0.005_85)] mt-0.5">
+              <p className="text-xs text-on-ink-muted mt-0.5">
                 {isFull ? "Completo" : `${spotsLeft} posti disponibili`}
               </p>
             </div>
             {isSelected && (
-              <span className="text-[oklch(55%_0.075_55)] text-lg">✓</span>
+              <span className="text-editorial-mark text-lg" aria-hidden>
+                ✓
+              </span>
             )}
           </button>
         );
@@ -172,6 +173,9 @@ function SessionPicker({
     </div>
   );
 }
+
+const errorBannerClass =
+  "mb-4 p-3 rounded-lg border text-sm border-destructive/45 bg-[color-mix(in_srgb,var(--destructive)_14%,transparent)] text-on-ink";
 
 /* ─── Main Page ─── */
 export default function WorkshopsPage() {
@@ -257,19 +261,15 @@ export default function WorkshopsPage() {
   const sessions = workshopDetail?.sessions ?? [];
 
   return (
-    <div
-      className="min-h-screen"
-      style={{ background: "oklch(10% 0 0)", color: "oklch(90% 0.005 85)" }}
-    >
+    <div className="min-h-screen bg-forest text-on-ink">
       {/* Nav */}
-      <nav className="sticky top-0 z-50 border-b border-[oklch(18%_0_0)] px-6 py-4 flex items-center justify-between"
-        style={{ background: "oklch(10% 0 0 / 0.95)", backdropFilter: "blur(12px)" }}>
+      <nav className="sticky top-0 z-50 border-b border-border px-6 py-4 flex items-center justify-between bg-forest/95 backdrop-blur-sm">
         <Link href="/">
-          <span className="text-[oklch(55%_0.075_55)] text-sm tracking-widest uppercase cursor-pointer hover:text-[oklch(70%_0.075_55)] transition-colors">
+          <span className="text-on-ink-accent text-sm tracking-widest uppercase cursor-pointer hover:text-on-ink transition-colors">
             ← Portici 大稻埕
           </span>
         </Link>
-        <h1 className="text-sm tracking-widest uppercase text-[oklch(60%_0.005_85)]">
+        <h1 className="text-sm tracking-widest uppercase text-on-ink-muted">
           Workshop
         </h1>
       </nav>
@@ -279,16 +279,16 @@ export default function WorkshopsPage() {
         {step === "list" && (
           <>
             <div className="mb-10">
-              <p className="text-[10px] tracking-[0.3em] uppercase text-[oklch(55%_0.075_55)] mb-3">
+              <p className="text-[10px] tracking-[0.3em] uppercase text-on-ink-accent mb-3">
                 Esperienze Culturali
               </p>
               <h2
-                className="text-[28px] md:text-[32px] text-[oklch(92%_0.005_85)] mb-4"
+                className="text-[28px] md:text-[32px] text-on-ink mb-4"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600, lineHeight: 1.2 }}
               >
                 I nostri Workshop
               </h2>
-              <p className="text-[oklch(60%_0.005_85)] max-w-xl leading-relaxed">
+              <p className="text-on-ink-muted max-w-xl leading-relaxed">
                 Ogni workshop è un dialogo tra due culture. Scegliete un incontro dal calendario; il
                 deposito del 50% conferma la partecipazione e il posto è vostro fino al giorno
                 dell&apos;incontro.
@@ -298,7 +298,10 @@ export default function WorkshopsPage() {
             {isLoading ? (
               <div className="grid md:grid-cols-3 gap-6">
                 {[1, 2, 3].map((i) => (
-                  <div key={i} className="h-80 rounded-2xl bg-[oklch(15%_0_0)] animate-pulse" />
+                  <div
+                    key={i}
+                    className="h-80 rounded-2xl animate-pulse bg-[color-mix(in_srgb,var(--paper)_12%,transparent)]"
+                  />
                 ))}
               </div>
             ) : (
@@ -319,29 +322,30 @@ export default function WorkshopsPage() {
         {step === "sessions" && workshop && (
           <div className="max-w-xl mx-auto">
             <button
+              type="button"
               onClick={() => setStep("list")}
-              className="text-sm text-[oklch(55%_0.005_85)] hover:text-[oklch(75%_0.005_85)] mb-8 transition-colors"
+              className="text-sm text-on-ink-muted hover:text-on-ink mb-8 transition-colors"
             >
               ← Torna ai workshop
             </button>
 
             <div className="mb-8">
-              <span className="text-[10px] tracking-widest uppercase text-[oklch(55%_0.075_55)]">
+              <span className="text-[10px] tracking-widest uppercase text-on-ink-accent">
                 {CATEGORY_LABELS[workshop.category] ?? workshop.category}
               </span>
               <h2
-                className="text-[24px] text-[oklch(92%_0.005_85)] mt-2 mb-1"
+                className="text-[24px] text-on-ink mt-2 mb-1"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600, lineHeight: 1.2 }}
               >
                 {workshop.title}
               </h2>
               {workshop.titleZh && (
-                <p className="text-[oklch(55%_0.075_55)]">{workshop.titleZh}</p>
+                <p className="text-on-ink-accent">{workshop.titleZh}</p>
               )}
-              <p className="text-[15px] text-[oklch(68%_0.005_85)] mt-4 leading-relaxed">
+              <p className="text-[15px] text-on-ink-muted mt-4 leading-relaxed">
                 {workshop.description}
               </p>
-              <div className="flex flex-wrap gap-x-6 gap-y-2 mt-6 pt-4 border-t border-[oklch(22%_0_0)] text-xs uppercase tracking-wider text-[oklch(48%_0.005_85)]">
+              <div className="flex flex-wrap gap-x-6 gap-y-2 mt-6 pt-4 border-t border-border text-xs uppercase tracking-wider text-on-ink-subtle">
                 <span className="normal-case tracking-normal">
                   {workshop.durationMinutes} min
                 </span>
@@ -354,9 +358,8 @@ export default function WorkshopsPage() {
               </div>
             </div>
 
-            <div className="p-5 rounded-2xl border border-[oklch(22%_0_0)] mb-6"
-              style={{ background: "oklch(13% 0 0)" }}>
-              <p className="text-sm font-medium text-[oklch(80%_0.005_85)] mb-4">
+            <div className="p-5 rounded-2xl border border-border mb-6 bg-[color-mix(in_srgb,var(--paper)_5%,var(--forest-deep))]">
+              <p className="text-sm font-medium text-on-ink mb-4">
                 Scegli una data
               </p>
               <SessionPicker
@@ -367,13 +370,16 @@ export default function WorkshopsPage() {
             </div>
 
             <button
+              type="button"
               disabled={selectedSessionId === null}
-              onClick={() => { if (selectedSessionId !== null) setStep("form"); }}
-              className="w-full py-3 rounded-[12px] font-semibold transition-all duration-200 disabled:opacity-40 hover:opacity-95"
-              style={{
-                background: selectedSessionId ? "oklch(55% 0.075 55)" : "oklch(30% 0 0)",
-                color: "oklch(98% 0 0)",
+              onClick={() => {
+                if (selectedSessionId !== null) setStep("form");
               }}
+              className={`w-full py-3 rounded-[12px] font-semibold transition-opacity duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 ${
+                selectedSessionId !== null
+                  ? "bg-brand-cta text-brand-cta-foreground"
+                  : "bg-[color-mix(in_srgb,var(--paper)_8%,var(--forest-deep))] text-on-ink-subtle"
+              }`}
             >
               Avanti — i vostri dati
             </button>
@@ -384,24 +390,25 @@ export default function WorkshopsPage() {
         {step === "form" && workshop && (
           <div className="max-w-xl mx-auto">
             <button
+              type="button"
               onClick={() => setStep("sessions")}
-              className="text-sm text-[oklch(55%_0.005_85)] hover:text-[oklch(75%_0.005_85)] mb-8 transition-colors"
+              className="text-sm text-on-ink-muted hover:text-on-ink mb-8 transition-colors"
             >
               ← Cambia data
             </button>
 
             <h2
-              className="text-[24px] text-[oklch(92%_0.005_85)] mb-2"
+              className="text-[24px] text-on-ink mb-2"
               style={{ fontFamily: "var(--font-display)", fontWeight: 600, lineHeight: 1.2 }}
             >
               I tuoi dati
             </h2>
-            <p className="text-sm text-[oklch(55%_0.005_85)] mb-8">
+            <p className="text-sm text-on-ink-muted mb-8">
               Inserisci i tuoi dati per completare la prenotazione.
             </p>
 
             {error && (
-              <div className="mb-4 p-3 rounded-lg bg-red-900/30 border border-red-700 text-red-300 text-sm">
+              <div className={errorBannerClass} role="alert">
                 {error}
               </div>
             )}
@@ -409,24 +416,19 @@ export default function WorkshopsPage() {
             <form onSubmit={handleSubmitForm} className="space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs text-[oklch(55%_0.005_85)] mb-1.5 uppercase tracking-wider">
+                  <label className="block text-xs text-on-ink-muted mb-1.5 uppercase tracking-wider">
                     Nome completo *
                   </label>
                   <input
                     required
                     value={form.guestName}
                     onChange={(e) => setForm({ ...form, guestName: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-lg border text-sm outline-none focus:border-[oklch(55%_0.075_55)] transition-colors"
-                    style={{
-                      background: "oklch(15% 0 0)",
-                      borderColor: "oklch(25% 0 0)",
-                      color: "oklch(90% 0.005 85)",
-                    }}
+                    className={inputDarkClass}
                     placeholder="Mario Rossi"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-[oklch(55%_0.005_85)] mb-1.5 uppercase tracking-wider">
+                  <label className="block text-xs text-on-ink-muted mb-1.5 uppercase tracking-wider">
                     Email *
                   </label>
                   <input
@@ -434,12 +436,7 @@ export default function WorkshopsPage() {
                     type="email"
                     value={form.guestEmail}
                     onChange={(e) => setForm({ ...form, guestEmail: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-lg border text-sm outline-none focus:border-[oklch(55%_0.075_55)] transition-colors"
-                    style={{
-                      background: "oklch(15% 0 0)",
-                      borderColor: "oklch(25% 0 0)",
-                      color: "oklch(90% 0.005 85)",
-                    }}
+                    className={inputDarkClass}
                     placeholder="mario@email.com"
                   />
                 </div>
@@ -447,52 +444,37 @@ export default function WorkshopsPage() {
 
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs text-[oklch(55%_0.005_85)] mb-1.5 uppercase tracking-wider">
+                  <label className="block text-xs text-on-ink-muted mb-1.5 uppercase tracking-wider">
                     Telefono
                   </label>
                   <input
                     value={form.guestPhone}
                     onChange={(e) => setForm({ ...form, guestPhone: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-lg border text-sm outline-none focus:border-[oklch(55%_0.075_55)] transition-colors"
-                    style={{
-                      background: "oklch(15% 0 0)",
-                      borderColor: "oklch(25% 0 0)",
-                      color: "oklch(90% 0.005 85)",
-                    }}
+                    className={inputDarkClass}
                     placeholder="+39 333 000 0000"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-[oklch(55%_0.005_85)] mb-1.5 uppercase tracking-wider">
+                  <label className="block text-xs text-on-ink-muted mb-1.5 uppercase tracking-wider">
                     Paese
                   </label>
                   <input
                     value={form.guestCountry}
                     onChange={(e) => setForm({ ...form, guestCountry: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-lg border text-sm outline-none focus:border-[oklch(55%_0.075_55)] transition-colors"
-                    style={{
-                      background: "oklch(15% 0 0)",
-                      borderColor: "oklch(25% 0 0)",
-                      color: "oklch(90% 0.005 85)",
-                    }}
+                    className={inputDarkClass}
                     placeholder="Italia"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs text-[oklch(55%_0.005_85)] mb-1.5 uppercase tracking-wider">
+                <label className="block text-xs text-on-ink-muted mb-1.5 uppercase tracking-wider">
                   Numero di partecipanti *
                 </label>
                 <select
                   value={form.participants}
                   onChange={(e) => setForm({ ...form, participants: parseInt(e.target.value) })}
-                  className="w-full px-4 py-2.5 rounded-lg border text-sm outline-none focus:border-[oklch(55%_0.075_55)] transition-colors"
-                  style={{
-                    background: "oklch(15% 0 0)",
-                    borderColor: "oklch(25% 0 0)",
-                    color: "oklch(90% 0.005 85)",
-                  }}
+                  className={inputDarkClass}
                 >
                   {Array.from({ length: Math.min(workshop.maxParticipants ?? 10, 10) }, (_, i) => i + 1).map((n) => (
                     <option key={n} value={n}>{n} {n === 1 ? "persona" : "persone"}</option>
@@ -501,43 +483,37 @@ export default function WorkshopsPage() {
               </div>
 
               <div>
-                <label className="block text-xs text-[oklch(55%_0.005_85)] mb-1.5 uppercase tracking-wider">
+                <label className="block text-xs text-on-ink-muted mb-1.5 uppercase tracking-wider">
                   Note (allergie, richieste speciali)
                 </label>
                 <textarea
                   value={form.notes}
                   onChange={(e) => setForm({ ...form, notes: e.target.value })}
                   rows={3}
-                  className="w-full px-4 py-2.5 rounded-lg border text-sm outline-none focus:border-[oklch(55%_0.075_55)] transition-colors resize-none"
-                  style={{
-                    background: "oklch(15% 0 0)",
-                    borderColor: "oklch(25% 0 0)",
-                    color: "oklch(90% 0.005 85)",
-                  }}
+                  className={`${inputDarkClass} resize-none`}
                   placeholder="Eventuali note..."
                 />
               </div>
 
               {/* Price summary */}
-              <div className="p-4 rounded-xl border border-[oklch(22%_0_0)]"
-                style={{ background: "oklch(13% 0 0)" }}>
+              <div className="p-4 rounded-xl border border-border bg-[color-mix(in_srgb,var(--paper)_5%,var(--forest-deep))]">
                 <div className="flex justify-between text-sm mb-2">
-                  <span className="text-[oklch(60%_0.005_85)]">
+                  <span className="text-on-ink-muted">
                     €{parseFloat(workshop.priceEur).toFixed(0)} × {form.participants} persona/e
                   </span>
-                  <span className="text-[oklch(85%_0.005_85)]">
+                  <span className="text-on-ink">
                     €{(parseFloat(workshop.priceEur) * form.participants).toFixed(2)}
                   </span>
                 </div>
-                <div className="flex justify-between text-sm border-t border-[oklch(22%_0_0)] pt-2 mt-2">
-                  <span className="text-[oklch(55%_0.075_55)] font-medium">
+                <div className="flex justify-between text-sm border-t border-border pt-2 mt-2">
+                  <span className="text-editorial-mark font-medium">
                     Deposito ora (50%)
                   </span>
-                  <span className="text-[oklch(55%_0.075_55)] font-medium">
+                  <span className="text-editorial-mark font-medium">
                     €{(parseFloat(workshop.priceEur) * form.participants * 0.5).toFixed(2)}
                   </span>
                 </div>
-                <p className="text-xs text-[oklch(45%_0.005_85)] mt-2">
+                <p className="text-xs text-on-ink-subtle mt-2">
                   Il saldo di €{(parseFloat(workshop.priceEur) * form.participants * 0.5).toFixed(2)} sarà dovuto il giorno del workshop.
                 </p>
               </div>
@@ -545,11 +521,7 @@ export default function WorkshopsPage() {
               <button
                 type="submit"
                 disabled={createBookingMutation.isPending}
-              className="w-full py-3 rounded-[12px] font-semibold transition-all duration-200 disabled:opacity-60 shadow-[0_10px_20px_rgba(139,69,19,0.3)] hover:-translate-y-[1px]"
-                style={{
-                  background: "oklch(55% 0.075 55)",
-                  color: "oklch(98% 0 0)",
-                }}
+                className="w-full py-3 rounded-[12px] font-semibold transition-opacity duration-200 disabled:opacity-60 bg-brand-cta text-brand-cta-foreground hover:opacity-90"
               >
                 {createBookingMutation.isPending
                   ? "Elaborazione..."
@@ -563,80 +535,78 @@ export default function WorkshopsPage() {
         {step === "review" && bookingResult && (
           <div className="max-w-lg mx-auto text-center">
             <div className="mb-8">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
-                style={{ background: "oklch(55% 0.075 55 / 0.15)", border: "1px solid oklch(55% 0.075 55)" }}>
+              <div
+                className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 border border-editorial-mark text-on-ink bg-[color-mix(in_srgb,var(--editorial-mark)_12%,transparent)]"
+                aria-hidden
+              >
                 <span className="text-2xl">✓</span>
               </div>
               <h2
-                className="text-[24px] text-[oklch(92%_0.005_85)] mb-2"
+                className="text-[24px] text-on-ink mb-2"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600, lineHeight: 1.2 }}
               >
                 Posto riservato
               </h2>
-              <p className="text-[oklch(60%_0.005_85)] text-sm">
+              <p className="text-on-ink-muted text-sm">
                 Il tuo codice di prenotazione è:
               </p>
-              <p className="text-2xl font-mono tracking-widest text-[oklch(55%_0.075_55)] mt-2 mb-1">
+              <p className="text-2xl font-mono tracking-widest text-editorial-mark mt-2 mb-1">
                 {bookingResult.confirmationCode}
               </p>
-              <p className="text-xs text-[oklch(45%_0.005_85)]">
+              <p className="text-xs text-on-ink-subtle">
                 Conserva questo codice per il giorno del workshop.
               </p>
             </div>
 
-            <div className="p-5 rounded-2xl border border-[oklch(22%_0_0)] mb-6 text-left"
-              style={{ background: "oklch(13% 0 0)" }}>
-              <h3 className="text-sm font-medium text-[oklch(80%_0.005_85)] mb-3">
+            <div className="p-5 rounded-2xl border border-border mb-6 text-left bg-[color-mix(in_srgb,var(--paper)_5%,var(--forest-deep))]">
+              <h3 className="text-sm font-medium text-on-ink mb-3">
                 Riepilogo prenotazione
               </h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-[oklch(55%_0.005_85)]">Workshop</span>
-                  <span className="text-[oklch(85%_0.005_85)]">{bookingResult.workshopTitle}</span>
+                  <span className="text-on-ink-muted">Workshop</span>
+                  <span className="text-on-ink">{bookingResult.workshopTitle}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[oklch(55%_0.005_85)]">Data</span>
-                  <span className="text-[oklch(85%_0.005_85)]">{formatDate(bookingResult.sessionDate)}</span>
+                  <span className="text-on-ink-muted">Data</span>
+                  <span className="text-on-ink">{formatDate(bookingResult.sessionDate)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[oklch(55%_0.005_85)]">Partecipanti</span>
-                  <span className="text-[oklch(85%_0.005_85)]">{bookingResult.participants}</span>
+                  <span className="text-on-ink-muted">Partecipanti</span>
+                  <span className="text-on-ink">{bookingResult.participants}</span>
                 </div>
-                <div className="flex justify-between border-t border-[oklch(22%_0_0)] pt-2 mt-2">
-                  <span className="text-[oklch(55%_0.005_85)]">Totale</span>
-                  <span className="text-[oklch(85%_0.005_85)]">€{bookingResult.totalAmountEur.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-[oklch(55%_0.075_55)] font-medium">Da pagare ora (50%)</span>
-                  <span className="text-[oklch(55%_0.075_55)] font-medium">€{bookingResult.depositAmountEur.toFixed(2)}</span>
+                <div className="flex justify-between border-t border-border pt-2 mt-2">
+                  <span className="text-on-ink-muted">Totale</span>
+                  <span className="text-on-ink">€{bookingResult.totalAmountEur.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[oklch(45%_0.005_85)]">Saldo il giorno del workshop</span>
-                  <span className="text-[oklch(45%_0.005_85)]">€{bookingResult.balanceAmountEur.toFixed(2)}</span>
+                  <span className="text-editorial-mark font-medium">Da pagare ora (50%)</span>
+                  <span className="text-editorial-mark font-medium">€{bookingResult.depositAmountEur.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-on-ink-subtle">Saldo il giorno del workshop</span>
+                  <span className="text-on-ink-subtle">€{bookingResult.balanceAmountEur.toFixed(2)}</span>
                 </div>
               </div>
             </div>
 
             {error && (
-              <div className="mb-4 p-3 rounded-lg bg-red-900/30 border border-red-700 text-red-300 text-sm">
+              <div className={`${errorBannerClass} text-left`} role="alert">
                 {error}
               </div>
             )}
 
             <button
+              type="button"
               onClick={handlePayDeposit}
               disabled={createCheckoutMutation.isPending}
-              className="w-full py-3.5 rounded-[12px] font-semibold text-base transition-all duration-200 disabled:opacity-60 mb-3 shadow-[0_10px_20px_rgba(139,69,19,0.3)] hover:-translate-y-[1px]"
-              style={{
-                background: "oklch(55% 0.075 55)",
-                color: "oklch(98% 0 0)",
-              }}
+              className="w-full py-3.5 rounded-[12px] font-semibold text-base transition-opacity duration-200 disabled:opacity-60 mb-3 bg-brand-cta text-brand-cta-foreground hover:opacity-90"
             >
               {createCheckoutMutation.isPending
                 ? "Reindirizzamento a Stripe..."
                 : `Procedi al deposito · €${bookingResult.depositAmountEur.toFixed(2)}`}
             </button>
-            <p className="text-xs text-[oklch(40%_0.005_85)]">
+            <p className="text-xs text-on-ink-subtle">
               Sarai reindirizzato a Stripe per il pagamento sicuro. Usa la carta di test: 4242 4242 4242 4242.
             </p>
           </div>
