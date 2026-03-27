@@ -1,9 +1,25 @@
 /**
  * Quarterly magazine issues — single source for /magazine and homepage teaser.
- * New season: prepend a new issue to MAGAZINE_ISSUES and move pdf + cover into public when ready.
+ * New season: prepend a new issue to MAGAZINE_ISSUES and add assets under `client/public/magazine/`.
  *
- * PDF for Issue No.1: add file at `client/public/magazine/portici-magazine-n1-v2.pdf` (No1_v2).
+ * Issue No.1 assets under `client/public/magazine/`:
+ * - Full issue PDF → `/magazine/portici-magazine-n1-v2.pdf`
+ * - Cover (single-page PDF or image) → `/magazine/covers/issue-1-cover.pdf` — UI uses `<object>`; raster fallback in `coverFallbackUrl` if embed fails.
  */
+
+/** Served from `client/public/magazine/portici-magazine-n1-v2.pdf` */
+export const ISSUE_NO1_PDF_HREF = "/magazine/portici-magazine-n1-v2.pdf";
+
+export const ISSUE_NO1_PDF_FILENAME = "portici-magazine-n1-v2.pdf";
+
+/** Cover asset (PDF single page or future .jpg/.webp). */
+export const ISSUE_NO1_COVER_LOCAL = "/magazine/covers/issue-1-cover.pdf";
+
+/**
+ * Fallback raster if the cover PDF cannot embed (e.g. some mobile browsers). Home hero still uses this image.
+ */
+export const ISSUE_NO1_COVER_FALLBACK_URL =
+  "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/bglhzhpRWfrDXIyk.png";
 
 export type IssueSectionPreview = {
   id: string;
@@ -25,10 +41,15 @@ export type MagazineIssue = {
   /** Main theme / cover line */
   themeTitle: string;
   themeSubtitle?: string;
+  /** Public URL to cover image (.jpg / .webp) or single-page cover PDF (.pdf). */
   coverUrl: string;
+  /** Raster fallback when `coverUrl` is a PDF that cannot embed, or when a raster `coverUrl` fails to load. */
+  coverFallbackUrl?: string;
   coverAlt: string;
   /** Public path to PDF (served from client/public) */
   pdfHref: string;
+  /** Suggested filename for the `download` attribute on “Scarica” links */
+  pdfDownloadFilename?: string;
   /** Short editorial intro — shown under hero */
   intro: string[];
   sectionPreviews: IssueSectionPreview[];
@@ -37,10 +58,6 @@ export type MagazineIssue = {
     body: string;
   };
 };
-
-/** Copertina N.1 — stesso asset del teaser homepage finché non sostituite con export da PDF. */
-export const ISSUE_NO1_COVER_URL =
-  "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/bglhzhpRWfrDXIyk.png";
 
 /**
  * Newest first. `issues[0]` is always the featured current issue on /magazine.
@@ -55,9 +72,11 @@ export const MAGAZINE_ISSUES: MagazineIssue[] = [
     cityLine: "Bologna · DaDaocheng",
     themeTitle: "Sulla soglia: Capodanno lunare e comunità",
     themeSubtitle: "Tra Italia e Taiwan, stessi bisogni, risposte diverse.",
-    coverUrl: ISSUE_NO1_COVER_URL,
+    coverUrl: ISSUE_NO1_COVER_LOCAL,
+    coverFallbackUrl: ISSUE_NO1_COVER_FALLBACK_URL,
     coverAlt: "Copertina — Portici Magazine numero 1, primavera 2026",
-    pdfHref: "/magazine/portici-magazine-n1-v2.pdf",
+    pdfHref: ISSUE_NO1_PDF_HREF,
+    pdfDownloadFilename: ISSUE_NO1_PDF_FILENAME,
     intro: [
       "Questo numero è il primo capitolo stampato del nostro metodo 同中求異: partiamo da una stessa domanda umana — chi siamo insieme, a un anno che finisce e uno che comincia — e osserviamo come culture diverse la rispondono.",
       "Non è un dossier di notizie: è una soglia. Il Capodanno lunare ci serve come cornice per parlare di continuità (brodo madre, calendario, tavola condivisa), di gesti (Weiya, calligrafia, dolci portafortuna) e di lessico che spesso resta invisibile finché non lo nominiamo.",

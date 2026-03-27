@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
-import { ArrowRight, Download } from "lucide-react";
+import { ArrowRight, Download, ExternalLink } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
 import { NewsletterSubscribeForm } from "@/components/NewsletterSubscribeForm";
 import { client } from "../SanityClient";
@@ -29,7 +29,61 @@ function coverImageUrl(a: Article): string | undefined {
   return typeof u === "string" && u.length > 0 ? u : undefined;
 }
 
+function pdfDownloadName(issue: MagazineIssue): string {
+  if (issue.pdfDownloadFilename) return issue.pdfDownloadFilename;
+  const tail = issue.pdfHref.split("/").pop();
+  return tail && /\.pdf$/i.test(tail) ? tail : "portici-magazine.pdf";
+}
+
+function coverPathLooksPdf(url: string): boolean {
+  const base = url.split("?")[0]?.split("#")[0] ?? "";
+  return /\.pdf$/i.test(base);
+}
+
+function IssueCoverImage({ issue }: { issue: MagazineIssue }) {
+  const [src, setSrc] = useState(issue.coverUrl);
+
+  if (coverPathLooksPdf(issue.coverUrl)) {
+    return (
+      <object
+        data={`${issue.coverUrl}#view=FitH`}
+        type="application/pdf"
+        title={issue.coverAlt}
+        className="block h-full w-full border-0 bg-[var(--paper-deep)] pointer-events-none"
+        aria-label={issue.coverAlt}
+      >
+        {issue.coverFallbackUrl ? (
+          <img
+            src={issue.coverFallbackUrl}
+            alt={issue.coverAlt}
+            className="h-full w-full object-cover object-center"
+            loading="eager"
+            decoding="async"
+          />
+        ) : null}
+      </object>
+    );
+  }
+
+  return (
+    <img
+      src={src}
+      alt={issue.coverAlt}
+      className="h-full w-full object-cover object-center"
+      loading="eager"
+      decoding="async"
+      sizes="(max-width: 1024px) 100vw, 42vw"
+      onError={() => {
+        if (issue.coverFallbackUrl && src !== issue.coverFallbackUrl) {
+          setSrc(issue.coverFallbackUrl);
+        }
+      }}
+    />
+  );
+}
+
 function IssueArchiveCard({ issue }: { issue: MagazineIssue }) {
+  const name = pdfDownloadName(issue);
   return (
     <article className="flex flex-col rounded-2xl border border-border bg-card p-6 md:p-8 shadow-sm">
       <p
@@ -45,14 +99,25 @@ function IssueArchiveCard({ issue }: { issue: MagazineIssue }) {
       <p className="text-sm text-muted-foreground leading-relaxed flex-1 mb-6 [font-family:var(--font-body)]">
         {issue.intro[0]}
       </p>
-      <a
-        href={issue.pdfHref}
-        download
-        className="inline-flex items-center gap-2 text-[14px] font-medium text-primary hover:underline underline-offset-4 [font-family:var(--font-ui)]"
-      >
-        <Download size={16} strokeWidth={1.75} aria-hidden />
-        Scarica il PDF
-      </a>
+      <div className="flex flex-wrap gap-x-5 gap-y-2">
+        <a
+          href={issue.pdfHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 text-[14px] font-medium text-primary hover:underline underline-offset-4 [font-family:var(--font-ui)]"
+        >
+          <ExternalLink size={16} strokeWidth={1.75} aria-hidden />
+          Apri il PDF
+        </a>
+        <a
+          href={issue.pdfHref}
+          download={name}
+          className="inline-flex items-center gap-2 text-[14px] font-medium text-muted-foreground hover:text-foreground hover:underline underline-offset-4 [font-family:var(--font-ui)]"
+        >
+          <Download size={16} strokeWidth={1.75} aria-hidden />
+          Scarica
+        </a>
+      </div>
     </article>
   );
 }
@@ -60,6 +125,7 @@ function IssueArchiveCard({ issue }: { issue: MagazineIssue }) {
 export default function Magazine() {
   const current = getCurrentIssue();
   const archived = getArchivedIssues();
+  const pdfFile = pdfDownloadName(current);
   const [articles, setArticles] = useState<Article[]>([]);
   const [articlesLoading, setArticlesLoading] = useState(true);
 
@@ -125,14 +191,10 @@ export default function Magazine() {
             Trimestrale · edizione corrente
           </p>
           <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-14 items-start">
-            <div className="relative aspect-[3/4] max-h-[min(72vh,560px)] w-full overflow-hidden rounded-2xl border border-border bg-muted shadow-md ring-1 ring-border/40">
-              <img
-                src={current.coverUrl}
-                alt={current.coverAlt}
-                className="h-full w-full object-cover object-center"
-              />
+            <div className="relative aspect-[3/4] max-h-[min(64vh,520px)] sm:max-h-[min(72vh,560px)] w-full max-w-md mx-auto lg:max-w-none overflow-hidden rounded-2xl border border-border bg-muted shadow-md ring-1 ring-border/40 max-lg:order-2">
+              <IssueCoverImage issue={current} />
             </div>
-            <div className="min-w-0 flex flex-col gap-6">
+            <div className="min-w-0 flex flex-col gap-6 max-lg:order-1">
               <div>
                 <p
                   className="text-xs font-semibold tracking-[0.2em] uppercase text-muted-foreground mb-3"
@@ -168,14 +230,15 @@ export default function Magazine() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 rounded-sm border border-primary bg-primary px-5 py-3 text-primary-foreground text-[13px] font-medium uppercase tracking-[0.08em] [font-family:var(--font-mono)] hover:bg-primary/90 transition-colors"
                 >
-                  <Download size={16} strokeWidth={1.75} aria-hidden />
+                  <ExternalLink size={16} strokeWidth={1.75} aria-hidden />
                   Apri il PDF
                 </a>
                 <a
                   href={current.pdfHref}
-                  download
+                  download={pdfFile}
                   className="inline-flex items-center justify-center gap-2 rounded-sm border border-border bg-background px-5 py-3 text-foreground text-[13px] font-medium uppercase tracking-[0.08em] [font-family:var(--font-mono)] hover:bg-muted/80 transition-colors"
                 >
+                  <Download size={16} strokeWidth={1.75} aria-hidden />
                   Scarica
                 </a>
                 <Link
@@ -272,8 +335,8 @@ export default function Magazine() {
           </p>
           {archived.length === 0 ? (
             <p className="text-[16px] text-muted-foreground leading-relaxed [font-family:var(--font-body)] border-l-2 border-[color-mix(in_srgb,var(--riso-red)_35%,transparent)] pl-5">
-              Il numero in evidenza è il primo pubblicato. I prossimi si aggiungeranno a questa sezione stagione dopo
-              stagione.
+              È online il primo numero del trimestrale; quando ne uscirà un altro, quello precedente comparirà qui come
+              scheda d’archivio — stesso URL, stesso sistema.
             </p>
           ) : (
             <div className="grid md:grid-cols-2 gap-8">
@@ -301,7 +364,7 @@ export default function Magazine() {
             <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl mb-8 [font-family:var(--font-body)]">
               Approfondimenti, collaborazioni e pezzi nativi per il web: affiancano il trimestrale, non lo sostituiscono.
             </p>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-4xl lg:max-w-none">
               {articles.slice(0, 4).map((article) => {
                 const img = coverImageUrl(article);
                 return (

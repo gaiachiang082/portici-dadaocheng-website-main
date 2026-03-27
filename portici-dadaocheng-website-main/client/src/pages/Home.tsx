@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { BrandMark } from "@/components/BrandMark";
 import { NewsletterSubscribeForm } from "@/components/NewsletterSubscribeForm";
-import { formatIssueMeta, getCurrentIssue, ISSUE_NO1_COVER_URL } from "@/data/magazineIssues";
+import { formatIssueMeta, getCurrentIssue, ISSUE_NO1_COVER_FALLBACK_URL } from "@/data/magazineIssues";
 
 /* ─────────────────────────────────────────────────────────────────
    NEWSLETTER — unchanged block (includes light reveal)
@@ -149,7 +149,7 @@ function HomeHero() {
               </header>
               <div className="relative aspect-[4/5] max-h-[min(52vh,520px)] bg-[var(--paper-deep)]">
                 <img
-                  src={ISSUE_NO1_COVER_URL}
+                  src={ISSUE_NO1_COVER_FALLBACK_URL}
                   alt="Cerimonia del tè — armonia"
                   className="absolute inset-0 h-full w-full object-cover object-center opacity-[0.92]"
                 />
