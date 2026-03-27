@@ -253,19 +253,19 @@ export default function Fondatrici() {
           </Link>
           <span className="hidden sm:inline text-border">·</span>
           <Link
+            href="/eventi"
+            className="text-sm font-medium text-primary hover:underline underline-offset-4"
+            style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+          >
+            Sessioni
+          </Link>
+          <span className="hidden sm:inline text-border">·</span>
+          <Link
             href="/workshop"
             className="text-sm font-medium text-primary hover:underline underline-offset-4"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
           >
-            Workshop
-          </Link>
-          <span className="hidden sm:inline text-border">·</span>
-          <Link
-            href="/workshops"
-            className="text-sm font-medium text-primary hover:underline underline-offset-4"
-            style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
-          >
-            Calendario workshop
+            Laboratori
           </Link>
         </div>
       </section>
@@ -283,14 +283,15 @@ export default function Fondatrici() {
             className="text-[17px] text-muted-foreground leading-[1.8] mb-9"
             style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
           >
-            Se questo vi incuriosisce, il prossimo workshop esplora questi temi più in profondità. I dettagli sono qui.
+            Se questo vi incuriosisce, il Magazine e le sessioni dal vivo portano avanti gli stessi temi — il calendario
+            segue la domanda.
           </p>
           <Link
-            href="/workshop"
+            href="/eventi"
             className="inline-flex items-center gap-2 px-8 py-3.5 text-[16px] font-semibold bg-primary text-primary-foreground rounded-xl hover:opacity-90 transition-opacity"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
           >
-            Scopri i workshop
+            Prossime sessioni
             <ArrowRight size={14} />
           </Link>
         </div>

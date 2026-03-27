@@ -288,10 +288,10 @@ export default function CalligraphyWorkshop() {
                       ))}
                     </ul>
 
-                    <Link href="/workshop"
+                    <Link href="/eventi?interesse=calligraphy-ink"
                       className="inline-flex items-center gap-2 text-[14px] font-semibold hover:gap-3 transition-all duration-300 mt-auto"
                       style={{ fontFamily: "'Inter', system-ui, sans-serif", color: course.accent }}>
-                      Prenota un Posto <ArrowRight size={13} />
+                      Mi interessa <ArrowRight size={13} />
                     </Link>
                   </div>
                 </div>
@@ -367,12 +367,13 @@ export default function CalligraphyWorkshop() {
             </h2>
             <p className="text-[18px] text-[oklch(42%_0.005_60)] leading-[1.8] mb-10"
               style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-              I posti sono limitati per garantire un'esperienza autentica e personale. Prenota il tuo posto oggi.
+              Le sessioni si aprono in base agli interessi raccolti. Lasciate un contatto sulla pagina Sessioni: vi
+              scriviamo quando il calendario prende forma.
             </p>
-            <Link href="/workshop"
+            <Link href="/eventi?interesse=calligraphy-ink"
               className="inline-flex items-center gap-2 px-10 py-4 text-[16px] font-semibold bg-[oklch(55.0%_0.075_55)] text-[oklch(96.5%_0.006_85)] hover:opacity-85 hover:gap-3 transition-all duration-300"
               style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
-              Prenota un Workshop <ArrowRight size={16} />
+              Manifesta interesse <ArrowRight size={16} />
             </Link>
           </Reveal>
         </div>

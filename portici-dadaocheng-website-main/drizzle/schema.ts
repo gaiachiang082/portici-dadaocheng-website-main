@@ -114,3 +114,19 @@ export const newsletterSubscribers = mysqlTable("newsletter_subscribers", {
 
 export type NewsletterSubscriber = typeof newsletterSubscribers.$inferSelect;
 export type InsertNewsletterSubscriber = typeof newsletterSubscribers.$inferInsert;
+
+/* ─────────────────────────────────────────────────────────────────
+   PROGRAM INTEREST — demand-led session leads (topic + contact)
+   ───────────────────────────────────────────────────────────────── */
+export const programInterests = mysqlTable("program_interests", {
+  id: int("id").autoincrement().primaryKey(),
+  email: varchar("email", { length: 320 }).notNull(),
+  name: varchar("name", { length: 256 }),
+  topicSlug: varchar("topicSlug", { length: 128 }).notNull(),
+  topicTitle: varchar("topicTitle", { length: 256 }).notNull(),
+  note: text("note"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type ProgramInterest = typeof programInterests.$inferSelect;
+export type InsertProgramInterest = typeof programInterests.$inferInsert;

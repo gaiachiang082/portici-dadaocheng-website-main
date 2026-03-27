@@ -143,8 +143,8 @@ export const workshopsRouter = router({
 
       // Notify owner
       await notifyOwner({
-        title: `Nuova prenotazione: ${workshop.title}`,
-        content: `${input.guestName} (${input.guestEmail}) ha prenotato ${input.participants} posto/i per ${workshop.title} il ${new Date(session.sessionDate).toLocaleDateString("it-IT")}. Codice: ${confirmationCode}. Deposito: \u20ac${depositAmount}`,
+        title: `Richiesta sessione (deposito da completare): ${workshop.title}`,
+        content: `${input.guestName} (${input.guestEmail}) ha avviato una richiesta per ${input.participants} partecipante/i — ${workshop.title}, ${new Date(session.sessionDate).toLocaleDateString("it-IT")}. Codice: ${confirmationCode}. Deposito previsto: \u20ac${depositAmount} (pagamento ancora da confermare).`,
       }).catch(() => {});
 
       return {

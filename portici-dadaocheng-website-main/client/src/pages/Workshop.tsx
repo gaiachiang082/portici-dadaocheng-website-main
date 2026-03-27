@@ -217,8 +217,8 @@ const WORKSHOP_FEATURES = [
     categoryZh: "書法水墨",
     title: "Scrivere è pensare con il corpo",
     body: "Attraverso il pennello e l'inchiostro, scopri come la calligrafia cinese trasforma ogni gesto in un atto di meditazione. Non si impara a copiare caratteri — si impara a stare presenti.",
-    cta: "Scopri il Workshop",
-    href: "/workshop/calligraphy",
+    cta: "Manifesta interesse",
+    href: "/eventi?interesse=calligraphy-ink",
     src: IMG.calligroupA,
     alt: "Workshop di calligrafia — gruppo intorno al tavolo",
     reverse: false,
@@ -229,8 +229,8 @@ const WORKSHOP_FEATURES = [
     categoryZh: "水墨畫",
     title: "Il gesto che non mente",
     body: "Nella pittura a inchiostro non esiste correzione. Ogni pennellata è definitiva — come le parole dette con sincerità. Un'esperienza che insegna a fidarsi del proprio istinto.",
-    cta: "Prenota un Posto",
-    href: "/workshop",
+    cta: "Vedi le sessioni",
+    href: "/eventi",
     src: IMG.inkFlower,
     alt: "Mano che dipinge fiori di susino con inchiostro",
     reverse: true,
@@ -241,8 +241,8 @@ const WORKSHOP_FEATURES = [
     categoryZh: "飲食文化",
     title: "Cultura che si mangia",
     body: "Impastare ravioli o modellare baozi non è solo cucinare — è accedere a un codice culturale che si tramanda attraverso le mani. Ogni piega racconta una storia.",
-    cta: "Vedi il Programma",
-    href: "/workshop",
+    cta: "Cucina e convivialità",
+    href: "/eventi?interesse=food-cultural",
     src: IMG.dumplingWorkshop,
     alt: "Famiglia italiana impara a fare i ravioli cinesi",
     reverse: false,
@@ -372,13 +372,13 @@ function WorkshopHighlightSection() {
                 >
                   {item.cta} <ArrowRight size={14} />
                 </Link>
-                {item.href === "/workshop/calligraphy" && (
+                {item.href === "/eventi?interesse=calligraphy-ink" && (
                   <Link
                     href="/workshop/calligraphy"
                     className="inline-flex items-center gap-2 text-[14px] font-semibold px-5 py-2.5 border border-primary/40 text-primary transition-all duration-300 hover:gap-3"
                     style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
                   >
-                    Vedi tutte le foto del corso <ArrowRight size={13} />
+                    Galleria calligrafia <ArrowRight size={13} />
                   </Link>
                 )}
               </div>
@@ -407,11 +407,11 @@ function WorkshopHighlightSection() {
         <div className="container pb-12 pt-8 text-center">
           <Reveal>
             <Link
-              href="/workshop"
+              href="/eventi"
               className="inline-flex items-center gap-2 text-[15px] font-semibold text-primary hover:opacity-70 hover:gap-3 transition-all duration-300"
               style={{ fontFamily: "'Noto Sans', system-ui, sans-serif", fontSize: "17px" }}
             >
-              Vedi tutti i workshop <ArrowRight size={14} />
+              Prossime sessioni <ArrowRight size={14} />
             </Link>
           </Reveal>
         </div>
@@ -483,11 +483,11 @@ function getMonthKey(d: Date | string) {
 function WorkshopCalendarCard({
   workshop,
   sessions,
-  onBook,
+  onExpressInterest,
 }: {
   workshop: any;
   sessions: any[];
-  onBook: (slug: string) => void;
+  onExpressInterest: (slug: string, title: string) => void;
 }) {
   const catStyle = CATEGORY_COLORS[workshop.category] ?? CATEGORY_COLORS.calligraphy;
   const nextSession = sessions[0];
@@ -520,7 +520,7 @@ function WorkshopCalendarCard({
                 border: "1px solid color-mix(in srgb, var(--riso-teal) 40%, var(--paper-deep))",
               }}
             >
-              Disponibile
+              In calendario
             </span>
           )}
           {isFull && sessions.length > 0 && (
@@ -563,7 +563,7 @@ function WorkshopCalendarCard({
           <div className="space-y-2">
             <p className="text-xs font-semibold tracking-[0.18em] uppercase text-brand-cta mb-2"
               style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
-              Date disponibili
+              Date in calendario (soggette a conferma collettiva)
             </p>
             {sessions.slice(0, 3).map((s: any) => {
               const left = s.spotsTotal - s.spotsBooked;
@@ -594,7 +594,8 @@ function WorkshopCalendarCard({
         ) : (
           <p className="text-sm text-muted-foreground italic"
             style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-            Nessuna sessione programmata al momento. Contattaci per organizzare una data privata.
+            Nessuna data pubblica al momento: raccogliamo interesse e apriamo il calendario quando la domanda regge la
+            sessione.
           </p>
         )}
 
@@ -617,43 +618,37 @@ function WorkshopCalendarCard({
         </div>
       </div>
 
-      {/* Right panel: price + CTA */}
+      {/* Right panel: interest-first + discreet booking */}
       <div className="bg-muted p-8 flex flex-col items-center justify-center gap-4 border-t md:border-t-0 md:border-l border-border min-w-[200px] md:rounded-r-2xl">
-        <div className="text-center">
-          <p className="text-xs text-muted-foreground mb-1"
-            style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
-            Deposito (50%)
-          </p>
-          <p className="text-3xl font-medium text-foreground"
-            style={{ fontFamily: "'Spectral', Georgia, serif" }}>
-            €{Math.round(parseFloat(workshop.priceEur) * 0.5)}
-          </p>
-          <p className="text-xs text-muted-foreground mt-0.5"
-            style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
-            Totale €{parseFloat(workshop.priceEur).toFixed(0)}
-          </p>
-        </div>
+        <p className="text-xs text-center text-muted-foreground leading-relaxed max-w-[200px]"
+          style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
+          Contributi e depositi si comunicano quando il formato è confermato — non come primo passo sul sito.
+        </p>
+
+        <button
+          type="button"
+          onClick={() => onExpressInterest(workshop.slug, workshop.title)}
+          className="w-full px-5 py-3 text-[16px] font-semibold bg-brand-cta text-brand-cta-foreground hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+          style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}
+        >
+          Mi interessa <ArrowRight size={14} />
+        </button>
 
         {sessions.length > 0 ? (
-          <button
-            onClick={() => onBook(workshop.slug)}
-            className="w-full px-5 py-3 text-[16px] font-semibold bg-brand-cta text-brand-cta-foreground hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
-            style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}
+          <Link
+            href={`/workshops?booking=1&slug=${encodeURIComponent(workshop.slug)}`}
+            className="text-[11px] text-center text-muted-foreground hover:text-brand-cta underline-offset-4 hover:underline [font-family:var(--font-ui)] uppercase tracking-wider"
           >
-            Prenota il Tuo Posto <ArrowRight size={14} />
-          </button>
+            Ho un invito — conferma e deposito
+          </Link>
         ) : (
           <Link href="/contatti"
-            className="w-full px-5 py-3 text-[16px] font-semibold border border-brand-cta text-brand-cta hover:bg-brand-cta hover:text-brand-cta-foreground transition-colors text-center"
+            className="w-full px-5 py-2.5 text-[14px] font-medium border border-border text-foreground hover:bg-background transition-colors text-center rounded-md"
             style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}
           >
             Contattaci
           </Link>
         )}
-        <p className="text-xs text-center text-muted-foreground"
-          style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
-          Cancellazione gratuita<br />fino al giorno prima
-        </p>
       </div>
     </div>
   );
@@ -695,8 +690,10 @@ export default function Workshop() {
       });
   }, [allData, filterCategory, filterMonth]);
 
-  const handleBook = (slug: string) => {
-    navigate(`/workshops?slug=${slug}`);
+  const handleExpressInterest = (slug: string, title: string) => {
+    navigate(
+      `/eventi?refSlug=${encodeURIComponent(slug)}&refTitle=${encodeURIComponent(title)}`
+    );
   };
 
   const activeFilterCount = (filterCategory !== "all" ? 1 : 0) + (filterMonth !== "all" ? 1 : 0);
@@ -708,18 +705,18 @@ export default function Workshop() {
         <div className="container max-w-3xl">
           <p className="text-[15px] font-normal tracking-[0.22em] uppercase text-on-ink-accent mb-6"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
-            Workshop
+            Laboratori dal vivo
           </p>
           <h1 className="font-medium text-on-ink mb-8"
             style={{ fontFamily: "'Spectral', Georgia, serif", fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 500, lineHeight: 1.15 }}>
-            Esperienze che lasciano
+            Estensioni pratiche
             <br />
-            <em className="text-on-ink-accent not-italic">tracce permanenti.</em>
+            <em className="text-on-ink-accent not-italic">del racconto editoriale.</em>
           </h1>
           <p className="text-[18px] text-on-ink-muted leading-[1.75]"
             style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-            Ogni workshop è progettato per creare almeno un momento in cui penserai:
-            "Non avevo mai visto le cose in questo modo."
+            Queste linee nascono dalle stesse domande del Magazine. Il calendario non è un catalogo fisso: si compone per
+            stagioni, in base agli interessi che raccogliamo.
           </p>
           <div className="w-10 h-0.5 bg-on-ink-accent mt-8" />
         </div>
@@ -730,9 +727,9 @@ export default function Workshop() {
         <div className="container">
           <div className="grid sm:grid-cols-3 gap-8 text-center">
             {[
-              { step: "01", title: "Prenota e paga il 50%", desc: "Riserva il tuo posto con un deposito del 50% online tramite carta di credito." },
-              { step: "02", title: "Cancellazione gratuita", desc: "Puoi cancellare gratuitamente fino al giorno prima. Il deposito diventa punti per il prossimo workshop." },
-              { step: "03", title: "Paga il resto in loco", desc: "Il giorno dell'evento, dopo aver vissuto l'esperienza, saldi il restante 50% in contanti o carta." },
+              { step: "01", title: "Leggete il filo", desc: "Magazine e newsletter tengono ferma la bussola culturale — sapete perché proponiamo certe sessioni." },
+              { step: "02", title: "Diteci cosa vi attira", desc: "Sulla pagina Sessioni lasciate email e tema: costruiamo il programma quando la domanda è sufficiente." },
+              { step: "03", title: "Poi le date", desc: "Ricevete formato, luogo e contributo solo quando una sessione è reale. Il pagamento non è il primo passo." },
             ].map(({ step, title, desc }) => (
               <div key={step} className="flex flex-col items-center">
                 <span className="text-4xl font-medium text-brand-cta/40 mb-3"
@@ -754,17 +751,17 @@ export default function Workshop() {
           <div className="mb-10">
             <p className="text-[15px] font-normal tracking-[0.22em] uppercase text-brand-cta mb-4"
               style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
-              Calendario
+              Linee dal database
             </p>
             <div className="flex flex-wrap items-end justify-between gap-4">
               <h2 className="font-medium text-foreground"
                 style={{ fontFamily: "'Spectral', Georgia, serif", fontSize: "2rem", fontWeight: 500 }}>
-                Workshop in Programma
+                Possibili laboratori
               </h2>
-              <Link href="/workshops"
+              <Link href="/eventi"
                 className="inline-flex items-center gap-2 text-[15px] font-semibold text-brand-cta hover:opacity-70 hover:gap-3 transition-all duration-300"
                 style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
-                Prenota direttamente <ArrowRight size={14} />
+                Manifesta interesse <ArrowRight size={14} />
               </Link>
             </div>
             <div className="w-10 h-0.5 bg-brand-cta mt-4" />
@@ -879,7 +876,7 @@ export default function Workshop() {
                   key={workshop.id}
                   workshop={workshop}
                   sessions={sessions}
-                  onBook={handleBook}
+                  onExpressInterest={handleExpressInterest}
                 />
               ))}
             </div>
@@ -901,22 +898,21 @@ export default function Workshop() {
         <div className="container max-w-2xl text-center">
           <p className="text-[15px] font-normal tracking-[0.22em] uppercase text-on-ink-accent mb-5"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
-            Sistema Punti
+            Quando siete già dentro
           </p>
           <h2 className="font-medium text-on-ink mb-6"
             style={{ fontFamily: "'Spectral', Georgia, serif", fontSize: "2rem", fontWeight: 500 }}>
-            Il tuo deposito non va mai perso.
+            Depositi e punti restano per chi prenota su invito.
           </h2>
           <p className="text-[18px] text-on-ink-muted leading-[1.8] mb-10"
             style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-            Se cancelli entro il giorno prima, il tuo deposito si trasforma automaticamente
-            in punti da usare per prenotare il prossimo workshop. Perché la curiosità
-            non dovrebbe avere scadenza.
+            Per chi ha già ricevuto una data confermata, manteniamo le regole di deposito e flessibilità che conoscete.
+            Non sono il modo in cui entrate oggi nel programma — partite dalla pagina Sessioni.
           </p>
-          <Link href="/workshops"
+          <Link href="/eventi"
             className="inline-flex items-center gap-2 px-8 py-3.5 text-[16px] font-semibold bg-brand-cta text-brand-cta-foreground hover:opacity-90 transition-opacity"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
-            Prenota il Tuo Posto <ArrowRight size={16} />
+            Prossime sessioni <ArrowRight size={16} />
           </Link>
         </div>
       </section>

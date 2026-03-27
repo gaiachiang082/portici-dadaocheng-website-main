@@ -37,10 +37,10 @@ export default function Footer() {
 
   const navLinks = [
     { href: "/fondatrici", label: "Fondatrici" },
-    { href: "/eventi", label: "Eventi" },
-    { href: "/workshop", label: "Workshop" },
     { href: "/magazine", label: "Magazine" },
     { href: "/newsletter", label: "Newsletter" },
+    { href: "/eventi", label: "Sessioni" },
+    { href: "/workshop", label: "Laboratori" },
     { href: "/spazio", label: "Spazio" },
     { href: "/contatti", label: "Contatti" },
   ];

@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { eq, desc, and } from "drizzle-orm";
+import { eq, desc, count, max } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import { getDb } from "../db";
-import { bookings, workshops, workshopSessions, users } from "../../drizzle/schema";
+import { bookings, workshops, workshopSessions, programInterests } from "../../drizzle/schema";
 import { protectedProcedure, router } from "../_core/trpc";
 
 /* ── Admin guard middleware ── */
@@ -190,6 +190,79 @@ export const adminRouter = router({
         .from(workshopSessions)
         .where(eq(workshopSessions.workshopId, input.workshopId))
         .orderBy(desc(workshopSessions.sessionDate));
+    }),
+
+  /* ─────────────────────────────────────────────
+     PROGRAM INTERESTS (demand-led leads)
+     ───────────────────────────────────────────── */
+
+  /** Paginated list, newest first; topic summary for operational grouping */
+  listProgramInterests: adminProcedure
+    .input(
+      z.object({
+        topicSlug: z.string().min(1).max(128).optional(),
+        limit: z.number().min(1).max(2500).default(100),
+        offset: z.number().min(0).default(0),
+      })
+    )
+    .query(async ({ input }) => {
+      const db = await getDb();
+      if (!db) {
+        return {
+          rows: [] as (typeof programInterests.$inferSelect)[],
+          total: 0,
+          topicSummary: [] as {
+            topicSlug: string;
+            topicTitle: string;
+            count: number;
+            latestAt: Date | null;
+          }[],
+        };
+      }
+
+      const topicSummaryRaw = await db
+        .select({
+          topicSlug: programInterests.topicSlug,
+          topicTitle: programInterests.topicTitle,
+          n: count(),
+          latestAt: max(programInterests.createdAt),
+        })
+        .from(programInterests)
+        .groupBy(programInterests.topicSlug, programInterests.topicTitle);
+
+      const topicSummary = topicSummaryRaw
+        .map((r) => ({
+          topicSlug: r.topicSlug,
+          topicTitle: r.topicTitle,
+          count: Number(r.n),
+          latestAt: r.latestAt ?? null,
+        }))
+        .sort((a, b) => b.count - a.count);
+
+      const filter = input.topicSlug ? eq(programInterests.topicSlug, input.topicSlug) : undefined;
+
+      const rows = filter
+        ? await db
+            .select()
+            .from(programInterests)
+            .where(filter)
+            .orderBy(desc(programInterests.createdAt))
+            .limit(input.limit)
+            .offset(input.offset)
+        : await db
+            .select()
+            .from(programInterests)
+            .orderBy(desc(programInterests.createdAt))
+            .limit(input.limit)
+            .offset(input.offset);
+
+      const [countRow] = filter
+        ? await db.select({ n: count() }).from(programInterests).where(filter)
+        : await db.select({ n: count() }).from(programInterests);
+
+      const total = Number(countRow?.n ?? 0);
+
+      return { rows, total, topicSummary };
     }),
 
   /* ─────────────────────────────────────────────

@@ -75,8 +75,8 @@ function HomeHero() {
               className="text-[17px] text-muted-foreground leading-[1.75] mb-10 max-w-xl"
               style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
             >
-              Laboratori a Bologna, letture sul Magazine, voci delle fondatrici: entrate dove preferite — questo è solo
-              l&apos;ingresso.
+              Piattaforma culturale in crescita: il racconto parte da Magazine e newsletter; le sessioni dal vivo si
+              compongono quando la curiosità diventa domanda — senza promettere un catalogo sempre aperto.
             </p>
 
             <div
@@ -85,16 +85,6 @@ function HomeHero() {
               aria-label="Ingressi principali"
             >
               <Link
-                href="/eventi"
-                className="group inline-flex flex-col gap-1 w-fit focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground"
-                style={{ fontFamily: "var(--font-ui)" }}
-              >
-                <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Calendario</span>
-                <span className="text-[17px] font-medium text-foreground border-b border-foreground/25 pb-0.5 group-hover:border-foreground transition-colors">
-                  Eventi
-                </span>
-              </Link>
-              <Link
                 href="/magazine"
                 className="group inline-flex flex-col gap-1 w-fit focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground"
                 style={{ fontFamily: "var(--font-ui)" }}
@@ -102,6 +92,16 @@ function HomeHero() {
                 <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Letture</span>
                 <span className="text-[17px] font-medium text-foreground border-b border-foreground/25 pb-0.5 group-hover:border-foreground transition-colors">
                   Magazine
+                </span>
+              </Link>
+              <Link
+                href="/eventi"
+                className="group inline-flex flex-col gap-1 w-fit focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground"
+                style={{ fontFamily: "var(--font-ui)" }}
+              >
+                <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">In programma</span>
+                <span className="text-[17px] font-medium text-foreground border-b border-foreground/25 pb-0.5 group-hover:border-foreground transition-colors">
+                  Sessioni
                 </span>
               </Link>
             </div>
@@ -124,7 +124,7 @@ function HomeHero() {
                 ·
               </span>
               <Link href="/workshop" className="hover:text-foreground transition-colors underline-offset-4 hover:underline">
-                Workshop
+                Laboratori
               </Link>
             </nav>
           </div>
@@ -260,7 +260,7 @@ function HomeEntryPanels() {
   return (
     <section className="py-16 md:py-20 bg-background" aria-labelledby="home-entry-heading">
       <h2 id="home-entry-heading" className="sr-only">
-        Ingresso Magazine ed Eventi
+        Ingresso Magazine e Sessioni
       </h2>
       <div className="container max-w-6xl mx-auto px-6 md:px-10">
         <div className="grid md:grid-cols-2 gap-0 md:gap-px bg-border/40 border border-border/50">
@@ -317,26 +317,27 @@ function HomeEntryPanels() {
                 className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-4"
                 style={{ fontFamily: "var(--font-ui)" }}
               >
-                II — Eventi
+                II — Sessioni
               </p>
               <p
                 className="text-[clamp(1.5rem,3vw,1.85rem)] font-medium text-foreground leading-tight mb-6"
                 style={{ fontFamily: "'Spectral', Georgia, serif" }}
               >
-                Laboratori e incontri a Bologna.
+                Prossime sessioni, stagioni, interesse.
               </p>
               <p
                 className="text-[15px] leading-relaxed text-muted-foreground max-w-md"
                 style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
               >
-                Calendario, iscrizioni e filo conduttore degli incontri — tutto nella sezione dedicata.
+                Linee possibili a Bologna: manifestate interesse per tema; quando il programma si conferma, ricevete
+                formato e date — non un carrello sempre aperto.
               </p>
             </div>
             <p
               className="mt-8 text-[13px] uppercase tracking-[0.14em] text-foreground group-hover:translate-x-0.5 transition-transform inline-flex items-center gap-2"
               style={{ fontFamily: "var(--font-ui)" }}
             >
-              Vai agli eventi
+              Vai alle sessioni
               <ArrowRight size={14} strokeWidth={1.75} className="opacity-70" aria-hidden />
             </p>
           </Link>

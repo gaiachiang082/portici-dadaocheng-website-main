@@ -5,10 +5,10 @@ import { BrandMark } from "@/components/BrandMark";
 
 const navLinks = [
   { href: "/fondatrici", label: "Fondatrici" },
-  { href: "/eventi", label: "Eventi" },
-  { href: "/workshop", label: "Workshop" },
   { href: "/magazine", label: "Magazine" },
   { href: "/newsletter", label: "Newsletter" },
+  { href: "/eventi", label: "Sessioni" },
+  { href: "/workshop", label: "Laboratori" },
   { href: "/spazio", label: "Spazio" },
   { href: "/contatti", label: "Contatti" },
 ];
@@ -125,7 +125,7 @@ export default function Navigation() {
             </ul>
 
             <Link
-              href="/workshop"
+              href="/magazine"
               className={`hidden md:inline-flex items-center justify-center px-[18px] py-2 rounded-sm border transition-colors duration-200 ${navMono} ${
                 isHome && !scrolled
                   ? "bg-background/90 text-foreground border-[color-mix(in_srgb,var(--ink)_18%,transparent)] hover:bg-muted"
@@ -136,7 +136,7 @@ export default function Navigation() {
                 transition: `opacity 0.5s ease 700ms, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease`,
               }}
             >
-              Prenota Workshop
+              Apri il Magazine
             </Link>
 
             <button
@@ -194,14 +194,14 @@ export default function Navigation() {
             );
           })}
           <Link
-            href="/workshops"
+            href="/magazine"
             className={`mt-2 inline-flex items-center justify-center px-5 py-2.5 rounded-sm border transition-colors duration-200 self-start ${navMono} ${
               isHome && !scrolled
                 ? "bg-background text-foreground border-[color-mix(in_srgb,var(--ink)_18%,transparent)] hover:bg-muted"
                 : "bg-transparent text-foreground border-foreground hover:bg-foreground hover:text-background"
             }`}
           >
-            Prenota Workshop
+            Apri il Magazine
           </Link>
         </div>
       </div>

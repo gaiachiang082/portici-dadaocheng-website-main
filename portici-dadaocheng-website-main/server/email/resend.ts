@@ -1,6 +1,6 @@
 /**
  * Resend email helper for Portici DaDaocheng
- * Handles newsletter welcome emails and booking confirmation emails.
+ * Newsletter welcome + legacy deposit confirmation for confirmed sessions (Stripe flow).
  */
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
@@ -82,11 +82,14 @@ export async function sendNewsletterWelcome(to: string, name?: string | null): P
               Grazie per esserti iscritto/a alla nostra newsletter. Sei ora parte di una comunità che esplora come culture diverse — dall'Asia orientale all'Europa — rispondono alle stesse domande umane in modi sorprendentemente diversi.
             </p>
             <p style="margin:0 0 32px;font-size:17px;color:#57534E;line-height:1.8;">
-              Ogni mese riceverai aggiornamenti sui nostri workshop, articoli di approfondimento culturale e inviti agli eventi speciali a Bologna e nelle principali città europee.
+              Ogni mese riceverai letture dal Magazine, spunti editoriali e notizie sulle sessioni dal vivo in sviluppo: quando date e formato saranno pronti, lo raccontiamo qui — senza promettere un calendario sempre aperto.
             </p>
-            <a href="https://portici-dadaocheng.com/workshop" style="display:inline-block;padding:14px 28px;background:#a2482b;color:#F5F3EE;text-decoration:none;font-family:Arial,sans-serif;font-size:15px;font-weight:600;">
-              Scopri i Workshop →
+            <a href="https://portici-dadaocheng.com/magazine" style="display:inline-block;padding:14px 28px;background:#a2482b;color:#F5F3EE;text-decoration:none;font-family:Arial,sans-serif;font-size:15px;font-weight:600;">
+              Apri il Magazine →
             </a>
+            <p style="margin:24px 0 0;font-size:15px;color:#78716C;line-height:1.7;font-family:Arial,sans-serif;">
+              Sessioni e manifestazione d&apos;interesse: <a href="https://portici-dadaocheng.com/eventi" style="color:#a2482b;">portici-dadaocheng.com/eventi</a>
+            </p>
           </td>
         </tr>
         <!-- Footer -->
@@ -109,7 +112,7 @@ export async function sendNewsletterWelcome(to: string, name?: string | null): P
   });
 }
 
-/* ── Booking Confirmation Email ── */
+/* ── Legacy deposit confirmation (guest completed Stripe deposit for a scheduled session) ── */
 export async function sendBookingConfirmation(opts: {
   to: string;
   guestName: string;
@@ -131,7 +134,7 @@ export async function sendBookingConfirmation(opts: {
 
   return sendEmail({
     to: opts.to,
-    subject: `Conferma prenotazione: ${opts.workshopTitle} · ${opts.confirmationCode}`,
+    subject: `Sessione confermata (deposito ricevuto): ${opts.workshopTitle} · ${opts.confirmationCode}`,
     html: `
 <!DOCTYPE html>
 <html lang="it">
@@ -151,7 +154,7 @@ export async function sendBookingConfirmation(opts: {
         <tr>
           <td style="background:#a2482b;padding:16px 48px;">
             <p style="margin:0;font-size:13px;color:#F5F3EE;font-family:Arial,sans-serif;letter-spacing:0.15em;text-transform:uppercase;">
-              ✓ Prenotazione Confermata
+              ✓ Deposito ricevuto — partecipazione alla sessione confermata
             </p>
           </td>
         </tr>
@@ -160,7 +163,10 @@ export async function sendBookingConfirmation(opts: {
           <td style="padding:48px 48px 40px;">
             <p style="margin:0 0 24px;font-size:17px;color:#57534E;line-height:1.8;">
               Caro/a <strong style="color:#1C1917;">${opts.guestName}</strong>,<br>
-              il tuo deposito è stato ricevuto. Il tuo posto è confermato!
+              il deposito per questa sessione è stato ricevuto: la tua partecipazione è confermata per data e orario indicati sotto.
+            </p>
+            <p style="margin:0 0 24px;font-size:14px;color:#78716C;line-height:1.7;font-family:Arial,sans-serif;">
+              Questo messaggio riguarda il percorso con deposito riservato a chi ha già scelto una data. Per nuove linee e interesse collettivo, il punto di ingresso è il sito (sezione Sessioni).
             </p>
 
             <!-- Booking details box -->
@@ -170,7 +176,7 @@ export async function sendBookingConfirmation(opts: {
                   <p style="margin:0 0 4px;font-size:11px;color:#A67C52;letter-spacing:0.2em;text-transform:uppercase;font-family:Arial,sans-serif;">Codice di Conferma</p>
                   <p style="margin:0 0 20px;font-size:22px;font-weight:700;color:#1C1917;font-family:'Courier New',monospace;letter-spacing:0.1em;">${opts.confirmationCode}</p>
 
-                  <p style="margin:0 0 4px;font-size:11px;color:#A67C52;letter-spacing:0.2em;text-transform:uppercase;font-family:Arial,sans-serif;">Workshop</p>
+                  <p style="margin:0 0 4px;font-size:11px;color:#A67C52;letter-spacing:0.2em;text-transform:uppercase;font-family:Arial,sans-serif;">Sessione / laboratorio</p>
                   <p style="margin:0 0 20px;font-size:17px;color:#1C1917;">${opts.workshopTitle}${opts.workshopTitleZh ? ` · ${opts.workshopTitleZh}` : ""}</p>
 
                   <p style="margin:0 0 4px;font-size:11px;color:#A67C52;letter-spacing:0.2em;text-transform:uppercase;font-family:Arial,sans-serif;">Data e Ora</p>
@@ -199,7 +205,7 @@ export async function sendBookingConfirmation(opts: {
             </table>
 
             <p style="margin:0 0 20px;font-size:15px;color:#57534E;line-height:1.8;font-family:Arial,sans-serif;">
-              <strong>Ricorda:</strong> il saldo restante (€${opts.balanceAmountEur.toFixed(2)}) verrà pagato in loco il giorno dell'evento, dopo aver vissuto l'esperienza.
+              <strong>Ricorda:</strong> il saldo restante (€${opts.balanceAmountEur.toFixed(2)}) si salda in loco il giorno della sessione, dopo l&apos;incontro.
             </p>
             <p style="margin:0 0 32px;font-size:15px;color:#57534E;line-height:1.8;font-family:Arial,sans-serif;">
               Per qualsiasi domanda, rispondi a questa email o contattaci su Instagram <a href="https://instagram.com/portici.dadaocheng" style="color:#a2482b;">@portici.dadaocheng</a>.
@@ -215,6 +221,7 @@ export async function sendBookingConfirmation(opts: {
           <td style="padding:24px 48px;border-top:1px solid #E5E0D8;">
             <p style="margin:0;font-size:12px;color:#A67C52;font-family:Arial,sans-serif;">
               Bologna, Italia · 2026 · <a href="https://portici-dadaocheng.com" style="color:#A67C52;">portici-dadaocheng.com</a>
+              · <a href="https://portici-dadaocheng.com/eventi" style="color:#A67C52;">Sessioni</a>
             </p>
           </td>
         </tr>

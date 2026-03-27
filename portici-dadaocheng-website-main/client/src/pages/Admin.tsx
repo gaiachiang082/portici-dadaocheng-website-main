@@ -3,7 +3,7 @@ import { useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import {
-  CheckCircle, XCircle, ToggleLeft, ToggleRight, Plus, AlertTriangle, RefreshCw,
+  CheckCircle, XCircle, ToggleLeft, ToggleRight, Plus, AlertTriangle, RefreshCw, Copy, Download,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -513,11 +513,295 @@ function SessionsTab() {
   );
 }
 
+function escapeCsvCell(value: string | null | undefined): string {
+  if (value == null || value === "") return '""';
+  const s = String(value).replace(/"/g, '""');
+  return `"${s}"`;
+}
+
+function downloadProgramInterestsCsv(
+  rows: {
+    createdAt: Date | string | null;
+    email: string;
+    name: string | null;
+    topicSlug: string;
+    topicTitle: string;
+    note: string | null;
+  }[]
+) {
+  const header = ["createdAt", "email", "name", "topicSlug", "topicTitle", "note"];
+  const lines = [header.join(",")];
+  for (const r of rows) {
+    const created =
+      r.createdAt instanceof Date
+        ? r.createdAt.toISOString()
+        : r.createdAt
+          ? new Date(r.createdAt).toISOString()
+          : "";
+    lines.push(
+      [
+        escapeCsvCell(created),
+        escapeCsvCell(r.email),
+        escapeCsvCell(r.name),
+        escapeCsvCell(r.topicSlug),
+        escapeCsvCell(r.topicTitle),
+        escapeCsvCell(r.note),
+      ].join(",")
+    );
+  }
+  const blob = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `interessi-programma-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ── Program interests tab ── */
+function ProgramInterestsTab() {
+  const [topicFilter, setTopicFilter] = useState<"all" | string>("all");
+  const [offset, setOffset] = useState(0);
+  const limit = 50;
+  const utils = trpc.useUtils();
+
+  const { data, isLoading, refetch } = trpc.admin.listProgramInterests.useQuery(
+    {
+      topicSlug: topicFilter === "all" ? undefined : topicFilter,
+      limit,
+      offset,
+    },
+    { refetchOnWindowFocus: false }
+  );
+
+  const topicSummary = data?.topicSummary ?? [];
+  const totalAllTopics = topicSummary.reduce((s, t) => s + t.count, 0);
+
+  const handleExport = async () => {
+    try {
+      const exported = await utils.admin.listProgramInterests.fetch({
+        topicSlug: topicFilter === "all" ? undefined : topicFilter,
+        limit: 2500,
+        offset: 0,
+      });
+      downloadProgramInterestsCsv(exported.rows);
+      toast.success(
+        exported.rows.length >= 2500
+          ? "Esportate le prime 2500 righe (limite). Restringi il tema se serve."
+          : `Esportate ${exported.rows.length} righe in CSV.`
+      );
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : "Esportazione non riuscita");
+    }
+  };
+
+  const copyEmail = async (email: string) => {
+    try {
+      await navigator.clipboard.writeText(email);
+      toast.success("Email copiata");
+    } catch {
+      toast.error("Copia non riuscita");
+    }
+  };
+
+  return (
+    <div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+        <StatCard
+          label="Manifestazioni"
+          value={topicFilter === "all" ? totalAllTopics : data?.total ?? 0}
+          sub={topicFilter === "all" ? "totale raccolto" : "per il tema selezionato"}
+          tone="annotation"
+        />
+        <StatCard
+          label="Linee tematiche"
+          value={topicSummary.length}
+          sub="slug distinti · sintesi domanda"
+        />
+      </div>
+
+      {topicSummary.length > 0 && (
+        <div className="mb-6">
+          <p
+            className="text-xs font-semibold tracking-[0.18em] uppercase text-editorial-mark mb-3"
+            style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}
+          >
+            Per tema · conteggi e ultimo ingresso
+          </p>
+          <div className="flex flex-wrap gap-2 mb-4">
+            <button
+              type="button"
+              onClick={() => {
+                setTopicFilter("all");
+                setOffset(0);
+              }}
+              className={`px-3 py-1.5 text-xs font-semibold transition-opacity duration-200 border ${
+                topicFilter === "all"
+                  ? "bg-brand-cta text-brand-cta-foreground border-brand-cta"
+                  : "bg-muted text-muted-foreground border-border hover:opacity-90"
+              }`}
+              style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}
+            >
+              Tutti
+            </button>
+            {topicSummary.map((t) => (
+              <button
+                key={t.topicSlug}
+                type="button"
+                onClick={() => {
+                  setTopicFilter(t.topicSlug);
+                  setOffset(0);
+                }}
+                className={`px-3 py-1.5 text-xs font-semibold transition-opacity duration-200 border text-left max-w-[280px] truncate ${
+                  topicFilter === t.topicSlug
+                    ? "bg-brand-cta text-brand-cta-foreground border-brand-cta"
+                    : "bg-muted text-muted-foreground border-border hover:opacity-90"
+                }`}
+                style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}
+                title={`${t.topicTitle} · ${t.topicSlug}`}
+              >
+                {t.topicTitle} ({t.count})
+              </button>
+            ))}
+          </div>
+          <div className="bg-card border border-border divide-y divide-border text-sm">
+            {topicSummary.map((t) => (
+              <div
+                key={`row-${t.topicSlug}`}
+                className="flex flex-wrap items-baseline justify-between gap-2 px-4 py-3"
+                style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}
+              >
+                <div className="min-w-0">
+                  <p className="font-medium text-foreground truncate">{t.topicTitle}</p>
+                  <p className="text-xs text-muted-foreground font-mono truncate">{t.topicSlug}</p>
+                </div>
+                <div className="text-xs text-muted-foreground shrink-0 text-right">
+                  <span className="text-foreground font-semibold tabular-nums">{t.count}</span> · ultimo{" "}
+                  {formatDate(t.latestAt)}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className="flex flex-wrap gap-2 mb-6 items-center">
+        <button
+          type="button"
+          onClick={() => refetch()}
+          className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 border border-border"
+          style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}
+        >
+          <RefreshCw size={12} /> Aggiorna
+        </button>
+        <button
+          type="button"
+          onClick={() => void handleExport()}
+          className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 border border-border text-foreground hover:border-editorial-mark transition-colors"
+          style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}
+        >
+          <Download size={12} /> Esporta CSV
+        </button>
+      </div>
+
+      {isLoading ? (
+        <div className="space-y-3">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="h-24 bg-muted animate-pulse" />
+          ))}
+        </div>
+      ) : !data?.rows.length ? (
+        <div className="text-center py-16 text-muted-foreground" style={{ fontFamily: "'Spectral', Georgia, serif" }}>
+          Nessuna manifestazione di interesse ancora.
+        </div>
+      ) : (
+        <>
+          <div className="text-xs text-muted-foreground mb-3" style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
+            {data.total} righe {topicFilter === "all" ? "in totale" : "per questo filtro"} · pagina{" "}
+            {Math.floor(offset / limit) + 1}
+          </div>
+          <div className="space-y-3">
+            {data.rows.map((row) => (
+              <div key={row.id} className="bg-card border border-border p-5 shadow-sm">
+                <div className="flex flex-wrap items-start justify-between gap-4">
+                  <div className="flex-1 min-w-0 space-y-2">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span
+                        className="text-xs text-muted-foreground"
+                        style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}
+                      >
+                        {formatDate(row.createdAt)}
+                      </span>
+                      <span
+                        className="text-sm font-medium text-foreground break-all"
+                        style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}
+                      >
+                        {row.email}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => void copyEmail(row.email)}
+                        className="inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold border border-border text-muted-foreground hover:border-editorial-mark hover:text-foreground transition-colors"
+                        style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}
+                        title="Copia email"
+                      >
+                        <Copy size={12} /> Copia
+                      </button>
+                    </div>
+                    {row.name && (
+                      <p className="text-sm text-foreground" style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
+                        <span className="text-muted-foreground">Nome · </span>
+                        {row.name}
+                      </p>
+                    )}
+                    <div className="text-xs space-y-1" style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
+                      <p>
+                        <span className="text-muted-foreground">Tema · </span>
+                        <span className="font-medium text-foreground">{row.topicTitle}</span>
+                        <span className="text-muted-foreground font-mono ml-2">{row.topicSlug}</span>
+                      </p>
+                      {row.note && (
+                        <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap border-l-2 border-border pl-3 mt-2">
+                          {row.note}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="flex gap-3 mt-6 justify-center">
+            <button
+              type="button"
+              disabled={offset === 0}
+              onClick={() => setOffset(Math.max(0, offset - limit))}
+              className="px-4 py-2 text-xs font-semibold border border-border text-muted-foreground hover:border-editorial-mark hover:text-foreground disabled:opacity-40 transition-colors"
+              style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}
+            >
+              ← Precedente
+            </button>
+            <button
+              type="button"
+              disabled={offset + limit >= (data?.total ?? 0)}
+              onClick={() => setOffset(offset + limit)}
+              className="px-4 py-2 text-xs font-semibold border border-border text-muted-foreground hover:border-editorial-mark hover:text-foreground disabled:opacity-40 transition-colors"
+              style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}
+            >
+              Successivo →
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 /* ── Main Admin Page ── */
 export default function AdminPage() {
   const { user, loading: authLoading } = useAuth();
   const [, navigate] = useLocation();
-  const [activeTab, setActiveTab] = useState<"bookings" | "sessions">("bookings");
+  const [activeTab, setActiveTab] = useState<"bookings" | "sessions" | "interests">("bookings");
 
   const { data: stats } = trpc.admin.stats.useQuery(undefined, {
     enabled: user?.role === "admin",
@@ -609,26 +893,36 @@ export default function AdminPage() {
         )}
 
         {/* Tabs */}
-        <div className="flex gap-0 mb-8 border-b border-border">
-          {(["bookings", "sessions"] as const).map((tab) => (
+        <div className="flex flex-wrap gap-0 mb-8 border-b border-border">
+          {(["bookings", "sessions", "interests"] as const).map((tab) => (
             <button
               key={tab}
               type="button"
               onClick={() => setActiveTab(tab)}
-              className={`px-6 py-3 text-sm font-semibold transition-colors duration-200 border-b-2 ${
+              className={`px-5 py-3 text-sm font-semibold transition-colors duration-200 border-b-2 ${
                 activeTab === tab
                   ? "border-editorial-mark text-foreground"
                   : "border-transparent text-muted-foreground hover:text-foreground"
               }`}
               style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}
             >
-              {tab === "bookings" ? "Prenotazioni" : "Workshop & Sessioni"}
+              {tab === "bookings"
+                ? "Prenotazioni"
+                : tab === "sessions"
+                  ? "Workshop & Sessioni"
+                  : "Interessi programma"}
             </button>
           ))}
         </div>
 
         {/* Tab content */}
-        {activeTab === "bookings" ? <BookingsTab /> : <SessionsTab />}
+        {activeTab === "bookings" ? (
+          <BookingsTab />
+        ) : activeTab === "sessions" ? (
+          <SessionsTab />
+        ) : (
+          <ProgramInterestsTab />
+        )}
       </div>
     </main>
   );

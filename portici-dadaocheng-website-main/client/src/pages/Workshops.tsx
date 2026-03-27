@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { Link } from "wouter";
+import { ProgramInterestSection } from "@/components/ProgramInterestSection";
 
 /* ─── Types ─── */
 type Step = "list" | "sessions" | "form" | "review" | "paying";
@@ -179,6 +180,7 @@ const errorBannerClass =
 
 /* ─── Main Page ─── */
 export default function WorkshopsPage() {
+  const [legacyBooking, setLegacyBooking] = useState(false);
   const [step, setStep] = useState<Step>("list");
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const [selectedSessionId, setSelectedSessionId] = useState<number | null>(null);
@@ -193,14 +195,18 @@ export default function WorkshopsPage() {
   const [bookingResult, setBookingResult] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // Read ?slug= from URL to pre-select a workshop (from Calendario page)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const slugParam = params.get("slug");
-    if (slugParam && step === "list") {
-      handleSelectWorkshop(slugParam);
+    const openLegacy = params.get("booking") === "1" || !!slugParam;
+    if (openLegacy) {
+      setLegacyBooking(true);
+      if (slugParam) {
+        setSelectedSlug(slugParam);
+        setSelectedSessionId(null);
+        setStep("sessions");
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const { data: workshopList, isLoading } = trpc.workshops.list.useQuery();
@@ -260,18 +266,64 @@ export default function WorkshopsPage() {
   const workshop = workshopDetail?.workshop;
   const sessions = workshopDetail?.sessions ?? [];
 
+  if (!legacyBooking) {
+    return (
+      <div className="min-h-screen bg-background text-foreground">
+        <nav className="sticky top-0 z-40 border-b border-border px-6 py-4 flex flex-wrap items-center justify-between gap-3 bg-background/95 backdrop-blur-sm">
+          <Link href="/">
+            <span
+              className="text-muted-foreground text-sm tracking-widest uppercase cursor-pointer hover:text-foreground transition-colors [font-family:var(--font-ui)]"
+            >
+              ← Portici 大稻埕
+            </span>
+          </Link>
+          <div className="flex items-center gap-6">
+            <Link
+              href="/eventi"
+              className="text-sm tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors [font-family:var(--font-ui)]"
+            >
+              Sessioni
+            </Link>
+          </div>
+        </nav>
+        <ProgramInterestSection className="py-14 md:py-16" showLegacyBookingHint />
+        <div className="border-t border-border bg-muted/20 py-12 px-6">
+          <div className="max-w-xl mx-auto text-center">
+            <p className="text-sm text-muted-foreground leading-relaxed mb-6 [font-family:var(--font-body)]">
+              Avete già un invito o un link al deposito? Qui resta il flusso dedicato a conferma e pagamento per una
+              sessione già scelta — non è il percorso principale del sito.
+            </p>
+            <button
+              type="button"
+              onClick={() => setLegacyBooking(true)}
+              className="inline-flex items-center justify-center px-6 py-3 rounded-md text-sm font-medium border border-border bg-card hover:bg-muted transition-colors [font-family:var(--font-ui)]"
+            >
+              Apri conferma e pagamento
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-forest text-on-ink">
       {/* Nav */}
-      <nav className="sticky top-0 z-50 border-b border-border px-6 py-4 flex items-center justify-between bg-forest/95 backdrop-blur-sm">
+      <nav className="sticky top-0 z-50 border-b border-border px-6 py-4 flex flex-wrap items-center justify-between gap-3 bg-forest/95 backdrop-blur-sm">
         <Link href="/">
           <span className="text-on-ink-accent text-sm tracking-widest uppercase cursor-pointer hover:text-on-ink transition-colors">
             ← Portici 大稻埕
           </span>
         </Link>
-        <h1 className="text-sm tracking-widest uppercase text-on-ink-muted">
-          Workshop
-        </h1>
+        <div className="flex items-center gap-5">
+          <Link
+            href="/eventi"
+            className="text-xs tracking-widest uppercase text-on-ink-muted hover:text-on-ink transition-colors"
+          >
+            Sessioni
+          </Link>
+          <h1 className="text-sm tracking-widest uppercase text-on-ink-muted">Conferma</h1>
+        </div>
       </nav>
 
       <div className="max-w-4xl mx-auto px-6 py-12">
@@ -280,18 +332,21 @@ export default function WorkshopsPage() {
           <>
             <div className="mb-10">
               <p className="text-[10px] tracking-[0.3em] uppercase text-on-ink-accent mb-3">
-                Esperienze Culturali
+                Flusso riservato
               </p>
               <h2
                 className="text-[28px] md:text-[32px] text-on-ink mb-4"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600, lineHeight: 1.2 }}
               >
-                I nostri Workshop
+                Conferma sessione e deposito
               </h2>
               <p className="text-on-ink-muted max-w-xl leading-relaxed">
-                Ogni workshop è un dialogo tra due culture. Scegliete un incontro dal calendario; il
-                deposito del 50% conferma la partecipazione e il posto è vostro fino al giorno
-                dell&apos;incontro.
+                Questa area serve quando una sessione è già stata comunicata e volete scegliere data e completare il
+                deposito. Per nuove linee e interesse collettivo, usate la pagina{" "}
+                <Link href="/eventi" className="text-editorial-mark hover:underline underline-offset-4">
+                  Sessioni
+                </Link>
+                .
               </p>
             </div>
 
@@ -326,7 +381,7 @@ export default function WorkshopsPage() {
               onClick={() => setStep("list")}
               className="text-sm text-on-ink-muted hover:text-on-ink mb-8 transition-colors"
             >
-              ← Torna ai workshop
+              ← Torna all&apos;elenco
             </button>
 
             <div className="mb-8">
@@ -404,7 +459,7 @@ export default function WorkshopsPage() {
               I tuoi dati
             </h2>
             <p className="text-sm text-on-ink-muted mb-8">
-              Inserisci i tuoi dati per completare la prenotazione.
+              Inserisci i tuoi dati per confermare la richiesta e procedere al deposito per questa sessione.
             </p>
 
             {error && (
@@ -514,7 +569,7 @@ export default function WorkshopsPage() {
                   </span>
                 </div>
                 <p className="text-xs text-on-ink-subtle mt-2">
-                  Il saldo di €{(parseFloat(workshop.priceEur) * form.participants * 0.5).toFixed(2)} sarà dovuto il giorno del workshop.
+                  Il saldo di €{(parseFloat(workshop.priceEur) * form.participants * 0.5).toFixed(2)} sarà dovuto il giorno della sessione.
                 </p>
               </div>
 
@@ -545,26 +600,26 @@ export default function WorkshopsPage() {
                 className="text-[24px] text-on-ink mb-2"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600, lineHeight: 1.2 }}
               >
-                Posto riservato
+                Richiesta registrata
               </h2>
               <p className="text-on-ink-muted text-sm">
-                Il tuo codice di prenotazione è:
+                Il tuo codice di conferma è:
               </p>
               <p className="text-2xl font-mono tracking-widest text-editorial-mark mt-2 mb-1">
                 {bookingResult.confirmationCode}
               </p>
               <p className="text-xs text-on-ink-subtle">
-                Conserva questo codice per il giorno del workshop.
+                Conserva questo codice per il giorno della sessione.
               </p>
             </div>
 
             <div className="p-5 rounded-2xl border border-border mb-6 text-left bg-[color-mix(in_srgb,var(--paper)_5%,var(--forest-deep))]">
               <h3 className="text-sm font-medium text-on-ink mb-3">
-                Riepilogo prenotazione
+                Riepilogo sessione
               </h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-on-ink-muted">Workshop</span>
+                  <span className="text-on-ink-muted">Sessione</span>
                   <span className="text-on-ink">{bookingResult.workshopTitle}</span>
                 </div>
                 <div className="flex justify-between">
@@ -584,7 +639,7 @@ export default function WorkshopsPage() {
                   <span className="text-editorial-mark font-medium">€{bookingResult.depositAmountEur.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-on-ink-subtle">Saldo il giorno del workshop</span>
+                  <span className="text-on-ink-subtle">Saldo il giorno della sessione</span>
                   <span className="text-on-ink-subtle">€{bookingResult.balanceAmountEur.toFixed(2)}</span>
                 </div>
               </div>

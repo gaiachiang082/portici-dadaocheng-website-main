@@ -165,8 +165,8 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
 
   // 4. Notify owner
   await notifyOwner({
-    title: `Deposito ricevuto: ${confirmationCode}`,
-    content: `Il deposito di €${booking.depositAmountEur} per la prenotazione ${confirmationCode} è stato ricevuto con successo. Ospite: ${booking.guestName} (${booking.guestEmail}). Partecipanti: ${booking.participants}.`,
+    title: `Deposito sessione confermato: ${confirmationCode}`,
+    content: `Deposito di €${booking.depositAmountEur} ricevuto per la sessione associata al codice ${confirmationCode}. Partecipante: ${booking.guestName} (${booking.guestEmail}). N. partecipanti: ${booking.participants}.`,
   }).catch((err) => {
     console.warn("[Stripe Webhook] Owner notification failed:", err);
   });

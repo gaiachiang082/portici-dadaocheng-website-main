@@ -28,10 +28,10 @@ export default function BookingSuccess() {
           className="text-3xl text-[oklch(92%_0.005_85)] mb-3"
           style={{ fontFamily: "'Spectral', Georgia, serif", fontWeight: 300 }}
         >
-          Pagamento confermato!
+          Deposito ricevuto
         </h1>
         <p className="text-[oklch(60%_0.005_85)] mb-6">
-          Il tuo deposito è stato ricevuto. Riceverai una email di conferma a breve.
+          Il deposito per la sessione scelta è andato a buon fine. Ti abbiamo inviato un&apos;email di riepilogo con data, luogo e codice.
         </p>
 
         {code && (
@@ -43,24 +43,24 @@ export default function BookingSuccess() {
             }}
           >
             <p className="text-xs text-[oklch(50%_0.005_85)] uppercase tracking-widest mb-1">
-              Codice di prenotazione
+              Codice di conferma
             </p>
             <p className="text-2xl font-mono tracking-widest text-[oklch(55%_0.075_55)]">
               {code}
             </p>
             <p className="text-xs text-[oklch(45%_0.005_85)] mt-2">
-              Porta questo codice il giorno del workshop.
+              Porta questo codice il giorno della sessione.
             </p>
           </div>
         )}
 
         <div className="space-y-3">
-          <Link href="/workshops">
+          <Link href="/eventi">
             <button
               className="w-full py-3 rounded-xl font-medium transition-all duration-200"
               style={{ background: "oklch(55% 0.075 55)", color: "oklch(98% 0 0)" }}
             >
-              Prenota un altro workshop
+              Altre linee e interesse
             </button>
           </Link>
           <Link href="/">

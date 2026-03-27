@@ -46,8 +46,8 @@ export async function createWorkshopCheckoutSession(params: WorkshopCheckoutPara
           currency: "eur",
           unit_amount: depositCents,
           product_data: {
-            name: `${params.workshopTitle} — Deposito 50%`,
-            description: `${params.participants} partecipante/i · ${sessionDateStr}${params.workshopTitleZh ? ` · ${params.workshopTitleZh}` : ""}`,
+            name: `Sessione — ${params.workshopTitle} (deposito 50%)`,
+            description: `${params.participants} partecipante/i · ${sessionDateStr}${params.workshopTitleZh ? ` · ${params.workshopTitleZh}` : ""} · saldo in loco il giorno dell'incontro`,
           },
         },
         quantity: 1,
@@ -63,7 +63,7 @@ export async function createWorkshopCheckoutSession(params: WorkshopCheckoutPara
     },
     client_reference_id: params.confirmationCode,
     success_url: `${params.origin}/booking/success?code=${params.confirmationCode}&session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${params.origin}/workshops?booking_cancelled=1`,
+    cancel_url: `${params.origin}/workshops?booking=1&booking_cancelled=1`,
   });
 
   return session;
