@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
-import { ArrowRight, Download, ExternalLink } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { MAGAZINE_ISSUE_1_SOURCE } from "@shared/const";
 import { PageHeader } from "@/components/PageHeader";
 import { NewsletterSubscribeForm } from "@/components/NewsletterSubscribeForm";
 import { client } from "../SanityClient";
@@ -72,25 +73,24 @@ function IssueArchiveCard({ issue }: { issue: MagazineIssue }) {
       <p className="text-sm text-muted-foreground leading-relaxed flex-1 mb-6 [font-family:var(--font-body)]">
         {issue.intro[0]}
       </p>
-      <div className="flex flex-wrap gap-x-5 gap-y-2">
+      <p className="text-[13px] text-muted-foreground [font-family:var(--font-body)] leading-relaxed">
         <a
           href={issue.pdfHref}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-[14px] font-medium text-primary hover:underline underline-offset-4 [font-family:var(--font-ui)]"
+          className="text-muted-foreground/90 underline underline-offset-4 decoration-border hover:text-foreground"
         >
-          <ExternalLink size={16} strokeWidth={1.75} aria-hidden />
-          Apri il PDF
+          Apri il PDF nel browser
         </a>
+        <span className="text-muted-foreground/60"> · </span>
         <a
           href={issue.pdfHref}
           download={name}
-          className="inline-flex items-center gap-2 text-[14px] font-medium text-muted-foreground hover:text-foreground hover:underline underline-offset-4 [font-family:var(--font-ui)]"
+          className="text-muted-foreground/90 underline underline-offset-4 decoration-border hover:text-foreground"
         >
-          <Download size={16} strokeWidth={1.75} aria-hidden />
           Scarica
         </a>
-      </div>
+      </p>
     </article>
   );
 }
@@ -98,7 +98,6 @@ function IssueArchiveCard({ issue }: { issue: MagazineIssue }) {
 export default function Magazine() {
   const current = getCurrentIssue();
   const archived = getArchivedIssues();
-  const pdfFile = pdfDownloadName(current);
   const [articles, setArticles] = useState<Article[]>([]);
   const [articlesLoading, setArticlesLoading] = useState(true);
 
@@ -192,41 +191,45 @@ export default function Magazine() {
                   <p key={i}>{p}</p>
                 ))}
               </div>
-              <div
-                className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 pt-2"
-                role="group"
-                aria-label="Azioni sul numero attuale"
-              >
-                <a
-                  href={current.pdfHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-sm border border-primary bg-primary px-5 py-3 text-primary-foreground text-[13px] font-medium uppercase tracking-[0.08em] [font-family:var(--font-mono)] hover:bg-primary/90 transition-colors"
-                >
-                  <ExternalLink size={16} strokeWidth={1.75} aria-hidden />
-                  Apri il PDF
-                </a>
-                <a
-                  href={current.pdfHref}
-                  download={pdfFile}
-                  className="inline-flex items-center justify-center gap-2 rounded-sm border border-border bg-background px-5 py-3 text-foreground text-[13px] font-medium uppercase tracking-[0.08em] [font-family:var(--font-mono)] hover:bg-muted/80 transition-colors"
-                >
-                  <Download size={16} strokeWidth={1.75} aria-hidden />
-                  Scarica
-                </a>
-                <Link
-                  href="/newsletter"
-                  className="inline-flex items-center justify-center gap-2 rounded-sm border border-border bg-background px-5 py-3 text-foreground text-[13px] font-medium uppercase tracking-[0.08em] [font-family:var(--font-mono)] hover:bg-muted/80 transition-colors"
-                >
-                  Iscriviti al prossimo numero
-                  <ArrowRight size={16} strokeWidth={1.75} aria-hidden />
-                </Link>
-                <Link
-                  href="/eventi"
-                  className="inline-flex items-center justify-center gap-2 rounded-sm border border-transparent px-5 py-3 text-primary text-[14px] font-medium [font-family:var(--font-ui)] hover:underline underline-offset-4"
-                >
-                  Sessioni e laboratori
-                </Link>
+              <div className="space-y-5 pt-2" role="group" aria-label="Ricevere il numero attuale">
+                <p className="text-[15px] text-muted-foreground leading-[1.75] [font-family:var(--font-body)] max-w-xl">
+                  Ti invieremo il PDF del primo numero e, se vorrai, gli aggiornamenti sui prossimi numeri.
+                </p>
+                <div className="max-w-xl">
+                  <NewsletterSubscribeForm
+                    source={MAGAZINE_ISSUE_1_SOURCE}
+                    variant="home"
+                    showUnsubscribeHint
+                    editorialSubmitButton
+                    calmSubscribeErrors
+                    submitButtonLabel="Iscriviti per ricevere il Nº1 via email"
+                    successTitle="Grazie — vi invieremo il Nº1 via email."
+                    successBody="Controllate la vostra casella: tra poco riceverete il PDF del primo numero."
+                    successTitleWhenAlreadySubscribed="Siete già iscritti alla newsletter."
+                    successBodyWhenAlreadySubscribed="Vi inviamo di nuovo il messaggio con il link al PDF del numero 1: controllate la posta, anche in spam, quando vi è comodo."
+                  />
+                </div>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:flex-wrap gap-3 sm:gap-6">
+                  <Link
+                    href="/eventi"
+                    className="inline-flex items-center justify-center gap-2 rounded-sm border border-border bg-background px-5 py-3 text-foreground text-[13px] font-medium uppercase tracking-[0.08em] [font-family:var(--font-mono)] hover:bg-muted/80 transition-colors w-fit"
+                  >
+                    Sessioni e laboratori
+                    <ArrowRight size={16} strokeWidth={1.75} aria-hidden />
+                  </Link>
+                  <p className="text-[13px] text-muted-foreground/85 [font-family:var(--font-body)]">
+                    <a
+                      href={current.pdfHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline underline-offset-4 decoration-border/80 hover:text-foreground"
+                    >
+                      Stesso PDF nel browser
+                    </a>
+                    <span className="text-muted-foreground/50"> — </span>
+                    <span className="text-muted-foreground/70">per chi preferisce non usare la posta</span>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -246,7 +249,7 @@ export default function Magazine() {
             Cosa trovate nel PDF
           </h2>
           <p className="text-[15px] text-muted-foreground leading-[1.8] max-w-3xl mb-10 [font-family:var(--font-body)]">
-            Anteprima delle sezioni: saggio, tavola, reportage e glossario restano nel file; qui solo la mappa per orientarvi prima di aprire il numero.
+            Anteprima delle sezioni: saggio, tavola, reportage e glossario restano nel PDF; qui solo la mappa per orientarvi sul numero.
           </p>
           <div className="grid md:grid-cols-2 gap-8 lg:gap-10">
             {current.sectionPreviews.map((block) => (

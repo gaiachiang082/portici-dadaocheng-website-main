@@ -8,6 +8,8 @@ vi.mock("./db", () => ({
 // Mock the email module
 vi.mock("./email/resend", () => ({
   sendNewsletterWelcome: vi.fn().mockResolvedValue(true),
+  sendNewsletterWelcomeWithMagazineIssue1: vi.fn().mockResolvedValue(true),
+  sendMagazineIssue1Delivery: vi.fn().mockResolvedValue(true),
 }));
 
 import { getDb } from "./db";

@@ -1,9 +1,12 @@
 /**
  * Resend email helper for Portici DaDaocheng
- * Newsletter welcome + legacy deposit confirmation for confirmed sessions (Stripe flow).
+ * Newsletter welcome + magazine PDF delivery + legacy deposit confirmation (Stripe flow).
  */
 
+import { ISSUE_NO1_PDF_PUBLIC_PATH } from "@shared/const";
+
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
+const SITE_ORIGIN = (process.env.PUBLIC_SITE_URL ?? "https://portici-dadaocheng.com").replace(/\/$/, "");
 const FROM_EMAIL = "Portici DaDaocheng <noreply@portici-dadaocheng.com>";
 const REPLY_TO = "info@portici-dadaocheng.com";
 
@@ -101,6 +104,143 @@ export async function sendNewsletterWelcome(to: string, name?: string | null): P
             </p>
             <p style="margin:8px 0 0;font-size:11px;color:#C4B9AD;font-family:Arial,sans-serif;">
               Hai ricevuto questa email perché ti sei iscritto/a alla newsletter di Portici DaDaocheng.
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`,
+  });
+}
+
+/** Absolute URL to Issue No.1 PDF for email clients. */
+function issueNo1PdfAbsoluteUrl(): string {
+  return `${SITE_ORIGIN}${ISSUE_NO1_PDF_PUBLIC_PATH}`;
+}
+
+/**
+ * Single email for new (or reactivated) subscribers from `magazine_issue_1`:
+ * welcome tone + PDF link — lighter than two separate messages.
+ */
+export async function sendNewsletterWelcomeWithMagazineIssue1(to: string, name?: string | null): Promise<boolean> {
+  const greeting = name ? `Caro/a ${name},` : "Caro/a amico/a,";
+  const pdfUrl = issueNo1PdfAbsoluteUrl();
+  return sendEmail({
+    to,
+    subject: "Benvenuto/a — newsletter e Magazine N.1 (PDF) 🏮",
+    html: `
+<!DOCTYPE html>
+<html lang="it">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background:#F5F0EB;font-family:'Georgia',serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#F5F0EB;padding:40px 20px;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="background:#FFFFFF;max-width:600px;width:100%;">
+        <tr>
+          <td style="background:#1C1917;padding:40px 48px 32px;">
+            <p style="margin:0 0 4px;font-family:'Georgia',serif;font-size:18px;font-weight:500;color:#F5F3EE;letter-spacing:0.08em;">PORTICI</p>
+            <p style="margin:0;font-family:'Georgia',serif;font-size:11px;color:#A67C52;letter-spacing:0.18em;text-transform:uppercase;">大稻埕</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:48px 48px 36px;">
+            <p style="margin:0 0 24px;font-size:14px;color:#A67C52;letter-spacing:0.2em;text-transform:uppercase;font-family:Arial,sans-serif;">Newsletter · Magazine N.1</p>
+            <h1 style="margin:0 0 24px;font-size:28px;font-weight:500;color:#1C1917;line-height:1.3;">${greeting}<br>Benvenuto/a!</h1>
+            <div style="width:40px;height:2px;background:#a2482b;margin-bottom:28px;"></div>
+            <p style="margin:0 0 20px;font-size:17px;color:#57534E;line-height:1.8;">
+              Grazie per esservi iscritti/e alla nostra newsletter. Siete parte di una comunità che esplora come culture diverse — dall&apos;Asia orientale all&apos;Europa — rispondono alle stesse domande umane in modi sorprendentemente diversi.
+            </p>
+            <p style="margin:0 0 28px;font-size:15px;color:#78716C;line-height:1.75;font-family:Arial,sans-serif;">
+              <strong style="color:#1C1917;">Il primo numero in PDF</strong> è qui sotto: apritelo o salvatelo quando volete.
+            </p>
+            <a href="${pdfUrl}" style="display:inline-block;padding:14px 28px;background:#a2482b;color:#F5F3EE;text-decoration:none;font-family:Arial,sans-serif;font-size:15px;font-weight:600;">
+              Apri o scarica il PDF del N.1 →
+            </a>
+            <p style="margin:28px 0 20px;font-size:17px;color:#57534E;line-height:1.8;">
+              Ogni mese riceverete letture dal Magazine, spunti editoriali e notizie sulle sessioni dal vivo in sviluppo: quando date e formato saranno pronti, lo raccontiamo qui — senza promettere un calendario sempre aperto.
+            </p>
+            <a href="${SITE_ORIGIN}/magazine" style="display:inline-block;padding:12px 24px;border:1px solid #D6D0C8;color:#1C1917;text-decoration:none;font-family:Arial,sans-serif;font-size:14px;font-weight:600;">
+              Pagina Magazine →
+            </a>
+            <p style="margin:20px 0 0;font-size:15px;color:#78716C;line-height:1.7;font-family:Arial,sans-serif;">
+              Sessioni e manifestazione d&apos;interesse: <a href="${SITE_ORIGIN}/eventi" style="color:#a2482b;">${SITE_ORIGIN.replace(/^https?:\/\//, "")}/eventi</a>
+            </p>
+            <p style="margin:16px 0 0;font-size:14px;color:#78716C;line-height:1.7;font-family:Arial,sans-serif;">
+              Se non vedete subito questa mail, date un&apos;occhiata anche allo spam.
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:24px 48px;border-top:1px solid #E5E0D8;">
+            <p style="margin:0;font-size:12px;color:#A67C52;font-family:Arial,sans-serif;">
+              Bologna, Italia · 2026<br>
+              <a href="${SITE_ORIGIN}" style="color:#A67C52;">portici-dadaocheng.com</a>
+            </p>
+            <p style="margin:8px 0 0;font-size:11px;color:#C4B9AD;font-family:Arial,sans-serif;">
+              Avete ricevuto questa email perché vi siete iscritti/e dalla pagina del Magazine.
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`,
+  });
+}
+
+/**
+ * Second touch only: subscriber already active — resend PDF link, calm editorial tone.
+ */
+export async function sendMagazineIssue1Delivery(
+  to: string,
+  name?: string | null,
+  _options?: { repeatDelivery?: boolean }
+): Promise<boolean> {
+  const greeting = name ? `Ciao ${name},` : "Ciao,";
+  const pdfUrl = issueNo1PdfAbsoluteUrl();
+
+  return sendEmail({
+    to,
+    subject: "Portici Magazine · numero 1 — il PDF",
+    html: `
+<!DOCTYPE html>
+<html lang="it">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background:#F5F0EB;font-family:'Georgia',serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#F5F0EB;padding:40px 20px;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="background:#FFFFFF;max-width:600px;width:100%;">
+        <tr>
+          <td style="background:#1C1917;padding:40px 48px 32px;">
+            <p style="margin:0 0 4px;font-family:'Georgia',serif;font-size:18px;font-weight:500;color:#F5F3EE;letter-spacing:0.08em;">PORTICI</p>
+            <p style="margin:0;font-family:'Georgia',serif;font-size:11px;color:#A67C52;letter-spacing:0.18em;text-transform:uppercase;">Magazine · N.1</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:48px 48px 40px;">
+            <p style="margin:0 0 24px;font-size:14px;color:#A67C52;letter-spacing:0.2em;text-transform:uppercase;font-family:Arial,sans-serif;">PDF del numero</p>
+            <p style="margin:0 0 20px;font-size:17px;color:#57534E;line-height:1.8;">
+              ${greeting}<br>
+              siete già nella nostra lista: ecco di nuovo il link al <strong style="color:#1C1917;">PDF del numero 1</strong>, come dalla pagina Magazine.
+            </p>
+            <a href="${pdfUrl}" style="display:inline-block;padding:14px 28px;background:#a2482b;color:#F5F3EE;text-decoration:none;font-family:Arial,sans-serif;font-size:15px;font-weight:600;">
+              Apri o scarica il PDF del N.1 →
+            </a>
+            <p style="margin:24px 0 0;font-size:15px;color:#78716C;line-height:1.7;font-family:Arial,sans-serif;">
+              Se non si apre, copiate l&apos;indirizzo del pulsante nel browser. La pagina del trimestrale: <a href="${SITE_ORIGIN}/magazine" style="color:#a2482b;">/magazine</a>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:24px 48px;border-top:1px solid #E5E0D8;">
+            <p style="margin:0;font-size:12px;color:#A67C52;font-family:Arial,sans-serif;">
+              Bologna, Italia · <a href="${SITE_ORIGIN}" style="color:#A67C52;">portici-dadaocheng.com</a>
+            </p>
+            <p style="margin:8px 0 0;font-size:11px;color:#C4B9AD;font-family:Arial,sans-serif;">
+              Avete ricevuto questa email perché avete richiesto il Magazine dalla pagina del trimestrale.
             </p>
           </td>
         </tr>

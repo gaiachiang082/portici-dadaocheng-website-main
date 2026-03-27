@@ -7,8 +7,10 @@
  * - Cover (raster only on site) → `/magazine/covers/issue-1-cover.png` — `<img>`, optional `coverFallbackUrl` if load fails.
  */
 
+import { ISSUE_NO1_PDF_PUBLIC_PATH } from "@shared/const";
+
 /** Served from `client/public/magazine/portici-magazine-n1-v2.pdf` */
-export const ISSUE_NO1_PDF_HREF = "/magazine/portici-magazine-n1-v2.pdf";
+export const ISSUE_NO1_PDF_HREF = ISSUE_NO1_PDF_PUBLIC_PATH;
 
 export const ISSUE_NO1_PDF_FILENAME = "portici-magazine-n1-v2.pdf";
 
