@@ -93,6 +93,9 @@ export const adminRouter = router({
 
       const [booking] = await db.select().from(bookings).where(eq(bookings.id, input.bookingId));
       if (!booking) throw new TRPCError({ code: "NOT_FOUND" });
+      if (booking.status === "cancelled") {
+        throw new TRPCError({ code: "BAD_REQUEST", message: "Booking is already cancelled" });
+      }
 
       await db
         .update(bookings)
@@ -104,13 +107,26 @@ export const adminRouter = router({
         })
         .where(eq(bookings.id, input.bookingId));
 
-      // Free up spots
-      await db
-        .update(workshopSessions)
-        .set({
-          spotsBooked: Math.max(0, (booking.participants ?? 1)),
-        })
-        .where(eq(workshopSessions.id, booking.sessionId));
+      // Spots are incremented only after deposit webhook (deposit_paid). Pending bookings never
+      // changed spotsBooked; do not decrement in that case (avoids corrupting the counter).
+      const hadReservedSpots =
+        booking.paymentStatus === "deposit_paid" ||
+        booking.paymentStatus === "fully_paid" ||
+        booking.paymentStatus === "refunded";
+
+      if (hadReservedSpots) {
+        const [ws] = await db
+          .select()
+          .from(workshopSessions)
+          .where(eq(workshopSessions.id, booking.sessionId));
+        if (ws) {
+          const dec = booking.participants ?? 1;
+          await db
+            .update(workshopSessions)
+            .set({ spotsBooked: Math.max(0, ws.spotsBooked - dec) })
+            .where(eq(workshopSessions.id, booking.sessionId));
+        }
+      }
 
       return { success: true };
     }),

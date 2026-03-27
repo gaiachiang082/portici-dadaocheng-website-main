@@ -192,6 +192,7 @@ export const workshopsRouter = router({
       const checkoutSession = await createWorkshopCheckoutSession({
         bookingId: booking.id,
         confirmationCode: booking.confirmationCode!,
+        workshopSlug: workshop.slug,
         workshopTitle: workshop.title,
         workshopTitleZh: workshop.titleZh ?? null,
         sessionDate: session.sessionDate,

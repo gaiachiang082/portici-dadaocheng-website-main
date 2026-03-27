@@ -46,7 +46,7 @@ describe("Stripe Webhook — /api/stripe/webhook", () => {
     delete process.env.STRIPE_WEBHOOK_SECRET;
   });
 
-  it("returns 200 and received:true for a valid checkout.session.completed event", async () => {
+  it("returns 200 and verified:true for a valid checkout.session.completed event", async () => {
     const mockEvent = {
       id: "evt_test_001",
       type: "checkout.session.completed",
@@ -95,7 +95,7 @@ describe("Stripe Webhook — /api/stripe/webhook", () => {
     const { req, res } = makeReqRes(mockEvent);
     await handleStripeWebhook(req, res);
 
-    expect(res.json).toHaveBeenCalledWith({ received: true });
+    expect(res.json).toHaveBeenCalledWith({ verified: true });
     expect(res.status).not.toHaveBeenCalledWith(400);
     expect(res.status).not.toHaveBeenCalledWith(500);
   });
@@ -120,7 +120,7 @@ describe("Stripe Webhook — /api/stripe/webhook", () => {
     const { req, res } = makeReqRes(mockEvent);
     await handleStripeWebhook(req, res);
 
-    expect(res.json).toHaveBeenCalledWith({ received: true });
+    expect(res.json).toHaveBeenCalledWith({ verified: true });
   });
 
   it("returns 400 when Stripe signature verification fails", async () => {
@@ -176,7 +176,7 @@ describe("Stripe Webhook — /api/stripe/webhook", () => {
     const { req, res } = makeReqRes(mockEvent);
     await handleStripeWebhook(req, res);
 
-    expect(res.json).toHaveBeenCalledWith({ received: true });
+    expect(res.json).toHaveBeenCalledWith({ verified: true });
     // update should NOT have been called since booking is already paid
     expect(mockDb.update).not.toHaveBeenCalled();
   });

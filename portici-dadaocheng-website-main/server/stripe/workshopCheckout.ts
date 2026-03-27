@@ -16,6 +16,7 @@ function getStripeClient() {
 export interface WorkshopCheckoutParams {
   bookingId: number;
   confirmationCode: string;
+  workshopSlug: string;
   workshopTitle: string;
   workshopTitleZh: string | null;
   sessionDate: Date;
@@ -63,7 +64,7 @@ export async function createWorkshopCheckoutSession(params: WorkshopCheckoutPara
     },
     client_reference_id: params.confirmationCode,
     success_url: `${params.origin}/booking/success?code=${params.confirmationCode}&session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${params.origin}/workshops?booking=1&booking_cancelled=1`,
+    cancel_url: `${params.origin}/workshops?booking=1&booking_cancelled=1&slug=${encodeURIComponent(params.workshopSlug)}`,
   });
 
   return session;

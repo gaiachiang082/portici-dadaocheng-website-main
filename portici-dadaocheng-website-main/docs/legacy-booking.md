@@ -59,7 +59,7 @@ Server: **`trpc.workshops.*`** (create booking, checkout session), **`server/str
 |-------|----------|
 | **`booking=1`** | Opens **legacy** booking flow (workshop list → session → form → review → Stripe). |
 | **`slug=<workshopSlug>`** | Also opens **legacy** and, on load, jumps to **session selection** for that workshop slug (skips the initial grid). |
-| **`booking_cancelled=1`** | Present on **Stripe `cancel_url`** together with `booking=1`. User returns to legacy-capable page after abandoning Checkout (slug is **not** preserved in `cancel_url` today — user lands on list step). |
+| **`booking_cancelled=1`** | Present on **Stripe `cancel_url`** together with `booking=1` and **`slug=`** (workshop line). User returns to legacy booking with session step for that workshop after abandoning Checkout. |
 
 ### Interest prefill (`ProgramInterestSection`)
 
@@ -88,7 +88,7 @@ Configured in **`server/stripe/workshopCheckout.ts`** (`createWorkshopCheckoutSe
 | Setting | Current value (pattern) | Why it matters |
 |---------|-------------------------|----------------|
 | **`success_url`** | `{origin}/booking/success?code={confirmationCode}&session_id={CHECKOUT_SESSION_ID}` | User must land on a route that **exists** and matches product copy. Changing path or required query shape breaks **live** checkouts and bookmarks. |
-| **`cancel_url`** | `{origin}/workshops?booking=1&booking_cancelled=1` | User must return to a page that still exposes **legacy** booking. **`booking=1`** is required so the app opens legacy mode (plain `/workshops` is interest-only). |
+| **`cancel_url`** | `{origin}/workshops?booking=1&booking_cancelled=1&slug={encodedWorkshopSlug}` | Same legacy gate as above; **`slug`** restores the workshop line so the user returns to **session selection** for that line. |
 
 **Sync rule:** If you change **`/workshops`**, **`/booking/success`**, or these query conventions, update **`workshopCheckout.ts`** and redeploy. If Stripe Dashboard or another system hardcodes URLs, update those too.
 
@@ -128,6 +128,15 @@ Renaming routes, routers, or tables is a **future migration**; until then, treat
 
 ## Ambiguities to clarify later (not blockers)
 
-- **`cancel_url`** does not include **`slug`**; users who cancel Checkout may need to re-select the workshop from the list.
-- **`trpc.workshops.getBooking`** exists but is **not** referenced from the current client bundle; confirm no external consumers before removing or repurposing.
-- **Admin** booking cancel path and **session `spotsBooked`** updates should be validated in a dedicated ops/QA pass (separate from this doc).
+- **`trpc.workshops.getBooking`** — **kept intentionally:** there is **no in-repo** importer (client, server, or tests), but it remains on the **public app router** and may be called via HTTP/tRPC from outside the repo (scripts, future tools). **Do not remove** without confirming no external consumers; see dead-code pass notes below.
+- **Capacity:** `createBooking` checks availability against `spotsBooked` but does **not** reserve spots until the **Stripe webhook** runs; two concurrent pending bookings can still pass the check until the first payment confirms (known race; not changed in this pass).
+
+---
+
+## Dead-code pass (conservative)
+
+| Item | Action | Reason |
+|------|--------|--------|
+| `client/src/components/ManusDialog.tsx` | **Removed** | Zero imports or routes in-repo. |
+| `client/src/pages/ComponentShowcase.tsx` | **Removed** | Not registered in `App.tsx` or elsewhere; dev-only showcase with no entry point. |
+| `trpc.workshops.getBooking` | **Kept** | Public API surface; external consumption cannot be ruled out from the repo alone. |
