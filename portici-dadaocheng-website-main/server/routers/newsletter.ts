@@ -48,7 +48,7 @@ export const newsletterRouter = router({
       if (existing) {
         if (existing.isActive) {
           if (magazineIssue1) {
-            // Await so serverless (e.g. Vercel) does not freeze before fetch to Resend completes
+            // Await so send finishes in this request, `emailSent` is accurate, and DB `welcomeSentAt` stays in sync
             emailSent = await sendMagazineIssue1Delivery(input.email, input.name, { repeatDelivery: true });
             if (!emailSent) {
               console.error("[Newsletter] sendMagazineIssue1Delivery failed after subscribe", {
