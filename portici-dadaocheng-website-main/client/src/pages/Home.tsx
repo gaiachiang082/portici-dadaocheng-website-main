@@ -1,13 +1,9 @@
 import { Link } from "wouter";
 import { ArrowRight } from "lucide-react";
-import { useState, useEffect } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { BrandMark } from "@/components/BrandMark";
 import { NewsletterSubscribeForm } from "@/components/NewsletterSubscribeForm";
-import { client } from "@/SanityClient";
-
-const COVER_IMG =
-  "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/bglhzhpRWfrDXIyk.png";
+import { formatIssueMeta, getCurrentIssue, ISSUE_NO1_COVER_URL } from "@/data/magazineIssues";
 
 /* ─────────────────────────────────────────────────────────────────
    NEWSLETTER — unchanged block (includes light reveal)
@@ -153,7 +149,7 @@ function HomeHero() {
               </header>
               <div className="relative aspect-[4/5] max-h-[min(52vh,520px)] bg-[var(--paper-deep)]">
                 <img
-                  src={COVER_IMG}
+                  src={ISSUE_NO1_COVER_URL}
                   alt="Cerimonia del tè — armonia"
                   className="absolute inset-0 h-full w-full object-cover object-center opacity-[0.92]"
                 />
@@ -229,33 +225,8 @@ function HomeManifestoStrip() {
 /* ─────────────────────────────────────────────────────────────────
    TWO-PANEL ENTRY — Magazine & Eventi (chapter-like)
    ───────────────────────────────────────────────────────────────── */
-interface ArticlePreview {
-  _id: string;
-  category?: string;
-  title?: string;
-  excerpt?: string;
-}
-
 function HomeEntryPanels() {
-  const [article, setArticle] = useState<ArticlePreview | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchArticle = async () => {
-      try {
-        const data = await client.fetch<ArticlePreview | null>(
-          `*[_type == "article"] | order(_createdAt desc)[0]{ _id, category, "title": title.it, excerpt }`
-        );
-        setArticle(data ?? null);
-      } catch (err) {
-        console.error("Home magazine teaser fetch error:", err);
-        setArticle(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchArticle();
-  }, []);
+  const currentIssue = getCurrentIssue();
 
   return (
     <section className="py-16 md:py-20 bg-background" aria-labelledby="home-entry-heading">
@@ -281,23 +252,18 @@ function HomeEntryPanels() {
               >
                 Letture, saggi e voci che attraversano confini.
               </p>
-              {!loading && article?.title ? (
-                <p
-                  className="text-[13px] leading-relaxed text-muted-foreground/90 max-w-md line-clamp-3 border-l border-border pl-4"
-                  style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
-                >
-                  <span className="block text-[10px] uppercase tracking-[0.16em] text-muted-foreground/70 mb-1.5 font-sans">
-                    {article.category ?? "Dal numero"}
-                  </span>
-                  {article.title}
-                </p>
-              ) : loading ? (
-                <div className="max-w-md border-l border-transparent pl-4 space-y-2" aria-hidden>
-                  <div className="h-2.5 w-20 bg-muted animate-pulse rounded-sm" />
-                  <div className="h-3 w-full bg-muted animate-pulse rounded-sm max-w-[90%]" />
-                  <div className="h-3 w-full bg-muted animate-pulse rounded-sm max-w-[70%]" />
-                </div>
-              ) : null}
+              <p
+                className="text-[13px] leading-relaxed text-muted-foreground/90 max-w-md line-clamp-4 border-l border-border pl-4"
+                style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+              >
+                <span className="block text-[10px] uppercase tracking-[0.16em] text-muted-foreground/70 mb-1.5 font-sans">
+                  {formatIssueMeta(currentIssue)}
+                </span>
+                <span className="font-medium text-foreground/90">{currentIssue.themeTitle}</span>
+                {currentIssue.intro[0] ? (
+                  <span className="block mt-2 text-muted-foreground/90 line-clamp-2">{currentIssue.intro[0]}</span>
+                ) : null}
+              </p>
             </div>
             <p
               className="mt-8 text-[13px] uppercase tracking-[0.14em] text-foreground group-hover:translate-x-0.5 transition-transform inline-flex items-center gap-2"
