@@ -35,35 +35,8 @@ function pdfDownloadName(issue: MagazineIssue): string {
   return tail && /\.pdf$/i.test(tail) ? tail : "portici-magazine.pdf";
 }
 
-function coverPathLooksPdf(url: string): boolean {
-  const base = url.split("?")[0]?.split("#")[0] ?? "";
-  return /\.pdf$/i.test(base);
-}
-
 function IssueCoverImage({ issue }: { issue: MagazineIssue }) {
   const [src, setSrc] = useState(issue.coverUrl);
-
-  if (coverPathLooksPdf(issue.coverUrl)) {
-    return (
-      <object
-        data={`${issue.coverUrl}#view=FitH`}
-        type="application/pdf"
-        title={issue.coverAlt}
-        className="block h-full w-full border-0 bg-[var(--paper-deep)] pointer-events-none"
-        aria-label={issue.coverAlt}
-      >
-        {issue.coverFallbackUrl ? (
-          <img
-            src={issue.coverFallbackUrl}
-            alt={issue.coverAlt}
-            className="h-full w-full object-cover object-center"
-            loading="eager"
-            decoding="async"
-          />
-        ) : null}
-      </object>
-    );
-  }
 
   return (
     <img

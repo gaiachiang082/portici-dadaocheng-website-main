@@ -4,7 +4,7 @@
  *
  * Issue No.1 assets under `client/public/magazine/`:
  * - Full issue PDF → `/magazine/portici-magazine-n1-v2.pdf`
- * - Cover (single-page PDF or image) → `/magazine/covers/issue-1-cover.pdf` — UI uses `<object>`; raster fallback in `coverFallbackUrl` if embed fails.
+ * - Cover (raster only on site) → `/magazine/covers/issue-1-cover.png` — `<img>`, optional `coverFallbackUrl` if load fails.
  */
 
 /** Served from `client/public/magazine/portici-magazine-n1-v2.pdf` */
@@ -12,8 +12,8 @@ export const ISSUE_NO1_PDF_HREF = "/magazine/portici-magazine-n1-v2.pdf";
 
 export const ISSUE_NO1_PDF_FILENAME = "portici-magazine-n1-v2.pdf";
 
-/** Cover asset (PDF single page or future .jpg/.webp). */
-export const ISSUE_NO1_COVER_LOCAL = "/magazine/covers/issue-1-cover.pdf";
+/** Cover image (no PDF embed on /magazine). */
+export const ISSUE_NO1_COVER_LOCAL = "/magazine/covers/issue-1-cover.png";
 
 /**
  * Fallback raster if the cover PDF cannot embed (e.g. some mobile browsers). Home hero still uses this image.
@@ -41,9 +41,9 @@ export type MagazineIssue = {
   /** Main theme / cover line */
   themeTitle: string;
   themeSubtitle?: string;
-  /** Public URL to cover image (.jpg / .webp) or single-page cover PDF (.pdf). */
+  /** Public URL to cover image (.png / .jpg / .webp). */
   coverUrl: string;
-  /** Raster fallback when `coverUrl` is a PDF that cannot embed, or when a raster `coverUrl` fails to load. */
+  /** Fallback image URL if `coverUrl` fails to load. */
   coverFallbackUrl?: string;
   coverAlt: string;
   /** Public path to PDF (served from client/public) */
