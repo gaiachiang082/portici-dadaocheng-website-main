@@ -162,7 +162,7 @@ export function NewsletterSubscribeForm({
     }
     if (quietSuccess) {
       return (
-        <div className="text-left max-w-xl space-y-2 pt-1 border-t border-border/45">
+        <div className="text-left max-w-none space-y-2 pt-1 border-t border-border/45">
           <p className="text-[15px] text-foreground/88 font-normal [font-family:var(--font-body)] leading-snug">
             {resolvedSuccessTitle}
           </p>

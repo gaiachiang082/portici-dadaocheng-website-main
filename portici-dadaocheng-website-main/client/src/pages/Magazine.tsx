@@ -159,17 +159,18 @@ export default function Magazine() {
         aria-labelledby="magazine-current-heading"
         className="py-14 md:py-16 px-6 md:px-10 bg-background border-b border-border scroll-mt-24"
       >
-        <div className="container mx-auto max-w-6xl">
+        <div className="container mx-auto max-w-7xl">
           <p className="text-[11px] font-medium tracking-[0.1em] uppercase text-muted-foreground mb-8 [font-family:var(--font-mono)]">
             Trimestrale · edizione corrente
           </p>
-          <div className="grid gap-12 lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] lg:gap-x-16 lg:gap-y-10 items-start">
-            <figure className="max-lg:order-2 m-0 mx-auto w-full max-w-[min(100%,22rem)] sm:max-w-[min(100%,26rem)] lg:mx-0 lg:max-w-none">
+          {/* Cover track capped so text gets 1fr — spread, not sidebar */}
+          <div className="grid gap-10 lg:grid-cols-[minmax(17.5rem,min(36vw,26rem))_minmax(0,1fr)] lg:gap-x-8 xl:gap-x-10 lg:gap-y-10 items-start">
+            <figure className="max-lg:order-2 m-0 mx-auto w-full max-w-[min(100%,22rem)] sm:max-w-[min(100%,26rem)] lg:mx-0 lg:max-w-full lg:justify-self-stretch">
               <div className="relative aspect-[3/4] max-h-[min(72vh,600px)] w-full overflow-hidden rounded-[2px] bg-[var(--paper-deep)] shadow-[0_32px_64px_-28px_rgba(28,25,23,0.22)]">
                 <IssueCoverImage issue={current} />
               </div>
             </figure>
-            <div className="min-w-0 flex flex-col gap-8 max-lg:order-1 lg:pt-1">
+            <div className="min-w-0 w-full flex flex-col gap-8 max-lg:order-1 lg:pt-1">
               <header className="space-y-4">
                 <p
                   className="text-xs font-semibold tracking-[0.2em] uppercase text-muted-foreground [font-family:var(--font-ui)]"
@@ -188,16 +189,16 @@ export default function Magazine() {
                   </p>
                 ) : null}
               </header>
-              <div className="space-y-5 text-[1.0625rem] text-muted-foreground leading-[1.75] [font-family:var(--font-body)]">
+              <div className="space-y-5 text-[1.0625rem] text-muted-foreground leading-[1.75] [font-family:var(--font-body)] max-w-[min(100%,72ch)]">
                 {current.intro.map((p, i) => (
                   <p key={i}>{p}</p>
                 ))}
               </div>
               <div className="space-y-6 lg:space-y-7 pt-1 border-t border-border/35" role="group" aria-label="Ricevere il numero attuale">
-                <p className="text-[14px] text-muted-foreground/90 leading-[1.7] [font-family:var(--font-body)] max-w-xl">
+                <p className="text-[14px] text-muted-foreground/90 leading-[1.7] [font-family:var(--font-body)] max-w-[min(100%,72ch)]">
                   Ti invieremo il PDF del primo numero e, se vorrai, gli aggiornamenti sui prossimi numeri.
                 </p>
-                <div className="max-w-xl">
+                <div className="w-full min-w-0 max-w-[min(100%,72ch)]">
                   <NewsletterSubscribeForm
                     source={MAGAZINE_ISSUE_1_SOURCE}
                     variant="home"
