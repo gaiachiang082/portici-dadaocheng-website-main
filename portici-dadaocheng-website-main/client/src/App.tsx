@@ -21,6 +21,7 @@ import CalligraphyWorkshop from "./pages/CalligraphyWorkshop";
 import WorkshopsPage from "./pages/Workshops";
 import BookingSuccess from "./pages/BookingSuccess";
 import AdminPage from "./pages/Admin";
+import ScrollToTopOnRouteChange from "./components/ScrollToTopOnRouteChange";
 
 function Router() {
   return (
@@ -52,6 +53,7 @@ function App() {
         <TooltipProvider>
           <Toaster />
           <Navigation />
+          <ScrollToTopOnRouteChange />
           <Router />
           <Footer />
         </TooltipProvider>
