@@ -43,10 +43,11 @@ function IssueCoverImage({ issue }: { issue: MagazineIssue }) {
     <img
       src={src}
       alt={issue.coverAlt}
-      className="h-full w-full object-cover object-center"
+      className="h-full w-full object-contain object-center"
       loading="eager"
       decoding="async"
-      sizes="(max-width: 1024px) 100vw, 42vw"
+      fetchPriority="high"
+      sizes="(max-width: 1024px) 92vw, 40vw"
       onError={() => {
         if (issue.coverFallbackUrl && src !== issue.coverFallbackUrl) {
           setSrc(issue.coverFallbackUrl);
@@ -159,40 +160,41 @@ export default function Magazine() {
         className="py-14 md:py-16 px-6 md:px-10 bg-background border-b border-border scroll-mt-24"
       >
         <div className="container mx-auto max-w-6xl">
-          <p className="text-[11px] font-medium tracking-[0.1em] uppercase text-muted-foreground mb-6 [font-family:var(--font-mono)]">
+          <p className="text-[11px] font-medium tracking-[0.1em] uppercase text-muted-foreground mb-8 [font-family:var(--font-mono)]">
             Trimestrale · edizione corrente
           </p>
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-14 items-start">
-            <div className="relative aspect-[3/4] max-h-[min(64vh,520px)] sm:max-h-[min(72vh,560px)] w-full max-w-md mx-auto lg:max-w-none overflow-hidden rounded-2xl border border-border bg-muted shadow-md ring-1 ring-border/40 max-lg:order-2">
-              <IssueCoverImage issue={current} />
-            </div>
-            <div className="min-w-0 flex flex-col gap-6 max-lg:order-1">
-              <div>
+          <div className="grid gap-12 lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] lg:gap-x-16 lg:gap-y-10 items-start">
+            <figure className="max-lg:order-2 m-0 mx-auto w-full max-w-[min(100%,22rem)] sm:max-w-[min(100%,26rem)] lg:mx-0 lg:max-w-none">
+              <div className="relative aspect-[3/4] max-h-[min(72vh,600px)] w-full overflow-hidden rounded-[2px] bg-[var(--paper-deep)] shadow-[0_32px_64px_-28px_rgba(28,25,23,0.22)]">
+                <IssueCoverImage issue={current} />
+              </div>
+            </figure>
+            <div className="min-w-0 flex flex-col gap-8 max-lg:order-1 lg:pt-1">
+              <header className="space-y-4">
                 <p
-                  className="text-xs font-semibold tracking-[0.2em] uppercase text-muted-foreground mb-3"
-                  style={{ fontFamily: "var(--font-ui)" }}
+                  className="text-xs font-semibold tracking-[0.2em] uppercase text-muted-foreground [font-family:var(--font-ui)]"
                 >
                   {formatIssueMeta(current)}
                 </p>
                 <h2
                   id="magazine-current-heading"
-                  className="text-foreground text-[clamp(1.65rem,3.2vw,2.25rem)] font-semibold leading-tight mb-2 [font-family:var(--font-display)]"
+                  className="text-foreground text-[clamp(1.65rem,3.2vw,2.25rem)] font-semibold leading-[1.15] [font-family:var(--font-display)]"
                 >
                   {current.themeTitle}
                 </h2>
                 {current.themeSubtitle ? (
-                  <p className="text-base text-muted-foreground [font-family:var(--font-body)] leading-relaxed">
+                  <p className="text-[1.0625rem] text-muted-foreground [font-family:var(--font-body)] leading-relaxed">
                     {current.themeSubtitle}
                   </p>
                 ) : null}
-              </div>
-              <div className="space-y-4 text-[1.0625rem] text-muted-foreground leading-[1.75] [font-family:var(--font-body)]">
+              </header>
+              <div className="space-y-5 text-[1.0625rem] text-muted-foreground leading-[1.75] [font-family:var(--font-body)]">
                 {current.intro.map((p, i) => (
                   <p key={i}>{p}</p>
                 ))}
               </div>
-              <div className="space-y-5 pt-2" role="group" aria-label="Ricevere il numero attuale">
-                <p className="text-[15px] text-muted-foreground leading-[1.75] [font-family:var(--font-body)] max-w-xl">
+              <div className="space-y-6 lg:space-y-7 pt-1 border-t border-border/35" role="group" aria-label="Ricevere il numero attuale">
+                <p className="text-[14px] text-muted-foreground/90 leading-[1.7] [font-family:var(--font-body)] max-w-xl">
                   Ti invieremo il PDF del primo numero e, se vorrai, gli aggiornamenti sui prossimi numeri.
                 </p>
                 <div className="max-w-xl">
@@ -202,14 +204,16 @@ export default function Magazine() {
                     showUnsubscribeHint
                     editorialSubmitButton
                     calmSubscribeErrors
+                    quietSuccess
                     submitButtonLabel="Iscriviti per ricevere il Nº1 via email"
                     successTitle="Grazie — vi invieremo il Nº1 via email."
                     successBody="Controllate la vostra casella: tra poco riceverete il PDF del primo numero."
                     successTitleWhenAlreadySubscribed="Siete già iscritti alla newsletter."
                     successBodyWhenAlreadySubscribed="Vi inviamo di nuovo il messaggio con il link al PDF del numero 1: controllate la posta, anche in spam, quando vi è comodo."
+                    successSupplementWhenEmailNotSent="L’iscrizione è registrata, ma l’email non è partita da qui. Potete riprovare tra poco o passare dalla pagina"
                   />
                 </div>
-                <div className="flex flex-col sm:flex-row sm:items-center sm:flex-wrap gap-3 sm:gap-6">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:flex-wrap gap-4 sm:gap-8">
                   <Link
                     href="/eventi"
                     className="inline-flex items-center justify-center gap-2 rounded-sm border border-border bg-background px-5 py-3 text-foreground text-[13px] font-medium uppercase tracking-[0.08em] [font-family:var(--font-mono)] hover:bg-muted/80 transition-colors w-fit"
@@ -217,17 +221,17 @@ export default function Magazine() {
                     Sessioni e laboratori
                     <ArrowRight size={16} strokeWidth={1.75} aria-hidden />
                   </Link>
-                  <p className="text-[13px] text-muted-foreground/85 [font-family:var(--font-body)]">
+                  <p className="text-[13px] text-muted-foreground/80 [font-family:var(--font-body)] leading-relaxed">
                     <a
                       href={current.pdfHref}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="underline underline-offset-4 decoration-border/80 hover:text-foreground"
+                      className="underline underline-offset-4 decoration-border/70 hover:text-foreground"
                     >
                       Stesso PDF nel browser
                     </a>
-                    <span className="text-muted-foreground/50"> — </span>
-                    <span className="text-muted-foreground/70">per chi preferisce non usare la posta</span>
+                    <span className="text-muted-foreground/45"> — </span>
+                    <span className="text-muted-foreground/65">per chi preferisce non usare la posta</span>
                   </p>
                 </div>
               </div>

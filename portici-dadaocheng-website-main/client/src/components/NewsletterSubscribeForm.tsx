@@ -30,6 +30,16 @@ interface NewsletterSubscribeFormProps {
   editorialSubmitButton?: boolean;
   /** On error, show editorial calm copy instead of `subscribe.error.message`. */
   calmSubscribeErrors?: boolean;
+  /**
+   * When set, and the API returns `emailSent: false`, show this under the success copy
+   * (DB ok but Resend did not confirm send — keeps the main message honest).
+   */
+  successSupplementWhenEmailNotSent?: string;
+  /**
+   * After submit: no card panel — light border accent and body typography only
+   * (e.g. magazine current-issue hero).
+   */
+  quietSuccess?: boolean;
 }
 
 const inputLight =
@@ -59,14 +69,20 @@ export function NewsletterSubscribeForm({
   successTitleWhenAlreadySubscribed,
   editorialSubmitButton = false,
   calmSubscribeErrors = false,
+  successSupplementWhenEmailNotSent,
+  quietSuccess = false,
 }: NewsletterSubscribeFormProps) {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [returningSubscriber, setReturningSubscriber] = useState(false);
+  const [emailDispatchFailed, setEmailDispatchFailed] = useState(false);
   const subscribe = trpc.newsletter.subscribe.useMutation({
     onSuccess: (data) => {
       setSubmitted(true);
       setReturningSubscriber(data.alreadySubscribed === true);
+      setEmailDispatchFailed(
+        successSupplementWhenEmailNotSent !== undefined && data.emailSent === false
+      );
       setEmail("");
     },
     onError: () => {},
@@ -87,7 +103,7 @@ export function NewsletterSubscribeForm({
     (calmSubscribeErrors ? (
       <div
         className={`mt-3 text-sm text-muted-foreground leading-[1.7] [font-family:var(--font-body)] ${
-          variant === "home" ? "text-center" : ""
+          variant === "home" && !quietSuccess ? "text-center" : ""
         }`}
       >
         <p className="text-foreground/90 font-medium">{NEWSLETTER_CALM_ERROR_TITLE}</p>
@@ -102,7 +118,7 @@ export function NewsletterSubscribeForm({
     ) : (
       <p
         className={`mt-3 text-sm text-destructive [font-family:var(--font-mono)] ${
-          variant === "home" ? "text-center" : ""
+          variant === "home" && !quietSuccess ? "text-center" : ""
         }`}
       >
         {subscribe.error.message}
@@ -115,6 +131,21 @@ export function NewsletterSubscribeForm({
     subscribe.mutate({ email: email.trim(), source });
   };
 
+  const emailNotSentSupplement =
+    emailDispatchFailed && successSupplementWhenEmailNotSent ? (
+      <p
+        className={`text-[13px] text-muted-foreground/90 [font-family:var(--font-body)] leading-[1.7] border-t border-border/50 pt-3 mt-3 ${
+          variant === "home" && !quietSuccess ? "text-center" : "text-left"
+        }`}
+      >
+        {successSupplementWhenEmailNotSent}{" "}
+        <a href="/newsletter" className="text-primary underline-offset-4 hover:underline">
+          /newsletter
+        </a>
+        .
+      </p>
+    ) : null;
+
   if (submitted) {
     if (variant === "footer") {
       return (
@@ -125,6 +156,20 @@ export function NewsletterSubscribeForm({
           <p className="text-[1.0625rem] text-[color-mix(in_srgb,var(--paper)_80%,transparent)] leading-[1.75] [font-family:var(--font-body)]">
             {resolvedSuccessBody}
           </p>
+          {emailNotSentSupplement}
+        </div>
+      );
+    }
+    if (quietSuccess) {
+      return (
+        <div className="text-left max-w-xl space-y-2 pt-1 border-t border-border/45">
+          <p className="text-[15px] text-foreground/88 font-normal [font-family:var(--font-body)] leading-snug">
+            {resolvedSuccessTitle}
+          </p>
+          <p className="text-[14px] text-muted-foreground [font-family:var(--font-body)] leading-[1.65]">
+            {resolvedSuccessBody}
+          </p>
+          {emailNotSentSupplement}
         </div>
       );
     }
@@ -140,6 +185,7 @@ export function NewsletterSubscribeForm({
         <p className="text-[15px] text-muted-foreground [font-family:var(--font-body)] leading-[1.7]">
           {resolvedSuccessBody}
         </p>
+        {emailNotSentSupplement}
       </div>
     );
   }
@@ -187,7 +233,11 @@ export function NewsletterSubscribeForm({
         </form>
         {errorBlock}
         {showUnsubscribeHint && (
-          <p className="mt-4 text-sm text-muted-foreground text-center [font-family:var(--font-body)]">
+          <p
+            className={`mt-4 text-sm text-muted-foreground [font-family:var(--font-body)] ${
+              quietSuccess ? "text-left" : "text-center"
+            }`}
+          >
             Potete cancellarvi in qualsiasi momento.
           </p>
         )}

@@ -14,6 +14,13 @@ function isMagazineIssue1Subscribe(source?: string) {
   return source === MAGAZINE_ISSUE_1_SOURCE;
 }
 
+/** Log-friendly; keeps domain for debugging deliverability. */
+function logEmailHint(email: string): string {
+  const at = email.indexOf("@");
+  if (at <= 0) return "(invalid)";
+  return `***${email.slice(at)}`;
+}
+
 export const newsletterRouter = router({
   /** Subscribe to newsletter */
   subscribe: publicProcedure
@@ -29,6 +36,8 @@ export const newsletterRouter = router({
       if (!db) throw new Error("Database not available");
 
       const magazineIssue1 = isMagazineIssue1Subscribe(input.source);
+      /** Set when an outbound email was attempted; false = Resend returned failure or key missing. */
+      let emailSent: boolean | undefined;
 
       // Check if already subscribed
       const [existing] = await db
@@ -39,9 +48,17 @@ export const newsletterRouter = router({
       if (existing) {
         if (existing.isActive) {
           if (magazineIssue1) {
-            sendMagazineIssue1Delivery(input.email, input.name, { repeatDelivery: true }).catch(() => {});
+            // Await so serverless (e.g. Vercel) does not freeze before fetch to Resend completes
+            emailSent = await sendMagazineIssue1Delivery(input.email, input.name, { repeatDelivery: true });
+            if (!emailSent) {
+              console.error("[Newsletter] sendMagazineIssue1Delivery failed after subscribe", {
+                hint: logEmailHint(input.email),
+                source: input.source,
+                branch: "already_active",
+              });
+            }
           }
-          return { success: true, alreadySubscribed: true };
+          return { success: true, alreadySubscribed: true, emailSent };
         }
         // Re-activate
         await db
@@ -49,16 +66,21 @@ export const newsletterRouter = router({
           .set({ isActive: true, unsubscribedAt: null })
           .where(eq(newsletterSubscribers.id, existing.id));
         if (magazineIssue1) {
-          sendNewsletterWelcomeWithMagazineIssue1(input.email, input.name).then((sent) => {
-            if (sent) {
-              db.update(newsletterSubscribers)
-                .set({ welcomeSentAt: new Date() })
-                .where(eq(newsletterSubscribers.email, input.email))
-                .catch(() => {});
-            }
-          }).catch(() => {});
+          emailSent = await sendNewsletterWelcomeWithMagazineIssue1(input.email, input.name);
+          if (emailSent) {
+            await db
+              .update(newsletterSubscribers)
+              .set({ welcomeSentAt: new Date() })
+              .where(eq(newsletterSubscribers.email, input.email));
+          } else {
+            console.error("[Newsletter] sendNewsletterWelcomeWithMagazineIssue1 failed after reactivate", {
+              hint: logEmailHint(input.email),
+              source: input.source,
+              branch: "reactivate",
+            });
+          }
         }
-        return { success: true, alreadySubscribed: false };
+        return { success: true, alreadySubscribed: false, emailSent };
       }
 
       // Insert new subscriber
@@ -69,28 +91,37 @@ export const newsletterRouter = router({
         isActive: true,
       });
 
-      // Send welcome email (non-blocking) — single combined message for magazine_issue_1
       if (magazineIssue1) {
-        sendNewsletterWelcomeWithMagazineIssue1(input.email, input.name).then((sent) => {
-          if (sent) {
-            db.update(newsletterSubscribers)
-              .set({ welcomeSentAt: new Date() })
-              .where(eq(newsletterSubscribers.email, input.email))
-              .catch(() => {});
-          }
-        }).catch(() => {});
+        emailSent = await sendNewsletterWelcomeWithMagazineIssue1(input.email, input.name);
+        if (emailSent) {
+          await db
+            .update(newsletterSubscribers)
+            .set({ welcomeSentAt: new Date() })
+            .where(eq(newsletterSubscribers.email, input.email));
+        } else {
+          console.error("[Newsletter] sendNewsletterWelcomeWithMagazineIssue1 failed after insert", {
+            hint: logEmailHint(input.email),
+            source: input.source,
+            branch: "new_magazine",
+          });
+        }
       } else {
-        sendNewsletterWelcome(input.email, input.name).then((sent) => {
-          if (sent) {
-            db.update(newsletterSubscribers)
-              .set({ welcomeSentAt: new Date() })
-              .where(eq(newsletterSubscribers.email, input.email))
-              .catch(() => {});
-          }
-        }).catch(() => {});
+        emailSent = await sendNewsletterWelcome(input.email, input.name);
+        if (emailSent) {
+          await db
+            .update(newsletterSubscribers)
+            .set({ welcomeSentAt: new Date() })
+            .where(eq(newsletterSubscribers.email, input.email));
+        } else {
+          console.error("[Newsletter] sendNewsletterWelcome failed after insert", {
+            hint: logEmailHint(input.email),
+            source: input.source ?? "website",
+            branch: "new_default",
+          });
+        }
       }
 
-      return { success: true, alreadySubscribed: false };
+      return { success: true, alreadySubscribed: false, emailSent };
     }),
 
   /** Unsubscribe */

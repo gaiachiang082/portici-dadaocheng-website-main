@@ -18,7 +18,7 @@ export const ISSUE_NO1_PDF_FILENAME = "portici-magazine-n1-v2.pdf";
 export const ISSUE_NO1_COVER_LOCAL = "/magazine/covers/issue-1-cover.png";
 
 /**
- * Fallback raster if the cover PDF cannot embed (e.g. some mobile browsers). Home hero still uses this image.
+ * Fallback URL if the local cover image fails to load (CDN or alternate asset).
  */
 export const ISSUE_NO1_COVER_FALLBACK_URL =
   "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/bglhzhpRWfrDXIyk.png";
