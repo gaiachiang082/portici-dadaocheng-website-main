@@ -6,9 +6,9 @@
 import { ISSUE_NO1_PDF_PUBLIC_PATH } from "@shared/const";
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
-const SITE_ORIGIN = (process.env.PUBLIC_SITE_URL ?? "https://portici-dadaocheng.com").replace(/\/$/, "");
-const FROM_EMAIL = "Portici DaDaocheng <noreply@portici-dadaocheng.com>";
-const REPLY_TO = "info@portici-dadaocheng.com";
+const SITE_ORIGIN = (process.env.PUBLIC_SITE_URL ?? "https://porticidadaocheng.com").replace(/\/$/, "");
+const FROM_EMAIL = "Portici DaDaocheng <noreply@porticidadaocheng.com>";
+const REPLY_TO = "info@porticidadaocheng.com";
 
 interface SendEmailOptions {
   to: string;
