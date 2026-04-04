@@ -261,11 +261,11 @@ export default function Fondatrici() {
           </Link>
           <span className="hidden sm:inline text-border">·</span>
           <Link
-            href="/workshop"
+            href="/articoli"
             className="text-sm font-medium text-primary hover:underline underline-offset-4"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
           >
-            Laboratori
+            Articoli
           </Link>
         </div>
       </section>
