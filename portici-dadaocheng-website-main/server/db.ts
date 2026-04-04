@@ -9,9 +9,9 @@ let _db: ReturnType<typeof drizzle> | null = null;
 
 // Lazily create the drizzle instance so local tooling can run without a DB.
 export async function getDb() {
-  if (!_db && process.env.DATABASE_URL) {
+  if (!_db && process.env.MYSQL_DATABASE) {
     try {
-      const dbUrl = new URL(process.env.DATABASE_URL);
+      const dbUrl = new URL(process.env.MYSQL_DATABASE);
 
       const connection = await mysql.createConnection({
         host: dbUrl.hostname,

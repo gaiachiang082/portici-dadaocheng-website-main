@@ -13,6 +13,26 @@ const envSchema = z
     OWNER_OPEN_ID: z.string().optional(),
     BUILT_IN_FORGE_API_URL: z.string().optional(),
     BUILT_IN_FORGE_API_KEY: z.string().optional(),
+    /** MySQL / TiDB connection URL (e.g. mysql://user:pass@host:port/db). Optional when DB is unused. */
+    MYSQL_DATABASE: z
+      .string()
+      .optional()
+      .refine(
+        (s) => {
+          const t = (s ?? "").trim();
+          if (!t) return true;
+          try {
+            const u = new URL(t);
+            return u.protocol === "mysql:" || u.protocol === "mysql2:";
+          } catch {
+            return false;
+          }
+        },
+        {
+          message:
+            "MYSQL_DATABASE, when set, must be a valid mysql:// or mysql2:// connection URL.",
+        }
+      ),
   })
   .superRefine((data, ctx) => {
     if (data.NODE_ENV === "production") {
@@ -42,6 +62,7 @@ const parsed = envSchema.parse({
   OWNER_OPEN_ID: process.env.OWNER_OPEN_ID,
   BUILT_IN_FORGE_API_URL: process.env.BUILT_IN_FORGE_API_URL,
   BUILT_IN_FORGE_API_KEY: process.env.BUILT_IN_FORGE_API_KEY,
+  MYSQL_DATABASE: process.env.MYSQL_DATABASE,
 });
 
 /** Derived from validated NODE_ENV (same signal used in Zod production checks). */
@@ -83,4 +104,6 @@ export const ENV = {
   isProduction,
   forgeApiUrl: trim(parsed.BUILT_IN_FORGE_API_URL),
   forgeApiKey: trim(parsed.BUILT_IN_FORGE_API_KEY),
+  /** MySQL / TiDB connection URL; empty when unset (see server/db.ts). */
+  mysqlDatabase: trim(parsed.MYSQL_DATABASE),
 } as const;
