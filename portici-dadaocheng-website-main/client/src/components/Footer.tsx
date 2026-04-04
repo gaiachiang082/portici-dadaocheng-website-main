@@ -38,6 +38,7 @@ export default function Footer() {
   const navLinks = [
     { href: "/fondatrici", label: "Fondatrici" },
     { href: "/magazine", label: "Magazine" },
+    { href: "/articoli", label: "Articoli" },
     { href: "/newsletter", label: "Newsletter" },
     { href: "/eventi", label: "Sessioni" },
     { href: "/contatti", label: "Contatti" },
