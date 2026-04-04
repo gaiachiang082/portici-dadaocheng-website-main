@@ -40,8 +40,6 @@ export default function Footer() {
     { href: "/magazine", label: "Magazine" },
     { href: "/newsletter", label: "Newsletter" },
     { href: "/eventi", label: "Sessioni" },
-    { href: "/workshop", label: "Laboratori" },
-    { href: "/spazio", label: "Spazio" },
     { href: "/contatti", label: "Contatti" },
   ];
 
