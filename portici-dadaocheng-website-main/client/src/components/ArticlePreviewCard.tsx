@@ -88,7 +88,7 @@ export function ArticleCard({ article }: { article: ArticlePreview }) {
         )}
         <Link
           href={`/articoli/${article._id}`}
-          className="inline-flex items-center gap-1.5 text-[12px] uppercase tracking-[0.12em] text-foreground/70 [font-family:var(--font-mono)] hover:text-foreground"
+          className="inline-flex items-center gap-1.5 text-[12px] uppercase tracking-[0.12em] text-foreground/70 [font-family:var(--font-mono)] hover:text-foreground transition-colors"
         >
           Leggi
           <span aria-hidden>→</span>
