@@ -8,6 +8,8 @@ import { ISSUE_NO1_PDF_PUBLIC_PATH } from "@shared/const";
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const SITE_ORIGIN = (process.env.PUBLIC_SITE_URL ?? "https://porticidadaocheng.com").replace(/\/$/, "");
 const FROM_EMAIL = "Portici DaDaocheng <noreply@porticidadaocheng.com>";
+/** Short newsletter confirmation (general subscribe) — branding per product copy. */
+const NEWSLETTER_CONFIRM_FROM = "Portici Dadaocheng <noreply@porticidadaocheng.com>";
 const REPLY_TO = "info@porticidadaocheng.com";
 
 interface SendEmailOptions {
@@ -15,9 +17,11 @@ interface SendEmailOptions {
   subject: string;
   html: string;
   replyTo?: string;
+  /** Overrides default `FROM_EMAIL` when set (e.g. newsletter confirmation). */
+  from?: string;
 }
 
-export async function sendEmail({ to, subject, html, replyTo }: SendEmailOptions): Promise<boolean> {
+export async function sendEmail({ to, subject, html, replyTo, from }: SendEmailOptions): Promise<boolean> {
   if (!RESEND_API_KEY) {
     console.warn("[Email] RESEND_API_KEY not set, skipping email send");
     return false;
@@ -31,7 +35,7 @@ export async function sendEmail({ to, subject, html, replyTo }: SendEmailOptions
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: FROM_EMAIL,
+        from: from ?? FROM_EMAIL,
         to,
         subject,
         html,
@@ -54,65 +58,100 @@ export async function sendEmail({ to, subject, html, replyTo }: SendEmailOptions
   }
 }
 
-/* ── Newsletter Welcome Email ── */
-export async function sendNewsletterWelcome(to: string, name?: string | null): Promise<boolean> {
-  const greeting = name ? `Caro/a ${name},` : "Caro/a amico/a,";
-  return sendEmail({
-    to,
-    subject: "Benvenuto/a nella comunità Portici DaDaocheng 🏮",
-    html: `
+type NewsletterWelcomeLang = "it" | "zh" | "en";
+
+function normalizeNewsletterLanguage(language?: string | null): NewsletterWelcomeLang {
+  const code = (language ?? "it").trim().toLowerCase().slice(0, 2);
+  if (code === "zh") return "zh";
+  if (code === "en") return "en";
+  return "it";
+}
+
+const newsletterWelcomeCopy: Record<
+  NewsletterWelcomeLang,
+  { htmlLang: string; subject: string; greetingNamed: (n: string) => string; greetingGeneric: string; p1: string; p2: string; footer: string }
+> = {
+  it: {
+    htmlLang: "it",
+    subject: "Conferma iscrizione — newsletter Portici Dadaocheng",
+    greetingNamed: (n) => `Ciao ${n},`,
+    greetingGeneric: "Ciao,",
+    p1: "Grazie per esserti iscritto/a alla newsletter di <strong>Portici Dadaocheng</strong>.",
+    p2: "Ti scriveremo di tanto in tanto con novità editoriali e aggiornamenti dal progetto — niente spam, solo il necessario.",
+    footer: "Hai ricevuto questa email perché ti sei iscritto/a alla nostra newsletter.",
+  },
+  zh: {
+    htmlLang: "zh-Hant",
+    subject: "訂閱確認 — Portici Dadaocheng 電子報",
+    greetingNamed: (n) => `${n}，您好，`,
+    greetingGeneric: "您好，",
+    p1: "感謝您訂閱 <strong>Portici Dadaocheng</strong> 電子報。",
+    p2: "我們會不定期寄送最新消息與計畫動態，不會濫發郵件。",
+    footer: "您收到此信是因為剛完成電子報訂閱。",
+  },
+  en: {
+    htmlLang: "en",
+    subject: "Subscription confirmed — Portici Dadaocheng newsletter",
+    greetingNamed: (n) => `Hello ${n},`,
+    greetingGeneric: "Hello,",
+    p1: "Thank you for subscribing to the <strong>Portici Dadaocheng</strong> newsletter.",
+    p2: "We’ll share occasional updates and news from the project — no spam, only what matters.",
+    footer: "You’re receiving this because you subscribed to our newsletter.",
+  },
+};
+
+/**
+ * Short confirmation email for general (non-magazine) newsletter subscribers.
+ */
+export async function sendNewsletterWelcomeEmail(
+  email: string,
+  name?: string | null,
+  language: string = "it"
+): Promise<boolean> {
+  const lang = normalizeNewsletterLanguage(language);
+  const copy = newsletterWelcomeCopy[lang];
+  const greeting = name?.trim() ? copy.greetingNamed(name.trim()) : copy.greetingGeneric;
+
+  const html = `
 <!DOCTYPE html>
-<html lang="it">
+<html lang="${copy.htmlLang}">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
-<body style="margin:0;padding:0;background:#F5F0EB;font-family:'Georgia',serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#F5F0EB;padding:40px 20px;">
+<body style="margin:0;padding:0;background:#F5F0EB;font-family:Georgia,serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#F5F0EB;padding:32px 16px;">
     <tr><td align="center">
-      <table width="600" cellpadding="0" cellspacing="0" style="background:#FFFFFF;max-width:600px;width:100%;">
-        <!-- Header -->
+      <table width="560" cellpadding="0" cellspacing="0" style="background:#FFFFFF;max-width:560px;width:100%;border-radius:2px;">
         <tr>
-          <td style="background:#1C1917;padding:40px 48px 32px;">
-            <p style="margin:0 0 4px;font-family:'Georgia',serif;font-size:18px;font-weight:500;color:#F5F3EE;letter-spacing:0.08em;">PORTICI</p>
-            <p style="margin:0;font-family:'Georgia',serif;font-size:11px;color:#A67C52;letter-spacing:0.18em;text-transform:uppercase;">大稻埕</p>
-          </td>
-        </tr>
-        <!-- Body -->
-        <tr>
-          <td style="padding:48px 48px 40px;">
-            <p style="margin:0 0 24px;font-size:14px;color:#A67C52;letter-spacing:0.2em;text-transform:uppercase;font-family:Arial,sans-serif;">Newsletter</p>
-            <h1 style="margin:0 0 24px;font-size:28px;font-weight:500;color:#1C1917;line-height:1.3;">${greeting}<br>Benvenuto/a!</h1>
-            <div style="width:40px;height:2px;background:#a2482b;margin-bottom:32px;"></div>
-            <p style="margin:0 0 20px;font-size:17px;color:#57534E;line-height:1.8;">
-              Grazie per esserti iscritto/a alla nostra newsletter. Sei ora parte di una comunità che esplora come culture diverse — dall'Asia orientale all'Europa — rispondono alle stesse domande umane in modi sorprendentemente diversi.
-            </p>
-            <p style="margin:0 0 32px;font-size:17px;color:#57534E;line-height:1.8;">
-              Ogni mese riceverai letture dal Magazine, spunti editoriali e notizie sulle sessioni dal vivo in sviluppo: quando date e formato saranno pronti, lo raccontiamo qui — senza promettere un calendario sempre aperto.
-            </p>
-            <a href="https://portici-dadaocheng.com/magazine" style="display:inline-block;padding:14px 28px;background:#a2482b;color:#F5F3EE;text-decoration:none;font-family:Arial,sans-serif;font-size:15px;font-weight:600;">
-              Apri il Magazine →
-            </a>
-            <p style="margin:24px 0 0;font-size:15px;color:#78716C;line-height:1.7;font-family:Arial,sans-serif;">
-              Sessioni e manifestazione d&apos;interesse: <a href="https://portici-dadaocheng.com/eventi" style="color:#a2482b;">portici-dadaocheng.com/eventi</a>
+          <td style="padding:36px 40px 28px;">
+            <p style="margin:0 0 20px;font-size:15px;color:#1C1917;line-height:1.6;">${greeting}</p>
+            <p style="margin:0 0 16px;font-size:16px;color:#44403C;line-height:1.75;">${copy.p1}</p>
+            <p style="margin:0 0 24px;font-size:16px;color:#44403C;line-height:1.75;">${copy.p2}</p>
+            <p style="margin:0;font-size:13px;color:#78716C;line-height:1.6;font-family:Arial,sans-serif;">
+              <a href="https://portici-dadaocheng.com" style="color:#a2482b;">portici-dadaocheng.com</a>
             </p>
           </td>
         </tr>
-        <!-- Footer -->
         <tr>
-          <td style="padding:24px 48px;border-top:1px solid #E5E0D8;">
-            <p style="margin:0;font-size:12px;color:#A67C52;font-family:Arial,sans-serif;">
-              Bologna, Italia · 2026<br>
-              <a href="https://portici-dadaocheng.com" style="color:#A67C52;">portici-dadaocheng.com</a>
-            </p>
-            <p style="margin:8px 0 0;font-size:11px;color:#C4B9AD;font-family:Arial,sans-serif;">
-              Hai ricevuto questa email perché ti sei iscritto/a alla newsletter di Portici DaDaocheng.
-            </p>
+          <td style="padding:16px 40px 28px;border-top:1px solid #E7E5E4;">
+            <p style="margin:0;font-size:11px;color:#A8A29E;font-family:Arial,sans-serif;line-height:1.5;">${copy.footer}</p>
           </td>
         </tr>
       </table>
     </td></tr>
   </table>
 </body>
-</html>`,
+</html>`;
+
+  return sendEmail({
+    to: email,
+    from: NEWSLETTER_CONFIRM_FROM,
+    subject: copy.subject,
+    html,
   });
+}
+
+/** @deprecated Use {@link sendNewsletterWelcomeEmail} for language-aware copy; still maps to Italian. */
+export async function sendNewsletterWelcome(to: string, name?: string | null): Promise<boolean> {
+  return sendNewsletterWelcomeEmail(to, name, "it");
 }
 
 /** Absolute URL to Issue No.1 PDF for email clients. */

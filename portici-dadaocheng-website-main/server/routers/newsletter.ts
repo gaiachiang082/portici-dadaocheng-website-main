@@ -6,7 +6,7 @@ import { newsletterSubscribers } from "../../drizzle/schema";
 import { publicProcedure, router } from "../_core/trpc";
 import {
   sendMagazineIssue1Delivery,
-  sendNewsletterWelcome,
+  sendNewsletterWelcomeEmail,
   sendNewsletterWelcomeWithMagazineIssue1,
 } from "../email/resend";
 
@@ -29,6 +29,7 @@ export const newsletterRouter = router({
         email: z.string().email(),
         name: z.string().max(256).optional(),
         source: z.string().max(64).optional(),
+        language: z.enum(["it", "zh", "en"]).default("it"),
       })
     )
     .mutation(async ({ input }) => {
@@ -63,7 +64,11 @@ export const newsletterRouter = router({
         // Re-activate
         await db
           .update(newsletterSubscribers)
-          .set({ isActive: true, unsubscribedAt: null })
+          .set({
+            isActive: true,
+            unsubscribedAt: null,
+            language: input.language,
+          })
           .where(eq(newsletterSubscribers.id, existing.id));
         if (magazineIssue1) {
           emailSent = await sendNewsletterWelcomeWithMagazineIssue1(input.email, input.name);
@@ -79,6 +84,20 @@ export const newsletterRouter = router({
               branch: "reactivate",
             });
           }
+        } else {
+          emailSent = await sendNewsletterWelcomeEmail(input.email, input.name, input.language);
+          if (emailSent) {
+            await db
+              .update(newsletterSubscribers)
+              .set({ welcomeSentAt: new Date() })
+              .where(eq(newsletterSubscribers.email, input.email));
+          } else {
+            console.error("[Newsletter] sendNewsletterWelcomeEmail failed after reactivate", {
+              hint: logEmailHint(input.email),
+              source: input.source ?? "website",
+              branch: "reactivate_general",
+            });
+          }
         }
         return { success: true, alreadySubscribed: false, emailSent };
       }
@@ -88,6 +107,7 @@ export const newsletterRouter = router({
         email: input.email,
         name: input.name,
         source: input.source ?? "website",
+        language: input.language,
         isActive: true,
       });
 
@@ -106,14 +126,14 @@ export const newsletterRouter = router({
           });
         }
       } else {
-        emailSent = await sendNewsletterWelcome(input.email, input.name);
+        emailSent = await sendNewsletterWelcomeEmail(input.email, input.name, input.language);
         if (emailSent) {
           await db
             .update(newsletterSubscribers)
             .set({ welcomeSentAt: new Date() })
             .where(eq(newsletterSubscribers.email, input.email));
         } else {
-          console.error("[Newsletter] sendNewsletterWelcome failed after insert", {
+          console.error("[Newsletter] sendNewsletterWelcomeEmail failed after insert", {
             hint: logEmailHint(input.email),
             source: input.source ?? "website",
             branch: "new_default",
