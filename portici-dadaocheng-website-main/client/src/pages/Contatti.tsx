@@ -1,5 +1,9 @@
 import { useState } from "react";
 import { Instagram, Mail, Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import { trpc } from "@/lib/trpc";
+
+type ContactSubject = "workshop" | "collaboration" | "press" | "other";
 const HERO_IMAGE =
   "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/JlGNTUqhPVkwUfEj.png";
 
@@ -11,13 +15,41 @@ const formFieldClass =
   "w-full px-4 py-3 text-sm bg-background border border-input text-foreground placeholder:text-muted-foreground rounded-xl resize-none transition-all duration-300 focus:outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/20";
 
 export default function Contatti() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [subject, setSubject] = useState<ContactSubject | "">("");
+  const [message, setMessage] = useState("");
+
+  const submit = trpc.contact.submit.useMutation({
+    onSuccess: () => {
+      toast.success("訊息已送出", {
+        description: "Grazie — vi risponderemo al più presto.",
+      });
+      setName("");
+      setEmail("");
+      setSubject("");
+      setMessage("");
+    },
+    onError: (err) => {
+      toast.error(err.message || "Invio non riuscito. Riprovate tra poco.");
+    },
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setTimeout(() => setIsSubmitting(false), 2000);
+    if (!subject) {
+      toast.error("Seleziona un argomento.");
+      return;
+    }
+    submit.mutate({
+      name: name.trim(),
+      email: email.trim(),
+      subject,
+      message: message.trim(),
+    });
   };
+
+  const isSubmitting = submit.isPending;
 
   return (
     <main className="bg-background">
@@ -105,10 +137,15 @@ export default function Contatti() {
                       Nome
                     </label>
                     <input
+                      required
                       type="text"
+                      name="name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
                       placeholder="Il tuo nome"
                       className={formFieldClass}
                       style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+                      autoComplete="name"
                     />
                   </div>
                   <div>
@@ -119,10 +156,15 @@ export default function Contatti() {
                       Email
                     </label>
                     <input
+                      required
                       type="email"
+                      name="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       placeholder="La tua email"
                       className={formFieldClass}
                       style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+                      autoComplete="email"
                     />
                   </div>
                 </div>
@@ -135,6 +177,10 @@ export default function Contatti() {
                     Oggetto
                   </label>
                   <select
+                    required
+                    name="subject"
+                    value={subject}
+                    onChange={(e) => setSubject((e.target.value || "") as ContactSubject | "")}
                     className={formFieldClass}
                     style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
                   >
@@ -154,7 +200,11 @@ export default function Contatti() {
                     Messaggio
                   </label>
                   <textarea
+                    required
+                    name="message"
                     rows={5}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
                     placeholder="Raccontaci cosa hai in mente..."
                     className={formFieldClass}
                     style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
@@ -192,7 +242,7 @@ export default function Contatti() {
                 </h2>
                 <div className="flex flex-col gap-5">
                   <a
-                    href="mailto:ciao@portici-dadaocheng.com"
+                    href="mailto:puchia.bologna@gmail.com"
                     className="flex items-center gap-4 group"
                   >
                     <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center shrink-0 group-hover:bg-brand-cta transition-colors">
@@ -209,7 +259,7 @@ export default function Contatti() {
                         className="text-sm text-foreground group-hover:text-editorial-mark transition-colors"
                         style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
                       >
-                        ciao@portici-dadaocheng.com
+                        puchia.bologna@gmail.com
                       </p>
                     </div>
                   </a>
@@ -297,7 +347,7 @@ export default function Contatti() {
                 className="flex flex-col gap-1 text-sm text-foreground/90 items-start md:items-end"
                 style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
               >
-                <span>ciao@portici-dadaocheng.com</span>
+                <span>puchia.bologna@gmail.com</span>
                 <span>@portici.dadaocheng</span>
               </div>
             </div>

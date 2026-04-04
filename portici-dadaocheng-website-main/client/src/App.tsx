@@ -18,7 +18,7 @@ import Contatti from "./pages/Contatti";
 import Newsletter from "./pages/Newsletter";
 import NotFound from "./pages/NotFound";
 // import CalligraphyWorkshop from "./pages/CalligraphyWorkshop";
-// import WorkshopsPage from "./pages/Workshops";
+import WorkshopsPage from "./pages/Workshops";
 import BookingSuccess from "./pages/BookingSuccess";
 import AdminPage from "./pages/Admin";
 import ScrollToTopOnRouteChange from "./components/ScrollToTopOnRouteChange";
@@ -38,7 +38,7 @@ function Router() {
       {/* <Route path="/spazio" component={Spazio} /> */}
       <Route path="/contatti" component={Contatti} />
       {/* <Route path="/workshop/calligraphy" component={CalligraphyWorkshop} /> */}
-      {/* <Route path="/workshops" component={WorkshopsPage} /> */}
+      <Route path="/workshops" component={WorkshopsPage} />
       <Route path="/booking/success" component={BookingSuccess} />
       <Route path="/admin" component={AdminPage} />
       <Route component={NotFound} />

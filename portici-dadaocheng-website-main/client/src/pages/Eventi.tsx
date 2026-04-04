@@ -159,11 +159,11 @@ export default function Eventi() {
             comunicato quando una sessione è confermata. A volte portiamo esperienze in pop-up altrove.
           </p>
           <Link
-            href="/spazio"
+            href="/contatti"
             className="text-[15px] font-medium text-primary hover:underline underline-offset-4 inline-flex items-center gap-1"
             style={{ fontFamily: "var(--font-ui)" }}
           >
-            Spazio e concept <ArrowRight size={14} />
+            Contatti <ArrowRight size={14} />
           </Link>
         </div>
       </section>

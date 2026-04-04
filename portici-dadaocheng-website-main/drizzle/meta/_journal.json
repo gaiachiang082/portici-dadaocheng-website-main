@@ -29,6 +29,13 @@
       "when": 1772140800000,
       "tag": "0003_program_interests",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1772289600000,
+      "tag": "0004_contact_messages",
+      "breakpoints": true
     }
   ]
 }

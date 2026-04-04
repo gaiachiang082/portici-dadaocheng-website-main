@@ -121,8 +121,8 @@ function HomeHero() {
               <span className="text-border select-none" aria-hidden>
                 ·
               </span>
-              <Link href="/newsletter" className="hover:text-foreground transition-colors underline-offset-4 hover:underline">
-                Newsletter
+              <Link href="/articoli" className="hover:text-foreground transition-colors underline-offset-4 hover:underline">
+                Articoli
               </Link>
             </nav>
           </div>

@@ -411,3 +411,39 @@ export async function sendBookingConfirmation(opts: {
 </html>`,
   });
 }
+
+const DEFAULT_CONTACT_INBOX = "puchia.bologna@gmail.com";
+
+function escapeHtmlForEmail(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+/** Notify site owner when someone submits the Contatti form. */
+export async function sendContactFormToAdmin(opts: {
+  name: string;
+  email: string;
+  subjectLabel: string;
+  message: string;
+}): Promise<boolean> {
+  const to = (process.env.CONTACT_NOTIFICATION_EMAIL ?? "").trim() || DEFAULT_CONTACT_INBOX;
+  return sendEmail({
+    to,
+    subject: `[Contatti sito] ${opts.subjectLabel} — ${opts.name}`,
+    html: `<!DOCTYPE html>
+<html lang="it">
+<head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:24px;background:#F5F0EB;font-family:Georgia,serif;">
+  <p style="margin:0 0 12px;font-size:14px;color:#57534E;"><strong>Da:</strong> ${escapeHtmlForEmail(opts.name)} &lt;${escapeHtmlForEmail(opts.email)}&gt;</p>
+  <p style="margin:0 0 12px;font-size:14px;color:#57534E;"><strong>Oggetto:</strong> ${escapeHtmlForEmail(opts.subjectLabel)}</p>
+  <div style="margin-top:20px;padding:16px;background:#fff;border:1px solid #E5E0D8;border-radius:8px;">
+    <p style="margin:0;font-size:15px;color:#1C1917;white-space:pre-wrap;">${escapeHtmlForEmail(opts.message)}</p>
+  </div>
+</body>
+</html>`,
+    replyTo: opts.email,
+  });
+}

@@ -244,12 +244,12 @@ export default function WorkshopsPage() {
     setError(null);
     createBookingMutation.mutate({
       sessionId: selectedSessionId,
-      guestName: form.guestName,
-      guestEmail: form.guestEmail,
-      guestPhone: form.guestPhone || undefined,
-      guestCountry: form.guestCountry || undefined,
+      guestName: form.guestName.trim(),
+      guestEmail: form.guestEmail.trim(),
+      guestPhone: form.guestPhone.trim() || undefined,
+      guestCountry: form.guestCountry.trim() || undefined,
       participants: form.participants,
-      notes: form.notes || undefined,
+      notes: form.notes.trim() || undefined,
     });
   };
 
@@ -300,6 +300,12 @@ export default function WorkshopsPage() {
             >
               Apri conferma e pagamento
             </button>
+            <p className="mt-8 text-sm text-muted-foreground [font-family:var(--font-body)]">
+              Altre domande o richieste?{" "}
+              <Link href="/contatti" className="text-primary font-medium underline-offset-4 hover:underline [font-family:var(--font-ui)]">
+                Contatti
+              </Link>
+            </p>
           </div>
         </div>
       </div>
@@ -666,6 +672,16 @@ export default function WorkshopsPage() {
             </p>
           </div>
         )}
+
+        <div className="mt-16 pt-10 border-t border-border text-center">
+          <p className="text-xs uppercase tracking-widest text-on-ink-subtle mb-3">Altrove</p>
+          <Link
+            href="/contatti"
+            className="text-sm font-medium text-editorial-mark hover:underline underline-offset-4 [font-family:var(--font-ui)]"
+          >
+            Contatti
+          </Link>
+        </div>
       </div>
     </div>
   );

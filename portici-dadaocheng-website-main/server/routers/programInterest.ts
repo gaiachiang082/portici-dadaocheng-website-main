@@ -18,12 +18,18 @@ export const programInterestRouter = router({
       const db = await getDb();
       if (!db) throw new Error("Database not available");
 
+      const email = input.email.trim();
+      const topicSlug = input.topicSlug.trim().slice(0, 128);
+      const topicTitle = input.topicTitle.trim().slice(0, 256);
+      const name = input.name?.trim() ? input.name.trim().slice(0, 256) : null;
+      const note = input.note?.trim() ? input.note.trim().slice(0, 2000) : null;
+
       await db.insert(programInterests).values({
-        email: input.email.trim(),
-        name: input.name?.trim() || null,
-        topicSlug: input.topicSlug.trim(),
-        topicTitle: input.topicTitle.trim(),
-        note: input.note?.trim() || null,
+        email,
+        name,
+        topicSlug,
+        topicTitle,
+        note,
       });
 
       return { success: true as const };

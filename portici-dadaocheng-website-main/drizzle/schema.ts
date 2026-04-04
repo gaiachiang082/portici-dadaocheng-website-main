@@ -130,3 +130,18 @@ export const programInterests = mysqlTable("program_interests", {
 
 export type ProgramInterest = typeof programInterests.$inferSelect;
 export type InsertProgramInterest = typeof programInterests.$inferInsert;
+
+/* ─────────────────────────────────────────────────────────────────
+   CONTACT MESSAGES — Contatti page form submissions
+   ───────────────────────────────────────────────────────────────── */
+export const contactMessages = mysqlTable("contact_messages", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 256 }).notNull(),
+  email: varchar("email", { length: 320 }).notNull(),
+  subject: varchar("subject", { length: 64 }).notNull(),
+  message: text("message").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type ContactMessage = typeof contactMessages.$inferSelect;
+export type InsertContactMessage = typeof contactMessages.$inferInsert;

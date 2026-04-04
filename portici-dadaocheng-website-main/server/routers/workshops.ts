@@ -121,30 +121,42 @@ export const workshopsRouter = router({
 
       const confirmationCode = generateConfirmationCode();
 
-      // Insert booking
-      const [result] = await db.insert(bookings).values({
-        sessionId: input.sessionId,
-        workshopId: workshop.id,
-        guestName: input.guestName,
-        guestEmail: input.guestEmail,
-        guestPhone: input.guestPhone,
-        guestCountry: input.guestCountry,
-        participants: input.participants,
-        notes: input.notes,
-        totalAmountEur: totalAmount.toFixed(2),
-        depositAmountEur: depositAmount.toFixed(2),
-        balanceAmountEur: balanceAmount.toFixed(2),
-        paymentStatus: "pending",
-        status: "pending",
-        confirmationCode,
-      });
+      const guestName = input.guestName.trim();
+      const guestEmail = input.guestEmail.trim().toLowerCase();
+      if (guestName.length < 2) {
+        throw new Error("Il nome deve contenere almeno 2 caratteri");
+      }
 
-      const bookingId = (result as any).insertId as number;
+      // Insert booking — use $returningId() so booking id is reliable across MySQL/TiDB drivers
+      const inserted = await db
+        .insert(bookings)
+        .values({
+          sessionId: input.sessionId,
+          workshopId: workshop.id,
+          guestName,
+          guestEmail,
+          guestPhone: input.guestPhone?.trim() || undefined,
+          guestCountry: input.guestCountry?.trim() || undefined,
+          participants: input.participants,
+          notes: input.notes?.trim() || undefined,
+          totalAmountEur: totalAmount.toFixed(2),
+          depositAmountEur: depositAmount.toFixed(2),
+          balanceAmountEur: balanceAmount.toFixed(2),
+          paymentStatus: "pending",
+          status: "pending",
+          confirmationCode,
+        })
+        .$returningId();
+
+      const bookingId = Number(inserted[0]?.id);
+      if (!Number.isFinite(bookingId) || bookingId < 1) {
+        throw new Error("Impossibile completare la prenotazione. Riprovate.");
+      }
 
       // Notify owner
       await notifyOwner({
         title: `Richiesta sessione (deposito da completare): ${workshop.title}`,
-        content: `${input.guestName} (${input.guestEmail}) ha avviato una richiesta per ${input.participants} partecipante/i — ${workshop.title}, ${new Date(session.sessionDate).toLocaleDateString("it-IT")}. Codice: ${confirmationCode}. Deposito previsto: \u20ac${depositAmount} (pagamento ancora da confermare).`,
+        content: `${guestName} (${guestEmail}) ha avviato una richiesta per ${input.participants} partecipante/i — ${workshop.title}, ${new Date(session.sessionDate).toLocaleDateString("it-IT")}. Codice: ${confirmationCode}. Deposito previsto: \u20ac${depositAmount} (pagamento ancora da confermare).`,
       }).catch(() => {});
 
       return {
