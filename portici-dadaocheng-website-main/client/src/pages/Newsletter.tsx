@@ -1,4 +1,3 @@
-import { Link } from "wouter";
 import { PageHeader } from "@/components/PageHeader";
 import { NewsletterSubscribeForm } from "@/components/NewsletterSubscribeForm";
 
@@ -15,12 +14,6 @@ const VALUE_BLOCKS = [
     title: "Inviti",
     text: "Quando c\u2019è qualcosa da vivere insieme — workshop o incontri — lo saprete per primi.",
   },
-] as const;
-
-const ARCHIVE_PLACEHOLDER = [
-  { label: "Numero · in arrivo", note: "Archivio pubblico in allestimento" },
-  { label: "—", note: "Le edizioni passate saranno elencate qui." },
-  { label: "—", note: "Grazie per la pazienza." },
 ] as const;
 
 export default function Newsletter() {
@@ -56,51 +49,6 @@ export default function Newsletter() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      <section className="py-14 md:py-16 border-t border-border">
-        <div className="container max-w-3xl mx-auto px-6 md:px-10">
-          <h2 className="font-medium text-foreground mb-2 text-[1.25rem] [font-family:var(--font-display)]">Archivio</h2>
-          <p
-            className="text-sm text-muted-foreground mb-8"
-            style={{ fontFamily: "var(--font-ui)" }}
-          >
-            Placeholder — nessun numero archiviato in questa versione del sito.
-          </p>
-          <ul className="space-y-4">
-            {ARCHIVE_PLACEHOLDER.map((row, i) => (
-              <li
-                key={i}
-                className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-6 py-4 border-b border-border last:border-0"
-              >
-                <span
-                  className="text-[15px] text-foreground/80 font-medium shrink-0 w-48"
-                  style={{ fontFamily: "var(--font-ui)" }}
-                >
-                  {row.label}
-                </span>
-                <span className="text-[15px] text-muted-foreground" style={{ fontFamily: "var(--font-ui)" }}>
-                  {row.note}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <section className="py-12 bg-muted/30 border-t border-border">
-        <div className="container max-w-3xl mx-auto px-6 md:px-10 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8">
-          <p className="text-sm text-muted-foreground" style={{ fontFamily: "var(--font-ui)" }}>
-            Leggete anche
-          </p>
-          <Link
-            href="/magazine"
-            className="text-sm font-medium text-primary hover:underline underline-offset-4"
-            style={{ fontFamily: "var(--font-ui)" }}
-          >
-            Magazine
-          </Link>
         </div>
       </section>
     </main>
