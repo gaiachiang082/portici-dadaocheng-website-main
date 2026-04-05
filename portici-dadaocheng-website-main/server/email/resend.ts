@@ -69,15 +69,28 @@ function normalizeNewsletterLanguage(language?: string | null): NewsletterWelcom
 
 const newsletterWelcomeCopy: Record<
   NewsletterWelcomeLang,
-  { htmlLang: string; subject: string; greetingNamed: (n: string) => string; greetingGeneric: string; p1: string; p2: string; footer: string }
+  {
+    htmlLang: string;
+    subject: string;
+    greetingNamed: (n: string) => string;
+    greetingGeneric: string;
+    /** Body paragraphs after the greeting, before the site link. */
+    paragraphs: string[];
+    footer: string;
+  }
 > = {
   it: {
     htmlLang: "it",
     subject: "Conferma iscrizione — newsletter Portici Dadaocheng",
     greetingNamed: (n) => `Ciao ${n},`,
     greetingGeneric: "Ciao,",
-    p1: "Grazie per esserti iscritto/a alla newsletter di <strong>Portici Dadaocheng</strong>.",
-    p2: "Ti scriveremo di tanto in tanto con novità editoriali e aggiornamenti dal progetto — niente spam, solo il necessario.",
+    paragraphs: [
+      "Grazie per essere qui.",
+      "Portici Dadaocheng nasce nell'incontro tra due città che non smettono di raccontarsi — Bologna e Taipei, i loro portici, le loro storie.",
+      "Ogni tanto ti scriveremo, con calma e con cura, di quello che succede da queste parti.",
+      "Ci vediamo presto.",
+      "Il team di Portici Dadaocheng",
+    ],
     footer: "Hai ricevuto questa email perché ti sei iscritto/a alla nostra newsletter.",
   },
   zh: {
@@ -85,8 +98,13 @@ const newsletterWelcomeCopy: Record<
     subject: "訂閱確認 — Portici Dadaocheng 電子報",
     greetingNamed: (n) => `${n}，您好，`,
     greetingGeneric: "您好，",
-    p1: "感謝您訂閱 <strong>Portici Dadaocheng</strong> 電子報。",
-    p2: "我們會不定期寄送最新消息與計畫動態，不會濫發郵件。",
+    paragraphs: [
+      "感謝您願意在這裡。",
+      "Portici Dadaocheng 源於兩座始終訴說彼此的城市相遇——波隆那與台北，她們的廊道與故事。",
+      "我們會偶爾寫信給您，從容而用心，分享這裡發生的事。",
+      "很快再見。",
+      "Portici Dadaocheng 團隊",
+    ],
     footer: "您收到此信是因為剛完成電子報訂閱。",
   },
   en: {
@@ -94,8 +112,13 @@ const newsletterWelcomeCopy: Record<
     subject: "Subscription confirmed — Portici Dadaocheng newsletter",
     greetingNamed: (n) => `Hello ${n},`,
     greetingGeneric: "Hello,",
-    p1: "Thank you for subscribing to the <strong>Portici Dadaocheng</strong> newsletter.",
-    p2: "We’ll share occasional updates and news from the project — no spam, only what matters.",
+    paragraphs: [
+      "Thank you for being here.",
+      "Portici Dadaocheng grew from the meeting of two cities that keep telling their stories — Bologna and Taipei, their porticos, their histories.",
+      "From time to time we’ll write to you, calmly and carefully, about what’s happening here.",
+      "See you soon.",
+      "The Portici Dadaocheng team",
+    ],
     footer: "You’re receiving this because you subscribed to our newsletter.",
   },
 };
@@ -111,6 +134,14 @@ export async function sendNewsletterWelcomeEmail(
   const lang = normalizeNewsletterLanguage(language);
   const copy = newsletterWelcomeCopy[lang];
   const greeting = name?.trim() ? copy.greetingNamed(name.trim()) : copy.greetingGeneric;
+  const bodyParagraphStyle = "margin:0 0 16px;font-size:16px;color:#44403C;line-height:1.75;";
+  const lastBodyIdx = copy.paragraphs.length - 1;
+  const bodyHtml = copy.paragraphs
+    .map(
+      (text, i) =>
+        `<p style="${bodyParagraphStyle}${i === lastBodyIdx ? "margin-bottom:24px;" : ""}">${text}</p>`
+    )
+    .join("");
 
   const html = `
 <!DOCTYPE html>
@@ -123,10 +154,9 @@ export async function sendNewsletterWelcomeEmail(
         <tr>
           <td style="padding:36px 40px 28px;">
             <p style="margin:0 0 20px;font-size:15px;color:#1C1917;line-height:1.6;">${greeting}</p>
-            <p style="margin:0 0 16px;font-size:16px;color:#44403C;line-height:1.75;">${copy.p1}</p>
-            <p style="margin:0 0 24px;font-size:16px;color:#44403C;line-height:1.75;">${copy.p2}</p>
+            ${bodyHtml}
             <p style="margin:0;font-size:13px;color:#78716C;line-height:1.6;font-family:Arial,sans-serif;">
-              <a href="https://portici-dadaocheng.com" style="color:#a2482b;">portici-dadaocheng.com</a>
+              <a href="${SITE_ORIGIN}" style="color:#a2482b;">portici-dadaocheng.com</a>
             </p>
           </td>
         </tr>
