@@ -3,32 +3,78 @@ import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import mysql from "mysql2/promise"; // 確保以 promise 版本正確載入 mysql2
 import { InsertUser, users } from "../drizzle/schema";
-import { ENV } from './_core/env';
+import { ENV } from "./_core/env";
+import { mysqlTlsOptions, parseMysqlDatabaseUrl } from "./_core/mysqlUrl";
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
+type MysqlErr = {
+  message?: string;
+  code?: string;
+  errno?: number;
+  sqlState?: string;
+  sqlMessage?: string;
+};
+
+function logMysqlConnectionFailure(
+  error: unknown,
+  meta: { phase: "parse_url" | "connect"; host?: string; port?: number; database?: string; user?: string }
+) {
+  const my = error as MysqlErr;
+  console.error("[Database] MySQL connection failed:", {
+    phase: meta.phase,
+    host: meta.host,
+    port: meta.port,
+    database: meta.database,
+    user: meta.user,
+    errorMessage: error instanceof Error ? error.message : String(error),
+    errorName: error instanceof Error ? error.name : undefined,
+    mysqlCode: my.code,
+    mysqlErrno: my.errno,
+    mysqlSqlState: my.sqlState,
+    mysqlSqlMessage: my.sqlMessage,
+    ssl: { ...mysqlTlsOptions },
+  });
+  if (error instanceof Error && error.stack) {
+    console.error("[Database] Stack:\n", error.stack);
+  }
+  if (error instanceof Error && "cause" in error && error.cause !== undefined && error.cause !== null) {
+    console.error("[Database] Error cause:", error.cause);
+  }
+}
+
 // Lazily create the drizzle instance so local tooling can run without a DB.
 export async function getDb() {
-  if (!_db && process.env.MYSQL_DATABASE) {
+  const raw = process.env.MYSQL_DATABASE?.trim();
+  if (!_db && raw) {
+    let params: ReturnType<typeof parseMysqlDatabaseUrl>;
     try {
-      const dbUrl = new URL(process.env.MYSQL_DATABASE);
+      params = parseMysqlDatabaseUrl(raw);
+    } catch (error) {
+      logMysqlConnectionFailure(error, { phase: "parse_url" });
+      return _db;
+    }
 
+    try {
       const connection = await mysql.createConnection({
-        host: dbUrl.hostname,
-        port: dbUrl.port ? Number(dbUrl.port) : 3306,
-        user: decodeURIComponent(dbUrl.username),
-        password: decodeURIComponent(dbUrl.password),
-        database: dbUrl.pathname.replace(/^\//, ""),
-        ssl: {
-          minVersion: "TLSv1.2",
-          rejectUnauthorized: true,
-        },
+        host: params.host,
+        port: params.port,
+        user: params.user,
+        password: params.password,
+        database: params.database,
+        ssl: mysqlTlsOptions,
       });
 
       // 使用單一連線並交給 drizzle 管理，透過 SSL 連線到 TiDB
       _db = drizzle(connection) as unknown as ReturnType<typeof drizzle>;
     } catch (error) {
-      console.warn("[Database] Failed to connect:", error);
+      logMysqlConnectionFailure(error, {
+        phase: "connect",
+        host: params.host,
+        port: params.port,
+        database: params.database || "(empty)",
+        user: params.user || "(empty)",
+      });
       _db = null;
     }
   }
