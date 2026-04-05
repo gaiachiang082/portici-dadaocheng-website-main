@@ -22,5 +22,6 @@ export function parseMysqlDatabaseUrl(connectionString: string): {
 /** TLS options for mysql2 / Drizzle Kit against hosted MySQL or TiDB. */
 export const mysqlTlsOptions = {
   minVersion: "TLSv1.2" as const,
-  rejectUnauthorized: true as const,
+  /** Railway MySQL uses a chain that includes self-signed CAs; strict verification fails with HANDSHAKE_SSL_ERROR. */
+  rejectUnauthorized: false as const,
 };
