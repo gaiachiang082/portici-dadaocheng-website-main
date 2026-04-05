@@ -2,14 +2,16 @@ import { useState, useEffect } from "react";
 import { client } from "../SanityClient";
 import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
+import { useLang } from "@/contexts/LangContext";
 import {
-  ARTICLES_LIST_QUERY,
   ArticleCard,
   ArticleCardSkeleton,
   type ArticlePreview,
 } from "@/components/ArticlePreviewCard";
+import { ARTICLES_LIST_QUERY } from "@/sanity/articleQueries";
 
 export default function ArticoliPage() {
+  const lang = useLang();
   const [articles, setArticles] = useState<ArticlePreview[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -22,7 +24,7 @@ export default function ArticoliPage() {
       setLoading(true);
       setError(null);
       try {
-        const data = await client.fetch<ArticlePreview[]>(ARTICLES_LIST_QUERY);
+        const data = await client.fetch<ArticlePreview[]>(ARTICLES_LIST_QUERY, { lang });
         if (!cancelled) {
           setArticles(Array.isArray(data) ? data : []);
         }
@@ -43,7 +45,7 @@ export default function ArticoliPage() {
     return () => {
       cancelled = true;
     };
-  }, [retryKey]);
+  }, [retryKey, lang]);
 
   return (
     <main>

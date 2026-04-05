@@ -2,31 +2,16 @@ import { Link } from "wouter";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useLocalizedHref } from "@/contexts/LangContext";
 
+export { ARTICLES_LIST_QUERY, ARTICLES_LATEST_THREE_QUERY } from "@/sanity/articleQueries";
+
 export interface ArticlePreview {
   _id: string;
-  title: { it: string; en?: string };
+  /** Localized display title from GROQ (`coalesce` + `select` on `title.*`). */
+  title: string;
   category?: string;
   mainImage?: { asset?: { url?: string } };
   excerpt?: string;
 }
-
-/** Same projection as the /articoli list; full list ordered by creation date. */
-export const ARTICLES_LIST_QUERY = `*[_type == "article"] | order(_createdAt desc) {
-  _id,
-  title,
-  category,
-  mainImage { asset->{ url } },
-  "excerpt": pt::text(content_it)
-}`;
-
-/** Latest three articles; same fields as {@link ARTICLES_LIST_QUERY}. */
-export const ARTICLES_LATEST_THREE_QUERY = `*[_type == "article"] | order(_createdAt desc) [0...3] {
-  _id,
-  title,
-  category,
-  mainImage { asset->{ url } },
-  "excerpt": pt::text(content_it)
-}`;
 
 export function excerptPreview(raw: string | null | undefined, max = 180): string {
   const s = (raw ?? "").replace(/\s+/g, " ").trim();
@@ -56,7 +41,7 @@ export function ArticleCardSkeleton() {
 export function ArticleCard({ article }: { article: ArticlePreview }) {
   const localizedHref = useLocalizedHref();
   const imageUrl = article.mainImage?.asset?.url;
-  const titleIt = article.title?.it ?? "Senza titolo";
+  const title = article.title?.trim() ? article.title : "Senza titolo";
   const excerpt = excerptPreview(article.excerpt);
 
   return (
@@ -65,7 +50,7 @@ export function ArticleCard({ article }: { article: ArticlePreview }) {
         {imageUrl ? (
           <img
             src={imageUrl}
-            alt={titleIt}
+            alt={title}
             className="h-full w-full object-cover"
             loading="lazy"
             decoding="async"
@@ -79,7 +64,7 @@ export function ArticleCard({ article }: { article: ArticlePreview }) {
           </span>
         ) : null}
         <h2 className="mb-2 line-clamp-2 text-[1.05rem] font-medium text-foreground [font-family:var(--font-display)]">
-          {titleIt}
+          {title}
         </h2>
         {excerpt ? (
           <p className="mb-4 line-clamp-3 text-[14px] leading-relaxed text-muted-foreground [font-family:var(--font-body)]">

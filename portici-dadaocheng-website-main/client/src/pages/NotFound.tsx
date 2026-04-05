@@ -1,6 +1,8 @@
 import { Link } from "wouter";
+import { useLocalizedHref } from "@/contexts/LangContext";
 
 export default function NotFound() {
+  const localizedHref = useLocalizedHref();
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-[oklch(96.5%_0.006_85)] px-4">
       <div className="w-full max-w-lg mx-4 text-center">
@@ -34,7 +36,7 @@ export default function NotFound() {
           className="flex flex-col sm:flex-row gap-3 justify-center"
         >
           <Link
-            href="/"
+            href={localizedHref("/")}
             className="inline-flex items-center justify-center px-6 py-2.5 text-[15px] font-semibold rounded-xl bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
             style={{ fontFamily: "var(--font-ui)" }}
           >

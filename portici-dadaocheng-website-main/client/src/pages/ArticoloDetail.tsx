@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "wouter";
 import { ArrowLeft } from "lucide-react";
 import { PortableText, type PortableTextBlock } from "@portabletext/react";
-import { useLocalizedHref } from "@/contexts/LangContext";
+import { useLang, useLocalizedHref } from "@/contexts/LangContext";
+import { ARTICLE_DETAIL_QUERY } from "@/sanity/articleQueries";
 import { client } from "../SanityClient";
 
-/** Shape of `*[_type == "article" && _id == $id][0]{ ... }` including Italian block body from Sanity. */
+/** Shape of {@link ARTICLE_DETAIL_QUERY} result. */
 interface ArticleDetail {
   _id: string;
   title?: string;
@@ -18,6 +19,7 @@ interface ArticleDetail {
 }
 
 export default function ArticoloDetail() {
+  const lang = useLang();
   const localizedHref = useLocalizedHref();
   const params = useParams<{ id: string }>();
   const id = params?.id;
@@ -32,16 +34,7 @@ export default function ArticoloDetail() {
     }
     const fetchArticle = async () => {
       try {
-        const data = await client.fetch<ArticleDetail | null>(
-          `*[_type == "article" && _id == $id][0]{
-            _id,
-            "title": title.it,
-            "body": content_it,
-            category,
-            mainImage { asset->{ url } }
-          }`,
-          { id }
-        );
+        const data = await client.fetch<ArticleDetail | null>(ARTICLE_DETAIL_QUERY, { id, lang });
         setArticle(data ?? null);
       } catch (err) {
         console.error("ArticoloDetail fetch error:", err);
@@ -51,7 +44,7 @@ export default function ArticoloDetail() {
       }
     };
     fetchArticle();
-  }, [id]);
+  }, [id, lang]);
 
   if (loading) {
     return (

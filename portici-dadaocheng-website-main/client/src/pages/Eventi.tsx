@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { ArrowRight } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
 import { ProgramInterestSection } from "@/components/ProgramInterestSection";
+import { useLocalizedHref } from "@/contexts/LangContext";
 
 const INTEREST_STEPS = [
   {
@@ -27,6 +28,7 @@ const INTEREST_STEPS = [
 ] as const;
 
 export default function Eventi() {
+  const localizedHref = useLocalizedHref();
   return (
     <main className="bg-background">
       <PageHeader
@@ -95,7 +97,7 @@ export default function Eventi() {
                 certe sessioni esistono.
               </p>
               <Link
-                href="/magazine"
+                href={localizedHref("/magazine")}
                 className="text-[15px] font-medium text-primary hover:underline underline-offset-4 inline-flex items-center gap-1"
                 style={{ fontFamily: "var(--font-ui)" }}
               >
@@ -114,7 +116,7 @@ export default function Eventi() {
                 interesse sulle sessioni.
               </p>
               <Link
-                href="/newsletter"
+                href={localizedHref("/newsletter")}
                 className="text-[15px] font-medium text-primary hover:underline underline-offset-4 inline-flex items-center gap-1"
                 style={{ fontFamily: "var(--font-ui)" }}
               >
@@ -132,7 +134,7 @@ export default function Eventi() {
                 Per approfondire calligrafia, cucina e percorso visivo — senza passare dal calendario.
               </p>
               <Link
-                href="/workshop"
+                href={localizedHref("/workshop")}
                 className="text-[15px] font-medium text-primary hover:underline underline-offset-4 inline-flex items-center gap-1"
                 style={{ fontFamily: "var(--font-ui)" }}
               >
@@ -140,7 +142,7 @@ export default function Eventi() {
               </Link>
               <span className="text-muted-foreground mx-2">·</span>
               <Link
-                href="/workshop/calligraphy"
+                href={localizedHref("/workshop/calligraphy")}
                 className="text-[15px] font-medium text-primary hover:underline underline-offset-4 inline-flex items-center gap-1"
                 style={{ fontFamily: "var(--font-ui)" }}
               >
@@ -159,7 +161,7 @@ export default function Eventi() {
             comunicato quando una sessione è confermata. A volte portiamo esperienze in pop-up altrove.
           </p>
           <Link
-            href="/contatti"
+            href={localizedHref("/contatti")}
             className="text-[15px] font-medium text-primary hover:underline underline-offset-4 inline-flex items-center gap-1"
             style={{ fontFamily: "var(--font-ui)" }}
           >
@@ -174,7 +176,7 @@ export default function Eventi() {
             Altrove sul sito
           </p>
           <Link
-            href="/magazine"
+            href={localizedHref("/magazine")}
             className="text-sm font-medium text-primary hover:underline underline-offset-4"
             style={{ fontFamily: "var(--font-ui)" }}
           >
@@ -182,7 +184,7 @@ export default function Eventi() {
           </Link>
           <span className="hidden sm:inline text-border">·</span>
           <Link
-            href="/newsletter"
+            href={localizedHref("/newsletter")}
             className="text-sm font-medium text-primary hover:underline underline-offset-4"
             style={{ fontFamily: "var(--font-ui)" }}
           >
@@ -190,7 +192,7 @@ export default function Eventi() {
           </Link>
           <span className="hidden sm:inline text-border">·</span>
           <Link
-            href="/contatti"
+            href={localizedHref("/contatti")}
             className="text-sm font-medium text-primary hover:underline underline-offset-4"
             style={{ fontFamily: "var(--font-ui)" }}
           >

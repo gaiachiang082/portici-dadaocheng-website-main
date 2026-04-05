@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { toast } from "sonner";
 import { trpc } from "@/lib/trpc";
 import { PROGRAM_CONCEPTS, type ProgramConcept } from "@/data/programConcepts";
+import { useLocalizedHref } from "@/contexts/LangContext";
 
 const kindLabel: Record<ProgramConcept["kind"], string> = {
   cultural: "Linea culturale",
@@ -23,6 +24,7 @@ function newsletterSourceFromTopicSlug(topicSlug: string): string {
 }
 
 export function ProgramInterestSection({ id = "interesse", className = "", showLegacyBookingHint }: Props) {
+  const localizedHref = useLocalizedHref();
   const [selectedSlug, setSelectedSlug] = useState<string>(PROGRAM_CONCEPTS[0]!.slug);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -261,7 +263,7 @@ export function ProgramInterestSection({ id = "interesse", className = "", showL
             {showLegacyBookingHint && (
               <p className="mt-6 pt-6 border-t border-border text-xs text-muted-foreground leading-relaxed [font-family:var(--font-body)]">
                 Se avete già ricevuto un invito con link al pagamento, potete accedere al{" "}
-                <Link href="/workshops?booking=1" className="text-primary underline-offset-4 hover:underline font-medium">
+                <Link href={`${localizedHref("/workshops")}?booking=1`} className="text-primary underline-offset-4 hover:underline font-medium">
                   flusso di conferma riservato
                 </Link>
                 .

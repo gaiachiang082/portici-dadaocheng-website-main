@@ -4,7 +4,8 @@ import { ArrowRight } from "lucide-react";
 import { MAGAZINE_ISSUE_1_SOURCE } from "@shared/const";
 import { PageHeader } from "@/components/PageHeader";
 import { NewsletterSubscribeForm } from "@/components/NewsletterSubscribeForm";
-import { useLocalizedHref } from "@/contexts/LangContext";
+import { useLang, useLocalizedHref } from "@/contexts/LangContext";
+import { MAGAZINE_ARTICLES_QUERY } from "@/sanity/articleQueries";
 import { client } from "../SanityClient";
 import {
   formatIssueMeta,
@@ -98,6 +99,7 @@ function IssueArchiveCard({ issue }: { issue: MagazineIssue }) {
 }
 
 export default function Magazine() {
+  const lang = useLang();
   const localizedHref = useLocalizedHref();
   const current = getCurrentIssue();
   const archived = getArchivedIssues();
@@ -107,20 +109,7 @@ export default function Magazine() {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const data = await client.fetch<Article[]>(
-          `*[_type == "article"] | order(_createdAt desc) {
-            _id,
-            _createdAt,
-            category,
-            "title": title.it,
-            excerpt,
-            readTime,
-            color,
-            mainImage {
-              asset->{ url }
-            }
-          }`
-        );
+        const data = await client.fetch<Article[]>(MAGAZINE_ARTICLES_QUERY, { lang });
         setArticles(data ?? []);
       } catch (err) {
         console.error("Magazine articoli fetch error:", err);
@@ -130,7 +119,7 @@ export default function Magazine() {
       }
     };
     fetchArticles();
-  }, []);
+  }, [lang]);
 
   return (
     <main className="bg-background">
@@ -218,7 +207,7 @@ export default function Magazine() {
                 </div>
                 <div className="flex flex-col sm:flex-row sm:items-center sm:flex-wrap gap-4 sm:gap-8">
                   <Link
-                    href="/eventi"
+                    href={localizedHref("/eventi")}
                     className="inline-flex items-center justify-center gap-2 rounded-sm border border-border bg-background px-5 py-3 text-foreground text-[13px] font-medium uppercase tracking-[0.08em] [font-family:var(--font-mono)] hover:bg-muted/80 transition-colors w-fit"
                   >
                     Sessioni e laboratori
@@ -413,7 +402,7 @@ export default function Magazine() {
           </p>
           <NewsletterSubscribeForm source="magazine" variant="home" showUnsubscribeHint />
           <p className="mt-6 text-sm text-muted-foreground [font-family:var(--font-body)]">
-            <Link href="/newsletter" className="text-primary underline-offset-4 hover:underline">
+            <Link href={localizedHref("/newsletter")} className="text-primary underline-offset-4 hover:underline">
               Leggi la promessa sulla pagina newsletter
             </Link>
           </p>

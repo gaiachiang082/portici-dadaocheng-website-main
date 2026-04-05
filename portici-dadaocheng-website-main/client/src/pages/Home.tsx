@@ -4,13 +4,10 @@ import { ArrowRight } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { BrandMark } from "@/components/BrandMark";
 import { NewsletterSubscribeForm } from "@/components/NewsletterSubscribeForm";
-import {
-  ARTICLES_LATEST_THREE_QUERY,
-  ArticleCard,
-  ArticleCardSkeleton,
-  type ArticlePreview,
-} from "@/components/ArticlePreviewCard";
+import { useLang, useLocalizedHref } from "@/contexts/LangContext";
+import { ArticleCard, ArticleCardSkeleton, type ArticlePreview } from "@/components/ArticlePreviewCard";
 import { formatIssueMeta, getCurrentIssue, ISSUE_NO1_COVER_FALLBACK_URL } from "@/data/magazineIssues";
+import { ARTICLES_LATEST_THREE_QUERY } from "@/sanity/articleQueries";
 import { client } from "../SanityClient";
 
 /* ─────────────────────────────────────────────────────────────────
@@ -41,6 +38,7 @@ function Reveal({ children, delay = 0, className = "" }: {
    EDITORIAL HERO — two columns, cover block, no scroll gate
    ───────────────────────────────────────────────────────────────── */
 function HomeHero() {
+  const localizedHref = useLocalizedHref();
   return (
     <section
       className="pt-[7.75rem] pb-12 md:pt-[8.5rem] md:pb-16 px-6 md:px-10 bg-background border-b border-border"
@@ -89,7 +87,7 @@ function HomeHero() {
               aria-label="Ingressi principali"
             >
               <Link
-                href="/magazine"
+                href={localizedHref("/magazine")}
                 className="group inline-flex flex-col gap-1 w-fit focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground"
                 style={{ fontFamily: "var(--font-ui)" }}
               >
@@ -99,7 +97,7 @@ function HomeHero() {
                 </span>
               </Link>
               <Link
-                href="/newsletter"
+                href={localizedHref("/newsletter")}
                 className="group inline-flex flex-col gap-1 w-fit focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground"
                 style={{ fontFamily: "var(--font-ui)" }}
               >
@@ -115,13 +113,13 @@ function HomeHero() {
               style={{ fontFamily: "var(--font-ui)" }}
               aria-label="Altri collegamenti"
             >
-              <Link href="/fondatrici" className="hover:text-foreground transition-colors underline-offset-4 hover:underline">
+              <Link href={localizedHref("/fondatrici")} className="hover:text-foreground transition-colors underline-offset-4 hover:underline">
                 Fondatrici
               </Link>
               <span className="text-border select-none" aria-hidden>
                 ·
               </span>
-              <Link href="/articoli" className="hover:text-foreground transition-colors underline-offset-4 hover:underline">
+              <Link href={localizedHref("/articoli")} className="hover:text-foreground transition-colors underline-offset-4 hover:underline">
                 Articoli
               </Link>
             </nav>
@@ -228,6 +226,7 @@ function HomeManifestoStrip() {
    TWO-PANEL ENTRY — Magazine & Eventi (chapter-like)
    ───────────────────────────────────────────────────────────────── */
 function HomeEntryPanels() {
+  const localizedHref = useLocalizedHref();
   const currentIssue = getCurrentIssue();
 
   return (
@@ -238,7 +237,7 @@ function HomeEntryPanels() {
       <div className="container max-w-6xl mx-auto px-6 md:px-10">
         <div className="grid md:grid-cols-2 gap-0 md:gap-px bg-border/40 border border-border/50">
           <Link
-            href="/magazine"
+            href={localizedHref("/magazine")}
             className="group block bg-background p-8 md:p-10 min-h-[280px] md:min-h-[320px] flex flex-col justify-between focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-foreground transition-colors hover:bg-[var(--paper-warm)]/50"
           >
             <div>
@@ -277,7 +276,7 @@ function HomeEntryPanels() {
           </Link>
 
           <Link
-            href="/eventi"
+            href={localizedHref("/eventi")}
             className="group block bg-background p-8 md:p-10 min-h-[280px] md:min-h-[320px] flex flex-col justify-between border-t border-border/50 md:border-t-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-foreground transition-colors hover:bg-[var(--paper-warm)]/50"
           >
             <div>
@@ -319,6 +318,8 @@ function HomeEntryPanels() {
    ULTIME LETTURE — Sanity preview (same query shape as /articoli)
    ───────────────────────────────────────────────────────────────── */
 function HomeLatestReadsSection() {
+  const lang = useLang();
+  const localizedHref = useLocalizedHref();
   const [articles, setArticles] = useState<ArticlePreview[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -327,7 +328,7 @@ function HomeLatestReadsSection() {
 
     async function run() {
       try {
-        const data = await client.fetch<ArticlePreview[]>(ARTICLES_LATEST_THREE_QUERY);
+        const data = await client.fetch<ArticlePreview[]>(ARTICLES_LATEST_THREE_QUERY, { lang });
         if (!cancelled) {
           setArticles(Array.isArray(data) ? data : []);
         }
@@ -347,7 +348,7 @@ function HomeLatestReadsSection() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [lang]);
 
   if (!loading && articles.length === 0) {
     return null;
@@ -382,7 +383,7 @@ function HomeLatestReadsSection() {
         </div>
         <div className="mt-10">
           <Link
-            href="/articoli"
+            href={localizedHref("/articoli")}
             className="inline-flex items-center gap-1.5 text-[15px] font-medium text-primary hover:opacity-80 transition-opacity"
             style={{ fontFamily: "var(--font-ui)" }}
           >
@@ -399,6 +400,7 @@ function HomeLatestReadsSection() {
    NEWSLETTER
    ───────────────────────────────────────────────────────────────── */
 function NewsletterSection() {
+  const localizedHref = useLocalizedHref();
   return (
     <section className="py-16 md:py-20 bg-muted">
       <div className="container">
@@ -426,7 +428,7 @@ function NewsletterSection() {
             Una mail al mese, senza spam. Per cosa riceverete e come ci iscriviamo noi, c&apos;è la pagina dedicata.
           </p>
           <Link
-            href="/newsletter"
+            href={localizedHref("/newsletter")}
             className="inline-flex items-center gap-1.5 text-[15px] font-medium text-primary hover:opacity-80 transition-opacity mb-8"
             style={{ fontFamily: "var(--font-ui)" }}
           >

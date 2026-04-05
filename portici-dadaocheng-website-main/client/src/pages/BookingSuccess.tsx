@@ -1,6 +1,8 @@
 import { useSearch, Link } from "wouter";
+import { useLocalizedHref } from "@/contexts/LangContext";
 
 export default function BookingSuccess() {
+  const localizedHref = useLocalizedHref();
   const search = useSearch();
   const params = new URLSearchParams(search);
   const code = params.get("code") ?? "";
@@ -55,7 +57,7 @@ export default function BookingSuccess() {
         )}
 
         <div className="space-y-3">
-          <Link href="/eventi">
+          <Link href={localizedHref("/eventi")}>
             <button
               className="w-full py-3 rounded-xl font-medium transition-all duration-200"
               style={{ background: "oklch(55% 0.075 55)", color: "oklch(98% 0 0)" }}
@@ -63,7 +65,7 @@ export default function BookingSuccess() {
               Altre linee e interesse
             </button>
           </Link>
-          <Link href="/">
+          <Link href={localizedHref("/")}>
             <button
               className="w-full py-3 rounded-xl font-medium transition-all duration-200 border"
               style={{

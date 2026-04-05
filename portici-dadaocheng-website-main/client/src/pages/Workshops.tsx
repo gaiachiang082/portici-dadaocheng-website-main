@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { Link } from "wouter";
 import { ProgramInterestSection } from "@/components/ProgramInterestSection";
+import { useLocalizedHref } from "@/contexts/LangContext";
 
 /* ─── Types ─── */
 type Step = "list" | "sessions" | "form" | "review" | "paying";
@@ -180,6 +181,7 @@ const errorBannerClass =
 
 /* ─── Main Page ─── */
 export default function WorkshopsPage() {
+  const localizedHref = useLocalizedHref();
   const [legacyBooking, setLegacyBooking] = useState(false);
   const [step, setStep] = useState<Step>("list");
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
@@ -270,7 +272,7 @@ export default function WorkshopsPage() {
     return (
       <div className="min-h-screen bg-background text-foreground">
         <nav className="sticky top-0 z-40 border-b border-border px-6 py-4 flex flex-wrap items-center justify-between gap-3 bg-background/95 backdrop-blur-sm">
-          <Link href="/">
+          <Link href={localizedHref("/")}>
             <span
               className="text-muted-foreground text-sm tracking-widest uppercase cursor-pointer hover:text-foreground transition-colors [font-family:var(--font-ui)]"
             >
@@ -279,7 +281,7 @@ export default function WorkshopsPage() {
           </Link>
           <div className="flex items-center gap-6">
             <Link
-              href="/eventi"
+              href={localizedHref("/eventi")}
               className="text-sm tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors [font-family:var(--font-ui)]"
             >
               Sessioni
@@ -302,7 +304,7 @@ export default function WorkshopsPage() {
             </button>
             <p className="mt-8 text-sm text-muted-foreground [font-family:var(--font-body)]">
               Altre domande o richieste?{" "}
-              <Link href="/contatti" className="text-primary font-medium underline-offset-4 hover:underline [font-family:var(--font-ui)]">
+              <Link href={localizedHref("/contatti")} className="text-primary font-medium underline-offset-4 hover:underline [font-family:var(--font-ui)]">
                 Contatti
               </Link>
             </p>
@@ -316,14 +318,14 @@ export default function WorkshopsPage() {
     <div className="min-h-screen bg-forest text-on-ink">
       {/* Nav */}
       <nav className="sticky top-0 z-50 border-b border-border px-6 py-4 flex flex-wrap items-center justify-between gap-3 bg-forest/95 backdrop-blur-sm">
-        <Link href="/">
+        <Link href={localizedHref("/")}>
           <span className="text-on-ink-accent text-sm tracking-widest uppercase cursor-pointer hover:text-on-ink transition-colors">
             ← Portici 大稻埕
           </span>
         </Link>
         <div className="flex items-center gap-5">
           <Link
-            href="/eventi"
+            href={localizedHref("/eventi")}
             className="text-xs tracking-widest uppercase text-on-ink-muted hover:text-on-ink transition-colors"
           >
             Sessioni
@@ -349,7 +351,7 @@ export default function WorkshopsPage() {
               <p className="text-on-ink-muted max-w-xl leading-relaxed">
                 Questa area serve quando una sessione è già stata comunicata e volete scegliere data e completare il
                 deposito. Per nuove linee e interesse collettivo, usate la pagina{" "}
-                <Link href="/eventi" className="text-editorial-mark hover:underline underline-offset-4">
+                <Link href={localizedHref("/eventi")} className="text-editorial-mark hover:underline underline-offset-4">
                   Sessioni
                 </Link>
                 .
@@ -676,7 +678,7 @@ export default function WorkshopsPage() {
         <div className="mt-16 pt-10 border-t border-border text-center">
           <p className="text-xs uppercase tracking-widest text-on-ink-subtle mb-3">Altrove</p>
           <Link
-            href="/contatti"
+            href={localizedHref("/contatti")}
             className="text-sm font-medium text-editorial-mark hover:underline underline-offset-4 [font-family:var(--font-ui)]"
           >
             Contatti

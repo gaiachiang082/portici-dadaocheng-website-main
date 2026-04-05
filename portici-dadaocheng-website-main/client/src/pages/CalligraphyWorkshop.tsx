@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { ArrowLeft, ArrowRight, Calendar, Clock, Users, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useLocalizedHref } from "@/contexts/LangContext";
 
 /* ─────────────────────────────────────────────────────────────────
    CDN IMAGE REGISTRY  (calligraphy & ink workshop photos)
@@ -174,6 +175,7 @@ function Lightbox({ photos, index, onClose, onPrev, onNext }: {
    PAGE
    ───────────────────────────────────────────────────────────────── */
 export default function CalligraphyWorkshop() {
+  const localizedHref = useLocalizedHref();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [activeFilter, setActiveFilter] = useState<string>("Tutti");
 
@@ -199,7 +201,7 @@ export default function CalligraphyWorkshop() {
 
         {/* Back link */}
         <div className="absolute top-6 left-6 z-10">
-          <Link href="/"
+          <Link href={localizedHref("/")}
             className="inline-flex items-center gap-2 text-[13px] tracking-[0.14em] uppercase text-[oklch(70%_0.005_85)] hover:text-[oklch(55.0%_0.075_55)] transition-colors"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
             <ArrowLeft size={14} /> Home
@@ -288,7 +290,7 @@ export default function CalligraphyWorkshop() {
                       ))}
                     </ul>
 
-                    <Link href="/eventi?interesse=calligraphy-ink"
+                    <Link href={`${localizedHref("/eventi")}?interesse=calligraphy-ink`}
                       className="inline-flex items-center gap-2 text-[14px] font-semibold hover:gap-3 transition-all duration-300 mt-auto"
                       style={{ fontFamily: "'Inter', system-ui, sans-serif", color: course.accent }}>
                       Mi interessa <ArrowRight size={13} />
@@ -370,7 +372,7 @@ export default function CalligraphyWorkshop() {
               Le sessioni si aprono in base agli interessi raccolti. Lasciate un contatto sulla pagina Sessioni: vi
               scriviamo quando il calendario prende forma.
             </p>
-            <Link href="/eventi?interesse=calligraphy-ink"
+            <Link href={`${localizedHref("/eventi")}?interesse=calligraphy-ink`}
               className="inline-flex items-center gap-2 px-10 py-4 text-[16px] font-semibold bg-[oklch(55.0%_0.075_55)] text-[oklch(96.5%_0.006_85)] hover:opacity-85 hover:gap-3 transition-all duration-300"
               style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
               Manifesta interesse <ArrowRight size={16} />

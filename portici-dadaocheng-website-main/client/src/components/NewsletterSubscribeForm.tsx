@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
+import { useLocalizedHref } from "@/contexts/LangContext";
 
 /** Standardized across footer, home teaser, and /newsletter page. */
 export const NEWSLETTER_SUCCESS_TITLE = "Grazie per l\u2019iscrizione.";
@@ -72,6 +73,7 @@ export function NewsletterSubscribeForm({
   successSupplementWhenEmailNotSent,
   quietSuccess = false,
 }: NewsletterSubscribeFormProps) {
+  const localizedHref = useLocalizedHref();
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [returningSubscriber, setReturningSubscriber] = useState(false);
@@ -109,7 +111,7 @@ export function NewsletterSubscribeForm({
         <p className="text-foreground/90 font-medium">{NEWSLETTER_CALM_ERROR_TITLE}</p>
         <p className="mt-2">
           {NEWSLETTER_CALM_ERROR_BODY_PREFIX}{" "}
-          <a href="/newsletter" className="text-primary underline-offset-4 hover:underline">
+          <a href={localizedHref("/newsletter")} className="text-primary underline-offset-4 hover:underline">
             /newsletter
           </a>
           .
@@ -139,7 +141,7 @@ export function NewsletterSubscribeForm({
         }`}
       >
         {successSupplementWhenEmailNotSent}{" "}
-        <a href="/newsletter" className="text-primary underline-offset-4 hover:underline">
+        <a href={localizedHref("/newsletter")} className="text-primary underline-offset-4 hover:underline">
           /newsletter
         </a>
         .

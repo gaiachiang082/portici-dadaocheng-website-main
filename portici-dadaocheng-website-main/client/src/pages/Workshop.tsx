@@ -3,6 +3,14 @@ import { Link, useLocation } from "wouter";
 import { Calendar, MapPin, Users, Clock, ArrowRight, Filter, X } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useLocalizedHref } from "@/contexts/LangContext";
+
+/** `/eventi` or `/eventi?…` → `/${lang}/eventi` preserving query. */
+function localizeEventiHref(raw: string, lh: (path: string) => string): string {
+  if (raw === "/eventi") return lh("/eventi");
+  if (raw.startsWith("/eventi?")) return `${lh("/eventi")}?${raw.slice(8)}`;
+  return raw;
+}
 
 /* ─── Shared visual components from Home Workshop section ─── */
 
@@ -251,6 +259,7 @@ const WORKSHOP_FEATURES = [
 ];
 
 function WorkshopHighlightSection() {
+  const localizedHref = useLocalizedHref();
   return (
     <section className="py-0 bg-background">
       <div className="container py-20">
@@ -366,15 +375,15 @@ function WorkshopHighlightSection() {
               </p>
               <div className="flex flex-wrap gap-4 items-center">
                 <Link
-                  href={item.href}
+                  href={localizeEventiHref(item.href, localizedHref)}
                   className="inline-flex items-center gap-2 text-[15px] font-semibold hover:gap-3 transition-all duration-300"
                   style={{ fontFamily: "'Inter', system-ui, sans-serif", color: item.accent }}
                 >
                   {item.cta} <ArrowRight size={14} />
                 </Link>
-                {item.href === "/eventi?interesse=calligraphy-ink" && (
+                {item.href.includes("calligraphy-ink") && (
                   <Link
-                    href="/workshop/calligraphy"
+                    href={localizedHref("/workshop/calligraphy")}
                     className="inline-flex items-center gap-2 text-[14px] font-semibold px-5 py-2.5 border border-primary/40 text-primary transition-all duration-300 hover:gap-3"
                     style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
                   >
@@ -407,7 +416,7 @@ function WorkshopHighlightSection() {
         <div className="container pb-12 pt-8 text-center">
           <Reveal>
             <Link
-              href="/eventi"
+              href={localizedHref("/eventi")}
               className="inline-flex items-center gap-2 text-[15px] font-semibold text-primary hover:opacity-70 hover:gap-3 transition-all duration-300"
               style={{ fontFamily: "'Noto Sans', system-ui, sans-serif", fontSize: "17px" }}
             >
@@ -489,6 +498,7 @@ function WorkshopCalendarCard({
   sessions: any[];
   onExpressInterest: (slug: string, title: string) => void;
 }) {
+  const localizedHref = useLocalizedHref();
   const catStyle = CATEGORY_COLORS[workshop.category] ?? CATEGORY_COLORS.calligraphy;
   const nextSession = sessions[0];
   const spotsLeft = nextSession ? nextSession.spotsTotal - nextSession.spotsBooked : 0;
@@ -636,13 +646,13 @@ function WorkshopCalendarCard({
 
         {sessions.length > 0 ? (
           <Link
-            href={`/workshops?booking=1&slug=${encodeURIComponent(workshop.slug)}`}
+            href={`${localizedHref("/workshops")}?booking=1&slug=${encodeURIComponent(workshop.slug)}`}
             className="text-[11px] text-center text-muted-foreground hover:text-brand-cta underline-offset-4 hover:underline [font-family:var(--font-ui)] uppercase tracking-wider"
           >
             Ho un invito — conferma e deposito
           </Link>
         ) : (
-          <Link href="/contatti"
+          <Link href={localizedHref("/contatti")}
             className="w-full px-5 py-2.5 text-[14px] font-medium border border-border text-foreground hover:bg-background transition-colors text-center rounded-md"
             style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}
           >
@@ -656,6 +666,7 @@ function WorkshopCalendarCard({
 
 /* ─── Main Page ─── */
 export default function Workshop() {
+  const localizedHref = useLocalizedHref();
   const [, navigate] = useLocation();
   const [filterCategory, setFilterCategory] = useState<string>("all");
   const [filterMonth, setFilterMonth] = useState<string>("all");
@@ -692,7 +703,7 @@ export default function Workshop() {
 
   const handleExpressInterest = (slug: string, title: string) => {
     navigate(
-      `/eventi?refSlug=${encodeURIComponent(slug)}&refTitle=${encodeURIComponent(title)}`
+      `${localizedHref("/eventi")}?refSlug=${encodeURIComponent(slug)}&refTitle=${encodeURIComponent(title)}`
     );
   };
 
@@ -758,7 +769,7 @@ export default function Workshop() {
                 style={{ fontFamily: "'Spectral', Georgia, serif", fontSize: "2rem", fontWeight: 500 }}>
                 Possibili laboratori
               </h2>
-              <Link href="/eventi"
+              <Link href={localizedHref("/eventi")}
                 className="inline-flex items-center gap-2 text-[15px] font-semibold text-brand-cta hover:opacity-70 hover:gap-3 transition-all duration-300"
                 style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
                 Manifesta interesse <ArrowRight size={14} />
@@ -909,7 +920,7 @@ export default function Workshop() {
             Per chi ha già ricevuto una data confermata, manteniamo le regole di deposito e flessibilità che conoscete.
             Non sono il modo in cui entrate oggi nel programma — partite dalla pagina Sessioni.
           </p>
-          <Link href="/eventi"
+          <Link href={localizedHref("/eventi")}
             className="inline-flex items-center gap-2 px-8 py-3.5 text-[16px] font-semibold bg-brand-cta text-brand-cta-foreground hover:opacity-90 transition-opacity"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
             Prossime sessioni <ArrowRight size={16} />

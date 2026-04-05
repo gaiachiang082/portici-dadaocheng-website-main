@@ -53,6 +53,12 @@ export default {
         title: 'Content (英文內容)',
         type: 'array',
         of: [{type: 'block'}]
+      },
+      {
+        name: 'content_zh',
+        title: 'Content (繁體中文)',
+        type: 'array',
+        of: [{ type: 'block' }, { type: 'image' }],
       }
     ],
     // 這個設定可以讓你在後台列表看到封面圖和標題

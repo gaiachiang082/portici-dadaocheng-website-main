@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { ArrowRight } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
+import { useLocalizedHref } from "@/contexts/LangContext";
 
 const MISSION_VISION_METHOD = [
   {
@@ -29,6 +30,7 @@ const serifBody = "text-[18px] text-muted-foreground leading-[1.85] [font-family
 const serifBodyStrong = "text-foreground font-medium";
 
 export default function Fondatrici() {
+  const localizedHref = useLocalizedHref();
   return (
     <main className="bg-background">
       <PageHeader
@@ -245,7 +247,7 @@ export default function Fondatrici() {
             Continua a esplorare
           </p>
           <Link
-            href="/magazine"
+            href={localizedHref("/magazine")}
             className="text-sm font-medium text-primary hover:underline underline-offset-4"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
           >
@@ -253,7 +255,7 @@ export default function Fondatrici() {
           </Link>
           <span className="hidden sm:inline text-border">·</span>
           <Link
-            href="/eventi"
+            href={localizedHref("/eventi")}
             className="text-sm font-medium text-primary hover:underline underline-offset-4"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
           >
@@ -261,7 +263,7 @@ export default function Fondatrici() {
           </Link>
           <span className="hidden sm:inline text-border">·</span>
           <Link
-            href="/articoli"
+            href={localizedHref("/articoli")}
             className="text-sm font-medium text-primary hover:underline underline-offset-4"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
           >
@@ -287,7 +289,7 @@ export default function Fondatrici() {
             segue la domanda.
           </p>
           <Link
-            href="/eventi"
+            href={localizedHref("/eventi")}
             className="inline-flex items-center gap-2 px-8 py-3.5 text-[16px] font-semibold bg-primary text-primary-foreground rounded-xl hover:opacity-90 transition-opacity"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
           >
