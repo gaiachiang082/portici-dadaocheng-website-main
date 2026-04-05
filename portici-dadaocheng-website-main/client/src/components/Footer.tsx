@@ -3,10 +3,12 @@ import { useState, useEffect } from "react";
 import { Instagram, ArrowUp } from "lucide-react";
 import { BrandMark } from "@/components/BrandMark";
 import { NewsletterSubscribeForm } from "@/components/NewsletterSubscribeForm";
+import { useLocalizedHref } from "@/contexts/LangContext";
 
 const footerMono = "[font-family:var(--font-mono)] text-[11px] font-medium uppercase tracking-[0.1em]";
 
 function FooterNewsletter() {
+  const localizedHref = useLocalizedHref();
   return (
     <div>
       <p className={`${footerMono} text-[color-mix(in_srgb,var(--paper)_55%,transparent)] mb-4`}>Newsletter</p>
@@ -15,7 +17,7 @@ function FooterNewsletter() {
       </p>
       <NewsletterSubscribeForm source="footer" variant="footer" />
       <Link
-        href="/newsletter"
+        href={localizedHref("/newsletter")}
         className={`mt-3 inline-block ${footerMono} text-[color-mix(in_srgb,var(--paper)_70%,transparent)] underline-offset-4 hover:underline hover:text-[var(--paper)] decoration-[var(--riso-red)] transition-colors`}
       >
         Perché iscriversi
@@ -25,6 +27,7 @@ function FooterNewsletter() {
 }
 
 export default function Footer() {
+  const localizedHref = useLocalizedHref();
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
@@ -85,7 +88,7 @@ export default function Footer() {
               {navLinks.map(({ href, label }) => (
                 <li key={href}>
                   <Link
-                    href={href}
+                    href={localizedHref(href)}
                     className="group/link relative inline-block text-[1.0625rem] text-[color-mix(in_srgb,var(--paper)_78%,transparent)] hover:text-[var(--paper)] transition-colors [font-family:var(--font-body)]"
                   >
                     {label}

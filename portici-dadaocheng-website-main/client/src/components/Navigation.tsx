@@ -2,6 +2,13 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
 import { BrandMark } from "@/components/BrandMark";
+import {
+  type Lang,
+  switchLangInPath,
+  SUPPORTED_LANGS,
+  useLang,
+  useLocalizedHref,
+} from "@/contexts/LangContext";
 
 const navLinks = [
   { href: "/fondatrici", label: "Fondatrici" },
@@ -15,23 +22,88 @@ const navLinks = [
 const navMono =
   "[font-family:var(--font-mono)] text-[11px] uppercase tracking-[0.08em] font-medium";
 
-function navItemIsActive(href: string, location: string): boolean {
-  if (href === "/magazine") {
-    return location === "/magazine" || location.startsWith("/articoli/");
+function navItemIsActive(relHref: string, fullLocation: string, lang: Lang): boolean {
+  const base = `/${lang}`;
+  if (relHref === "/magazine") {
+    return fullLocation === `${base}/magazine` || fullLocation.startsWith(`${base}/articoli/`);
   }
-  if (href === "/eventi") {
-    return location === "/eventi";
+  if (relHref === "/eventi") {
+    return fullLocation === `${base}/eventi`;
   }
-  if (href === "/workshop") {
-    return location === "/workshop" || location.startsWith("/workshop/");
+  if (relHref === "/workshop") {
+    return fullLocation === `${base}/workshop` || fullLocation.startsWith(`${base}/workshop/`);
   }
-  if (href === "/fondatrici") {
-    return location === "/fondatrici" || location === "/chi-siamo";
+  if (relHref === "/fondatrici") {
+    return fullLocation === `${base}/fondatrici` || fullLocation === `${base}/chi-siamo`;
   }
-  return location === href;
+  return fullLocation === `${base}${relHref}`;
+}
+
+function LangSwitcher({
+  isHome,
+  scrolled,
+  className,
+}: {
+  isHome: boolean;
+  scrolled: boolean;
+  className?: string;
+}) {
+  const [path, navigate] = useLocation();
+  const lang = useLang();
+
+  const inactiveTone =
+    isHome && !scrolled
+      ? "text-[var(--on-dark)]/75 hover:text-[var(--on-dark)]"
+      : "text-muted-foreground hover:text-foreground";
+
+  return (
+    <div
+      className={`flex items-center gap-1.5 shrink-0 [font-family:var(--font-mono)] text-[10px] font-semibold uppercase tracking-[0.12em] ${className ?? ""}`}
+      role="group"
+      aria-label="Lingua"
+    >
+      {SUPPORTED_LANGS.map((code, i) => (
+        <span key={code} className="flex items-center gap-1.5">
+          {i > 0 ? (
+            <span
+              className={
+                isHome && !scrolled
+                  ? "text-[var(--on-dark)]/35 select-none"
+                  : "text-border select-none"
+              }
+              aria-hidden
+            >
+              |
+            </span>
+          ) : null}
+          {code === lang ? (
+            <span
+              className={
+                isHome && !scrolled
+                  ? "text-[var(--on-dark)] min-w-[1.25rem] text-center"
+                  : "text-foreground min-w-[1.25rem] text-center"
+              }
+            >
+              {code.toUpperCase()}
+            </span>
+          ) : (
+            <button
+              type="button"
+              onClick={() => navigate(switchLangInPath(path, code))}
+              className={`min-w-[1.25rem] text-center transition-colors duration-200 ${inactiveTone}`}
+            >
+              {code.toUpperCase()}
+            </button>
+          )}
+        </span>
+      ))}
+    </div>
+  );
 }
 
 export default function Navigation() {
+  const localizedHref = useLocalizedHref();
+  const lang = useLang();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -52,7 +124,7 @@ export default function Navigation() {
     setMenuOpen(false);
   }, [location]);
 
-  const isHome = location === "/";
+  const isHome = location === `/${lang}` || location === `/${lang}/`;
 
   return (
     <header
@@ -75,7 +147,7 @@ export default function Navigation() {
           }`}
         >
           <Link
-            href="/"
+            href={localizedHref("/")}
             className="flex items-center shrink-0 group transition-opacity duration-300 hover:opacity-80"
             aria-label="Portici DaDaocheng — Home"
           >
@@ -88,10 +160,10 @@ export default function Navigation() {
             />
           </Link>
 
-          <div className="flex items-center gap-6 shrink-0">
+          <div className="flex items-center gap-4 md:gap-6 shrink-0">
             <ul className="hidden md:flex items-center gap-8">
               {navLinks.map(({ href, label }, i) => {
-                const active = navItemIsActive(href, location);
+                const active = navItemIsActive(href, location, lang);
                 return (
                   <li
                     key={href}
@@ -102,7 +174,7 @@ export default function Navigation() {
                     }}
                   >
                     <Link
-                      href={href}
+                      href={localizedHref(href)}
                       className={`${navMono} transition-colors duration-200 relative group/nav ${
                         active
                           ? "text-foreground"
@@ -123,8 +195,10 @@ export default function Navigation() {
               })}
             </ul>
 
+            <LangSwitcher isHome={isHome} scrolled={scrolled} className="hidden md:flex" />
+
             <Link
-              href="/magazine"
+              href={localizedHref("/magazine")}
               className={`hidden md:inline-flex items-center justify-center px-[18px] py-2 rounded-sm border transition-colors duration-200 ${navMono} ${
                 isHome && !scrolled
                   ? "bg-background/90 text-foreground border-[color-mix(in_srgb,var(--ink)_18%,transparent)] hover:bg-muted"
@@ -166,17 +240,18 @@ export default function Navigation() {
       <div
         className="md:hidden bg-background/98 backdrop-blur-[2px] border-t border-border overflow-hidden"
         style={{
-          maxHeight: menuOpen ? "400px" : "0px",
+          maxHeight: menuOpen ? "480px" : "0px",
           transition: "max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
         }}
       >
         <div className="container py-6 flex flex-col gap-5">
+          <LangSwitcher isHome={isHome} scrolled className="pl-2" />
           {navLinks.map(({ href, label }, i) => {
-            const active = navItemIsActive(href, location);
+            const active = navItemIsActive(href, location, lang);
             return (
               <Link
                 key={href}
-                href={href}
+                href={localizedHref(href)}
                 className={`${navMono} pl-2 border-l-2 transition-colors duration-200 ${
                   active
                     ? "text-foreground border-editorial-mark"
@@ -193,7 +268,7 @@ export default function Navigation() {
             );
           })}
           <Link
-            href="/magazine"
+            href={localizedHref("/magazine")}
             className={`mt-2 inline-flex items-center justify-center px-5 py-2.5 rounded-sm border transition-colors duration-200 self-start ${navMono} ${
               isHome && !scrolled
                 ? "bg-background text-foreground border-[color-mix(in_srgb,var(--ink)_18%,transparent)] hover:bg-muted"

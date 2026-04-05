@@ -1,15 +1,17 @@
 import { useEffect } from "react";
 import { useLocation } from "wouter";
+import { useLang } from "@/contexts/LangContext";
 
 /**
- * Legacy URL: /chi-siamo → /fondatrici (replace).
+ * Legacy URL: /:lang/chi-siamo → /:lang/fondatrici (replace).
  */
 export default function ChiSiamoRedirect() {
   const [, navigate] = useLocation();
+  const lang = useLang();
 
   useEffect(() => {
-    navigate("/fondatrici", { replace: true });
-  }, [navigate]);
+    navigate(`/${lang}/fondatrici`, { replace: true });
+  }, [navigate, lang]);
 
   return (
     <main className="min-h-[30vh] flex items-center justify-center bg-background">

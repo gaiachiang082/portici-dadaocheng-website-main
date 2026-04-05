@@ -1,5 +1,6 @@
 import { Link } from "wouter";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useLocalizedHref } from "@/contexts/LangContext";
 
 export interface ArticlePreview {
   _id: string;
@@ -53,6 +54,7 @@ export function ArticleCardSkeleton() {
 }
 
 export function ArticleCard({ article }: { article: ArticlePreview }) {
+  const localizedHref = useLocalizedHref();
   const imageUrl = article.mainImage?.asset?.url;
   const titleIt = article.title?.it ?? "Senza titolo";
   const excerpt = excerptPreview(article.excerpt);
@@ -87,7 +89,7 @@ export function ArticleCard({ article }: { article: ArticlePreview }) {
           <div className="mb-4" aria-hidden />
         )}
         <Link
-          href={`/articoli/${article._id}`}
+          href={localizedHref(`/articoli/${article._id}`)}
           className="inline-flex items-center gap-1.5 text-[12px] uppercase tracking-[0.12em] text-foreground/70 [font-family:var(--font-mono)] hover:text-foreground transition-colors"
         >
           Leggi

@@ -8,7 +8,22 @@ export default {
         name: 'title',
         title: 'Title (文章標題)',
         type: 'localeString', // 這裡直接套用我們剛剛寫的雙語字串！
-        description: '請輸入義大利文與英文標題'
+        description: '請輸入義大利文、英文與繁體中文標題（依文章語系填寫即可）'
+      },
+      {
+        name: 'language',
+        title: 'Language (文章語系)',
+        type: 'string',
+        options: {
+          list: [
+            { title: 'Italiano (義大利文)', value: 'it' },
+            { title: '繁體中文', value: 'zh' },
+            { title: 'English', value: 'en' },
+          ],
+          layout: 'dropdown',
+        },
+        initialValue: 'it',
+        validation: (Rule) => Rule.required(),
       },
       {
         name: 'slug',
@@ -43,8 +58,25 @@ export default {
     // 這個設定可以讓你在後台列表看到封面圖和標題
     preview: {
       select: {
-        title: 'title.it', // 預設顯示義大利文標題
+        titleIt: 'title.it',
+        titleEn: 'title.en',
+        titleZh: 'title.zh',
         media: 'mainImage',
+        language: 'language',
+      },
+      prepare({ titleIt, titleEn, titleZh, media, language }) {
+        const langTag =
+          language === 'zh' ? '[ZH]' : language === 'en' ? '[EN]' : '[IT]';
+        const headline =
+          (language === 'zh'
+            ? titleZh || titleIt || titleEn
+            : language === 'en'
+              ? titleEn || titleIt || titleZh
+              : titleIt || titleEn || titleZh) || '（無標題）';
+        return {
+          title: `${langTag} ${headline}`,
+          media,
+        };
       },
     },
   }

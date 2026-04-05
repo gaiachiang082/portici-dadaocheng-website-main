@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "wouter";
 import { ArrowLeft } from "lucide-react";
 import { PortableText, type PortableTextBlock } from "@portabletext/react";
+import { useLocalizedHref } from "@/contexts/LangContext";
 import { client } from "../SanityClient";
 
 /** Shape of `*[_type == "article" && _id == $id][0]{ ... }` including Italian block body from Sanity. */
@@ -17,6 +18,7 @@ interface ArticleDetail {
 }
 
 export default function ArticoloDetail() {
+  const localizedHref = useLocalizedHref();
   const params = useParams<{ id: string }>();
   const id = params?.id;
   const [article, setArticle] = useState<ArticleDetail | null>(null);
@@ -81,7 +83,7 @@ export default function ArticoloDetail() {
               {error ?? "Articolo non trovato."}
             </p>
             <Link
-              href="/magazine"
+              href={localizedHref("/magazine")}
               className="inline-flex items-center gap-2 text-on-ink-muted underline-offset-4 hover:text-on-ink hover:underline"
             >
               <ArrowLeft size={18} />
@@ -99,7 +101,7 @@ export default function ArticoloDetail() {
       <section className="pt-32 pb-12 bg-forest">
         <div className="container max-w-3xl">
           <Link
-            href="/magazine"
+            href={localizedHref("/magazine")}
             className="inline-flex items-center gap-2 text-[15px] text-on-ink-muted underline-offset-4 hover:text-on-ink hover:underline mb-8"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
           >

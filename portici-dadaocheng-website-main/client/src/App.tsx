@@ -1,10 +1,12 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { Route, Switch } from "wouter";
+import { Route, Switch, Redirect } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { LangProviderFromLocation } from "./contexts/LangContext";
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
+import LangRouteWrapper from "./components/LangRouteWrapper";
 import Home from "./pages/Home";
 import Fondatrici from "./pages/Fondatrici";
 import ChiSiamoRedirect from "./pages/ChiSiamoRedirect";
@@ -23,7 +25,7 @@ import BookingSuccess from "./pages/BookingSuccess";
 import AdminPage from "./pages/Admin";
 import ScrollToTopOnRouteChange from "./components/ScrollToTopOnRouteChange";
 
-function Router() {
+function LocalizedRoutes() {
   return (
     <Switch>
       <Route path="/" component={Home} />
@@ -39,8 +41,24 @@ function Router() {
       <Route path="/contatti" component={Contatti} />
       {/* <Route path="/workshop/calligraphy" component={CalligraphyWorkshop} /> */}
       <Route path="/workshops" component={WorkshopsPage} />
+      <Route component={NotFound} />
+    </Switch>
+  );
+}
+
+function Router() {
+  return (
+    <Switch>
+      <Route path="/">
+        <Redirect to="/it" />
+      </Route>
       <Route path="/booking/success" component={BookingSuccess} />
       <Route path="/admin" component={AdminPage} />
+      <Route path="/:lang" nest>
+        <LangRouteWrapper>
+          <LocalizedRoutes />
+        </LangRouteWrapper>
+      </Route>
       <Route component={NotFound} />
     </Switch>
   );
@@ -52,10 +70,12 @@ function App() {
       <ThemeProvider defaultTheme="light">
         <TooltipProvider>
           <Toaster />
-          <Navigation />
-          <ScrollToTopOnRouteChange />
-          <Router />
-          <Footer />
+          <LangProviderFromLocation>
+            <Navigation />
+            <ScrollToTopOnRouteChange />
+            <Router />
+            <Footer />
+          </LangProviderFromLocation>
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>

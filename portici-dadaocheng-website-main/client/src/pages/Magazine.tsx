@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { MAGAZINE_ISSUE_1_SOURCE } from "@shared/const";
 import { PageHeader } from "@/components/PageHeader";
 import { NewsletterSubscribeForm } from "@/components/NewsletterSubscribeForm";
+import { useLocalizedHref } from "@/contexts/LangContext";
 import { client } from "../SanityClient";
 import {
   formatIssueMeta,
@@ -97,6 +98,7 @@ function IssueArchiveCard({ issue }: { issue: MagazineIssue }) {
 }
 
 export default function Magazine() {
+  const localizedHref = useLocalizedHref();
   const current = getCurrentIssue();
   const archived = getArchivedIssues();
   const [articles, setArticles] = useState<Article[]>([]);
@@ -351,7 +353,7 @@ export default function Magazine() {
                 return (
                   <Link
                     key={article._id}
-                    href={`/articoli/${article._id}`}
+                    href={localizedHref(`/articoli/${article._id}`)}
                     className="group rounded-xl overflow-hidden border border-border/70 bg-card/80 flex flex-col transition-colors hover:border-border hover:bg-card"
                   >
                     <div className="relative h-28 w-full overflow-hidden bg-muted shrink-0">
