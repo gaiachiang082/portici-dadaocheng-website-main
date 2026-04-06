@@ -103,17 +103,23 @@ export default function Navigation() {
   const [mounted, setMounted] = useState(false);
   const [location] = useLocation();
 
-  const navItems = useMemo(
-    () => [
+  const navItems = useMemo(() => {
+    const all = [
       { href: "/fondatrici", label: t.nav.founders },
+      { href: "/servizi", label: t.nav.services },
+      { href: "/casi-studio", label: t.nav.case_studies },
       { href: "/magazine", label: t.nav.magazine },
       { href: "/articoli", label: t.nav.articles },
       { href: "/newsletter", label: t.nav.newsletter },
       { href: "/eventi", label: t.nav.events },
       { href: "/contatti", label: t.nav.contact },
-    ],
-    [t]
-  );
+    ];
+    const zhHidden = ["/magazine", "/newsletter", "/eventi"];
+    const b2bOnly = ["/servizi", "/casi-studio"];
+    return all.filter((item) =>
+      lang === "zh" ? !zhHidden.includes(item.href) : !b2bOnly.includes(item.href)
+    );
+  }, [t, lang]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -203,20 +209,22 @@ export default function Navigation() {
 
             <LangSwitcher isHome={isHome} scrolled={scrolled} className="hidden md:flex" />
 
-            <Link
-              href={localizedHref("/magazine")}
-              className={`hidden md:inline-flex items-center justify-center px-[18px] py-2 rounded-sm border transition-colors duration-200 ${navMono} ${
-                isHome && !scrolled
-                  ? "bg-background/90 text-foreground border-[color-mix(in_srgb,var(--ink)_18%,transparent)] hover:bg-muted"
-                  : "bg-transparent text-foreground border-foreground hover:bg-foreground hover:text-background"
-              }`}
-              style={{
-                opacity: mounted ? 1 : 0,
-                transition: `opacity 0.5s ease 700ms, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease`,
-              }}
-            >
-              {t.nav.open_magazine}
-            </Link>
+            {lang !== "zh" ? (
+              <Link
+                href={localizedHref("/magazine")}
+                className={`hidden md:inline-flex items-center justify-center px-[18px] py-2 rounded-sm border transition-colors duration-200 ${navMono} ${
+                  isHome && !scrolled
+                    ? "bg-background/90 text-foreground border-[color-mix(in_srgb,var(--ink)_18%,transparent)] hover:bg-muted"
+                    : "bg-transparent text-foreground border-foreground hover:bg-foreground hover:text-background"
+                }`}
+                style={{
+                  opacity: mounted ? 1 : 0,
+                  transition: `opacity 0.5s ease 700ms, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease`,
+                }}
+              >
+                {t.nav.open_magazine}
+              </Link>
+            ) : null}
 
             <button
               type="button"
@@ -273,16 +281,18 @@ export default function Navigation() {
               </Link>
             );
           })}
-          <Link
-            href={localizedHref("/magazine")}
-            className={`mt-2 inline-flex items-center justify-center px-5 py-2.5 rounded-sm border transition-colors duration-200 self-start ${navMono} ${
-              isHome && !scrolled
-                ? "bg-background text-foreground border-[color-mix(in_srgb,var(--ink)_18%,transparent)] hover:bg-muted"
-                : "bg-transparent text-foreground border-foreground hover:bg-foreground hover:text-background"
-            }`}
-          >
-            {t.nav.open_magazine}
-          </Link>
+          {lang !== "zh" ? (
+            <Link
+              href={localizedHref("/magazine")}
+              className={`mt-2 inline-flex items-center justify-center px-5 py-2.5 rounded-sm border transition-colors duration-200 self-start ${navMono} ${
+                isHome && !scrolled
+                  ? "bg-background text-foreground border-[color-mix(in_srgb,var(--ink)_18%,transparent)] hover:bg-muted"
+                  : "bg-transparent text-foreground border-foreground hover:bg-foreground hover:text-background"
+              }`}
+            >
+              {t.nav.open_magazine}
+            </Link>
+          ) : null}
         </div>
       </div>
     </header>

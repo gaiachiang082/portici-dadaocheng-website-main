@@ -17,6 +17,8 @@ import ArticoliPage from "./pages/ArticoliListRedirect";
 import ArticoloDetail from "./pages/ArticoloDetail";
 // import Spazio from "./pages/Spazio";
 import Contatti from "./pages/Contatti";
+import Servizi from "./pages/Servizi";
+import CasiStudio from "./pages/CasiStudio";
 import Newsletter from "./pages/Newsletter";
 import NotFound from "./pages/NotFound";
 // import CalligraphyWorkshop from "./pages/CalligraphyWorkshop";
@@ -39,6 +41,8 @@ function LocalizedRoutes() {
       <Route path="/articoli" component={ArticoliPage} />
       {/* <Route path="/spazio" component={Spazio} /> */}
       <Route path="/contatti" component={Contatti} />
+      <Route path="/servizi" component={Servizi} />
+      <Route path="/casi-studio" component={CasiStudio} />
       {/* <Route path="/workshop/calligraphy" component={CalligraphyWorkshop} /> */}
       <Route path="/workshops" component={WorkshopsPage} />
       <Route component={NotFound} />
