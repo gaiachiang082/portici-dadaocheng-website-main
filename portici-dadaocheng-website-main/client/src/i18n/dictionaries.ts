@@ -36,6 +36,7 @@ export type I18nDict = {
     hero_alt_links: string;
   };
   footer: {
+    tagline: string;
     explore: string;
     newsletter_heading: string;
     newsletter_body: string;
@@ -95,6 +96,8 @@ export const dict: Record<Lang, I18nDict> = {
       hero_alt_links: "Altri collegamenti",
     },
     footer: {
+      tagline:
+        "Dove culture diverse interpretano la stessa cosa in modi sorprendentemente diversi.",
       explore: "Esplora",
       newsletter_heading: "Newsletter",
       newsletter_body: "Una mail al mese. Per il resto, la pagina dedicata.",
@@ -152,6 +155,7 @@ export const dict: Record<Lang, I18nDict> = {
       hero_alt_links: "其他連結",
     },
     footer: {
+      tagline: "不同的文化，用各自的方式回應同一個問題——我們在這裡把它們放在一起對話。",
       explore: "探索",
       newsletter_heading: "電子報",
       newsletter_body: "每月一封，其餘請見專頁。",
@@ -209,6 +213,8 @@ export const dict: Record<Lang, I18nDict> = {
       hero_alt_links: "More links",
     },
     footer: {
+      tagline:
+        "Where different cultures answer the same human questions in surprisingly different ways.",
       explore: "Explore",
       newsletter_heading: "Newsletter",
       newsletter_body: "One email a month. For everything else, the dedicated page.",

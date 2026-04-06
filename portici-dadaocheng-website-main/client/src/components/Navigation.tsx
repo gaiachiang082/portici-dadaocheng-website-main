@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
 import { BrandMark } from "@/components/BrandMark";
@@ -9,15 +9,7 @@ import {
   useLang,
   useLocalizedHref,
 } from "@/contexts/LangContext";
-
-const navLinks = [
-  { href: "/fondatrici", label: "Fondatrici" },
-  { href: "/magazine", label: "Magazine" },
-  { href: "/articoli", label: "Articoli" },
-  { href: "/newsletter", label: "Newsletter" },
-  { href: "/eventi", label: "Sessioni" },
-  { href: "/contatti", label: "Contatti" },
-];
+import { useUiDict } from "@/i18n/useUiDict";
 
 const navMono =
   "[font-family:var(--font-mono)] text-[11px] uppercase tracking-[0.08em] font-medium";
@@ -50,6 +42,7 @@ function LangSwitcher({
 }) {
   const [path, navigate] = useLocation();
   const lang = useLang();
+  const t = useUiDict();
 
   const inactiveTone =
     isHome && !scrolled
@@ -60,7 +53,7 @@ function LangSwitcher({
     <div
       className={`flex items-center gap-1.5 shrink-0 [font-family:var(--font-mono)] text-[10px] font-semibold uppercase tracking-[0.12em] ${className ?? ""}`}
       role="group"
-      aria-label="Lingua"
+      aria-label={t.lang_switcher.aria}
     >
       {SUPPORTED_LANGS.map((code, i) => (
         <span key={code} className="flex items-center gap-1.5">
@@ -102,12 +95,25 @@ function LangSwitcher({
 }
 
 export default function Navigation() {
+  const t = useUiDict();
   const localizedHref = useLocalizedHref();
   const lang = useLang();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [location] = useLocation();
+
+  const navItems = useMemo(
+    () => [
+      { href: "/fondatrici", label: t.nav.founders },
+      { href: "/magazine", label: t.nav.magazine },
+      { href: "/articoli", label: t.nav.articles },
+      { href: "/newsletter", label: t.nav.newsletter },
+      { href: "/eventi", label: t.nav.events },
+      { href: "/contatti", label: t.nav.contact },
+    ],
+    [t]
+  );
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -116,8 +122,8 @@ export default function Navigation() {
   }, []);
 
   useEffect(() => {
-    const t = setTimeout(() => setMounted(true), 50);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setMounted(true), 50);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -149,7 +155,7 @@ export default function Navigation() {
           <Link
             href={localizedHref("/")}
             className="flex items-center shrink-0 group transition-opacity duration-300 hover:opacity-80"
-            aria-label="Portici DaDaocheng — Home"
+            aria-label={t.nav.home_aria}
           >
             <BrandMark
               tone={isHome && !scrolled ? "paper" : "ink"}
@@ -162,7 +168,7 @@ export default function Navigation() {
 
           <div className="flex items-center gap-4 md:gap-6 shrink-0">
             <ul className="hidden md:flex items-center gap-8">
-              {navLinks.map(({ href, label }, i) => {
+              {navItems.map(({ href, label }, i) => {
                 const active = navItemIsActive(href, location, lang);
                 return (
                   <li
@@ -209,7 +215,7 @@ export default function Navigation() {
                 transition: `opacity 0.5s ease 700ms, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease`,
               }}
             >
-              Apri il Magazine
+              {t.nav.open_magazine}
             </Link>
 
             <button
@@ -220,7 +226,7 @@ export default function Navigation() {
                   : "text-foreground hover:text-muted-foreground"
               }`}
               onClick={() => setMenuOpen(!menuOpen)}
-              aria-label={menuOpen ? "Chiudi menu" : "Apri menu"}
+              aria-label={menuOpen ? t.nav.menu_close : t.nav.menu_open}
               aria-expanded={menuOpen}
             >
               <span
@@ -246,7 +252,7 @@ export default function Navigation() {
       >
         <div className="container py-6 flex flex-col gap-5">
           <LangSwitcher isHome={isHome} scrolled className="pl-2" />
-          {navLinks.map(({ href, label }, i) => {
+          {navItems.map(({ href, label }, i) => {
             const active = navItemIsActive(href, location, lang);
             return (
               <Link
@@ -275,7 +281,7 @@ export default function Navigation() {
                 : "bg-transparent text-foreground border-foreground hover:bg-foreground hover:text-background"
             }`}
           >
-            Apri il Magazine
+            {t.nav.open_magazine}
           </Link>
         </div>
       </div>

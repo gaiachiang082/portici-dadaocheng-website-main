@@ -1,32 +1,37 @@
 import { Link } from "wouter";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Instagram, ArrowUp } from "lucide-react";
 import { BrandMark } from "@/components/BrandMark";
 import { NewsletterSubscribeForm } from "@/components/NewsletterSubscribeForm";
 import { useLocalizedHref } from "@/contexts/LangContext";
+import { useUiDict } from "@/i18n/useUiDict";
 
 const footerMono = "[font-family:var(--font-mono)] text-[11px] font-medium uppercase tracking-[0.1em]";
 
 function FooterNewsletter() {
   const localizedHref = useLocalizedHref();
+  const t = useUiDict();
   return (
     <div>
-      <p className={`${footerMono} text-[color-mix(in_srgb,var(--paper)_55%,transparent)] mb-4`}>Newsletter</p>
+      <p className={`${footerMono} text-[color-mix(in_srgb,var(--paper)_55%,transparent)] mb-4`}>
+        {t.footer.newsletter_heading}
+      </p>
       <p className="text-[1.0625rem] text-[color-mix(in_srgb,var(--paper)_82%,transparent)] leading-[1.75] mb-4 [font-family:var(--font-body)]">
-        Una mail al mese. Per il resto, la pagina dedicata.
+        {t.footer.newsletter_body}
       </p>
       <NewsletterSubscribeForm source="footer" variant="footer" />
       <Link
         href={localizedHref("/newsletter")}
         className={`mt-3 inline-block ${footerMono} text-[color-mix(in_srgb,var(--paper)_70%,transparent)] underline-offset-4 hover:underline hover:text-[var(--paper)] decoration-[var(--riso-red)] transition-colors`}
       >
-        Perché iscriversi
+        {t.footer.newsletter_why}
       </Link>
     </div>
   );
 }
 
 export default function Footer() {
+  const t = useUiDict();
   const localizedHref = useLocalizedHref();
   const [showBackToTop, setShowBackToTop] = useState(false);
 
@@ -38,14 +43,19 @@ export default function Footer() {
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
-  const navLinks = [
-    { href: "/fondatrici", label: "Fondatrici" },
-    { href: "/magazine", label: "Magazine" },
-    { href: "/articoli", label: "Articoli" },
-    { href: "/newsletter", label: "Newsletter" },
-    { href: "/eventi", label: "Sessioni" },
-    { href: "/contatti", label: "Contatti" },
-  ];
+  const navItems = useMemo(
+    () => [
+      { href: "/fondatrici", label: t.nav.founders },
+      { href: "/magazine", label: t.nav.magazine },
+      { href: "/articoli", label: t.nav.articles },
+      { href: "/newsletter", label: t.nav.newsletter },
+      { href: "/eventi", label: t.nav.events },
+      { href: "/contatti", label: t.nav.contact },
+    ],
+    [t]
+  );
+
+  const year = new Date().getFullYear();
 
   return (
     <footer className="bg-forest text-[var(--on-dark)] relative border-t border-[color-mix(in_srgb,var(--paper)_12%,transparent)]">
@@ -55,7 +65,7 @@ export default function Footer() {
         className={`fixed bottom-8 right-8 z-[45] w-12 h-12 rounded-full border border-[color-mix(in_srgb,var(--paper)_35%,transparent)] bg-[color-mix(in_srgb,var(--paper)_6%,var(--forest-deep))] text-[var(--paper)] flex items-center justify-center transition-all duration-300 hover:bg-[var(--paper)] hover:text-[var(--foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--riso-red)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--forest-deep)] ${
           showBackToTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
         }`}
-        aria-label="Torna su"
+        aria-label={t.footer.back_to_top}
       >
         <ArrowUp size={20} />
       </button>
@@ -75,17 +85,19 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-[1.0625rem] text-[color-mix(in_srgb,var(--paper)_82%,transparent)] leading-[1.75] max-w-xs [font-family:var(--font-body)]">
-              Dove culture diverse interpretano la stessa cosa in modi sorprendentemente diversi.
+              {t.footer.tagline}
             </p>
             <p className={`${footerMono} !normal-case !tracking-normal text-[color-mix(in_srgb,var(--paper)_55%,transparent)]`}>
-              Bologna, Italia · {new Date().getFullYear()}
+              Bologna, Italia · {year}
             </p>
           </div>
 
           <div>
-            <p className={`${footerMono} text-[color-mix(in_srgb,var(--paper)_55%,transparent)] mb-5`}>Esplora</p>
+            <p className={`${footerMono} text-[color-mix(in_srgb,var(--paper)_55%,transparent)] mb-5`}>
+              {t.footer.explore}
+            </p>
             <ul className="flex flex-col gap-3">
-              {navLinks.map(({ href, label }) => (
+              {navItems.map(({ href, label }) => (
                 <li key={href}>
                   <Link
                     href={localizedHref(href)}
@@ -106,7 +118,7 @@ export default function Footer() {
 
         <div className="mt-12 pt-6 border-t border-[color-mix(in_srgb,var(--paper)_14%,transparent)] flex flex-col md:flex-row items-center justify-between gap-3">
           <p className={`${footerMono} !normal-case !tracking-normal text-[color-mix(in_srgb,var(--paper)_48%,transparent)]`}>
-            © {new Date().getFullYear()} Portici DaDaocheng. Tutti i diritti riservati.
+            © {year} Portici DaDaocheng. {t.footer.rights}
           </p>
           <a
             href="https://instagram.com/portici.dadaocheng"
@@ -117,7 +129,7 @@ export default function Footer() {
             <span className="inline-flex transition-transform duration-200 group-hover/ig:scale-110 text-[var(--riso-peach)] group-hover/ig:text-[var(--paper)]">
               <Instagram size={18} />
             </span>
-            <span>Instagram</span>
+            <span>{t.footer.instagram}</span>
           </a>
         </div>
       </div>

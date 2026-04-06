@@ -46,13 +46,13 @@ export default {
         name: 'content_it',
         title: 'Content (義大利文內容)',
         type: 'array',
-        of: [{type: 'block'}] // 這是 Sanity 的強大文字編輯器格式
+        of: [{ type: 'block' }, { type: 'image' }],
       },
       {
         name: 'content_en',
         title: 'Content (英文內容)',
         type: 'array',
-        of: [{type: 'block'}]
+        of: [{ type: 'block' }, { type: 'image' }],
       },
       {
         name: 'content_zh',
