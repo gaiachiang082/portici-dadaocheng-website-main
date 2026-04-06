@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Download, Loader2, ArrowRight } from "lucide-react";
+import { Loader2, ArrowRight, MessageCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -11,9 +11,9 @@ const formFieldClass =
   "w-full px-4 py-3 text-sm bg-background border border-input text-foreground placeholder:text-muted-foreground rounded-xl resize-none transition-all duration-300 focus:outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/20";
 
 const SERVICE_OPTIONS = [
-  "市場探索與諮詢",
-  "品牌進場與展會對接",
-  "代理與長期經營",
+  "市場情報與文化轉譯",
+  "展會策展與商務交流",
+  "買家探索與商務推進",
   "還不確定",
 ] as const;
 
@@ -251,27 +251,27 @@ export default function ContattiZH() {
 
       <section className="py-12 md:py-14 px-6 md:px-10 bg-muted/30 border-y border-border/70">
         <div className="container max-w-5xl mx-auto">
-          <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-primary/35 bg-gradient-to-br from-[var(--paper-warm)]/80 via-background to-muted/40 p-6 md:p-8 shadow-sm">
-            <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-primary/10 blur-2xl pointer-events-none" aria-hidden />
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary mb-2" style={{ fontFamily: "var(--font-ui)" }}>
-              免費資源
+          <div className="relative overflow-hidden rounded-2xl border border-[color-mix(in_srgb,var(--forest-deep)_18%,var(--border))] bg-gradient-to-br from-[#06C755]/[0.08] via-[var(--paper-warm)]/60 to-background p-6 md:p-8 shadow-sm">
+            <div className="absolute -right-8 -top-8 h-28 w-28 rounded-full bg-[#06C755]/15 blur-2xl pointer-events-none" aria-hidden />
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-2" style={{ fontFamily: "var(--font-ui)" }}>
+              LINE · B2B
             </p>
             <h2
               className="font-medium text-foreground mb-3 max-w-2xl"
               style={{ fontFamily: "'Spectral', Georgia, serif", fontSize: "clamp(1.35rem,2.4vw,1.75rem)" }}
             >
-              還沒準備好聊聊？先帶走我們的市場筆記
+              習慣用 LINE 討論？加入我們的 B2B 商務交流專號
             </h2>
             <p className="text-[15px] md:text-[16px] text-muted-foreground leading-[1.8] max-w-2xl mb-6" style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-              下載《義大利市場進場避坑指南》，了解台灣品牌在歐洲最常忽略的 3 個文化差異與商業眉角。
+              獲得第一手義大利展會情報、採購文化解析，或直接與我們進行快速的初步對焦。
             </p>
             <a
               href="#"
-              className="inline-flex items-center gap-2 rounded-xl border border-foreground/15 bg-foreground text-background px-5 py-3 text-[14px] font-semibold hover:opacity-90 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+              className="inline-flex items-center gap-2 rounded-xl bg-[#06C755] text-white px-5 py-3 text-[14px] font-semibold hover:opacity-90 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
               style={{ fontFamily: "var(--font-ui)" }}
             >
-              <Download size={17} aria-hidden />
-              免費下載 PDF (準備中)
+              <MessageCircle size={18} aria-hidden className="shrink-0" />
+              加入 LINE 官方帳號
             </a>
           </div>
         </div>

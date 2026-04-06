@@ -34,13 +34,13 @@ function HeroSection() {
               className="text-[1.05rem] md:text-[1.2rem] text-foreground/90 leading-relaxed mb-4"
               style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
             >
-              為台灣品牌量身打造的歐洲市場進場與落地推廣服務
+              為台灣品牌量身打造的跨文化商務轉譯與推進——我們能將大型展會與公單位的名單，轉化為真正能往前走的商務推進。
             </p>
             <p
               className="text-[16px] text-muted-foreground leading-[1.75] mb-8 max-w-2xl"
               style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
             >
-              結合在地深耕與台灣文化基因，精準對接市場資源，讓品牌從第一步接觸到商業落地都走得更穩、更快。
+              結合在地深耕與台灣文化基因，協助品牌把產品敘事轉成當地買家聽得懂的邏輯，並在展會與採購節奏之間補上文化落差，讓洽談從「拿到聯絡方式」一路推進到可執行的下一步。
             </p>
             <Link
               href={localizedHref("/contatti")}
@@ -60,9 +60,9 @@ function HeroSection() {
             </div>
             <ul className="mt-6 space-y-3">
               {[
-                "在地市場脈絡判讀與競品定位",
-                "展會、通路、合作夥伴精準對接",
-                "從短期曝光到長期代理經營路徑",
+                "市場情報與文化轉譯，對齊義大利買家思維",
+                "展會策展與現場跨文化溝通支援",
+                "買家探索與商務推進，從洽談到樣品／試單節奏",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-2 text-[14px] text-foreground/90">
                   <CheckCircle2 size={16} className="mt-0.5 shrink-0 text-primary" aria-hidden />
@@ -90,10 +90,19 @@ function ServicesSnapshotSection() {
         </h2>
         <div className="grid md:grid-cols-3 gap-5 md:gap-6">
           {[
-            "市場探索與諮詢",
-            "品牌進場與展會對接",
-            "代理與長期經營",
-          ].map((title) => (
+            {
+              title: "市場情報與文化轉譯",
+              desc: "為台灣品牌進行義大利市場 briefing，將你的產品優勢翻譯成當地買家聽得懂的商業邏輯。",
+            },
+            {
+              title: "展會策展與商務交流",
+              desc: "帶領台灣企業前進歐洲，從行程設計、暖場介紹到展會現場的跨文化溝通支援。",
+            },
+            {
+              title: "買家探索與商務推進",
+              desc: "從前期名單篩選到會後追蹤，解決文化誤差，協助將初步洽談推進至樣品或試單階段。",
+            },
+          ].map(({ title, desc }) => (
             <article key={title} className="border border-border bg-[var(--paper-warm)]/55 p-6 md:p-7 min-h-[220px] flex flex-col">
               <h3
                 className="text-[1.2rem] text-foreground leading-snug mb-4"
@@ -102,7 +111,7 @@ function ServicesSnapshotSection() {
                 {title}
               </h3>
               <p className="text-[15px] text-muted-foreground leading-[1.7] flex-1" style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-                針對品牌現況與資源，規劃適合義大利市場的切入策略與執行節奏。
+                {desc}
               </p>
               <a href="#" className="mt-6 inline-flex items-center gap-1.5 text-[14px] text-primary hover:opacity-80 transition-opacity" style={{ fontFamily: "var(--font-ui)" }}>
                 了解更多 <ArrowRight size={14} aria-hidden />
