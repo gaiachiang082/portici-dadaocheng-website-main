@@ -5,10 +5,12 @@ import { BrandMark } from "@/components/BrandMark";
 import {
   type Lang,
   switchLangInPath,
-  SUPPORTED_LANGS,
   useLang,
   useLocalizedHref,
 } from "@/contexts/LangContext";
+
+/** Locales shown in the nav language switcher (EN kept in codebase but not exposed in UI). */
+const NAV_LANG_SWITCHER_CODES = ["it", "zh"] as const satisfies readonly Lang[];
 import { useUiDict } from "@/i18n/useUiDict";
 
 const navMono =
@@ -55,7 +57,7 @@ function LangSwitcher({
       role="group"
       aria-label={t.lang_switcher.aria}
     >
-      {SUPPORTED_LANGS.map((code, i) => (
+      {NAV_LANG_SWITCHER_CODES.map((code, i) => (
         <span key={code} className="flex items-center gap-1.5">
           {i > 0 ? (
             <span
