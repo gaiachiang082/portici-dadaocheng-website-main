@@ -4,6 +4,10 @@ import { Link } from "wouter";
 import { useLang, useLocalizedHref } from "@/contexts/LangContext";
 import { ArticleCard, ArticleCardSkeleton, type ArticlePreview } from "@/components/ArticlePreviewCard";
 import { ARTICLES_LATEST_THREE_QUERY } from "@/sanity/articleQueries";
+import heroImage from "@/assets/images/hero_zh_54_bologna.png";
+import iconInsights from "@/assets/images/zh_service_1_insights.png";
+import iconTradeShow from "@/assets/images/zh_service_2_tradeshow.png";
+import iconDiscovery from "@/assets/images/zh_service_3_discovery.png";
 import { client } from "../SanityClient";
 
 function HeroSection() {
@@ -53,10 +57,12 @@ function HeroSection() {
           </div>
 
           <div className="border border-border bg-[var(--paper-warm)] p-6 md:p-8">
-            <div className="aspect-[5/4] w-full rounded-sm bg-muted/50 border border-border flex items-center justify-center">
-              <span className="text-sm text-muted-foreground" style={{ fontFamily: "var(--font-ui)" }}>
-                品牌進場主視覺（佔位）
-              </span>
+            <div className="aspect-[5/4] w-full">
+              <img
+                src={heroImage}
+                alt="台灣顧問與義大利買家於波隆納 Due Torri 露台握手簽約"
+                className="w-full h-full object-cover rounded-sm border border-border"
+              />
             </div>
             <ul className="mt-6 space-y-3">
               {[
