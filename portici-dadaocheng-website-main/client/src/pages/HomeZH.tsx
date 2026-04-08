@@ -97,19 +97,36 @@ function ServicesSnapshotSection() {
         <div className="grid md:grid-cols-3 gap-5 md:gap-6">
           {[
             {
-              title: "市場情報與文化轉譯",
+              title: "市場情報與諮詢",
               desc: "為台灣品牌進行義大利市場 briefing，將你的產品優勢翻譯成當地買家聽得懂的商業邏輯。",
             },
             {
-              title: "展會策展與商務交流",
+              title: "品牌進場與展會對接",
               desc: "帶領台灣企業前進歐洲，從行程設計、暖場介紹到展會現場的跨文化溝通支援。",
             },
             {
-              title: "買家探索與商務推進",
+              title: "代理與長期經營",
               desc: "從前期名單篩選到會後追蹤，解決文化誤差，協助將初步洽談推進至樣品或試單階段。",
             },
-          ].map(({ title, desc }) => (
+          ].map(({ title, desc }) => {
+            const iconSrc =
+              title === "市場情報與諮詢"
+                ? iconInsights
+                : title === "品牌進場與展會對接"
+                  ? iconTradeShow
+                  : iconDiscovery;
+            const iconAlt =
+              title === "市場情報與諮詢"
+                ? "市場情報與文化轉譯圖示"
+                : title === "品牌進場與展會對接"
+                  ? "展會策展與商務交流圖示"
+                  : "買家探索與商務推進圖示";
+
+            return (
             <article key={title} className="border border-border bg-[var(--paper-warm)]/55 p-6 md:p-7 min-h-[220px] flex flex-col">
+              <div className="mb-6 flex justify-center">
+                <img src={iconSrc} alt={iconAlt} className="w-16 h-16 object-contain" />
+              </div>
               <h3
                 className="text-[1.2rem] text-foreground leading-snug mb-4"
                 style={{ fontFamily: "'Spectral', Georgia, serif" }}
@@ -123,7 +140,8 @@ function ServicesSnapshotSection() {
                 了解更多 <ArrowRight size={14} aria-hidden />
               </a>
             </article>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
