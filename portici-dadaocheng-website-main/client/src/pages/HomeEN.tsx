@@ -64,20 +64,28 @@ function HomeHero() {
                 letterSpacing: "-0.02em",
               }}
             >
-              [EN home] Hero headline placeholder — copy can differ from Italian layout.
+              Where different cultures interpret the same human question in ways that refuse to line up.
             </h1>
             <p
               className="text-[1.05rem] md:text-lg text-foreground/85 leading-snug mb-5"
               style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
-              lang="en"
+              lang="zh-Hant"
             >
-              [EN home] Tagline placeholder
+              異中求同，同中求異。
+            </p>
+            <p
+              className="text-[17px] text-muted-foreground leading-[1.75] mb-4 max-w-xl"
+              style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+            >
+              We take notes from Bologna and Taipei: a quarterly PDF, rare letters in the inbox, live sessions only
+              when a question has earned a date and a place under the porticoes—not a catalogue held open by habit.
             </p>
             <p
               className="text-[17px] text-muted-foreground leading-[1.75] mb-10 max-w-xl"
               style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
             >
-              [EN home] Intro paragraph placeholder. Describe magazine, newsletter, and live sessions in English here.
+              What question keeps you holding both cities on the same table today—without folding them into a single
+              picture?
             </p>
 
             <div
@@ -100,7 +108,7 @@ function HomeHero() {
                 className="group inline-flex flex-col gap-1 w-fit focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground"
                 style={{ fontFamily: "var(--font-ui)" }}
               >
-                <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Stay in the story</span>
+                <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Notes from the editors</span>
                 <span className="text-[17px] font-medium text-foreground border-b border-foreground/25 pb-0.5 group-hover:border-foreground transition-colors">
                   Newsletter
                 </span>
@@ -127,7 +135,7 @@ function HomeHero() {
           <div className="min-w-0 lg:pt-2">
             <article
               className="relative border border-border bg-[var(--paper-warm)]"
-              aria-label="[EN home] Editorial cover block"
+              aria-label="Editorial cover"
             >
               <header className="flex items-start justify-between gap-4 px-5 pt-5 pb-4 border-b border-border/60">
                 <BrandMark tone="ink" emphasis className="h-[66px] w-auto shrink-0" />
@@ -142,14 +150,14 @@ function HomeHero() {
                     className="text-[13px] text-foreground/90 leading-tight"
                     style={{ fontFamily: "'Spectral', Georgia, serif" }}
                   >
-                    Culture · dialogue · practice (placeholder)
+                    Culture · conversation · practice
                   </p>
                 </div>
               </header>
               <div className="relative aspect-[4/5] max-h-[min(52vh,520px)] bg-[var(--paper-deep)]">
                 <img
                   src={ISSUE_NO1_COVER_FALLBACK_URL}
-                  alt="[EN home] Cover image description placeholder"
+                  alt="Tea ceremony — cover still from issue one"
                   className="absolute inset-0 h-full w-full object-cover object-center opacity-[0.92]"
                 />
                 <div
@@ -165,7 +173,7 @@ function HomeHero() {
                   className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground"
                   style={{ fontFamily: "var(--font-ui)" }}
                 >
-                  [EN home] Cover colophon placeholder
+                  The tea rite — colophon
                 </p>
               </footer>
             </article>
@@ -196,22 +204,38 @@ function HomeManifestoStrip() {
           className="text-[11px] uppercase tracking-[0.24em] text-[color-mix(in_srgb,var(--paper)_55%,transparent)] mb-8"
           style={{ fontFamily: "var(--font-ui)" }}
         >
-          [EN home] Philosophy section title placeholder
+          Our method
         </p>
         <blockquote className="border-l-2 border-[color-mix(in_srgb,var(--paper)_35%,transparent)] pl-6 md:pl-8">
+          <p
+            className="text-[clamp(1.05rem,2.2vw,1.2rem)] leading-[1.65] mb-5 text-[color-mix(in_srgb,var(--paper)_92%,transparent)]"
+            style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+            lang="en"
+          >
+            We look for difference inside what looks like unity. Our method starts with the same question: how do
+            different cultures answer the same human need?
+          </p>
+          <p
+            className="text-[clamp(1.05rem,2.2vw,1.2rem)] leading-[1.65] mb-5 text-[color-mix(in_srgb,var(--paper)_92%,transparent)]"
+            style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+            lang="en"
+          >
+            We do not try to settle which answer weighs more: we record how each culture bends the same question across
+            different materials and streets—from Bologna’s porticoes to the lanes of Dadaocheng.
+          </p>
           <p
             className="text-[clamp(1.05rem,2.2vw,1.2rem)] leading-[1.65] mb-6 text-[color-mix(in_srgb,var(--paper)_92%,transparent)]"
             style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
             lang="en"
           >
-            [EN home] Manifesto body placeholder — write the English editorial voice here.
+            What stays outside the frame for you when you lay two answers on the same sheet?
           </p>
           <p
             className="text-[1.35rem] md:text-[1.5rem] leading-relaxed text-[var(--paper)]"
             style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
-            lang="en"
+            lang="zh-Hant"
           >
-            [EN home] Manifesto pull-quote placeholder
+            同中求異
           </p>
         </blockquote>
       </div>
@@ -229,7 +253,7 @@ function HomeEntryPanels() {
   return (
     <section className="py-16 md:py-20 bg-background" aria-labelledby="home-entry-heading">
       <h2 id="home-entry-heading" className="sr-only">
-        [EN home] Magazine and sessions entry panels
+        Magazine and sessions
       </h2>
       <div className="container max-w-6xl mx-auto px-6 md:px-10">
         <div className="grid md:grid-cols-2 gap-0 md:gap-px bg-border/40 border border-border/50">
@@ -248,7 +272,7 @@ function HomeEntryPanels() {
                 className="text-[clamp(1.5rem,3vw,1.85rem)] font-medium text-foreground leading-tight mb-6"
                 style={{ fontFamily: "'Spectral', Georgia, serif" }}
               >
-                [EN home] Magazine panel headline placeholder
+                Reading, essays, and voices that cross borders.
               </p>
               <p
                 className="text-[13px] leading-relaxed text-muted-foreground/90 max-w-md line-clamp-4 border-l border-border pl-4"
@@ -267,7 +291,7 @@ function HomeEntryPanels() {
               className="mt-8 text-[13px] uppercase tracking-[0.14em] text-foreground group-hover:translate-x-0.5 transition-transform inline-flex items-center gap-2"
               style={{ fontFamily: "var(--font-ui)" }}
             >
-              Open Magazine
+              Open the Magazine
               <ArrowRight size={14} strokeWidth={1.75} className="opacity-70" aria-hidden />
             </p>
           </Link>
@@ -287,20 +311,21 @@ function HomeEntryPanels() {
                 className="text-[clamp(1.5rem,3vw,1.85rem)] font-medium text-foreground leading-tight mb-6"
                 style={{ fontFamily: "'Spectral', Georgia, serif" }}
               >
-                [EN home] Sessions panel headline placeholder
+                Next sessions, seasons, registered interest.
               </p>
               <p
                 className="text-[15px] leading-relaxed text-muted-foreground max-w-md"
                 style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
               >
-                [EN home] Sessions intro placeholder (city, format, how interest and dates work).
+                Possible lines in Bologna: leave your interest by theme; when the programme firms up, you receive format
+                and dates—not a cart that stays open by default.
               </p>
             </div>
             <p
               className="mt-8 text-[13px] uppercase tracking-[0.14em] text-foreground group-hover:translate-x-0.5 transition-transform inline-flex items-center gap-2"
               style={{ fontFamily: "var(--font-ui)" }}
             >
-              View sessions
+              Go to sessions
               <ArrowRight size={14} strokeWidth={1.75} className="opacity-70" aria-hidden />
             </p>
           </Link>
@@ -370,7 +395,7 @@ function HomeLatestReadsSection() {
             fontWeight: 500,
           }}
         >
-          [EN home] Latest from the desk placeholder
+          From the desk
         </h2>
         <div className="mt-8 grid grid-cols-1 gap-6 md:gap-8 lg:grid-cols-3 lg:gap-8">
           {loading
@@ -383,7 +408,7 @@ function HomeLatestReadsSection() {
             className="inline-flex items-center gap-1.5 text-[15px] font-medium text-primary hover:opacity-80 transition-opacity"
             style={{ fontFamily: "var(--font-ui)" }}
           >
-            All articles
+            All pieces
             <ArrowRight size={14} aria-hidden />
           </Link>
         </div>
@@ -415,22 +440,35 @@ function NewsletterSection() {
               fontWeight: 500,
             }}
           >
-            [EN home] Newsletter block title placeholder
+            Stay in the narrative
           </h2>
           <p
             className="text-[16px] text-muted-foreground leading-[1.75] mb-6"
             style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
           >
-            [EN home] Newsletter intro placeholder — cadence, content, and what subscribers receive.
+            Few letters, only when there is material to add to the notebook. Cadence and contents are written out on the
+            dedicated page.
           </p>
           <Link
             href={localizedHref("/newsletter")}
             className="inline-flex items-center gap-1.5 text-[15px] font-medium text-primary hover:opacity-80 transition-opacity mb-8"
             style={{ fontFamily: "var(--font-ui)" }}
           >
-            Read the promise <ArrowRight size={14} />
+            Notes on what we send <ArrowRight size={14} />
           </Link>
-          <NewsletterSubscribeForm source="home" variant="home" showUnsubscribeHint />
+          <NewsletterSubscribeForm
+            source="home"
+            variant="home"
+            showUnsubscribeHint
+            calmSubscribeErrors
+            submitButtonLabel="Leave your address"
+            successTitle="Address recorded."
+            successBody="We write from this inbox only when the notebook has something to add. Meanwhile: which thread between Bologna and Taipei do you want to keep in sight—without closing it into a slogan?"
+            calmErrorTitle="The send did not go through from here."
+            calmErrorBodyPrefix="Try again in a moment, or open the newsletter page:"
+            unsubscribeHintText="You can leave the list anytime."
+            emailPlaceholder="Your email"
+          />
         </Reveal>
       </div>
     </section>

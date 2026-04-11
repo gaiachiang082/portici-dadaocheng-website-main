@@ -74,11 +74,18 @@ function HomeHero() {
               異中求同，同中求異。
             </p>
             <p
+              className="text-[17px] text-muted-foreground leading-[1.75] mb-4 max-w-xl"
+              style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+            >
+              Annotiamo da Bologna e da Taipei: trimestrale in PDF, posta rada, sessioni quando una domanda diventa
+              data e luogo — non un catalogo tenuto aperto per abitudine.
+            </p>
+            <p
               className="text-[17px] text-muted-foreground leading-[1.75] mb-10 max-w-xl"
               style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
             >
-              Piattaforma culturale in crescita: il racconto parte da Magazine e newsletter; le sessioni dal vivo si
-              compongono quando la curiosità diventa domanda — senza promettere un catalogo sempre aperto.
+              Quale domanda ti spinge oggi a tenere due città sullo stesso tavolo, senza volerle chiudere in un&apos;unica
+              immagine?
             </p>
 
             <div
@@ -101,7 +108,7 @@ function HomeHero() {
                 className="group inline-flex flex-col gap-1 w-fit focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground"
                 style={{ fontFamily: "var(--font-ui)" }}
               >
-                <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Resta nel racconto</span>
+                <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Note dalla redazione</span>
                 <span className="text-[17px] font-medium text-foreground border-b border-foreground/25 pb-0.5 group-hover:border-foreground transition-colors">
                   Newsletter
                 </span>
@@ -201,13 +208,27 @@ function HomeManifestoStrip() {
         </p>
         <blockquote className="border-l-2 border-[color-mix(in_srgb,var(--paper)_35%,transparent)] pl-6 md:pl-8">
           <p
-            className="text-[clamp(1.05rem,2.2vw,1.2rem)] leading-[1.65] mb-6 text-[color-mix(in_srgb,var(--paper)_92%,transparent)]"
+            className="text-[clamp(1.05rem,2.2vw,1.2rem)] leading-[1.65] mb-5 text-[color-mix(in_srgb,var(--paper)_92%,transparent)]"
             style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
             lang="it"
           >
             Trovare le differenze nell&apos;unità. Il nostro metodo parte dalla stessa domanda: come rispondono culture
-            diverse allo stesso bisogno umano? Non per giudicare quale risposta sia migliore, ma per scoprire che la
-            diversità stessa è la risposta più ricca che l&apos;umanità abbia mai prodotto.
+            diverse allo stesso bisogno umano?
+          </p>
+          <p
+            className="text-[clamp(1.05rem,2.2vw,1.2rem)] leading-[1.65] mb-5 text-[color-mix(in_srgb,var(--paper)_92%,transparent)]"
+            style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+            lang="it"
+          >
+            Non cerchiamo di stabilire quale risposta pesa di più: annotiamo come ciascuna cultura piega la stessa
+            domanda su materiali e contesti diversi.
+          </p>
+          <p
+            className="text-[clamp(1.05rem,2.2vw,1.2rem)] leading-[1.65] mb-6 text-[color-mix(in_srgb,var(--paper)_92%,transparent)]"
+            style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+            lang="it"
+          >
+            Cosa resta fuori quadro, per te, quando affianchi due risposte sullo stesso foglio?
           </p>
           <p
             className="text-[1.35rem] md:text-[1.5rem] leading-relaxed text-[var(--paper)]"
@@ -270,7 +291,7 @@ function HomeEntryPanels() {
               className="mt-8 text-[13px] uppercase tracking-[0.14em] text-foreground group-hover:translate-x-0.5 transition-transform inline-flex items-center gap-2"
               style={{ fontFamily: "var(--font-ui)" }}
             >
-              Entra nel Magazine
+              Apri il Magazine
               <ArrowRight size={14} strokeWidth={1.75} className="opacity-70" aria-hidden />
             </p>
           </Link>
@@ -296,8 +317,8 @@ function HomeEntryPanels() {
                 className="text-[15px] leading-relaxed text-muted-foreground max-w-md"
                 style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
               >
-                Linee possibili a Bologna: manifestate interesse per tema; quando il programma si conferma, ricevete
-                formato e date — non un carrello sempre aperto.
+                Linee possibili a Bologna: manifesta interesse per tema; quando il programma si conferma, ricevi formato
+                e date — non un carrello sempre aperto.
               </p>
             </div>
             <p
@@ -419,20 +440,21 @@ function NewsletterSection() {
               fontWeight: 500,
             }}
           >
-            Restate nel racconto
+            Resta nel racconto
           </h2>
           <p
             className="text-[16px] text-muted-foreground leading-[1.75] mb-6"
             style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
           >
-            Una mail al mese, senza spam. Per cosa riceverete e come ci iscriviamo noi, c&apos;è la pagina dedicata.
+            Poche mail, solo quando c&apos;è materiale da aggiungere al taccuino. Frequenza e contenuti sono scritti per
+            iscritto nella pagina dedicata.
           </p>
           <Link
             href={localizedHref("/newsletter")}
             className="inline-flex items-center gap-1.5 text-[15px] font-medium text-primary hover:opacity-80 transition-opacity mb-8"
             style={{ fontFamily: "var(--font-ui)" }}
           >
-            Leggi la promessa <ArrowRight size={14} />
+            Note su cosa inviamo <ArrowRight size={14} />
           </Link>
           <NewsletterSubscribeForm source="home" variant="home" showUnsubscribeHint />
         </Reveal>

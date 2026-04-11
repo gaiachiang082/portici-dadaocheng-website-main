@@ -130,17 +130,23 @@ export default function Magazine() {
         titleClassName="text-[clamp(2.05rem,4.2vw,3.05rem)] leading-[1.12]"
         title={
           <>
-            Dove il racconto resta
+            Un numero per stagione:
             <br />
-            <em className="text-[var(--riso-peach)] not-italic font-medium">più lungo del feed.</em>
+            <em className="text-[var(--riso-peach)] not-italic font-medium">testo più lento del feed.</em>
           </>
         }
       >
         <p>
-          Il Magazine è il <strong className="font-medium text-[color-mix(in_srgb,var(--paper)_92%,transparent)]">trimestrale</strong> in PDF di Portici DaDaocheng: un numero per stagione, oggetto editoriale completo — stesse domande umane, risposte culturali diverse (同中求異).
+          Il Magazine è il{" "}
+          <strong className="font-medium text-[color-mix(in_srgb,var(--paper)_92%,transparent)]">trimestrale</strong> in
+          PDF di Portici DaDaocheng: un oggetto per stagione — stesse premesse umane, risposte culturali che non
+          coincidono (同中求異).
         </p>
         <p className="text-page-header-dim">
-          In questa pagina: prima l’edizione corrente e cosa contiene, poi l’archivio dei numeri usciti, infine una piccola selezione di testi nati per il web.
+          In questa pagina: edizione corrente, archivio dei numeri usciti, poi una selezione di testi nati per il web.
+        </p>
+        <p className="text-page-header-dim mt-4 max-w-2xl">
+          Quale sezione del PDF ti accompagneresti via, se dovessi lasciare indietro il resto — e perché?
         </p>
       </PageHeader>
 
@@ -187,7 +193,8 @@ export default function Magazine() {
               </div>
               <div className="space-y-6 lg:space-y-7 pt-1 border-t border-border/35" role="group" aria-label="Ricevere il numero attuale">
                 <p className="text-[14px] text-muted-foreground/90 leading-[1.7] [font-family:var(--font-body)] max-w-[min(100%,72ch)]">
-                  Ti invieremo il PDF del primo numero e, se vorrai, gli aggiornamenti sui prossimi numeri.
+                  Ti mandiamo il PDF del primo numero e, se vorrai, note sui numeri successivi — senza promettere un ritmo
+                  fisso.
                 </p>
                 <div className="w-full min-w-0 max-w-[min(100%,72ch)]">
                   <NewsletterSubscribeForm
@@ -197,12 +204,12 @@ export default function Magazine() {
                     editorialSubmitButton
                     calmSubscribeErrors
                     quietSuccess
-                    submitButtonLabel="Iscriviti per ricevere il Nº1 via email"
-                    successTitle="Grazie — vi invieremo il Nº1 via email."
-                    successBody="Controllate la vostra casella: tra poco riceverete il PDF del primo numero."
-                    successTitleWhenAlreadySubscribed="Siete già iscritti alla newsletter."
-                    successBodyWhenAlreadySubscribed="Vi inviamo di nuovo il messaggio con il link al PDF del numero 1: controllate la posta, anche in spam, quando vi è comodo."
-                    successSupplementWhenEmailNotSent="L’iscrizione è registrata, ma l’email non è partita da qui. Potete riprovare tra poco o passare dalla pagina"
+                    submitButtonLabel="Registra l’indirizzo per il Nº1"
+                    successTitle="Registrato — ti inviamo il Nº1 via email."
+                    successBody="Controlla la casella: a breve il link al PDF del primo numero."
+                    successTitleWhenAlreadySubscribed="Sei già nella lista."
+                    successBodyWhenAlreadySubscribed="Ti rimandiamo il messaggio con il link al PDF del numero 1: controlla la posta, anche in spam, quando ti è comodo."
+                    successSupplementWhenEmailNotSent="L’iscrizione è registrata, ma l’email non è partita da qui. Puoi riprovare tra poco o passare dalla pagina"
                   />
                 </div>
                 <div className="flex flex-col sm:flex-row sm:items-center sm:flex-wrap gap-4 sm:gap-8">
@@ -242,10 +249,11 @@ export default function Magazine() {
             id="magazine-highlights-heading"
             className="text-xl md:text-[1.4rem] font-semibold text-foreground mb-6 [font-family:var(--font-display)]"
           >
-            Cosa trovate nel PDF
+            Cosa trovi nel PDF
           </h2>
           <p className="text-[15px] text-muted-foreground leading-[1.8] max-w-3xl mb-10 [font-family:var(--font-body)]">
-            Anteprima delle sezioni: saggio, tavola, reportage e glossario restano nel PDF; qui solo la mappa per orientarvi sul numero.
+            Anteprima delle sezioni: saggio, tavola, reportage e glossario restano nel file; qui solo la mappa per
+            orientarti sul numero.
           </p>
           <div className="grid md:grid-cols-2 gap-8 lg:gap-10">
             {current.sectionPreviews.map((block) => (
@@ -394,16 +402,16 @@ export default function Magazine() {
             Restare nel racconto
           </p>
           <h2 className="text-[1.35rem] font-semibold text-foreground mb-3 [font-family:var(--font-display)]">
-            Ricevete il segnale per il prossimo PDF
+            Ricevi una mail quando il PDF è pronto
           </h2>
           <p className="text-[15px] text-muted-foreground leading-relaxed mb-6 [font-family:var(--font-body)]">
-            Una mail al mese, tono editoriale: vi avvisiamo quando un nuovo numero è pronto — senza riportarvi verso
-            Linktree come unica porta.
+            Raramente, solo quando c’è un numero o una nota che vale la pena allegare — senza usare Linktree come unica
+            porta d’ingresso.
           </p>
           <NewsletterSubscribeForm source="magazine" variant="home" showUnsubscribeHint />
           <p className="mt-6 text-sm text-muted-foreground [font-family:var(--font-body)]">
             <Link href={localizedHref("/newsletter")} className="text-primary underline-offset-4 hover:underline">
-              Leggi la promessa sulla pagina newsletter
+              Note su frequenza e contenuti (/newsletter)
             </Link>
           </p>
         </div>

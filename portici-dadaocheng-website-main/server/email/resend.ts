@@ -81,43 +81,43 @@ const newsletterWelcomeCopy: Record<
 > = {
   it: {
     htmlLang: "it",
-    subject: "Conferma iscrizione — newsletter Portici Dadaocheng",
-    greetingNamed: (n) => `Ciao ${n},`,
-    greetingGeneric: "Ciao,",
+    subject: "Iscrizione registrata — newsletter Portici Dadaocheng",
+    greetingNamed: (n) => `${n},`,
+    greetingGeneric: "Salve,",
     paragraphs: [
-      "Grazie per essere qui.",
-      "Portici Dadaocheng nasce nell'incontro tra due città che non smettono di raccontarsi — Bologna e Taipei, i loro portici, le loro storie.",
-      "Ogni tanto ti scriveremo, con calma e con cura, di quello che succede da queste parti.",
-      "Ci vediamo presto.",
-      "Il team di Portici Dadaocheng",
+      "Grazie per aver lasciato il vostro indirizzo: da questa casella scriviamo di rado, e solo quando abbiamo qualcosa da raccontare con calma.",
+      "Portici Dadaocheng nasce nel passaggio tra Bologna e Taipei, tra i portici e Dadaocheng: due luoghi che osserviamo da vicino, sapendo che ogni lettura resta parziale.",
+      "Quando torneremo con notizie sul trimestrale o sulle sessioni, sarà senza fretta e senza promettere continuità costante.",
+      "Quale filo, tra queste due città, vorreste vedere tirato per primo nel prossimo messaggio?",
+      "Noi, Portici Dadaocheng",
     ],
-    footer: "Hai ricevuto questa email perché ti sei iscritto/a alla nostra newsletter.",
+    footer: "Avete ricevuto questa email perché avete confermato l'iscrizione alla newsletter.",
   },
   zh: {
     htmlLang: "zh-Hant",
-    subject: "訂閱確認 — Portici Dadaocheng 電子報",
-    greetingNamed: (n) => `${n}，您好，`,
+    subject: "訂閱已登記 — Portici Dadaocheng 電子報",
+    greetingNamed: (n) => `${n}，`,
     greetingGeneric: "您好，",
     paragraphs: [
-      "感謝您願意在這裡。",
-      "Portici Dadaocheng 源於兩座始終訴說彼此的城市相遇——波隆那與台北，她們的廊道與故事。",
-      "我們會偶爾寫信給您，從容而用心，分享這裡發生的事。",
-      "很快再見。",
-      "Portici Dadaocheng 團隊",
+      "謝謝您留下地址：我們很少從這個信箱寫信，只有當手邊有值得慢慢說的事才會寄出。",
+      "Portici Dadaocheng 從波隆那與台北之間的往返長出來——廊柱與 Dadaocheng 的街廓，我們在近處記錄，也清楚任何詮釋都仍只是片段。",
+      "若下次談到季刊或場次，會同樣從容，不預先承諾固定的節奏。",
+      "在這兩座城市之間，您最想先被細讀的是哪一條線索？",
+      "我們，Portici Dadaocheng",
     ],
     footer: "您收到此信是因為剛完成電子報訂閱。",
   },
   en: {
     htmlLang: "en",
-    subject: "Subscription confirmed — Portici Dadaocheng newsletter",
-    greetingNamed: (n) => `Hello ${n},`,
+    subject: "Subscription recorded — Portici Dadaocheng newsletter",
+    greetingNamed: (n) => `${n},`,
     greetingGeneric: "Hello,",
     paragraphs: [
-      "Thank you for being here.",
-      "Portici Dadaocheng grew from the meeting of two cities that keep telling their stories — Bologna and Taipei, their porticos, their histories.",
-      "From time to time we’ll write to you, calmly and carefully, about what’s happening here.",
-      "See you soon.",
-      "The Portici Dadaocheng team",
+      "We have recorded your subscription.",
+      "We work across Bologna and Taipei on the quarterly and the sessions: two porticos, two tempos, the same human questions with answers that never quite line up.",
+      "We will write only when the field notebook has something to add — reading notes, session dates, Magazine materials.",
+      "What thread, for you, holds these two cities together today without forcing them into a single picture?",
+      "We, Portici Dadaocheng",
     ],
     footer: "You’re receiving this because you subscribed to our newsletter.",
   },
@@ -194,11 +194,11 @@ function issueNo1PdfAbsoluteUrl(): string {
  * welcome tone + PDF link — lighter than two separate messages.
  */
 export async function sendNewsletterWelcomeWithMagazineIssue1(to: string, name?: string | null): Promise<boolean> {
-  const greeting = name ? `Caro/a ${name},` : "Caro/a amico/a,";
+  const greeting = name?.trim() ? `${name.trim()},` : "Salve,";
   const pdfUrl = issueNo1PdfAbsoluteUrl();
   return sendEmail({
     to,
-    subject: "Benvenuto/a — newsletter e Magazine N.1 (PDF) 🏮",
+    subject: "Newsletter e Magazine N.1 — PDF registrato",
     html: `
 <!DOCTYPE html>
 <html lang="it">
@@ -216,28 +216,34 @@ export async function sendNewsletterWelcomeWithMagazineIssue1(to: string, name?:
         <tr>
           <td style="padding:48px 48px 36px;">
             <p style="margin:0 0 24px;font-size:14px;color:#A67C52;letter-spacing:0.2em;text-transform:uppercase;font-family:Arial,sans-serif;">Newsletter · Magazine N.1</p>
-            <h1 style="margin:0 0 24px;font-size:28px;font-weight:500;color:#1C1917;line-height:1.3;">${greeting}<br>Benvenuto/a!</h1>
+            <h1 style="margin:0 0 24px;font-size:26px;font-weight:500;color:#1C1917;line-height:1.35;">${greeting}<br>abbiamo registrato l&apos;iscrizione e il primo numero in PDF.</h1>
             <div style="width:40px;height:2px;background:#a2482b;margin-bottom:28px;"></div>
             <p style="margin:0 0 20px;font-size:17px;color:#57534E;line-height:1.8;">
-              Grazie per esservi iscritti/e alla nostra newsletter. Siete parte di una comunità che esplora come culture diverse — dall&apos;Asia orientale all&apos;Europa — rispondono alle stesse domande umane in modi sorprendentemente diversi.
+              Da Bologna e da Taipei annotiamo incroci tra portici, Dadaocheng e testi del trimestrale: niente sintesi netta, solo materiali che teniamo sul tavolo mentre lavoriamo.
             </p>
             <p style="margin:0 0 28px;font-size:15px;color:#78716C;line-height:1.75;font-family:Arial,sans-serif;">
-              <strong style="color:#1C1917;">Il primo numero in PDF</strong> è qui sotto: apritelo o salvatelo quando volete.
+              Il file del <strong style="color:#1C1917;">numero 1</strong> è nel link qui sotto; potete aprirlo o salvarlo quando vi è comodo.
             </p>
             <a href="${pdfUrl}" style="display:inline-block;padding:14px 28px;background:#a2482b;color:#F5F3EE;text-decoration:none;font-family:Arial,sans-serif;font-size:15px;font-weight:600;">
-              Apri o scarica il PDF del N.1 →
+              Apri o scarica il PDF del N.1
             </a>
             <p style="margin:28px 0 20px;font-size:17px;color:#57534E;line-height:1.8;">
-              Ogni mese riceverete letture dal Magazine, spunti editoriali e notizie sulle sessioni dal vivo in sviluppo: quando date e formato saranno pronti, lo raccontiamo qui — senza promettere un calendario sempre aperto.
+              Torneremo da questa casella quando il taccuino ha letture dal Magazine, note di sessione o date che possiamo indicare senza promettere un ritmo fisso: il trimestrale non è un flusso mensile.
             </p>
             <a href="${SITE_ORIGIN}/magazine" style="display:inline-block;padding:12px 24px;border:1px solid #D6D0C8;color:#1C1917;text-decoration:none;font-family:Arial,sans-serif;font-size:14px;font-weight:600;">
-              Pagina Magazine →
+              Pagina Magazine
             </a>
             <p style="margin:20px 0 0;font-size:15px;color:#78716C;line-height:1.7;font-family:Arial,sans-serif;">
               Sessioni e manifestazione d&apos;interesse: <a href="${SITE_ORIGIN}/eventi" style="color:#a2482b;">${SITE_ORIGIN.replace(/^https?:\/\//, "")}/eventi</a>
             </p>
+            <p style="margin:20px 0 0;font-size:17px;color:#57534E;line-height:1.8;">
+              Quale pagina di questo primo PDF vorreste che restasse fuori dall&apos;immagine che vi siete fatti del progetto — e perché?
+            </p>
+            <p style="margin:16px 0 0;font-size:15px;color:#1C1917;line-height:1.75;">
+              Noi, Portici Dadaocheng
+            </p>
             <p style="margin:16px 0 0;font-size:14px;color:#78716C;line-height:1.7;font-family:Arial,sans-serif;">
-              Se non vedete subito questa mail, date un&apos;occhiata anche allo spam.
+              Se non trovate subito questa mail, controllate anche la cartella spam.
             </p>
           </td>
         </tr>
@@ -268,12 +274,12 @@ export async function sendMagazineIssue1Delivery(
   name?: string | null,
   _options?: { repeatDelivery?: boolean }
 ): Promise<boolean> {
-  const greeting = name ? `Ciao ${name},` : "Ciao,";
+  const greeting = name?.trim() ? `${name.trim()},` : "Salve,";
   const pdfUrl = issueNo1PdfAbsoluteUrl();
 
   return sendEmail({
     to,
-    subject: "Portici Magazine · numero 1 — il PDF",
+    subject: "Magazine N.1 — stesso PDF, stesso link",
     html: `
 <!DOCTYPE html>
 <html lang="it">
@@ -293,13 +299,19 @@ export async function sendMagazineIssue1Delivery(
             <p style="margin:0 0 24px;font-size:14px;color:#A67C52;letter-spacing:0.2em;text-transform:uppercase;font-family:Arial,sans-serif;">PDF del numero</p>
             <p style="margin:0 0 20px;font-size:17px;color:#57534E;line-height:1.8;">
               ${greeting}<br>
-              siete già nella nostra lista: ecco di nuovo il link al <strong style="color:#1C1917;">PDF del numero 1</strong>, come dalla pagina Magazine.
+              il vostro indirizzo era già in elenco; qui sotto trovate di nuovo il <strong style="color:#1C1917;">PDF del numero 1</strong>, come dalla pagina Magazine.
             </p>
             <a href="${pdfUrl}" style="display:inline-block;padding:14px 28px;background:#a2482b;color:#F5F3EE;text-decoration:none;font-family:Arial,sans-serif;font-size:15px;font-weight:600;">
-              Apri o scarica il PDF del N.1 →
+              Apri o scarica il PDF del N.1
             </a>
             <p style="margin:24px 0 0;font-size:15px;color:#78716C;line-height:1.7;font-family:Arial,sans-serif;">
-              Se non si apre, copiate l&apos;indirizzo del pulsante nel browser. La pagina del trimestrale: <a href="${SITE_ORIGIN}/magazine" style="color:#a2482b;">/magazine</a>
+              Se non si apre, copiate l&apos;URL del pulsante nel browser. Pagina del trimestrale: <a href="${SITE_ORIGIN}/magazine" style="color:#a2482b;">/magazine</a>
+            </p>
+            <p style="margin:20px 0 0;font-size:17px;color:#57534E;line-height:1.8;">
+              Cosa vi ha spinto a richiedere di nuovo lo stesso file — mancanza, dubbio, o semplicemente un passaggio tra due dispositivi?
+            </p>
+            <p style="margin:12px 0 0;font-size:15px;color:#1C1917;line-height:1.75;">
+              Noi, Portici Dadaocheng
             </p>
           </td>
         </tr>
@@ -343,7 +355,7 @@ export async function sendBookingConfirmation(opts: {
 
   return sendEmail({
     to: opts.to,
-    subject: `Sessione confermata (deposito ricevuto): ${opts.workshopTitle} · ${opts.confirmationCode}`,
+    subject: `Deposito registrato — ${opts.workshopTitle} · ${opts.confirmationCode}`,
     html: `
 <!DOCTYPE html>
 <html lang="it">
@@ -362,8 +374,8 @@ export async function sendBookingConfirmation(opts: {
         <!-- Confirmation badge -->
         <tr>
           <td style="background:#a2482b;padding:16px 48px;">
-            <p style="margin:0;font-size:13px;color:#F5F3EE;font-family:Arial,sans-serif;letter-spacing:0.15em;text-transform:uppercase;">
-              ✓ Deposito ricevuto — partecipazione alla sessione confermata
+            <p style="margin:0;font-size:13px;color:#F5F3EE;font-family:Arial,sans-serif;letter-spacing:0.12em;text-transform:uppercase;line-height:1.5;">
+              Deposito annotato — teniamo il tuo posto per la data qui sotto
             </p>
           </td>
         </tr>
@@ -371,11 +383,11 @@ export async function sendBookingConfirmation(opts: {
         <tr>
           <td style="padding:48px 48px 40px;">
             <p style="margin:0 0 24px;font-size:17px;color:#57534E;line-height:1.8;">
-              Caro/a <strong style="color:#1C1917;">${opts.guestName}</strong>,<br>
-              il deposito per questa sessione è stato ricevuto: la tua partecipazione è confermata per data e orario indicati sotto.
+              <strong style="color:#1C1917;">${opts.guestName}</strong>,<br>
+              abbiamo registrato il deposito per la sessione che hai prenotato; il posto resta tenuto per te alla data e all&apos;orario nel riquadro qui sotto.
             </p>
             <p style="margin:0 0 24px;font-size:14px;color:#78716C;line-height:1.7;font-family:Arial,sans-serif;">
-              Questo messaggio riguarda il percorso con deposito riservato a chi ha già scelto una data. Per nuove linee e interesse collettivo, il punto di ingresso è il sito (sezione Sessioni).
+              Questa mail riguarda il percorso con acconto dopo che hai scelto una data. Se cerchi altre linee o vuoi segnalare interesse collettivo, torna sul sito (sezione Sessioni).
             </p>
 
             <!-- Booking details box -->
@@ -397,12 +409,12 @@ export async function sendBookingConfirmation(opts: {
                   ` : ""}
 
                   <p style="margin:0 0 4px;font-size:11px;color:#A67C52;letter-spacing:0.2em;text-transform:uppercase;font-family:Arial,sans-serif;">Partecipanti</p>
-                  <p style="margin:0 0 20px;font-size:17px;color:#1C1917;">${opts.participants} persona/e</p>
+                  <p style="margin:0 0 20px;font-size:17px;color:#1C1917;">${opts.participants === 1 ? "1 persona" : `${opts.participants} persone`}</p>
 
                   <table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #E5D9C8;padding-top:16px;margin-top:4px;">
                     <tr>
                       <td style="font-size:14px;color:#78716C;font-family:Arial,sans-serif;">Deposito pagato (50%)</td>
-                      <td align="right" style="font-size:14px;color:#166534;font-weight:600;font-family:Arial,sans-serif;">€${opts.depositAmountEur.toFixed(2)} ✓</td>
+                      <td align="right" style="font-size:14px;color:#166534;font-weight:600;font-family:Arial,sans-serif;">€${opts.depositAmountEur.toFixed(2)}</td>
                     </tr>
                     <tr>
                       <td style="font-size:14px;color:#78716C;font-family:Arial,sans-serif;padding-top:8px;">Saldo da pagare in loco</td>
@@ -414,14 +426,16 @@ export async function sendBookingConfirmation(opts: {
             </table>
 
             <p style="margin:0 0 20px;font-size:15px;color:#57534E;line-height:1.8;font-family:Arial,sans-serif;">
-              <strong>Ricorda:</strong> il saldo restante (€${opts.balanceAmountEur.toFixed(2)}) si salda in loco il giorno della sessione, dopo l&apos;incontro.
+              Il saldo restante (€${opts.balanceAmountEur.toFixed(2)}) lo riscuotiamo in loco il giorno della sessione, al termine dell&apos;incontro.
             </p>
-            <p style="margin:0 0 32px;font-size:15px;color:#57534E;line-height:1.8;font-family:Arial,sans-serif;">
-              Per qualsiasi domanda, rispondi a questa email o contattaci su Instagram <a href="https://instagram.com/portici.dadaocheng" style="color:#a2482b;">@portici.dadaocheng</a>.
+            <p style="margin:0 0 24px;font-size:15px;color:#57534E;line-height:1.8;font-family:Arial,sans-serif;">
+              Per una domanda, rispondi a questa email; su Instagram siamo <a href="https://instagram.com/portici.dadaocheng" style="color:#a2482b;">@portici.dadaocheng</a>.
+            </p>
+            <p style="margin:0 0 16px;font-size:17px;color:#57534E;line-height:1.8;">
+              Cosa ti aspetti che resti fuori stanza, quel giorno — e cosa vorresti invece che entrasse senza essere annunciato?
             </p>
             <p style="margin:0;font-size:17px;color:#1C1917;line-height:1.8;">
-              A presto,<br>
-              <em>Il team di Portici DaDaocheng</em>
+              Noi, Portici DaDaocheng
             </p>
           </td>
         </tr>

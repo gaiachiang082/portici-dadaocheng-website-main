@@ -3,14 +3,14 @@ import { trpc } from "@/lib/trpc";
 import { useLocalizedHref } from "@/contexts/LangContext";
 
 /** Standardized across footer, home teaser, and /newsletter page. */
-export const NEWSLETTER_SUCCESS_TITLE = "Grazie per l\u2019iscrizione.";
+export const NEWSLETTER_SUCCESS_TITLE = "Indirizzo registrato.";
 export const NEWSLETTER_SUCCESS_BODY =
-  "A breve troverete in posta un messaggio di benvenuto. Niente fretta: è solo un promemoria gentile.";
+  "Ti scriviamo da questa casella solo quando c’è qualcosa da aggiungere al taccuino. Nel frattempo: quale filo tra Bologna e Taipei preferisci tenere in vista, senza chiuderlo in uno slogan?";
 
 /** Calm copy when the mutation fails — avoids raw API / TRPC messages. */
-export const NEWSLETTER_CALM_ERROR_TITLE = "Non siamo riusciti a completare l\u2019invio in questo momento.";
+export const NEWSLETTER_CALM_ERROR_TITLE = "L\u2019invio non è partito da qui.";
 export const NEWSLETTER_CALM_ERROR_BODY_PREFIX =
-  "Potete riprovare tra poco oppure passare dalla pagina newsletter:";
+  "Puoi riprovare tra poco o passare dalla pagina newsletter:";
 
 export type NewsletterSubscribeVariant = "footer" | "home" | "page";
 
@@ -31,6 +31,14 @@ interface NewsletterSubscribeFormProps {
   editorialSubmitButton?: boolean;
   /** On error, show editorial calm copy instead of `subscribe.error.message`. */
   calmSubscribeErrors?: boolean;
+  /** Overrides {@link NEWSLETTER_CALM_ERROR_TITLE} (e.g. English home). */
+  calmErrorTitle?: string;
+  /** Overrides {@link NEWSLETTER_CALM_ERROR_BODY_PREFIX}. */
+  calmErrorBodyPrefix?: string;
+  /** Overrides default Italian unsubscribe hint under the form. */
+  unsubscribeHintText?: string;
+  /** Input placeholder (e.g. "Your email" on English home). */
+  emailPlaceholder?: string;
   /**
    * When set, and the API returns `emailSent: false`, show this under the success copy
    * (DB ok but Resend did not confirm send — keeps the main message honest).
@@ -70,6 +78,10 @@ export function NewsletterSubscribeForm({
   successTitleWhenAlreadySubscribed,
   editorialSubmitButton = false,
   calmSubscribeErrors = false,
+  calmErrorTitle,
+  calmErrorBodyPrefix,
+  unsubscribeHintText,
+  emailPlaceholder = "La tua email",
   successSupplementWhenEmailNotSent,
   quietSuccess = false,
 }: NewsletterSubscribeFormProps) {
@@ -108,9 +120,9 @@ export function NewsletterSubscribeForm({
           variant === "home" && !quietSuccess ? "text-center" : ""
         }`}
       >
-        <p className="text-foreground/90 font-medium">{NEWSLETTER_CALM_ERROR_TITLE}</p>
+        <p className="text-foreground/90 font-medium">{calmErrorTitle ?? NEWSLETTER_CALM_ERROR_TITLE}</p>
         <p className="mt-2">
-          {NEWSLETTER_CALM_ERROR_BODY_PREFIX}{" "}
+          {calmErrorBodyPrefix ?? NEWSLETTER_CALM_ERROR_BODY_PREFIX}{" "}
           <a href={localizedHref("/newsletter")} className="text-primary underline-offset-4 hover:underline">
             /newsletter
           </a>
@@ -198,14 +210,14 @@ export function NewsletterSubscribeForm({
         <form onSubmit={handleSubmit} className="flex flex-col gap-2">
           <input
             type="email"
-            placeholder="La tua email"
+            placeholder={emailPlaceholder}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
             className={`px-4 py-2.5 text-[15px] [font-family:var(--font-mono)] ${inputFooterDark}`}
           />
           <button type="submit" disabled={subscribe.isPending} className={`px-4 py-2.5 ${buttonFooterDark}`}>
-            {subscribe.isPending ? "…" : submitButtonLabel ?? "Iscriviti"}
+            {subscribe.isPending ? "…" : submitButtonLabel ?? "Registra l\u2019indirizzo"}
           </button>
         </form>
         {errorBlock}
@@ -219,7 +231,7 @@ export function NewsletterSubscribeForm({
         <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
           <input
             type="email"
-            placeholder="La tua email"
+            placeholder={emailPlaceholder}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -230,7 +242,7 @@ export function NewsletterSubscribeForm({
             disabled={subscribe.isPending}
             className={`px-8 py-3.5 ${editorialSubmitButton ? "sm:px-6 whitespace-normal text-center leading-snug" : "whitespace-nowrap"} ${primaryButtonClass}`}
           >
-            {subscribe.isPending ? "…" : submitButtonLabel ?? "Iscriviti"}
+            {subscribe.isPending ? "…" : submitButtonLabel ?? "Registra l\u2019indirizzo"}
           </button>
         </form>
         {errorBlock}
@@ -240,7 +252,7 @@ export function NewsletterSubscribeForm({
               quietSuccess ? "text-left" : "text-center"
             }`}
           >
-            Potete cancellarvi in qualsiasi momento.
+            {unsubscribeHintText ?? "Puoi cancellarti in qualsiasi momento."}
           </p>
         )}
       </div>
@@ -252,7 +264,7 @@ export function NewsletterSubscribeForm({
       <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-xl">
         <input
           type="email"
-          placeholder="La tua email"
+          placeholder={emailPlaceholder}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -263,13 +275,13 @@ export function NewsletterSubscribeForm({
           disabled={subscribe.isPending}
           className={`px-8 py-3.5 ${editorialSubmitButton ? "sm:px-6 whitespace-normal text-center leading-snug" : "whitespace-nowrap"} ${primaryButtonClass}`}
         >
-          {subscribe.isPending ? "…" : submitButtonLabel ?? "Iscriviti"}
+          {subscribe.isPending ? "…" : submitButtonLabel ?? "Registra l\u2019indirizzo"}
         </button>
       </form>
       {errorBlock}
       {showUnsubscribeHint && (
         <p className="mt-4 text-sm text-muted-foreground [font-family:var(--font-body)]">
-          Potete cancellarvi in qualsiasi momento.
+          {unsubscribeHintText ?? "Puoi cancellarti in qualsiasi momento."}
         </p>
       )}
     </div>
