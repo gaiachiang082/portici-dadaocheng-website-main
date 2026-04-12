@@ -1,0 +1,10 @@
+# Portici DaDaocheng — default for static hosting / CDN.
+# Replace the host in Sitemap with your production origin if it differs.
+
+User-agent: *
+Allow: /
+
+# Utility / admin (optional: disallow if you prefer)
+Disallow: /admin
+
+Sitemap: https://porticidadaocheng.com/sitemap.xml
