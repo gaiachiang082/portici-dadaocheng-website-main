@@ -25,6 +25,12 @@ import NotFound from "./pages/NotFound";
 import WorkshopsPage from "./pages/Workshops";
 import BookingSuccess from "./pages/BookingSuccess";
 import AdminPage from "./pages/Admin";
+import CulturaTaiwanese from "./pages/CulturaTaiwanese";
+import AntropologiaDelCibo from "./pages/AntropologiaDelCibo";
+import TaiwanItalia from "./pages/TaiwanItalia";
+import Dadaocheng from "./pages/Dadaocheng";
+import Glossario from "./pages/Glossario";
+import GlossarioTerm from "./pages/GlossarioTerm";
 import ScrollToTopOnRouteChange from "./components/ScrollToTopOnRouteChange";
 
 function LocalizedRoutes() {
@@ -45,6 +51,12 @@ function LocalizedRoutes() {
       <Route path="/casi-studio" component={CasiStudio} />
       {/* <Route path="/workshop/calligraphy" component={CalligraphyWorkshop} /> */}
       <Route path="/workshops" component={WorkshopsPage} />
+      <Route path="/cultura-taiwanese" component={CulturaTaiwanese} />
+      <Route path="/antropologia-del-cibo" component={AntropologiaDelCibo} />
+      <Route path="/taiwan-italia" component={TaiwanItalia} />
+      <Route path="/dadaocheng" component={Dadaocheng} />
+      <Route path="/glossario/:term" component={GlossarioTerm} />
+      <Route path="/glossario" component={Glossario} />
       <Route component={NotFound} />
     </Switch>
   );
