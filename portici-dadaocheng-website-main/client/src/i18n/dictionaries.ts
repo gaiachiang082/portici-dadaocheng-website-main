@@ -7,6 +7,7 @@ import type { Lang } from "@/contexts/LangContext";
 export type I18nDict = {
   nav: {
     founders: string;
+    space: string;
     services: string;
     case_studies: string;
     magazine: string;
@@ -68,6 +69,7 @@ export const dict: Record<Lang, I18nDict> = {
   it: {
     nav: {
       founders: "Fondatrici",
+      space: "Spazio",
       services: "Servizi",
       case_studies: "Casi Studio",
       magazine: "Magazine",
@@ -129,6 +131,7 @@ export const dict: Record<Lang, I18nDict> = {
   zh: {
     nav: {
       founders: "關於創辦人",
+      space: "空間",
       services: "服務項目",
       case_studies: "案例故事",
       magazine: "線上雜誌",
@@ -189,6 +192,7 @@ export const dict: Record<Lang, I18nDict> = {
   en: {
     nav: {
       founders: "Founders",
+      space: "Space",
       services: "Services",
       case_studies: "Case Studies",
       magazine: "Magazine",

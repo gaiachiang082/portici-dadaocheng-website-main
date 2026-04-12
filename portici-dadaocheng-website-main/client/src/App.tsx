@@ -10,18 +10,18 @@ import LangRouteWrapper from "./components/LangRouteWrapper";
 import Home from "./pages/Home";
 import Fondatrici from "./pages/Fondatrici";
 import ChiSiamoRedirect from "./pages/ChiSiamoRedirect";
-// import Workshop from "./pages/Workshop";
+import Workshop from "./pages/Workshop";
 import Eventi from "./pages/Eventi";
 import Magazine from "./pages/Magazine";
 import ArticoliPage from "./pages/ArticoliListRedirect";
 import ArticoloDetail from "./pages/ArticoloDetail";
-// import Spazio from "./pages/Spazio";
+import Spazio from "./pages/Spazio";
 import Contatti from "./pages/Contatti";
 import Servizi from "./pages/Servizi";
 import CasiStudio from "./pages/CasiStudio";
 import Newsletter from "./pages/Newsletter";
 import NotFound from "./pages/NotFound";
-// import CalligraphyWorkshop from "./pages/CalligraphyWorkshop";
+import CalligraphyWorkshop from "./pages/CalligraphyWorkshop";
 import WorkshopsPage from "./pages/Workshops";
 import BookingSuccess from "./pages/BookingSuccess";
 import AdminPage from "./pages/Admin";
@@ -40,16 +40,16 @@ function LocalizedRoutes() {
       <Route path="/fondatrici" component={Fondatrici} />
       <Route path="/chi-siamo" component={ChiSiamoRedirect} />
       <Route path="/eventi" component={Eventi} />
-      {/* <Route path="/workshop" component={Workshop} /> */}
+      <Route path="/workshop/calligraphy" component={CalligraphyWorkshop} />
+      <Route path="/workshop" component={Workshop} />
       <Route path="/magazine" component={Magazine} />
       <Route path="/newsletter" component={Newsletter} />
       <Route path="/articoli/:id" component={ArticoloDetail} />
       <Route path="/articoli" component={ArticoliPage} />
-      {/* <Route path="/spazio" component={Spazio} /> */}
+      <Route path="/spazio" component={Spazio} />
       <Route path="/contatti" component={Contatti} />
       <Route path="/servizi" component={Servizi} />
       <Route path="/casi-studio" component={CasiStudio} />
-      {/* <Route path="/workshop/calligraphy" component={CalligraphyWorkshop} /> */}
       <Route path="/workshops" component={WorkshopsPage} />
       <Route path="/cultura-taiwanese" component={CulturaTaiwanese} />
       <Route path="/antropologia-del-cibo" component={AntropologiaDelCibo} />
