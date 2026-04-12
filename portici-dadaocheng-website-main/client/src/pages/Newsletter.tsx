@@ -1,5 +1,13 @@
+import { useMemo } from "react";
 import { PageHeader } from "@/components/PageHeader";
 import { NewsletterSubscribeForm } from "@/components/NewsletterSubscribeForm";
+import { useLocalizedHref } from "@/contexts/LangContext";
+import { useDocumentSeo } from "@/hooks/useDocumentSeo";
+import { useJsonLd } from "@/hooks/useJsonLd";
+
+const NEWSLETTER_DOCUMENT_TITLE = "Newsletter | Portici DaDaocheng — Note dalla redazione";
+const NEWSLETTER_META_DESCRIPTION =
+  "Iscriviti alla newsletter di Portici DaDaocheng per ricevere note editoriali, approfondimenti di antropologia del cibo e anteprime del magazine.";
 
 const VALUE_BLOCKS = [
   {
@@ -20,6 +28,42 @@ const VALUE_BLOCKS = [
 ] as const;
 
 export default function Newsletter() {
+  const localizedHref = useLocalizedHref();
+  const newsletterPath = localizedHref("/newsletter");
+
+  useDocumentSeo(NEWSLETTER_DOCUMENT_TITLE, NEWSLETTER_META_DESCRIPTION);
+
+  const newsletterJsonLd = useMemo(() => {
+    const origin = typeof window !== "undefined" ? window.location.origin : "";
+    const absoluteUrl = origin ? `${origin}${newsletterPath}` : newsletterPath;
+    return {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: NEWSLETTER_DOCUMENT_TITLE,
+      description: NEWSLETTER_META_DESCRIPTION,
+      url: absoluteUrl,
+      isPartOf: {
+        "@type": "WebSite",
+        name: "Portici DaDaocheng",
+        url: origin || undefined,
+      },
+      potentialAction: {
+        "@type": "SubscribeAction",
+        name: "Iscriviti alla newsletter di Portici DaDaocheng",
+        target: {
+          "@type": "EntryPoint",
+          urlTemplate: absoluteUrl,
+          actionPlatform: [
+            "http://schema.org/DesktopWebPlatform",
+            "http://schema.org/MobileWebPlatform",
+          ],
+        },
+      },
+    };
+  }, [newsletterPath]);
+
+  useJsonLd("jsonld-newsletter-page", newsletterJsonLd);
+
   return (
     <main className="bg-background">
       <PageHeader eyebrow="Newsletter" meta="Lettera dal taccuino · Portici" title="Posta rada, materiale da leggere con calma">
@@ -35,17 +79,26 @@ export default function Newsletter() {
         </p>
       </PageHeader>
 
-      <section className="py-14 md:py-16 border-b border-border">
+      <section className="py-14 md:py-16 border-b border-border" aria-labelledby="newsletter-form-heading">
         <div className="container max-w-3xl mx-auto px-6 md:px-10">
-          <h2 className="font-medium text-foreground mb-6 text-[1.35rem] [font-family:var(--font-display)]">
-            Registra l&apos;indirizzo
+          <h2
+            id="newsletter-form-heading"
+            className="font-medium text-foreground mb-3 text-[1.35rem] [font-family:var(--font-display)]"
+          >
+            Una riga nel quaderno
           </h2>
+          <p className="text-[15px] text-muted-foreground leading-[1.8] max-w-2xl mb-8 [font-family:var(--font-body)]">
+            Lasci qui l&apos;indirizzo come un segnalibro tra le pagine del taccuino: quando avremo una nota pronta — testo
+            lungo, aggiornamento sul trimestrale, invito con data e luogo — te la spediamo. Niente calendario da
+            rispettare dall&apos;altra parte; solo materiale che regge la lettura.
+          </p>
           <NewsletterSubscribeForm
             source="newsletter"
             variant="page"
             showUnsubscribeHint
             editorialSubmitButton
             calmSubscribeErrors
+            omitAuxiliaryNewsletterLinks
             submitButtonLabel="Registra l'indirizzo"
           />
         </div>

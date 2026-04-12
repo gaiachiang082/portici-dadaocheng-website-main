@@ -49,6 +49,10 @@ interface NewsletterSubscribeFormProps {
    * (e.g. magazine current-issue hero).
    */
   quietSuccess?: boolean;
+  /**
+   * On /newsletter: omit links to `/newsletter` in error / supplement copy so the page stays a focused LP.
+   */
+  omitAuxiliaryNewsletterLinks?: boolean;
 }
 
 const inputLight =
@@ -84,6 +88,7 @@ export function NewsletterSubscribeForm({
   emailPlaceholder = "La tua email",
   successSupplementWhenEmailNotSent,
   quietSuccess = false,
+  omitAuxiliaryNewsletterLinks = false,
 }: NewsletterSubscribeFormProps) {
   const localizedHref = useLocalizedHref();
   const [email, setEmail] = useState("");
@@ -122,11 +127,17 @@ export function NewsletterSubscribeForm({
       >
         <p className="text-foreground/90 font-medium">{calmErrorTitle ?? NEWSLETTER_CALM_ERROR_TITLE}</p>
         <p className="mt-2">
-          {calmErrorBodyPrefix ?? NEWSLETTER_CALM_ERROR_BODY_PREFIX}{" "}
-          <a href={localizedHref("/newsletter")} className="text-primary underline-offset-4 hover:underline">
-            /newsletter
-          </a>
-          .
+          {omitAuxiliaryNewsletterLinks ? (
+            <>Puoi riprovare tra poco.</>
+          ) : (
+            <>
+              {calmErrorBodyPrefix ?? NEWSLETTER_CALM_ERROR_BODY_PREFIX}{" "}
+              <a href={localizedHref("/newsletter")} className="text-primary underline-offset-4 hover:underline">
+                /newsletter
+              </a>
+              .
+            </>
+          )}
         </p>
       </div>
     ) : (
@@ -153,10 +164,14 @@ export function NewsletterSubscribeForm({
         }`}
       >
         {successSupplementWhenEmailNotSent}{" "}
-        <a href={localizedHref("/newsletter")} className="text-primary underline-offset-4 hover:underline">
-          /newsletter
-        </a>
-        .
+        {omitAuxiliaryNewsletterLinks ? null : (
+          <>
+            <a href={localizedHref("/newsletter")} className="text-primary underline-offset-4 hover:underline">
+              /newsletter
+            </a>
+            .
+          </>
+        )}
       </p>
     ) : null;
 

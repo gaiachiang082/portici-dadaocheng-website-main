@@ -1,18 +1,25 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link } from "wouter";
 import { ArrowRight } from "lucide-react";
 import { MAGAZINE_ISSUE_1_SOURCE } from "@shared/const";
 import { PageHeader } from "@/components/PageHeader";
 import { NewsletterSubscribeForm } from "@/components/NewsletterSubscribeForm";
 import { useLang, useLocalizedHref } from "@/contexts/LangContext";
+import { useDocumentSeo } from "@/hooks/useDocumentSeo";
+import { useJsonLd } from "@/hooks/useJsonLd";
 import { MAGAZINE_ARTICLES_QUERY } from "@/sanity/articleQueries";
 import { client } from "../SanityClient";
 import {
   formatIssueMeta,
   getArchivedIssues,
   getCurrentIssue,
+  MAGAZINE_ISSUES,
   type MagazineIssue,
 } from "@/data/magazineIssues";
+
+const MAGAZINE_DOCUMENT_TITLE = "Magazine & Archivio | Portici DaDaocheng — Cultura e Identità";
+const MAGAZINE_META_DESCRIPTION =
+  "Sfoglia l'archivio dei numeri di Portici DaDaocheng. Rivista indipendente che esplora la cultura taiwanese e dell'Asia orientale attraverso il cibo.";
 
 interface Article {
   _id: string;
@@ -38,13 +45,17 @@ function pdfDownloadName(issue: MagazineIssue): string {
   return tail && /\.pdf$/i.test(tail) ? tail : "portici-magazine.pdf";
 }
 
+function coverImageAlt(issue: MagazineIssue): string {
+  return `Copertina Portici Magazine Numero ${issue.issueNumber}`;
+}
+
 function IssueCoverImage({ issue }: { issue: MagazineIssue }) {
   const [src, setSrc] = useState(issue.coverUrl);
 
   return (
     <img
       src={src}
-      alt={issue.coverAlt}
+      alt={coverImageAlt(issue)}
       className="h-full w-full object-contain object-center"
       loading="eager"
       decoding="async"
@@ -120,6 +131,59 @@ export default function Magazine() {
     };
     fetchArticles();
   }, [lang]);
+
+  const magazinePagePath = localizedHref("/magazine");
+
+  useDocumentSeo(MAGAZINE_DOCUMENT_TITLE, MAGAZINE_META_DESCRIPTION);
+
+  const magazineJsonLd = useMemo(() => {
+    const origin = typeof window !== "undefined" ? window.location.origin : "";
+    const pageUrl = origin ? `${origin}${magazinePagePath}` : magazinePagePath;
+    const allIssues = [...MAGAZINE_ISSUES];
+
+    const itemListElement = allIssues.map((issue, index) => {
+      const pdfUrl =
+        issue.pdfHref.startsWith("http://") || issue.pdfHref.startsWith("https://")
+          ? issue.pdfHref
+          : `${origin}${issue.pdfHref}`;
+      return {
+        "@type": "ListItem",
+        position: index + 1,
+        item: {
+          "@type": "PublicationIssue",
+          issueNumber: issue.issueNumber,
+          name: `${issue.themeTitle} (N. ${issue.issueNumber} · ${issue.seasonLabel} ${issue.year})`,
+          description: issue.intro[0],
+          url: pdfUrl,
+        },
+      };
+    });
+
+    return {
+      "@context": "https://schema.org",
+      "@type": ["CollectionPage", "WebPage"],
+      name: MAGAZINE_DOCUMENT_TITLE,
+      description: MAGAZINE_META_DESCRIPTION,
+      url: pageUrl,
+      isPartOf: {
+        "@type": "WebSite",
+        name: "Portici DaDaocheng",
+        url: origin || undefined,
+      },
+      about: {
+        "@type": "Periodical",
+        name: "Portici Magazine",
+        description: "Trimestrale in PDF di Portici DaDaocheng.",
+      },
+      mainEntity: {
+        "@type": "ItemList",
+        numberOfItems: allIssues.length,
+        itemListElement,
+      },
+    };
+  }, [magazinePagePath]);
+
+  useJsonLd("jsonld-magazine-page", magazineJsonLd);
 
   return (
     <main className="bg-background">
@@ -319,11 +383,13 @@ export default function Magazine() {
               scheda d’archivio — stesso URL, stesso sistema.
             </p>
           ) : (
-            <div className="grid md:grid-cols-2 gap-8">
+            <ul className="grid md:grid-cols-2 gap-8 list-none p-0 m-0">
               {archived.map((issue) => (
-                <IssueArchiveCard key={issue.slug} issue={issue} />
+                <li key={issue.slug} className="min-w-0">
+                  <IssueArchiveCard issue={issue} />
+                </li>
               ))}
-            </div>
+            </ul>
           )}
         </div>
       </section>
@@ -357,7 +423,11 @@ export default function Magazine() {
                       {img ? (
                         <img
                           src={img}
-                          alt=""
+                          alt={
+                            article.title?.trim()
+                              ? `Anteprima articolo: ${article.title.trim()}`
+                              : "Anteprima articolo"
+                          }
                           className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                       ) : (
@@ -405,13 +475,13 @@ export default function Magazine() {
             Ricevi una mail quando il PDF è pronto
           </h2>
           <p className="text-[15px] text-muted-foreground leading-relaxed mb-6 [font-family:var(--font-body)]">
-            Raramente, solo quando c’è un numero o una nota che vale la pena allegare — senza usare Linktree come unica
-            porta d’ingresso.
+            Raramente, solo quando c’è un numero o una nota che vale la pena allegare — senza riempire la casella per
+            abitudine.
           </p>
           <NewsletterSubscribeForm source="magazine" variant="home" showUnsubscribeHint />
           <p className="mt-6 text-sm text-muted-foreground [font-family:var(--font-body)]">
             <Link href={localizedHref("/newsletter")} className="text-primary underline-offset-4 hover:underline">
-              Note su frequenza e contenuti (/newsletter)
+              Ricevi i prossimi numeri direttamente nella tua posta.
             </Link>
           </p>
         </div>
