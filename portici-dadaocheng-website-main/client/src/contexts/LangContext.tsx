@@ -1,4 +1,4 @@
-import { createContext, useContext, type ReactNode } from "react";
+import { createContext, useCallback, useContext, type ReactNode } from "react";
 import { useLocation } from "wouter";
 
 export const SUPPORTED_LANGS = ["it", "zh", "en"] as const;
@@ -48,9 +48,9 @@ export function LangProviderFromLocation({ children }: { children: ReactNode }) 
 /** Prefix a site path with the current locale: `/magazine` → `/it/magazine`. */
 export function useLocalizedHref(): (path: string) => string {
   const lang = useLang();
-  return (path: string) => {
+  return useCallback((path: string) => {
     if (!path || path === "/") return `/${lang}`;
     const normalized = path.startsWith("/") ? path : `/${path}`;
     return `/${lang}${normalized}`;
-  };
+  }, [lang]);
 }

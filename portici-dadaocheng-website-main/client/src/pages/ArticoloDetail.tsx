@@ -1,16 +1,19 @@
-import { useState, useEffect } from "react";
-import { useParams, Link } from "wouter";
+import { useState, useEffect, useMemo } from "react";
+import { Link, useParams } from "wouter";
 import { ArrowLeft } from "lucide-react";
 import { PortableText, type PortableTextBlock } from "@portabletext/react";
 import { useLang, useLocalizedHref } from "@/contexts/LangContext";
+import { DEFAULT_DOCUMENT_DESCRIPTION, DEFAULT_DOCUMENT_TITLE, useDocumentSeo } from "@/hooks/useDocumentSeo";
+import { useJsonLd } from "@/hooks/useJsonLd";
 import { ARTICLE_DETAIL_QUERY } from "@/sanity/articleQueries";
 import { client } from "../SanityClient";
 
 /** Shape of {@link ARTICLE_DETAIL_QUERY} result. */
 interface ArticleDetail {
   _id: string;
+  slug?: string | null;
   title?: string;
-  /** Mapped from Sanity `content_it` (`array` of `block`). */
+  excerpt?: string | null;
   body?: PortableTextBlock[] | null;
   category?: string;
   mainImage?: {
@@ -18,23 +21,35 @@ interface ArticleDetail {
   };
 }
 
+function excerptToMeta(raw: string | null | undefined): string {
+  const t = (raw ?? "").replace(/\s+/g, " ").trim();
+  if (t.length <= 155) return t || DEFAULT_META_FALLBACK;
+  return `${t.slice(0, 152).trimEnd()}…`;
+}
+
+const DEFAULT_META_FALLBACK =
+  "Lettura da Portici DaDaocheng — cultura taiwanese, cibo e laboratorio a Bologna.";
+
 export default function ArticoloDetail() {
   const lang = useLang();
   const localizedHref = useLocalizedHref();
-  const params = useParams<{ id: string }>();
-  const id = params?.id;
+  const params = useParams<{ slug: string }>();
+  const slugParam = params?.slug ? decodeURIComponent(params.slug) : "";
   const [article, setArticle] = useState<ArticleDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!id) {
+    if (!slugParam) {
       setLoading(false);
       return;
     }
     const fetchArticle = async () => {
       try {
-        const data = await client.fetch<ArticleDetail | null>(ARTICLE_DETAIL_QUERY, { id, lang });
+        const data = await client.fetch<ArticleDetail | null>(ARTICLE_DETAIL_QUERY, {
+          slug: slugParam,
+          lang,
+        });
         setArticle(data ?? null);
       } catch (err) {
         console.error("ArticoloDetail fetch error:", err);
@@ -44,7 +59,42 @@ export default function ArticoloDetail() {
       }
     };
     fetchArticle();
-  }, [id, lang]);
+  }, [slugParam, lang]);
+
+  const canonicalSegment = article?.slug ?? slugParam;
+  const canonicalPath =
+    canonicalSegment.length > 0 ? localizedHref(`/articoli/${canonicalSegment}`) : undefined;
+
+  const metaTitle = article?.title?.trim()
+    ? `${article.title.trim()} | Portici DaDaocheng`
+    : DEFAULT_DOCUMENT_TITLE;
+  const metaDescription = article ? excerptToMeta(article.excerpt) : DEFAULT_DOCUMENT_DESCRIPTION;
+
+  useDocumentSeo(metaTitle, metaDescription, canonicalPath);
+
+  const articleJsonLd = useMemo(() => {
+    if (!article?.title) return null;
+    const origin = typeof window !== "undefined" ? window.location.origin : "";
+    const url = canonicalPath && origin ? `${origin}${canonicalPath}` : "";
+    return {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      headline: article.title,
+      description: excerptToMeta(article.excerpt),
+      inLanguage: lang,
+      url: url || undefined,
+      isPartOf: {
+        "@type": "WebSite",
+        name: "Portici DaDaocheng",
+        url: origin || undefined,
+      },
+      ...(article.mainImage?.asset?.url
+        ? { image: article.mainImage.asset.url }
+        : {}),
+    };
+  }, [article, canonicalPath, lang]);
+
+  useJsonLd("jsonld-article-detail", articleJsonLd);
 
   if (loading) {
     return (

@@ -12,7 +12,7 @@ export default function Newsletter() {
   const localizedHref = useLocalizedHref();
   const newsletterPath = localizedHref("/newsletter");
 
-  useDocumentSeo(n.seoTitle, n.seoDescription);
+  useDocumentSeo(n.seoTitle, n.seoDescription, newsletterPath);
 
   const newsletterJsonLd = useMemo(() => {
     const origin = typeof window !== "undefined" ? window.location.origin : "";

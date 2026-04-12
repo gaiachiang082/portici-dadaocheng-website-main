@@ -1,7 +1,13 @@
 import { PageHeader } from "@/components/PageHeader";
+import { useLocalizedHref } from "@/contexts/LangContext";
+import { BREADCRUMB_CULTURA_TAIWANESE } from "@/data/hubBreadcrumbs";
+import { useBreadcrumbJsonLd } from "@/hooks/useBreadcrumbJsonLd";
 import { FeaturedArticlesPlaceholder } from "@/pages/hub/FeaturedArticlesPlaceholder";
 
 export default function CulturaTaiwanese() {
+  const localizedHref = useLocalizedHref();
+  useBreadcrumbJsonLd("breadcrumb-hub-cultura-taiwanese", BREADCRUMB_CULTURA_TAIWANESE, localizedHref);
+
   return (
     <main className="bg-background">
       <PageHeader

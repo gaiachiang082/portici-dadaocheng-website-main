@@ -1,7 +1,13 @@
 import { PageHeader } from "@/components/PageHeader";
+import { useLocalizedHref } from "@/contexts/LangContext";
+import { BREADCRUMB_ANTROPOLOGIA_CIBO } from "@/data/hubBreadcrumbs";
+import { useBreadcrumbJsonLd } from "@/hooks/useBreadcrumbJsonLd";
 import { FeaturedArticlesPlaceholder } from "@/pages/hub/FeaturedArticlesPlaceholder";
 
 export default function AntropologiaDelCibo() {
+  const localizedHref = useLocalizedHref();
+  useBreadcrumbJsonLd("breadcrumb-hub-antropologia-cibo", BREADCRUMB_ANTROPOLOGIA_CIBO, localizedHref);
+
   return (
     <main className="bg-background">
       <PageHeader

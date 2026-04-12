@@ -44,7 +44,7 @@ function LocalizedRoutes() {
       <Route path="/workshop" component={Workshop} />
       <Route path="/magazine" component={Magazine} />
       <Route path="/newsletter" component={Newsletter} />
-      <Route path="/articoli/:id" component={ArticoloDetail} />
+      <Route path="/articoli/:slug" component={ArticoloDetail} />
       <Route path="/articoli" component={ArticoliPage} />
       <Route path="/spazio" component={Spazio} />
       <Route path="/contatti" component={Contatti} />

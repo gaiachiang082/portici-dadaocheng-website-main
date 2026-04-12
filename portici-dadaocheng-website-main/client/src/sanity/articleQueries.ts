@@ -34,6 +34,7 @@ const localizedExcerptPt = `
 
 export const ARTICLES_LIST_QUERY = `*[_type == "article" && language == $lang] | order(_createdAt desc) {
   _id,
+  "slug": slug.current,
   ${localizedTitle},
   category,
   mainImage { asset->{ url } },
@@ -42,6 +43,7 @@ export const ARTICLES_LIST_QUERY = `*[_type == "article" && language == $lang] |
 
 export const ARTICLES_LATEST_THREE_QUERY = `*[_type == "article" && language == $lang] | order(_createdAt desc) [0...3] {
   _id,
+  "slug": slug.current,
   ${localizedTitle},
   category,
   mainImage { asset->{ url } },
@@ -51,6 +53,7 @@ export const ARTICLES_LATEST_THREE_QUERY = `*[_type == "article" && language == 
 /** Magazine page grid: same language filter + CMS fields. */
 export const MAGAZINE_ARTICLES_QUERY = `*[_type == "article" && language == $lang] | order(_createdAt desc) {
   _id,
+  "slug": slug.current,
   _createdAt,
   category,
   ${localizedTitle},
@@ -62,9 +65,12 @@ export const MAGAZINE_ARTICLES_QUERY = `*[_type == "article" && language == $lan
   }
 }`;
 
-export const ARTICLE_DETAIL_QUERY = `*[_type == "article" && _id == $id && language == $lang][0]{
+/** Resolve by `slug.current` (SEO URL); fall back to `_id` for legacy bookmarks. */
+export const ARTICLE_DETAIL_QUERY = `*[_type == "article" && language == $lang && (slug.current == $slug || _id == $slug)][0]{
   _id,
+  "slug": slug.current,
   ${localizedTitle},
+  ${localizedExcerptPt},
   ${localizedBody},
   category,
   mainImage { asset->{ url } }

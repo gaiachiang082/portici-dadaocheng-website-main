@@ -1,7 +1,13 @@
 import { PageHeader } from "@/components/PageHeader";
+import { useLocalizedHref } from "@/contexts/LangContext";
+import { BREADCRUMB_DADAOCHENG } from "@/data/hubBreadcrumbs";
+import { useBreadcrumbJsonLd } from "@/hooks/useBreadcrumbJsonLd";
 import { FeaturedArticlesPlaceholder } from "@/pages/hub/FeaturedArticlesPlaceholder";
 
 export default function Dadaocheng() {
+  const localizedHref = useLocalizedHref();
+  useBreadcrumbJsonLd("breadcrumb-hub-dadaocheng", BREADCRUMB_DADAOCHENG, localizedHref);
+
   return (
     <main className="bg-background">
       <PageHeader

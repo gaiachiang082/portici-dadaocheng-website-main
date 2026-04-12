@@ -7,6 +7,8 @@ export { ARTICLES_LIST_QUERY, ARTICLES_LATEST_THREE_QUERY } from "@/sanity/artic
 
 export interface ArticlePreview {
   _id: string;
+  /** Sanity `slug.current` — preferred segment for `/articoli/:slug`. */
+  slug?: string | null;
   /** Localized display title from GROQ (`coalesce` + `select` on `title.*`). */
   title: string;
   category?: string;
@@ -76,7 +78,7 @@ export function ArticleCard({ article }: { article: ArticlePreview }) {
           <div className="mb-4" aria-hidden />
         )}
         <Link
-          href={localizedHref(`/articoli/${article._id}`)}
+          href={localizedHref(`/articoli/${article.slug ?? article._id}`)}
           className="inline-flex items-center gap-1.5 text-[12px] uppercase tracking-[0.12em] text-foreground/70 [font-family:var(--font-mono)] hover:text-foreground transition-colors"
         >
           {t.common.read_more}

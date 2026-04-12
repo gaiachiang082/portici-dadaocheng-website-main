@@ -1,9 +1,12 @@
+import { useMemo } from "react";
 import { Link, useParams } from "wouter";
 import { ArrowLeft } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
 import { GlossaryEntryBody } from "@/components/GlossaryEntryBody";
 import { useLocalizedHref } from "@/contexts/LangContext";
 import { getGlossaryEntryBySlug } from "@/data/glossaryData";
+import type { BreadcrumbCrumb } from "@/hooks/useBreadcrumbJsonLd";
+import { useBreadcrumbJsonLd } from "@/hooks/useBreadcrumbJsonLd";
 
 export default function GlossarioTerm() {
   const params = useParams<{ term: string }>();
@@ -12,6 +15,21 @@ export default function GlossarioTerm() {
   const localizedHref = useLocalizedHref();
   const glossarioHref = localizedHref("/glossario");
   const entry = termSlug ? getGlossaryEntryBySlug(termSlug) : undefined;
+
+  const glossaryCrumbs: readonly BreadcrumbCrumb[] = useMemo(() => {
+    if (!entry) return [];
+    return [
+      { name: "Portici DaDaocheng", path: "/" },
+      { name: "Glossario", path: "/glossario" },
+      { name: entry.term, path: `/glossario/${entry.id}` },
+    ];
+  }, [entry]);
+
+  useBreadcrumbJsonLd(
+    entry ? `breadcrumb-glossario-${entry.id}` : "breadcrumb-glossario-term",
+    glossaryCrumbs,
+    localizedHref
+  );
 
   if (!entry) {
     return (

@@ -168,6 +168,8 @@ export default function Navigation() {
             <BrandMark
               tone={isHome && !scrolled ? "paper" : "ink"}
               emphasis
+              alt=""
+              aria-hidden
               className={`w-auto transition-[height,width] duration-400 ease-out opacity-95 ${
                 scrolled ? "h-[72px] md:h-[78px]" : "h-[84px] md:h-[108px]"
               }`}

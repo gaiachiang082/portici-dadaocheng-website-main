@@ -20,6 +20,7 @@ import { getMagazinePageCopy } from "@/i18n/magazinePageLocale";
 
 interface Article {
   _id: string;
+  slug?: string | null;
   _createdAt?: string;
   category?: string;
   title?: string;
@@ -136,7 +137,7 @@ export default function Magazine() {
 
   const magazinePagePath = localizedHref("/magazine");
 
-  useDocumentSeo(m.seoTitle, m.seoDescription);
+  useDocumentSeo(m.seoTitle, m.seoDescription, magazinePagePath);
 
   const magazineJsonLd = useMemo(() => {
     const origin = typeof window !== "undefined" ? window.location.origin : "";
@@ -416,7 +417,7 @@ export default function Magazine() {
                 return (
                   <Link
                     key={article._id}
-                    href={localizedHref(`/articoli/${article._id}`)}
+                    href={localizedHref(`/articoli/${article.slug ?? article._id}`)}
                     className="group rounded-xl overflow-hidden border border-border/70 bg-card/80 flex flex-col transition-colors hover:border-border hover:bg-card"
                   >
                     <div className="relative h-28 w-full overflow-hidden bg-muted shrink-0">

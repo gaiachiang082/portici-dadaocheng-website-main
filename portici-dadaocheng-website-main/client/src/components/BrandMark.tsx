@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 /** `ink` = mark as exported (dark on transparent). `paper` = inverted for dark backgrounds (nav hero, footer). */
 export type BrandMarkTone = "ink" | "paper";
 
-export type BrandMarkProps = Omit<React.ImgHTMLAttributes<HTMLImageElement>, "src" | "alt"> & {
+export type BrandMarkProps = Omit<React.ImgHTMLAttributes<HTMLImageElement>, "src"> & {
   tone?: BrandMarkTone;
   /** Thicker-looking strokes via stacked drop-shadows (raster mark; use on nav / hero). */
   emphasis?: boolean;
@@ -22,18 +22,26 @@ function buildFilter(tone: BrandMarkTone, emphasis: boolean): string | undefined
   return parts.length ? parts.join(" ") : undefined;
 }
 
+const DEFAULT_BRAND_ALT =
+  "Portici DaDaocheng — laboratorio culturale tra Taiwan e Italia, antropologia del cibo e workshop a Bologna";
+
 /**
  * Official brand mark from `/brand/logo-official.svg` (designer export — correct proportions).
  * Raster-in-SVG; color is controlled with `tone` + `emphasis`, not `text-*` classes.
  */
-export function BrandMark({ className, tone = "ink", emphasis = false, style, ...props }: BrandMarkProps) {
+export function BrandMark({
+  className,
+  tone = "ink",
+  emphasis = false,
+  style,
+  alt = DEFAULT_BRAND_ALT,
+  ...props
+}: BrandMarkProps) {
   const filter = buildFilter(tone, emphasis);
   return (
     <img
       src="/brand/logo-official.svg"
-      alt=""
-      role="presentation"
-      aria-hidden
+      alt={alt}
       decoding="async"
       className={cn("object-contain object-left shrink-0", className)}
       style={{ ...(filter ? { filter } : {}), ...style }}

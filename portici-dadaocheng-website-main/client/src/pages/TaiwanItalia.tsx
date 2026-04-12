@@ -1,7 +1,13 @@
 import { PageHeader } from "@/components/PageHeader";
+import { useLocalizedHref } from "@/contexts/LangContext";
+import { BREADCRUMB_TAIWAN_ITALIA } from "@/data/hubBreadcrumbs";
+import { useBreadcrumbJsonLd } from "@/hooks/useBreadcrumbJsonLd";
 import { FeaturedArticlesPlaceholder } from "@/pages/hub/FeaturedArticlesPlaceholder";
 
 export default function TaiwanItalia() {
+  const localizedHref = useLocalizedHref();
+  useBreadcrumbJsonLd("breadcrumb-hub-taiwan-italia", BREADCRUMB_TAIWAN_ITALIA, localizedHref);
+
   return (
     <main className="bg-background">
       <PageHeader
