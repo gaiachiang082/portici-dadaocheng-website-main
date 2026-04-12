@@ -27,9 +27,16 @@ export default function ArticoliPage() {
       setLoading(true);
       setError(null);
       try {
+        console.log("準備打 Sanity API，使用的 lang 變數是:", lang);
+        console.log("Sanity Config:", {
+          projectId: client.config().projectId,
+          dataset: client.config().dataset,
+        });
         const data = await client.fetch<ArticlePreview[]>(ARTICLES_LIST_QUERY, { lang });
+        const list = Array.isArray(data) ? data : [];
+        console.log("Sanity 回傳的文章列表:", list);
         if (!cancelled) {
-          setArticles(Array.isArray(data) ? data : []);
+          setArticles(list);
         }
       } catch (err) {
         console.error("ArticoliPage fetch error:", err);

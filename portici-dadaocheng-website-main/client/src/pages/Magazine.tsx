@@ -123,8 +123,15 @@ export default function Magazine() {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
+        console.log("準備打 Sanity API，使用的 lang 變數是:", lang);
+        console.log("Sanity Config:", {
+          projectId: client.config().projectId,
+          dataset: client.config().dataset,
+        });
         const data = await client.fetch<Article[]>(MAGAZINE_ARTICLES_QUERY, { lang });
-        setArticles(data ?? []);
+        const list = data ?? [];
+        console.log("Sanity 回傳的文章列表:", list);
+        setArticles(list);
       } catch (err) {
         console.error("Magazine articoli fetch error:", err);
         setArticles([]);
