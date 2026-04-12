@@ -2,14 +2,9 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "wouter";
 import { toast } from "sonner";
 import { trpc } from "@/lib/trpc";
-import { PROGRAM_CONCEPTS, type ProgramConcept } from "@/data/programConcepts";
-import { useLocalizedHref } from "@/contexts/LangContext";
-
-const kindLabel: Record<ProgramConcept["kind"], string> = {
-  cultural: "Linea culturale",
-  hybrid: "Ibrido conviviale",
-  exploratory: "In esplorazione",
-};
+import { PROGRAM_CONCEPTS } from "@/data/programConcepts";
+import { useLang, useLocalizedHref } from "@/contexts/LangContext";
+import { getProgramInterestCopy } from "@/i18n/programInterestLocale";
 
 type Props = {
   id?: string;
@@ -24,6 +19,8 @@ function newsletterSourceFromTopicSlug(topicSlug: string): string {
 }
 
 export function ProgramInterestSection({ id = "interesse", className = "", showLegacyBookingHint }: Props) {
+  const lang = useLang();
+  const t = getProgramInterestCopy(lang);
   const localizedHref = useLocalizedHref();
   const [selectedSlug, setSelectedSlug] = useState<string>(PROGRAM_CONCEPTS[0]!.slug);
   const [email, setEmail] = useState("");
@@ -95,23 +92,24 @@ export function ProgramInterestSection({ id = "interesse", className = "", showL
             source: newsletterSourceFromTopicSlug(resolvedTopic.slug),
           });
           if (sub.alreadySubscribed) {
-            extra = " Siete già nella newsletter — nessun duplicato.";
+            extra = t.toastExtraAlreadySub;
           } else {
-            extra = " Riceverete anche il Magazine e le novità sulle sessioni (una mail al mese, senza spam).";
+            extra = t.toastExtraSubscribed;
           }
         } catch {
-          extra =
-            " Interesse registrato. Per la newsletter, potete iscrivervi dalla pagina dedicata se volete completare l’iscrizione.";
+          extra = t.toastExtraNewsletterFail;
         }
       }
 
-      toast.success(`Grazie. Vi contatteremo quando ci sarà un aggiornamento su questa linea.${extra}`);
+      const description = [t.toastSuccessBody, extra.trim(), t.openQuestion].filter(Boolean).join(" ");
+
+      toast.success(t.toastSuccessTitle, { description });
       setEmail("");
       setName("");
       setNote("");
       setAlsoNewsletter(false);
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Invio non riuscito. Riprovate tra poco.");
+      toast.error(err instanceof Error ? err.message : t.toastErrorGeneric);
     }
   };
 
@@ -124,19 +122,18 @@ export function ProgramInterestSection({ id = "interesse", className = "", showL
           className="text-[11px] uppercase tracking-[0.24em] text-muted-foreground mb-3"
           style={{ fontFamily: "var(--font-ui)" }}
         >
-          Prossime sessioni
+          {t.kicker}
         </p>
         <h2
           className="font-medium text-foreground mb-4 text-[clamp(1.35rem,2.8vw,1.75rem)]"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          Linee possibili — raccogliamo interesse prima del calendario
+          {t.title}
         </h2>
         <p
           className="text-[17px] text-muted-foreground leading-[1.75] mb-10 max-w-2xl [font-family:var(--font-body)]"
         >
-          Il programma dal vivo è stagionale e guidato dalla domanda. Scegliete una linea che vi interessa: quando ci
-          sarà abbastanza interesse, scriviamo a chi si è registrato con date, formato e dettagli pratici.
+          {t.intro}
         </p>
 
         {refFromWorkshop && (
@@ -144,7 +141,7 @@ export function ProgramInterestSection({ id = "interesse", className = "", showL
             className="mb-8 text-sm text-foreground border-l-2 border-editorial-mark pl-4 py-1 [font-family:var(--font-body)]"
           >
             <span className="text-muted-foreground uppercase tracking-wider text-xs [font-family:var(--font-ui)]">
-              Linea dal sito
+              {t.refFromSite}
             </span>
             <br />
             <span className="font-medium">{refFromWorkshop.title}</span>
@@ -173,7 +170,7 @@ export function ProgramInterestSection({ id = "interesse", className = "", showL
                       className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground mb-2"
                       style={{ fontFamily: "var(--font-ui)" }}
                     >
-                      {kindLabel[c.kind]}
+                      {t.kindLabel[c.kind]}
                     </p>
                     <p className="font-medium text-foreground [font-family:var(--font-display)] text-[1.05rem] mb-1">
                       {c.title}
@@ -196,15 +193,16 @@ export function ProgramInterestSection({ id = "interesse", className = "", showL
             <h3
               className="text-[15px] font-medium text-foreground mb-1 [font-family:var(--font-ui)]"
             >
-              Manifestate interesse
+              {t.formTitle}
             </h3>
             <p className="text-sm text-muted-foreground mb-6 [font-family:var(--font-body)]">
-              Tema selezionato: <strong className="text-foreground font-medium">{resolvedTopic.title}</strong>
+              {t.selectedTopicLead}{" "}
+              <strong className="text-foreground font-medium">{resolvedTopic.title}</strong>
             </p>
             <form onSubmit={onSubmit} className="space-y-4">
               <div>
                 <label className="block text-xs text-muted-foreground mb-1.5 uppercase tracking-wider [font-family:var(--font-ui)]">
-                  Email *
+                  {t.labelEmail}
                 </label>
                 <input
                   required
@@ -229,13 +227,13 @@ export function ProgramInterestSection({ id = "interesse", className = "", showL
               </div>
               <div>
                 <label className="block text-xs text-muted-foreground mb-1.5 uppercase tracking-wider [font-family:var(--font-ui)]">
-                  Nota (facoltativo)
+                  {t.labelNote}
                 </label>
                 <textarea
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
                   rows={3}
-                  placeholder="Es. sere feriali, livello principiante, gruppo di 3 persone…"
+                  placeholder={t.notePlaceholder}
                   className="w-full px-3 py-2.5 rounded-md border border-border bg-background text-foreground text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/30 resize-none"
                 />
               </div>
@@ -247,8 +245,7 @@ export function ProgramInterestSection({ id = "interesse", className = "", showL
                   className="mt-1 h-3.5 w-3.5 rounded border-border text-primary focus-visible:ring-2 focus-visible:ring-ring/30 shrink-0"
                 />
                 <span className="text-[13px] text-muted-foreground leading-snug [font-family:var(--font-body)] group-hover:text-foreground/90 transition-colors">
-                  Vorrei anche ricevere il Magazine e notizie sulle prossime sessioni{" "}
-                  <span className="text-muted-foreground/80">(newsletter facoltativa, circa una mail al mese).</span>
+                  {t.newsletterCheckbox}
                 </span>
               </label>
               <button
@@ -256,17 +253,17 @@ export function ProgramInterestSection({ id = "interesse", className = "", showL
                 disabled={submitting}
                 className="w-full py-3 rounded-md text-sm font-medium bg-primary text-primary-foreground hover:opacity-90 transition-opacity disabled:opacity-60 [font-family:var(--font-ui)]"
               >
-                {submitting ? "Invio…" : "Invia interesse"}
+                {submitting ? t.submitting : t.submit}
               </button>
             </form>
 
             {showLegacyBookingHint && (
               <p className="mt-6 pt-6 border-t border-border text-xs text-muted-foreground leading-relaxed [font-family:var(--font-body)]">
-                Se avete già ricevuto un invito con link al pagamento, potete accedere al{" "}
+                {t.legacyHintBefore}{" "}
                 <Link href={`${localizedHref("/workshops")}?booking=1`} className="text-primary underline-offset-4 hover:underline font-medium">
-                  flusso di conferma riservato
+                  {t.legacyHintLink}
                 </Link>
-                .
+                {t.legacyHintAfter}
               </p>
             )}
           </div>

@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { Link } from "wouter";
 import { ProgramInterestSection } from "@/components/ProgramInterestSection";
-import { useLocalizedHref } from "@/contexts/LangContext";
+import { useLang, useLocalizedHref } from "@/contexts/LangContext";
+import { getWorkshopsBookingCopy } from "@/i18n/workshopBookingLocale";
 
 /* ─── Types ─── */
 type Step = "list" | "sessions" | "form" | "review" | "paying";
@@ -34,8 +35,8 @@ const CATEGORY_SURFACE: Record<string, string> = {
 const inputDarkClass =
   "w-full px-4 py-2.5 rounded-lg border text-sm outline-none transition-colors bg-[color-mix(in_srgb,var(--paper)_9%,var(--forest-deep))] border-border text-on-ink placeholder:text-on-ink-subtle focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/20";
 
-function formatDate(d: Date | string) {
-  return new Date(d).toLocaleDateString("it-IT", {
+function formatSessionDate(d: Date | string, locale: string) {
+  return new Date(d).toLocaleDateString(locale, {
     weekday: "long",
     year: "numeric",
     month: "long",
@@ -49,12 +50,14 @@ function formatDate(d: Date | string) {
 function WorkshopCard({
   workshop,
   onSelect,
+  ui,
 }: {
   workshop: any;
   onSelect: () => void;
+  ui: ReturnType<typeof getWorkshopsBookingCopy>;
 }) {
   const spotsLabel =
-    workshop.maxParticipants <= 8 ? "Piccolo gruppo" : "Gruppo standard";
+    workshop.maxParticipants <= 8 ? ui.spotsSmall : ui.spotsStandard;
   const catSurface =
     CATEGORY_SURFACE[workshop.category] ??
     "color-mix(in srgb, var(--editorial-mark) 25%, var(--forest-deep))";
@@ -102,7 +105,7 @@ function WorkshopCard({
               <span className="text-on-ink text-base font-medium tabular-nums">
                 €{parseFloat(workshop.priceEur).toFixed(0)}
               </span>
-              <span className="text-on-ink-muted"> / persona</span>
+              <span className="text-on-ink-muted">{ui.perPerson}</span>
             </p>
             <p>
               {workshop.durationMinutes} min · {spotsLabel}
@@ -114,7 +117,7 @@ function WorkshopCard({
           type="button"
           className="mt-4 w-full py-2.5 rounded-[12px] text-sm font-semibold bg-brand-cta text-brand-cta-foreground transition-opacity duration-200 hover:opacity-90"
         >
-          Scegli una data
+          {ui.ctaSelectWorkshop}
         </button>
       </div>
     </div>
@@ -126,15 +129,19 @@ function SessionPicker({
   sessions,
   selectedId,
   onSelect,
+  ui,
+  dateLocale,
 }: {
   sessions: any[];
   selectedId: number | null;
   onSelect: (id: number) => void;
+  ui: ReturnType<typeof getWorkshopsBookingCopy>;
+  dateLocale: string;
 }) {
   if (sessions.length === 0) {
     return (
       <p className="text-on-ink-muted text-sm py-4">
-        Nessuna sessione disponibile al momento. Contattaci per organizzare una data privata.
+        {ui.sessionEmpty}
       </p>
     );
   }
@@ -148,7 +155,9 @@ function SessionPicker({
         return (
           <button
             key={s.id}
+            type="button"
             disabled={isFull}
+            aria-pressed={isSelected}
             onClick={() => !isFull && onSelect(s.id)}
             className={`flex items-center justify-between p-4 rounded-xl border text-left transition-colors duration-200 ${
               isSelected
@@ -158,17 +167,21 @@ function SessionPicker({
           >
             <div>
               <p className="text-on-ink text-sm font-medium">
-                {formatDate(s.sessionDate)}
+                {formatSessionDate(s.sessionDate, dateLocale)}
               </p>
               <p className="text-xs text-on-ink-muted mt-0.5">
-                {isFull ? "Completo" : `${spotsLeft} posti disponibili`}
+                {isFull
+                  ? ui.sessionFull
+                  : spotsLeft === 1
+                    ? ui.sessionOneLeft
+                    : ui.sessionNLeft(spotsLeft)}
               </p>
             </div>
-            {isSelected && (
-              <span className="text-editorial-mark text-lg" aria-hidden>
-                ✓
+            {isSelected ? (
+              <span className="text-[10px] uppercase tracking-widest text-editorial-mark [font-family:var(--font-mono)] shrink-0">
+                {ui.selected}
               </span>
-            )}
+            ) : null}
           </button>
         );
       })}
@@ -181,6 +194,9 @@ const errorBannerClass =
 
 /* ─── Main Page ─── */
 export default function WorkshopsPage() {
+  const lang = useLang();
+  const ui = getWorkshopsBookingCopy(lang);
+  const dateLocale = lang === "en" ? "en-GB" : "it-IT";
   const localizedHref = useLocalizedHref();
   const [legacyBooking, setLegacyBooking] = useState(false);
   const [step, setStep] = useState<Step>("list");
@@ -284,7 +300,7 @@ export default function WorkshopsPage() {
               href={localizedHref("/eventi")}
               className="text-sm tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors [font-family:var(--font-ui)]"
             >
-              Sessioni
+              {ui.navSessions}
             </Link>
           </div>
         </nav>
@@ -292,20 +308,19 @@ export default function WorkshopsPage() {
         <div className="border-t border-border bg-muted/20 py-12 px-6">
           <div className="max-w-xl mx-auto text-center">
             <p className="text-sm text-muted-foreground leading-relaxed mb-6 [font-family:var(--font-body)]">
-              Avete già un invito o un link al deposito? Qui resta il flusso dedicato a conferma e pagamento per una
-              sessione già scelta — non è il percorso principale del sito.
+              {ui.gateInviteBlurb}
             </p>
             <button
               type="button"
               onClick={() => setLegacyBooking(true)}
               className="inline-flex items-center justify-center px-6 py-3 rounded-md text-sm font-medium border border-border bg-card hover:bg-muted transition-colors [font-family:var(--font-ui)]"
             >
-              Apri conferma e pagamento
+              {ui.gateOpenFlow}
             </button>
             <p className="mt-8 text-sm text-muted-foreground [font-family:var(--font-body)]">
-              Altre domande o richieste?{" "}
+              {ui.gateContactPrefix}{" "}
               <Link href={localizedHref("/contatti")} className="text-primary font-medium underline-offset-4 hover:underline [font-family:var(--font-ui)]">
-                Contatti
+                {ui.gateContactLink}
               </Link>
             </p>
           </div>
@@ -328,9 +343,9 @@ export default function WorkshopsPage() {
             href={localizedHref("/eventi")}
             className="text-xs tracking-widest uppercase text-on-ink-muted hover:text-on-ink transition-colors"
           >
-            Sessioni
+            {ui.navSessions}
           </Link>
-          <h1 className="text-sm tracking-widest uppercase text-on-ink-muted">Conferma</h1>
+          <h1 className="text-sm tracking-widest uppercase text-on-ink-muted">{ui.navConfirm}</h1>
         </div>
       </nav>
 
@@ -340,21 +355,20 @@ export default function WorkshopsPage() {
           <>
             <div className="mb-10">
               <p className="text-[10px] tracking-[0.3em] uppercase text-on-ink-accent mb-3">
-                Flusso riservato
+                {ui.listKicker}
               </p>
               <h2
                 className="text-[28px] md:text-[32px] text-on-ink mb-4"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600, lineHeight: 1.2 }}
               >
-                Conferma sessione e deposito
+                {ui.listTitle}
               </h2>
               <p className="text-on-ink-muted max-w-xl leading-relaxed">
-                Questa area serve quando una sessione è già stata comunicata e volete scegliere data e completare il
-                deposito. Per nuove linee e interesse collettivo, usate la pagina{" "}
+                {ui.listIntroBeforeSessionsLink}
                 <Link href={localizedHref("/eventi")} className="text-editorial-mark hover:underline underline-offset-4">
-                  Sessioni
+                  {ui.navSessions}
                 </Link>
-                .
+                {ui.listIntroAfterSessionsLink}
               </p>
             </div>
 
@@ -373,6 +387,7 @@ export default function WorkshopsPage() {
                   <WorkshopCard
                     key={w.id}
                     workshop={w}
+                    ui={ui}
                     onSelect={() => handleSelectWorkshop(w.slug)}
                   />
                 ))}
@@ -389,7 +404,7 @@ export default function WorkshopsPage() {
               onClick={() => setStep("list")}
               className="text-sm text-on-ink-muted hover:text-on-ink mb-8 transition-colors"
             >
-              ← Torna all&apos;elenco
+              {ui.backToList}
             </button>
 
             <div className="mb-8">
@@ -413,7 +428,7 @@ export default function WorkshopsPage() {
                   {workshop.durationMinutes} min
                 </span>
                 <span className="normal-case tracking-normal">
-                  Fino a {workshop.maxParticipants} persone
+                  {ui.maxParticipantsLine(workshop.maxParticipants ?? 0)}
                 </span>
                 {workshop.location && (
                   <span className="normal-case tracking-normal">{workshop.location}</span>
@@ -423,12 +438,14 @@ export default function WorkshopsPage() {
 
             <div className="p-5 rounded-2xl border border-border mb-6 bg-[color-mix(in_srgb,var(--paper)_5%,var(--forest-deep))]">
               <p className="text-sm font-medium text-on-ink mb-4">
-                Scegli una data
+                {ui.sessionBoxTitle}
               </p>
               <SessionPicker
                 sessions={sessions}
                 selectedId={selectedSessionId}
                 onSelect={setSelectedSessionId}
+                ui={ui}
+                dateLocale={dateLocale}
               />
             </div>
 
@@ -444,7 +461,7 @@ export default function WorkshopsPage() {
                   : "bg-[color-mix(in_srgb,var(--paper)_8%,var(--forest-deep))] text-on-ink-subtle"
               }`}
             >
-              Avanti — i vostri dati
+              {ui.nextToYourDetails}
             </button>
           </div>
         )}
@@ -457,17 +474,17 @@ export default function WorkshopsPage() {
               onClick={() => setStep("sessions")}
               className="text-sm text-on-ink-muted hover:text-on-ink mb-8 transition-colors"
             >
-              ← Cambia data
+              {ui.changeDate}
             </button>
 
             <h2
               className="text-[24px] text-on-ink mb-2"
               style={{ fontFamily: "var(--font-display)", fontWeight: 600, lineHeight: 1.2 }}
             >
-              I tuoi dati
+              {ui.formTitle}
             </h2>
             <p className="text-sm text-on-ink-muted mb-8">
-              Inserisci i tuoi dati per confermare la richiesta e procedere al deposito per questa sessione.
+              {ui.formIntro}
             </p>
 
             {error && (
@@ -480,7 +497,7 @@ export default function WorkshopsPage() {
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs text-on-ink-muted mb-1.5 uppercase tracking-wider">
-                    Nome completo *
+                    {ui.labelFullName}
                   </label>
                   <input
                     required
@@ -492,7 +509,7 @@ export default function WorkshopsPage() {
                 </div>
                 <div>
                   <label className="block text-xs text-on-ink-muted mb-1.5 uppercase tracking-wider">
-                    Email *
+                    {ui.labelEmail}
                   </label>
                   <input
                     required
@@ -508,7 +525,7 @@ export default function WorkshopsPage() {
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs text-on-ink-muted mb-1.5 uppercase tracking-wider">
-                    Telefono
+                    {ui.labelPhone}
                   </label>
                   <input
                     value={form.guestPhone}
@@ -519,20 +536,20 @@ export default function WorkshopsPage() {
                 </div>
                 <div>
                   <label className="block text-xs text-on-ink-muted mb-1.5 uppercase tracking-wider">
-                    Paese
+                    {ui.labelCountry}
                   </label>
                   <input
                     value={form.guestCountry}
                     onChange={(e) => setForm({ ...form, guestCountry: e.target.value })}
                     className={inputDarkClass}
-                    placeholder="Italia"
+                    placeholder={ui.countryPlaceholder}
                   />
                 </div>
               </div>
 
               <div>
                 <label className="block text-xs text-on-ink-muted mb-1.5 uppercase tracking-wider">
-                  Numero di partecipanti *
+                  {ui.labelParticipants}
                 </label>
                 <select
                   value={form.participants}
@@ -540,21 +557,21 @@ export default function WorkshopsPage() {
                   className={inputDarkClass}
                 >
                   {Array.from({ length: Math.min(workshop.maxParticipants ?? 10, 10) }, (_, i) => i + 1).map((n) => (
-                    <option key={n} value={n}>{n} {n === 1 ? "persona" : "persone"}</option>
+                    <option key={n} value={n}>{ui.participantCountOption(n)}</option>
                   ))}
                 </select>
               </div>
 
               <div>
                 <label className="block text-xs text-on-ink-muted mb-1.5 uppercase tracking-wider">
-                  Note (allergie, richieste speciali)
+                  {ui.labelNotes}
                 </label>
                 <textarea
                   value={form.notes}
                   onChange={(e) => setForm({ ...form, notes: e.target.value })}
                   rows={3}
                   className={`${inputDarkClass} resize-none`}
-                  placeholder="Eventuali note..."
+                  placeholder={ui.placeholderNotes}
                 />
               </div>
 
@@ -562,7 +579,7 @@ export default function WorkshopsPage() {
               <div className="p-4 rounded-xl border border-border bg-[color-mix(in_srgb,var(--paper)_5%,var(--forest-deep))]">
                 <div className="flex justify-between text-sm mb-2">
                   <span className="text-on-ink-muted">
-                    €{parseFloat(workshop.priceEur).toFixed(0)} × {form.participants} persona/e
+                    €{parseFloat(workshop.priceEur).toFixed(0)} × {form.participants} {ui.priceLinePerson}
                   </span>
                   <span className="text-on-ink">
                     €{(parseFloat(workshop.priceEur) * form.participants).toFixed(2)}
@@ -570,14 +587,14 @@ export default function WorkshopsPage() {
                 </div>
                 <div className="flex justify-between text-sm border-t border-border pt-2 mt-2">
                   <span className="text-editorial-mark font-medium">
-                    Deposito ora (50%)
+                    {ui.depositLabel}
                   </span>
                   <span className="text-editorial-mark font-medium">
                     €{(parseFloat(workshop.priceEur) * form.participants * 0.5).toFixed(2)}
                   </span>
                 </div>
                 <p className="text-xs text-on-ink-subtle mt-2">
-                  Il saldo di €{(parseFloat(workshop.priceEur) * form.participants * 0.5).toFixed(2)} sarà dovuto il giorno della sessione.
+                  {ui.balanceNote((parseFloat(workshop.priceEur) * form.participants * 0.5).toFixed(2))}
                 </p>
               </div>
 
@@ -587,8 +604,8 @@ export default function WorkshopsPage() {
                 className="w-full py-3 rounded-[12px] font-semibold transition-opacity duration-200 disabled:opacity-60 bg-brand-cta text-brand-cta-foreground hover:opacity-90"
               >
                 {createBookingMutation.isPending
-                  ? "Elaborazione..."
-                  : "Conferma la richiesta e il deposito (50%)"}
+                  ? ui.submitProcessing
+                  : ui.submitBooking}
               </button>
             </form>
           </div>
@@ -602,52 +619,54 @@ export default function WorkshopsPage() {
                 className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 border border-editorial-mark text-on-ink bg-[color-mix(in_srgb,var(--editorial-mark)_12%,transparent)]"
                 aria-hidden
               >
-                <span className="text-2xl">✓</span>
+                <span className="text-[11px] uppercase tracking-[0.2em] text-editorial-mark [font-family:var(--font-mono)]">
+                  {ui.reviewOk}
+                </span>
               </div>
               <h2
                 className="text-[24px] text-on-ink mb-2"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600, lineHeight: 1.2 }}
               >
-                Richiesta registrata
+                {ui.reviewTitle}
               </h2>
               <p className="text-on-ink-muted text-sm">
-                Il tuo codice di conferma è:
+                {ui.reviewCodeLead}
               </p>
               <p className="text-2xl font-mono tracking-widest text-editorial-mark mt-2 mb-1">
                 {bookingResult.confirmationCode}
               </p>
               <p className="text-xs text-on-ink-subtle">
-                Conserva questo codice per il giorno della sessione.
+                {ui.reviewCodeHint}
               </p>
             </div>
 
             <div className="p-5 rounded-2xl border border-border mb-6 text-left bg-[color-mix(in_srgb,var(--paper)_5%,var(--forest-deep))]">
               <h3 className="text-sm font-medium text-on-ink mb-3">
-                Riepilogo sessione
+                {ui.summaryTitle}
               </h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-on-ink-muted">Sessione</span>
+                  <span className="text-on-ink-muted">{ui.summarySession}</span>
                   <span className="text-on-ink">{bookingResult.workshopTitle}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-on-ink-muted">Data</span>
-                  <span className="text-on-ink">{formatDate(bookingResult.sessionDate)}</span>
+                  <span className="text-on-ink-muted">{ui.summaryDate}</span>
+                  <span className="text-on-ink">{formatSessionDate(bookingResult.sessionDate, dateLocale)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-on-ink-muted">Partecipanti</span>
+                  <span className="text-on-ink-muted">{ui.summaryParticipants}</span>
                   <span className="text-on-ink">{bookingResult.participants}</span>
                 </div>
                 <div className="flex justify-between border-t border-border pt-2 mt-2">
-                  <span className="text-on-ink-muted">Totale</span>
+                  <span className="text-on-ink-muted">{ui.summaryTotal}</span>
                   <span className="text-on-ink">€{bookingResult.totalAmountEur.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-editorial-mark font-medium">Da pagare ora (50%)</span>
+                  <span className="text-editorial-mark font-medium">{ui.summaryPayNow}</span>
                   <span className="text-editorial-mark font-medium">€{bookingResult.depositAmountEur.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-on-ink-subtle">Saldo il giorno della sessione</span>
+                  <span className="text-on-ink-subtle">{ui.summaryBalanceDay}</span>
                   <span className="text-on-ink-subtle">€{bookingResult.balanceAmountEur.toFixed(2)}</span>
                 </div>
               </div>
@@ -666,22 +685,22 @@ export default function WorkshopsPage() {
               className="w-full py-3.5 rounded-[12px] font-semibold text-base transition-opacity duration-200 disabled:opacity-60 mb-3 bg-brand-cta text-brand-cta-foreground hover:opacity-90"
             >
               {createCheckoutMutation.isPending
-                ? "Reindirizzamento a Stripe..."
-                : `Procedi al deposito · €${bookingResult.depositAmountEur.toFixed(2)}`}
+                ? ui.payRedirecting
+                : ui.payProceed(bookingResult.depositAmountEur.toFixed(2))}
             </button>
             <p className="text-xs text-on-ink-subtle">
-              Sarai reindirizzato a Stripe per il pagamento sicuro. Usa la carta di test: 4242 4242 4242 4242.
+              {ui.payStripeNote}
             </p>
           </div>
         )}
 
         <div className="mt-16 pt-10 border-t border-border text-center">
-          <p className="text-xs uppercase tracking-widest text-on-ink-subtle mb-3">Altrove</p>
+          <p className="text-xs uppercase tracking-widest text-on-ink-subtle mb-3">{ui.elsewhere}</p>
           <Link
             href={localizedHref("/contatti")}
             className="text-sm font-medium text-editorial-mark hover:underline underline-offset-4 [font-family:var(--font-ui)]"
           >
-            Contatti
+            {ui.contacts}
           </Link>
         </div>
       </div>

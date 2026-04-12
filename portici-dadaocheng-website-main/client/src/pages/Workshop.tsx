@@ -3,7 +3,9 @@ import { Link, useLocation } from "wouter";
 import { Calendar, MapPin, Users, Clock, ArrowRight, Filter, X } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import { useLocalizedHref } from "@/contexts/LangContext";
+import { useLang, useLocalizedHref } from "@/contexts/LangContext";
+import { getWorkshopOverviewCopy, type WorkshopOverviewCopy } from "@/i18n/workshopOverviewLocale";
+import { getWorkshopsBookingCopy } from "@/i18n/workshopBookingLocale";
 
 /** `/eventi` or `/eventi?…` → `/${lang}/eventi` preserving query. */
 function localizeEventiHref(raw: string, lh: (path: string) => string): string {
@@ -39,19 +41,6 @@ const IMG = {
   highResScene:      "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/QlYNHHXFFlKYYNOQ.png",
   scenePhoto:        "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/KpoiAaEWTttzycOO.png",
 };
-
-const WORKSHOP_SLIDES = [
-  { src: IMG.calligroupA,      label: "書法",     caption: "Calligrafia — Scrivere il tempo" },
-  { src: IMG.calliEuroMan,     label: "水墨",     caption: "Inchiostro — Il gesto che non mente" },
-  { src: IMG.calliClassroom,   label: "課堂",     caption: "Insieme — Imparare è un atto sociale" },
-  { src: IMG.calliFlowerGirls, label: "花鳥",     caption: "Fiori — La natura come vocabolario" },
-  { src: IMG.calliInkBrush,    label: "筆",       caption: "Il pennello — Strumento di meditazione" },
-  { src: IMG.inkFlower,        label: "梅",       caption: "Susino — Bellezza nella semplicità" },
-  { src: IMG.dumplingWorkshop, label: "餃子",     caption: "Ravioli — Cultura che si mangia" },
-  { src: IMG.baozi,            label: "包子",     caption: "Baozi — Le mani che trasmettono" },
-  { src: IMG.teaTrayCloseup,   label: "茶",       caption: "Tè — Tre filosofie, una tazza" },
-  { src: IMG.teaCeremony,      label: "茶道",     caption: "Cerimonia — Il rito trasforma" },
-];
 
 function Reveal({ children, delay = 0, className = "" }: {
   children: React.ReactNode; delay?: number; className?: string;
@@ -219,47 +208,13 @@ function Carousel({
   );
 }
 
-const WORKSHOP_FEATURES = [
-  {
-    category: "Calligrafia & Inchiostro",
-    categoryZh: "書法水墨",
-    title: "Scrivere è pensare con il corpo",
-    body: "Attraverso il pennello e l'inchiostro, scopri come la calligrafia cinese trasforma ogni gesto in un atto di meditazione. Non si impara a copiare caratteri — si impara a stare presenti.",
-    cta: "Manifesta interesse",
-    href: "/eventi?interesse=calligraphy-ink",
-    src: IMG.calligroupA,
-    alt: "Workshop di calligrafia — gruppo intorno al tavolo",
-    reverse: false,
-    accent: "var(--primary)",
-  },
-  {
-    category: "Pittura ad Inchiostro",
-    categoryZh: "水墨畫",
-    title: "Il gesto che non mente",
-    body: "Nella pittura a inchiostro non esiste correzione. Ogni pennellata è definitiva — come le parole dette con sincerità. Un'esperienza che insegna a fidarsi del proprio istinto.",
-    cta: "Vedi le sessioni",
-    href: "/eventi",
-    src: IMG.inkFlower,
-    alt: "Mano che dipinge fiori di susino con inchiostro",
-    reverse: true,
-    accent: "var(--secondary)",
-  },
-  {
-    category: "Cucina Culturale",
-    categoryZh: "飲食文化",
-    title: "Cultura che si mangia",
-    body: "Impastare ravioli o modellare baozi non è solo cucinare — è accedere a un codice culturale che si tramanda attraverso le mani. Ogni piega racconta una storia.",
-    cta: "Cucina e convivialità",
-    href: "/eventi?interesse=food-cultural",
-    src: IMG.dumplingWorkshop,
-    alt: "Famiglia italiana impara a fare i ravioli cinesi",
-    reverse: false,
-    accent: "var(--accent)",
-  },
-];
-
-function WorkshopHighlightSection() {
-  const localizedHref = useLocalizedHref();
+function WorkshopHighlightSection({
+  w,
+  localizedHref,
+}: {
+  w: WorkshopOverviewCopy;
+  localizedHref: (path: string) => string;
+}) {
   return (
     <section className="py-0 bg-background">
       <div className="container py-20">
@@ -268,7 +223,7 @@ function WorkshopHighlightSection() {
             className="font-normal tracking-[0.22em] uppercase text-primary mb-4"
             style={{ fontFamily: "'Montserrat', system-ui, sans-serif", fontSize: "1rem", fontWeight: 700 }}
           >
-            Workshop
+            {w.highlightKicker}
           </p>
           <h2
             className="font-medium text-foreground"
@@ -280,13 +235,13 @@ function WorkshopHighlightSection() {
               letterSpacing: "-1px",
             }}
           >
-            Esperienze che aprono nuove prospettive
+            {w.highlightTitle}
           </h2>
           <div className="w-10 h-0.5 bg-primary mt-5" />
         </Reveal>
       </div>
 
-      {WORKSHOP_FEATURES.map((item, i) => (
+      {w.workshopFeatures.map((item, i) => (
         <Reveal key={item.title} delay={i * 80}>
           <div
             className={`group/card relative grid md:grid-cols-2 items-stretch transition-all duration-500 hover:-translate-y-3 hover:shadow-[0_22px_40px_rgba(44,62,80,0.3)] rounded-[16px] overflow-hidden ${
@@ -387,7 +342,7 @@ function WorkshopHighlightSection() {
                     className="inline-flex items-center gap-2 text-[14px] font-semibold px-5 py-2.5 border border-primary/40 text-primary transition-all duration-300 hover:gap-3"
                     style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
                   >
-                    Galleria calligrafia <ArrowRight size={13} />
+                    {w.calligraphyGalleryLink} <ArrowRight size={13} />
                   </Link>
                 )}
               </div>
@@ -403,12 +358,12 @@ function WorkshopHighlightSection() {
               className="text-[12px] tracking-[0.28em] uppercase text-primary mb-4"
               style={{ fontFamily: "'Inter', system-ui, sans-serif", fontSize: "14px" }}
             >
-              Momenti dai Workshop
+              {w.tableImagesKicker}
             </p>
           </Reveal>
         </div>
         <Carousel
-          slides={WORKSHOP_SLIDES}
+          slides={w.workshopSlides}
           height="clamp(300px, 42vh, 520px)"
           interval={3800}
           overlayGradient="linear-gradient(to bottom, color-mix(in srgb, var(--forest-deep) 5%, transparent) 0%, color-mix(in srgb, var(--forest-deep) 62%, transparent) 100%)"
@@ -420,7 +375,7 @@ function WorkshopHighlightSection() {
               className="inline-flex items-center gap-2 text-[15px] font-semibold text-primary hover:opacity-70 hover:gap-3 transition-all duration-300"
               style={{ fontFamily: "'Noto Sans', system-ui, sans-serif", fontSize: "17px" }}
             >
-              Prossime sessioni <ArrowRight size={14} />
+              {w.linesAndDatesLink} <ArrowRight size={14} />
             </Link>
           </Reveal>
         </div>
@@ -430,13 +385,6 @@ function WorkshopHighlightSection() {
 }
 
 /* ─── Constants ─── */
-const CATEGORY_LABELS: Record<string, string> = {
-  calligraphy: "書法 · Calligrafia",
-  ink: "水墨 · Inchiostro",
-  tea: "茶道 · Cerimonia del Tè",
-  food: "飲食 · Cucina",
-};
-
 const CATEGORY_COLORS: Record<string, { bg: string; text: string; border: string }> = {
   calligraphy: {
     bg: "color-mix(in srgb, var(--riso-gold) 24%, var(--paper))",
@@ -460,8 +408,8 @@ const CATEGORY_COLORS: Record<string, { bg: string; text: string; border: string
   },
 };
 
-function formatDate(d: Date | string) {
-  return new Date(d).toLocaleDateString("it-IT", {
+function formatDate(d: Date | string, dateLocale: string) {
+  return new Date(d).toLocaleDateString(dateLocale, {
     weekday: "long",
     year: "numeric",
     month: "long",
@@ -469,17 +417,10 @@ function formatDate(d: Date | string) {
   });
 }
 
-function formatTime(d: Date | string) {
-  return new Date(d).toLocaleTimeString("it-IT", {
+function formatTime(d: Date | string, dateLocale: string) {
+  return new Date(d).toLocaleTimeString(dateLocale, {
     hour: "2-digit",
     minute: "2-digit",
-  });
-}
-
-function formatMonthYear(d: Date | string) {
-  return new Date(d).toLocaleDateString("it-IT", {
-    month: "long",
-    year: "numeric",
   });
 }
 
@@ -493,10 +434,14 @@ function WorkshopCalendarCard({
   workshop,
   sessions,
   onExpressInterest,
+  w,
+  dateLocale,
 }: {
   workshop: any;
   sessions: any[];
   onExpressInterest: (slug: string, title: string) => void;
+  w: WorkshopOverviewCopy;
+  dateLocale: string;
 }) {
   const localizedHref = useLocalizedHref();
   const catStyle = CATEGORY_COLORS[workshop.category] ?? CATEGORY_COLORS.calligraphy;
@@ -518,7 +463,7 @@ function WorkshopCalendarCard({
               border: `1px solid ${catStyle.border}`,
             }}
           >
-            {CATEGORY_LABELS[workshop.category] ?? workshop.category}
+            {w.categoryLabels[workshop.category] ?? workshop.category}
           </span>
           {sessions.length > 0 && !isFull && (
             <span
@@ -530,7 +475,7 @@ function WorkshopCalendarCard({
                 border: "1px solid color-mix(in srgb, var(--riso-teal) 40%, var(--paper-deep))",
               }}
             >
-              In calendario
+              {w.badgeOnCalendar}
             </span>
           )}
           {isFull && sessions.length > 0 && (
@@ -543,7 +488,7 @@ function WorkshopCalendarCard({
                 border: "1px solid var(--border)",
               }}
             >
-              Completo
+              {w.badgeFull}
             </span>
           )}
         </div>
@@ -573,7 +518,7 @@ function WorkshopCalendarCard({
           <div className="space-y-2">
             <p className="text-xs font-semibold tracking-[0.18em] uppercase text-brand-cta mb-2"
               style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
-              Date in calendario (soggette a conferma collettiva)
+              {w.sessionDatesLead}
             </p>
             {sessions.slice(0, 3).map((s: any) => {
               const left = s.spotsTotal - s.spotsBooked;
@@ -584,12 +529,12 @@ function WorkshopCalendarCard({
                     <Calendar size={13} className="text-brand-cta shrink-0" />
                     <span className="text-sm text-foreground"
                       style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
-                      {formatDate(s.sessionDate)} · {formatTime(s.sessionDate)}
+                      {formatDate(s.sessionDate, dateLocale)} · {formatTime(s.sessionDate, dateLocale)}
                     </span>
                   </div>
                   <span className="text-xs text-muted-foreground shrink-0 ml-4"
                     style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
-                    {left <= 0 ? "Completo" : `${left} posti`}
+                    {left <= 0 ? w.spotsFull : w.spotsN(left)}
                   </span>
                 </div>
               );
@@ -597,15 +542,14 @@ function WorkshopCalendarCard({
             {sessions.length > 3 && (
               <p className="text-xs text-brand-cta pt-1"
                 style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
-                + {sessions.length - 3} altre date disponibili
+                {w.moreDates(sessions.length - 3)}
               </p>
             )}
           </div>
         ) : (
           <p className="text-sm text-muted-foreground italic"
             style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-            Nessuna data pubblica al momento: raccogliamo interesse e apriamo il calendario quando la domanda regge la
-            sessione.
+            {w.noPublicDates}
           </p>
         )}
 
@@ -617,7 +561,7 @@ function WorkshopCalendarCard({
           </span>
           <span className="flex items-center gap-1.5">
             <Users size={13} className="text-brand-cta" />
-            Max {workshop.maxParticipants} partecipanti
+            {w.maxParticipants(workshop.maxParticipants)}
           </span>
           {workshop.location && (
             <span className="flex items-center gap-1.5">
@@ -632,7 +576,7 @@ function WorkshopCalendarCard({
       <div className="bg-muted p-8 flex flex-col items-center justify-center gap-4 border-t md:border-t-0 md:border-l border-border min-w-[200px] md:rounded-r-2xl">
         <p className="text-xs text-center text-muted-foreground leading-relaxed max-w-[200px]"
           style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
-          Contributi e depositi si comunicano quando il formato è confermato — non come primo passo sul sito.
+          {w.depositBlurb}
         </p>
 
         <button
@@ -641,7 +585,7 @@ function WorkshopCalendarCard({
           className="w-full px-5 py-3 text-[16px] font-semibold bg-brand-cta text-brand-cta-foreground hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
           style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}
         >
-          Mi interessa <ArrowRight size={14} />
+          {w.leaveNoteCta} <ArrowRight size={14} />
         </button>
 
         {sessions.length > 0 ? (
@@ -649,14 +593,14 @@ function WorkshopCalendarCard({
             href={`${localizedHref("/workshops")}?booking=1&slug=${encodeURIComponent(workshop.slug)}`}
             className="text-[11px] text-center text-muted-foreground hover:text-brand-cta underline-offset-4 hover:underline [font-family:var(--font-ui)] uppercase tracking-wider"
           >
-            Ho un invito — conferma e deposito
+            {w.inviteDepositLink}
           </Link>
         ) : (
           <Link href={localizedHref("/contatti")}
             className="w-full px-5 py-2.5 text-[14px] font-medium border border-border text-foreground hover:bg-background transition-colors text-center rounded-md"
             style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}
           >
-            Contattaci
+            {w.writeUs}
           </Link>
         )}
       </div>
@@ -666,6 +610,9 @@ function WorkshopCalendarCard({
 
 /* ─── Main Page ─── */
 export default function Workshop() {
+  const lang = useLang();
+  const w = getWorkshopOverviewCopy(lang);
+  const dateLocale = lang === "en" ? "en-GB" : "it-IT";
   const localizedHref = useLocalizedHref();
   const [, navigate] = useLocation();
   const [filterCategory, setFilterCategory] = useState<string>("all");
@@ -716,18 +663,21 @@ export default function Workshop() {
         <div className="container max-w-3xl">
           <p className="text-[15px] font-normal tracking-[0.22em] uppercase text-on-ink-accent mb-6"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
-            Laboratori dal vivo
+            {w.heroEyebrow}
           </p>
           <h1 className="font-medium text-on-ink mb-8"
             style={{ fontFamily: "'Spectral', Georgia, serif", fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 500, lineHeight: 1.15 }}>
-            Estensioni pratiche
+            {w.heroTitle1}
             <br />
-            <em className="text-on-ink-accent not-italic">del racconto editoriale.</em>
+            <em className="text-on-ink-accent not-italic">{w.heroTitle2Em}</em>
           </h1>
           <p className="text-[18px] text-on-ink-muted leading-[1.75]"
             style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-            Queste linee nascono dalle stesse domande del Magazine. Il calendario non è un catalogo fisso: si compone per
-            stagioni, in base agli interessi che raccogliamo.
+            {w.heroP1}
+          </p>
+          <p className="text-[17px] text-on-ink-muted/90 leading-[1.75] mt-5"
+            style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+            {w.heroOpenQ}
           </p>
           <div className="w-10 h-0.5 bg-on-ink-accent mt-8" />
         </div>
@@ -737,11 +687,7 @@ export default function Workshop() {
       <section className="py-16 bg-surface-section-tint">
         <div className="container">
           <div className="grid sm:grid-cols-3 gap-8 text-center">
-            {[
-              { step: "01", title: "Leggete il filo", desc: "Magazine e newsletter tengono ferma la bussola culturale — sapete perché proponiamo certe sessioni." },
-              { step: "02", title: "Diteci cosa vi attira", desc: "Sulla pagina Sessioni lasciate email e tema: costruiamo il programma quando la domanda è sufficiente." },
-              { step: "03", title: "Poi le date", desc: "Ricevete formato, luogo e contributo solo quando una sessione è reale. Il pagamento non è il primo passo." },
-            ].map(({ step, title, desc }) => (
+            {w.steps.map(({ step, title, desc }) => (
               <div key={step} className="flex flex-col items-center">
                 <span className="text-4xl font-medium text-brand-cta/40 mb-3"
                   style={{ fontFamily: "'Spectral', Georgia, serif" }}>{step}</span>
@@ -762,17 +708,17 @@ export default function Workshop() {
           <div className="mb-10">
             <p className="text-[15px] font-normal tracking-[0.22em] uppercase text-brand-cta mb-4"
               style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
-              Linee dal database
+              {w.sectionDbKicker}
             </p>
             <div className="flex flex-wrap items-end justify-between gap-4">
               <h2 className="font-medium text-foreground"
                 style={{ fontFamily: "'Spectral', Georgia, serif", fontSize: "2rem", fontWeight: 500 }}>
-                Possibili laboratori
+                {w.sectionLabsTitle}
               </h2>
               <Link href={localizedHref("/eventi")}
                 className="inline-flex items-center gap-2 text-[15px] font-semibold text-brand-cta hover:opacity-70 hover:gap-3 transition-all duration-300"
                 style={{ fontFamily: "'Noto Sans', system-ui, sans-serif" }}>
-                Manifesta interesse <ArrowRight size={14} />
+                {w.leaveNoteCta} <ArrowRight size={14} />
               </Link>
             </div>
             <div className="w-10 h-0.5 bg-brand-cta mt-4" />
@@ -784,18 +730,12 @@ export default function Workshop() {
               <div className="flex items-center gap-2 text-sm text-muted-foreground"
                 style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
                 <Filter size={14} className="text-brand-cta" />
-                <span className="font-semibold text-foreground">Filtra:</span>
+                <span className="font-semibold text-foreground">{w.filterLead}</span>
               </div>
 
               {/* Category filter */}
               <div className="flex flex-wrap gap-2">
-                {[
-                  { value: "all", label: "Tutti i tipi" },
-                  { value: "calligraphy", label: "書法 Calligrafia" },
-                  { value: "ink", label: "水墨 Inchiostro" },
-                  { value: "tea", label: "茶道 Tè" },
-                  { value: "food", label: "飲食 Cucina" },
-                ].map(({ value, label }) => (
+                {w.categoryFilters.map(({ value, label }) => (
                   <button key={value}
                     onClick={() => setFilterCategory(value)}
                     className="px-3 py-1.5 text-xs font-semibold tracking-wide rounded-xl transition-all duration-200"
@@ -824,11 +764,11 @@ export default function Workshop() {
                       color: filterMonth === "all" ? "var(--brand-cta-foreground)" : "var(--foreground)",
                       border: filterMonth === "all" ? "1px solid var(--brand-cta)" : "1px solid var(--border)",
                       }}>
-                      Tutti i mesi
+                      {w.filterAllMonths}
                     </button>
                     {availableMonths.map((mk) => {
                       const [year, month] = mk.split("-");
-                      const label = new Date(parseInt(year), parseInt(month) - 1, 1).toLocaleDateString("it-IT", { month: "long", year: "numeric" });
+                      const label = new Date(parseInt(year), parseInt(month) - 1, 1).toLocaleDateString(dateLocale, { month: "long", year: "numeric" });
                       return (
                         <button key={mk}
                           onClick={() => setFilterMonth(mk)}
@@ -854,7 +794,7 @@ export default function Workshop() {
                   className="ml-auto flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
                   style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
                   <X size={12} />
-                  Rimuovi filtri ({activeFilterCount})
+                  {w.filterClear(activeFilterCount)}
                 </button>
               )}
             </div>
@@ -871,13 +811,13 @@ export default function Workshop() {
             <div className="text-center py-20">
               <p className="text-muted-foreground text-lg mb-4"
                 style={{ fontFamily: "'Spectral', Georgia, serif" }}>
-                Nessun workshop trovato con i filtri selezionati.
+                {w.emptyFiltered}
               </p>
               <button
                 onClick={() => { setFilterCategory("all"); setFilterMonth("all"); }}
                 className="text-brand-cta text-sm font-semibold hover:opacity-70 transition-opacity"
                 style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
-                Rimuovi tutti i filtri →
+                {w.clearAllFilters}
               </button>
             </div>
           ) : (
@@ -888,6 +828,8 @@ export default function Workshop() {
                   workshop={workshop}
                   sessions={sessions}
                   onExpressInterest={handleExpressInterest}
+                  w={w}
+                  dateLocale={dateLocale}
                 />
               ))}
             </div>
@@ -897,8 +839,9 @@ export default function Workshop() {
           {!isLoading && filteredData.length > 0 && (
             <p className="mt-6 text-sm text-muted-foreground text-center"
               style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
-              {filteredData.length} workshop {filteredData.length === 1 ? "trovato" : "trovati"}
-              {activeFilterCount > 0 && " con i filtri applicati"}
+              {activeFilterCount > 0
+                ? w.resultCountFiltered(filteredData.length)
+                : w.resultCount(filteredData.length)}
             </p>
           )}
         </div>
@@ -909,27 +852,30 @@ export default function Workshop() {
         <div className="container max-w-2xl text-center">
           <p className="text-[15px] font-normal tracking-[0.22em] uppercase text-on-ink-accent mb-5"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
-            Quando siete già dentro
+            {w.whenYouHaveDateKicker}
           </p>
           <h2 className="font-medium text-on-ink mb-6"
             style={{ fontFamily: "'Spectral', Georgia, serif", fontSize: "2rem", fontWeight: 500 }}>
-            Depositi e punti restano per chi prenota su invito.
+            {w.whenYouHaveDateTitle}
           </h2>
           <p className="text-[18px] text-on-ink-muted leading-[1.8] mb-10"
             style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
-            Per chi ha già ricevuto una data confermata, manteniamo le regole di deposito e flessibilità che conoscete.
-            Non sono il modo in cui entrate oggi nel programma — partite dalla pagina Sessioni.
+            {w.whenYouHaveDateP1}
+          </p>
+          <p className="text-[17px] text-on-ink-muted/90 leading-[1.75] mb-10"
+            style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+            {w.whenYouHaveDateOpenQ}
           </p>
           <Link href={localizedHref("/eventi")}
             className="inline-flex items-center gap-2 px-8 py-3.5 text-[16px] font-semibold bg-brand-cta text-brand-cta-foreground hover:opacity-90 transition-opacity"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
-            Prossime sessioni <ArrowRight size={16} />
+            {w.linesAndDatesLink} <ArrowRight size={16} />
           </Link>
         </div>
       </section>
 
       {/* Highlight strip moved from Home page */}
-      <WorkshopHighlightSection />
+      <WorkshopHighlightSection w={w} localizedHref={localizedHref} />
     </main>
   );
 }

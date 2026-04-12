@@ -1,24 +1,25 @@
-import { Link } from "wouter";
-import { ArrowRight, MapPin, Instagram } from "lucide-react";
+import { MapPin, Instagram } from "lucide-react";
 import PhotoCarousel from "@/components/PhotoCarousel";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useLang } from "@/contexts/LangContext";
+import { getSpazioCopy } from "@/i18n/spazioLocale";
 
-const GALLERY_SLIDES = [
-  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/noBAAdsQpHVXgrUG.png", label: "大稻埕", caption: "Dove la storia incontra il presente" },
-  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/WFoweFZbdbtPoFjX.png", label: "Bologna", caption: "I portici come soglie tra mondi" },
-  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/fJQLNNktTOZKWVkY.png", label: "廟宇", caption: "Il sacro come linguaggio universale" },
-  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/yHHrSUbnQhNbXYxP.png", label: "建築", caption: "Architettura che racconta storie" },
-  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/vLnJyrtRLIpbvnYg.png", label: "書法", caption: "Scrivere è pensare con il corpo" },
-  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/EizOfazFNGcbaYxm.png", label: "水墨", caption: "Il gesto che non mente" },
-  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/CWqYQNYqpYltaUBn.png", label: "花鳥", caption: "La natura come vocabolario" },
-  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/pmoSxbLCOlhTAXWL.png", label: "課堂", caption: "Imparare è un atto sociale" },
-  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/PAfFLmeFyGztnQqK.png", label: "梅", caption: "Bellezza nella semplicità" },
-  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/VmUsguHFlqXOZXyu.png", label: "茶", caption: "Tre filosofie, una tazza" },
-  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/FvnvFYxyZBtkoWGM.png", label: "茶道", caption: "Il rito trasforma l'ordinario" },
-  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/YMRvdgKpLhmaPWyF.png", label: "餓子", caption: "Cultura che si mangia" },
-  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/tIhnZPQxlSeAhdvy.png", label: "茶器", caption: "Gli strumenti del rito quotidiano" },
-  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/QlYNHHXFFlKYYNOQ.png", label: "文化", caption: "Scoprire l'altro per scoprire se stessi" },
-];
+const GALLERY_BASE = [
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/noBAAdsQpHVXgrUG.png", label: "大稻埕" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/WFoweFZbdbtPoFjX.png", label: "Bologna" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/fJQLNNktTOZKWVkY.png", label: "廟宇" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/yHHrSUbnQhNbXYxP.png", label: "建築" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/vLnJyrtRLIpbvnYg.png", label: "書法" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/EizOfazFNGcbaYxm.png", label: "水墨" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/CWqYQNYqpYltaUBn.png", label: "花鳥" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/pmoSxbLCOlhTAXWL.png", label: "課堂" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/PAfFLmeFyGztnQqK.png", label: "梅" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/VmUsguHFlqXOZXyu.png", label: "茶" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/FvnvFYxyZBtkoWGM.png", label: "茶道" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/YMRvdgKpLhmaPWyF.png", label: "餓子" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/tIhnZPQxlSeAhdvy.png", label: "茶器" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663051147795/QlYNHHXFFlKYYNOQ.png", label: "文化" },
+] as const;
 
 function SpazioCard({ sense, kanji, desc, delay }: { sense: string; kanji: string; desc: string; delay: number }) {
   const { ref, visible } = useScrollReveal(0.12);
@@ -57,6 +58,14 @@ function SpazioCard({ sense, kanji, desc, delay }: { sense: string; kanji: strin
 }
 
 export default function Spazio() {
+  const lang = useLang();
+  const t = getSpazioCopy(lang);
+  const gallerySlides = GALLERY_BASE.map((s, i) => ({
+    src: s.src,
+    label: s.label,
+    caption: t.galleryCaptions[i] ?? "",
+  }));
+
   return (
     <main>
       {/* Hero */}
@@ -69,7 +78,7 @@ export default function Spazio() {
               className="text-[15px] font-normal tracking-[0.22em] uppercase text-muted-foreground mb-6"
               style={{ fontFamily: "var(--font-ui)" }}
             >
-              Spazio
+              {t.heroEyebrow}
             </p>
             <h1
               className="mb-8 text-foreground"
@@ -80,19 +89,23 @@ export default function Spazio() {
                 lineHeight: 1.15,
               }}
             >
-              Un&apos;installazione esperienziale.
+              {t.heroTitle1}
               <br />
               <span className="text-[var(--riso-gold)] not-italic">
-                Non un negozio.
+                {t.heroTitle2Accent}
               </span>
             </h1>
             <p
               className="text-[18px] leading-[1.75] text-muted-foreground"
               style={{ fontFamily: "var(--font-body)" }}
             >
-              Il nostro pop-up store è progettato per attivare tutti e cinque i
-              sensi in 15–30 minuti. Ogni elemento è scelto per creare un
-              momento di risonanza culturale.
+              {t.heroP1}
+            </p>
+            <p
+              className="text-[17px] leading-[1.75] text-muted-foreground mt-5"
+              style={{ fontFamily: "var(--font-body)" }}
+            >
+              {t.heroOpenQ}
             </p>
           </div>
         </div>
@@ -117,7 +130,7 @@ export default function Spazio() {
               className="text-xs font-semibold tracking-[0.2em] uppercase text-muted-foreground mb-3"
               style={{ fontFamily: "var(--font-ui)" }}
             >
-              Il Concept
+              {t.sensesKicker}
             </p>
             <h2
               className="font-medium text-foreground"
@@ -128,19 +141,13 @@ export default function Spazio() {
                 lineHeight: 1.2,
               }}
             >
-              Attraversare il Portale
+              {t.sensesTitle}
             </h2>
             <div className="w-10 h-0.5 bg-secondary mt-4" />
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
-            {[
-              { sense: "Vista", kanji: "視", desc: "40% spazio vuoto. Colori Moon White dominanti. Le copertine come opere d'arte." },
-              { sense: "Udito", kanji: "聽", desc: "Playlist curata: Ryuichi Sakamoto, Lim Giong. Volume appena percettibile." },
-              { sense: "Olfatto", kanji: "嗅", desc: "Hinoki (cipresso giapponese) e tè verde. Percezione graduale, non immediata." },
-              { sense: "Tatto", kanji: "觸", desc: "Una scatola di materiali da toccare: carta, legno, lino, ceramica." },
-              { sense: "Gusto", kanji: "味", desc: "All'entrata: 30ml di oolong freddo taiwanese in tazze ceramiche uniche." },
-            ].map(({ sense, kanji, desc }, i) => (
+            {t.senses.map(({ sense, kanji, desc }, i) => (
               <SpazioCard key={sense} sense={sense} kanji={kanji} desc={desc} delay={i * 80} />
             ))}
           </div>
@@ -155,7 +162,7 @@ export default function Spazio() {
               className="text-xs font-semibold tracking-[0.2em] uppercase text-muted-foreground mb-3"
               style={{ fontFamily: "var(--font-ui)" }}
             >
-              Dove Siamo
+              {t.locationsKicker}
             </p>
             <h2
               className="font-medium text-foreground"
@@ -166,7 +173,7 @@ export default function Spazio() {
                 lineHeight: 1.2,
               }}
             >
-              Bologna & Pop-up in Europa
+              {t.locationsTitle}
             </h2>
           </div>
 
@@ -179,15 +186,13 @@ export default function Spazio() {
                     className="font-semibold text-foreground mb-1"
                     style={{ fontFamily: "var(--font-ui)" }}
                   >
-                    Bologna — Sede Principale
+                    {t.bolognaTitle}
                   </p>
                   <p
                     className="text-sm text-muted-foreground leading-relaxed"
                     style={{ fontFamily: "var(--font-body)" }}
                   >
-                    Il nostro spazio fisso a Bologna. Qui si tengono i workshop regolari
-                    e lo spazio è aperto durante gli eventi. Indirizzo esatto comunicato
-                    ai partecipanti confermati.
+                    {t.bolognaBody}
                   </p>
                 </div>
               </div>
@@ -201,14 +206,13 @@ export default function Spazio() {
                     className="font-semibold text-foreground mb-1"
                     style={{ fontFamily: "var(--font-ui)" }}
                   >
-                    Pop-up — Milano, Berlino, Parigi
+                    {t.popTitle}
                   </p>
                   <p
                     className="text-sm text-muted-foreground leading-relaxed"
                     style={{ fontFamily: "var(--font-body)" }}
                   >
-                    Periodicamente portiamo lo spazio in altre città europee. Seguici su
-                    Instagram per non perdere le date dei prossimi pop-up.
+                    {t.popBody}
                   </p>
                 </div>
               </div>
@@ -224,7 +228,7 @@ export default function Spazio() {
               style={{ fontFamily: "var(--font-ui)" }}
             >
               <Instagram size={15} />
-              Seguici per gli aggiornamenti
+              {t.instagramCta}
             </a>
           </div>
         </div>
@@ -234,25 +238,32 @@ export default function Spazio() {
       <section className="relative bg-[oklch(10%_0_0)]">
         <div className="absolute top-5 left-6 md:left-12 z-20">
           <p className="text-[11px] tracking-[0.28em] uppercase text-[oklch(70%_0.005_85/0.6)]"
-            style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>Galleria Fotografica</p>
+            style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>{t.galleryLabel}</p>
         </div>
-        <PhotoCarousel slides={GALLERY_SLIDES} height="clamp(400px, 58vh, 660px)" interval={4200} />
+        <PhotoCarousel slides={gallerySlides} height="clamp(400px, 58vh, 660px)" interval={4200} />
       </section>
 
-      {/* Benvenuto quote */}
+      {/* Closing note */}
       <section className="py-20 bg-[oklch(27.5%_0.000_0)] text-center">
-        <div className="container max-w-xl">
+        <div className="container max-w-xl px-6">
           <p
-            className="text-2xl font-medium text-[oklch(96.5%_0.006_85)] mb-3 italic"
+            className="text-[1.35rem] md:text-2xl font-medium text-[oklch(96.5%_0.006_85)] mb-4 leading-snug"
             style={{ fontFamily: "'Spectral', Georgia, serif" }}
           >
-            "Benvenuti nel nostro spazio di risonanza culturale."
+            {t.closingP1}
           </p>
           <p
-            className="text-sm text-secondary tracking-widest"
-            style={{ fontFamily: "var(--font-ui)" }}
+            className="text-base text-[oklch(88%_0.01_85)] leading-relaxed mb-6"
+            style={{ fontFamily: "var(--font-body)" }}
           >
-            歡迎來到我們的文化共鳴空間
+            {t.closingP2}
+          </p>
+          <p
+            className="text-sm text-[oklch(72%_0.02_85)] tracking-[0.12em]"
+            style={{ fontFamily: "var(--font-ui)" }}
+            lang="zh-Hant"
+          >
+            同中求異
           </p>
         </div>
       </section>

@@ -2,48 +2,28 @@ import { Link } from "wouter";
 import { ArrowRight } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
 import { ProgramInterestSection } from "@/components/ProgramInterestSection";
-import { useLocalizedHref } from "@/contexts/LangContext";
-
-const INTEREST_STEPS = [
-  {
-    n: "1",
-    title: "Linee curate",
-    text: "Presentiamo concetti di laboratorio e serate dal vivo come estensioni del racconto editoriale — non come catalogo fisso.",
-  },
-  {
-    n: "2",
-    title: "Raccogliamo interesse",
-    text: "Lasciate email e, se volete, una nota: ci aiuta a capire su quali temi concentrare energie e stagioni.",
-  },
-  {
-    n: "3",
-    title: "Raggruppiamo la domanda",
-    text: "Per ogni linea osserviamo quante persone si sono mosse. Quando ha senso, definiamo formato, durata e fascia di prezzo.",
-  },
-  {
-    n: "4",
-    title: "Vi scriviamo con le date",
-    text: "Chi ha manifestato interesse riceve prima le informazioni su sessioni confermate. Il pagamento arriva quando il programma è reale.",
-  },
-] as const;
+import { useLang, useLocalizedHref } from "@/contexts/LangContext";
+import { getEventiCopy } from "@/i18n/eventiLocale";
 
 export default function Eventi() {
+  const lang = useLang();
+  const t = getEventiCopy(lang);
   const localizedHref = useLocalizedHref();
   return (
     <main className="bg-background">
       <PageHeader
-        eyebrow="Sessioni dal vivo"
-        meta="Bologna · programma in evoluzione"
-        title="Il calendario segue la curiosità — non il contrario"
+        eyebrow={t.headerEyebrow}
+        meta={t.headerMeta}
+        title={t.headerTitle}
       >
         <p>
-          Gli incontri dal vivo sono estensioni del nostro lavoro editoriale: stesse domande, mani e tavolo. In questa
-          fase il sito funziona da piattaforma culturale: il Magazine e la newsletter portano il racconto; le sessioni si
-          aprono quando la domanda lo giustifica.
+          {t.headerP1}
         </p>
         <p className="text-page-header-dim">
-          Niente promessa di disponibilità continua: proponiamo linee possibili, raccogliamo interesse, poi costruiamo
-          stagioni e pilota. Il flusso di pagamento diretto resta solo per chi ha già ricevuto un invito.
+          {t.headerP2}
+        </p>
+        <p className="text-page-header-dim mt-4 max-w-2xl">
+          {t.headerOpenQ}
         </p>
       </PageHeader>
 
@@ -52,13 +32,13 @@ export default function Eventi() {
       <section className="py-14 md:py-16 bg-muted/30">
         <div className="container max-w-3xl mx-auto px-6 md:px-10">
           <h2 className="font-medium text-foreground mb-2 text-[1.35rem] [font-family:var(--font-display)]">
-            Come funziona oggi
+            {t.howTitle}
           </h2>
           <p className="text-sm text-muted-foreground mb-10" style={{ fontFamily: "var(--font-ui)" }}>
-            Dal tema all&apos;invito — senza carrello in prima pagina.
+            {t.howSubtitle}
           </p>
           <ol className="space-y-8 list-none p-0 m-0">
-            {INTEREST_STEPS.map(({ n, title, text }) => (
+            {t.interestSteps.map(({ n, title, text }) => (
               <li key={n} className="flex gap-5">
                 <span
                   className="shrink-0 w-9 h-9 rounded-full border border-border text-foreground flex items-center justify-center text-sm font-semibold"
@@ -82,7 +62,7 @@ export default function Eventi() {
       <section className="py-14 md:py-16 border-t border-border">
         <div className="container max-w-3xl mx-auto px-6 md:px-10">
           <h2 className="font-medium text-foreground mb-6 text-[1.35rem] [font-family:var(--font-display)]">
-            Racconto e programma
+            {t.raccontoTitle}
           </h2>
           <ul className="space-y-8">
             <li className="border-l-2 border-[color-mix(in_srgb,var(--riso-red)_40%,transparent)] pl-5">
@@ -90,18 +70,17 @@ export default function Eventi() {
                 className="text-xs font-semibold tracking-[0.2em] uppercase text-muted-foreground mb-1"
                 style={{ fontFamily: "var(--font-ui)" }}
               >
-                Prima le letture
+                {t.raccontoReadingsK}
               </p>
               <p className="text-[16px] text-muted-foreground leading-relaxed mb-3 [font-family:var(--font-body)]">
-                Il Magazine è il luogo dove teniamo ferma la linea culturale. Da lì capite tono, immagini e perché
-                certe sessioni esistono.
+                {t.raccontoReadingsP}
               </p>
               <Link
                 href={localizedHref("/magazine")}
                 className="text-[15px] font-medium text-primary hover:underline underline-offset-4 inline-flex items-center gap-1"
                 style={{ fontFamily: "var(--font-ui)" }}
               >
-                Apri il Magazine <ArrowRight size={14} />
+                {t.raccontoReadingsLink} <ArrowRight size={14} />
               </Link>
             </li>
             <li className="border-l-2 border-[color-mix(in_srgb,var(--riso-red)_40%,transparent)] pl-5">
@@ -109,18 +88,17 @@ export default function Eventi() {
                 className="text-xs font-semibold tracking-[0.2em] uppercase text-muted-foreground mb-1"
                 style={{ fontFamily: "var(--font-ui)" }}
               >
-                Restare nel filo
+                {t.raccontoNewsK}
               </p>
               <p className="text-[16px] text-muted-foreground leading-relaxed mb-3 [font-family:var(--font-body)]">
-                Una mail al mese: stesso spirito del sito, senza rumore. Complementare rispetto alla manifestazione di
-                interesse sulle sessioni.
+                {t.raccontoNewsP}
               </p>
               <Link
                 href={localizedHref("/newsletter")}
                 className="text-[15px] font-medium text-primary hover:underline underline-offset-4 inline-flex items-center gap-1"
                 style={{ fontFamily: "var(--font-ui)" }}
               >
-                Pagina newsletter <ArrowRight size={14} />
+                {t.raccontoNewsLink} <ArrowRight size={14} />
               </Link>
             </li>
             <li className="border-l-2 border-[color-mix(in_srgb,var(--riso-red)_40%,transparent)] pl-5">
@@ -128,17 +106,17 @@ export default function Eventi() {
                 className="text-xs font-semibold tracking-[0.2em] uppercase text-muted-foreground mb-1"
                 style={{ fontFamily: "var(--font-ui)" }}
               >
-                Immagini e filosofia
+                {t.raccontoImgK}
               </p>
               <p className="text-[16px] text-muted-foreground leading-relaxed mb-3 [font-family:var(--font-body)]">
-                Per approfondire calligrafia, cucina e percorso visivo — senza passare dal calendario.
+                {t.raccontoImgP}
               </p>
               <Link
                 href={localizedHref("/workshop")}
                 className="text-[15px] font-medium text-primary hover:underline underline-offset-4 inline-flex items-center gap-1"
                 style={{ fontFamily: "var(--font-ui)" }}
               >
-                Laboratori — visione d&apos;insieme <ArrowRight size={14} />
+                {t.raccontoImgLink1} <ArrowRight size={14} />
               </Link>
               <span className="text-muted-foreground mx-2">·</span>
               <Link
@@ -146,7 +124,7 @@ export default function Eventi() {
                 className="text-[15px] font-medium text-primary hover:underline underline-offset-4 inline-flex items-center gap-1"
                 style={{ fontFamily: "var(--font-ui)" }}
               >
-                Calligrafia <ArrowRight size={14} />
+                {t.raccontoImgLink2} <ArrowRight size={14} />
               </Link>
             </li>
           </ul>
@@ -155,17 +133,16 @@ export default function Eventi() {
 
       <section className="py-14 md:py-16 bg-muted/20 border-t border-border">
         <div className="container max-w-3xl mx-auto px-6 md:px-10">
-          <h2 className="font-medium text-foreground mb-4 text-[1.25rem] [font-family:var(--font-display)]">Dove siamo</h2>
+          <h2 className="font-medium text-foreground mb-4 text-[1.25rem] [font-family:var(--font-display)]">{t.whereTitle}</h2>
           <p className="text-[16px] text-muted-foreground leading-[1.75] mb-6 [font-family:var(--font-body)]">
-            La base è a <strong className="text-foreground font-medium">Bologna</strong>; l&apos;indirizzo preciso viene
-            comunicato quando una sessione è confermata. A volte portiamo esperienze in pop-up altrove.
+            {t.whereBody}
           </p>
           <Link
             href={localizedHref("/contatti")}
             className="text-[15px] font-medium text-primary hover:underline underline-offset-4 inline-flex items-center gap-1"
             style={{ fontFamily: "var(--font-ui)" }}
           >
-            Contatti <ArrowRight size={14} />
+            {t.whereLink} <ArrowRight size={14} />
           </Link>
         </div>
       </section>
@@ -173,14 +150,14 @@ export default function Eventi() {
       <section className="py-12 bg-muted/30 border-t border-border">
         <div className="container max-w-3xl mx-auto px-6 md:px-10 flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-4 sm:gap-6">
           <p className="text-sm text-muted-foreground w-full sm:w-auto sm:mr-2" style={{ fontFamily: "var(--font-ui)" }}>
-            Altrove sul sito
+            {t.elsewhereLabel}
           </p>
           <Link
             href={localizedHref("/magazine")}
             className="text-sm font-medium text-primary hover:underline underline-offset-4"
             style={{ fontFamily: "var(--font-ui)" }}
           >
-            Magazine
+            {t.elsewhereMagazine}
           </Link>
           <span className="hidden sm:inline text-border">·</span>
           <Link
@@ -188,7 +165,7 @@ export default function Eventi() {
             className="text-sm font-medium text-primary hover:underline underline-offset-4"
             style={{ fontFamily: "var(--font-ui)" }}
           >
-            Newsletter
+            {t.elsewhereNewsletter}
           </Link>
           <span className="hidden sm:inline text-border">·</span>
           <Link
@@ -196,7 +173,7 @@ export default function Eventi() {
             className="text-sm font-medium text-primary hover:underline underline-offset-4"
             style={{ fontFamily: "var(--font-ui)" }}
           >
-            Contatti
+            {t.elsewhereContact}
           </Link>
         </div>
       </section>
