@@ -9,9 +9,12 @@ import {
   type ArticlePreview,
 } from "@/components/ArticlePreviewCard";
 import { ARTICLES_LIST_QUERY } from "@/sanity/articleQueries";
+import { pickDict } from "@/i18n/dictionaries";
+import { useUiDict } from "@/i18n/useUiDict";
 
 export default function ArticoliPage() {
   const lang = useLang();
+  const t = useUiDict();
   const [articles, setArticles] = useState<ArticlePreview[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -31,7 +34,7 @@ export default function ArticoliPage() {
       } catch (err) {
         console.error("ArticoliPage fetch error:", err);
         if (!cancelled) {
-          setError("Impossibile caricare gli articoli.");
+          setError(pickDict(lang).articoli.error);
           setArticles([]);
         }
       } finally {
@@ -49,8 +52,8 @@ export default function ArticoliPage() {
 
   return (
     <main>
-      <PageHeader eyebrow="LETTURE" title="Articoli e ricette">
-        <p>Saggi, ricette e voci che attraversano confini.</p>
+      <PageHeader eyebrow={t.articoli.eyebrow} title={t.articoli.title}>
+        <p>{t.articoli.subtitle}</p>
       </PageHeader>
 
       <section className="bg-background px-6 py-14 md:px-10 md:py-16">
@@ -76,7 +79,7 @@ export default function ArticoliPage() {
           ) : articles.length === 0 ? (
             <div className="flex justify-center py-16">
               <p className="text-center text-muted-foreground [font-family:var(--font-body)]">
-                I primi articoli sono in arrivo.
+                {t.articoli.empty}
               </p>
             </div>
           ) : (

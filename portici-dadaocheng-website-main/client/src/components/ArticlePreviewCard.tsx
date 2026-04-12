@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useLocalizedHref } from "@/contexts/LangContext";
+import { useUiDict } from "@/i18n/useUiDict";
 
 export { ARTICLES_LIST_QUERY, ARTICLES_LATEST_THREE_QUERY } from "@/sanity/articleQueries";
 
@@ -40,8 +41,9 @@ export function ArticleCardSkeleton() {
 
 export function ArticleCard({ article }: { article: ArticlePreview }) {
   const localizedHref = useLocalizedHref();
+  const t = useUiDict();
   const imageUrl = article.mainImage?.asset?.url;
-  const title = article.title?.trim() ? article.title : "Senza titolo";
+  const title = article.title?.trim() ? article.title : t.common.untitled;
   const excerpt = excerptPreview(article.excerpt);
 
   return (
@@ -77,7 +79,7 @@ export function ArticleCard({ article }: { article: ArticlePreview }) {
           href={localizedHref(`/articoli/${article._id}`)}
           className="inline-flex items-center gap-1.5 text-[12px] uppercase tracking-[0.12em] text-foreground/70 [font-family:var(--font-mono)] hover:text-foreground transition-colors"
         >
-          Leggi
+          {t.common.read_more}
           <span aria-hidden>→</span>
         </Link>
       </div>

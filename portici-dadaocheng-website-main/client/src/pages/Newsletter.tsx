@@ -1,37 +1,18 @@
 import { useMemo } from "react";
 import { PageHeader } from "@/components/PageHeader";
 import { NewsletterSubscribeForm } from "@/components/NewsletterSubscribeForm";
-import { useLocalizedHref } from "@/contexts/LangContext";
+import { useLang, useLocalizedHref } from "@/contexts/LangContext";
 import { useDocumentSeo } from "@/hooks/useDocumentSeo";
 import { useJsonLd } from "@/hooks/useJsonLd";
-
-const NEWSLETTER_DOCUMENT_TITLE = "Newsletter | Portici DaDaocheng — Note dalla redazione";
-const NEWSLETTER_META_DESCRIPTION =
-  "Iscriviti alla newsletter di Portici DaDaocheng per ricevere note editoriali, approfondimenti di antropologia del cibo e anteprime del magazine.";
-
-const VALUE_BLOCKS = [
-  {
-    title: "Profondità",
-    text: "Un tema alla volta, su carta o in sala: testi che chiedono di fermarsi, non di scorrere.",
-    closing: "Quanto tempo riesci a tenere una lettura lunga oggi, senza doverlo giustificare a nessuno?",
-  },
-  {
-    title: "Ritmo",
-    text: "Non teniamo un calendario di posta fisso: a volte due note vicine, a volte settimane senza nulla in casella.",
-    closing: "Cosa ti fa più diffidenza — un silenzio lungo o una mail che arriva troppo prevedibile?",
-  },
-  {
-    title: "Inviti",
-    text: "Quando una sessione ha data e luogo a Bologna te lo segniamo qui; non è un carrello sempre aperto.",
-    closing: "Preferisci sapere prima il tema o prima il giorno sul calendario?",
-  },
-] as const;
+import { getNewsletterPageCopy } from "@/i18n/newsletterPageLocale";
 
 export default function Newsletter() {
+  const lang = useLang();
+  const n = getNewsletterPageCopy(lang);
   const localizedHref = useLocalizedHref();
   const newsletterPath = localizedHref("/newsletter");
 
-  useDocumentSeo(NEWSLETTER_DOCUMENT_TITLE, NEWSLETTER_META_DESCRIPTION);
+  useDocumentSeo(n.seoTitle, n.seoDescription);
 
   const newsletterJsonLd = useMemo(() => {
     const origin = typeof window !== "undefined" ? window.location.origin : "";
@@ -39,8 +20,8 @@ export default function Newsletter() {
     return {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      name: NEWSLETTER_DOCUMENT_TITLE,
-      description: NEWSLETTER_META_DESCRIPTION,
+      name: n.seoTitle,
+      description: n.seoDescription,
       url: absoluteUrl,
       isPartOf: {
         "@type": "WebSite",
@@ -49,7 +30,7 @@ export default function Newsletter() {
       },
       potentialAction: {
         "@type": "SubscribeAction",
-        name: "Iscriviti alla newsletter di Portici DaDaocheng",
+        name: n.jsonLdSubscribeName,
         target: {
           "@type": "EntryPoint",
           urlTemplate: absoluteUrl,
@@ -60,23 +41,16 @@ export default function Newsletter() {
         },
       },
     };
-  }, [newsletterPath]);
+  }, [newsletterPath, n.seoTitle, n.seoDescription, n.jsonLdSubscribeName]);
 
   useJsonLd("jsonld-newsletter-page", newsletterJsonLd);
 
   return (
     <main className="bg-background">
-      <PageHeader eyebrow="Newsletter" meta="Lettera dal taccuino · Portici" title="Posta rada, materiale da leggere con calma">
-        <p>
-          Ti scriviamo quando abbiamo una nota che non sta bene solo sul sito: testo lungo, aggiornamento sul trimestrale,
-          o un invito a una sessione con data e posto.
-        </p>
-        <p className="text-page-header-dim">
-          Niente catene di promozioni: se non c&apos;è nulla da aggiungere al taccuino, non inventiamo urgenza.
-        </p>
-        <p className="text-page-header-dim mt-4 max-w-2xl">
-          Cosa vorresti che restasse fuori da questa casella — anche se il progetto ti interessa?
-        </p>
+      <PageHeader eyebrow={n.headerEyebrow} meta={n.headerMeta} title={n.headerTitle}>
+        <p>{n.headerP1}</p>
+        <p className="text-page-header-dim">{n.headerP2}</p>
+        <p className="text-page-header-dim mt-4 max-w-2xl">{n.headerOpenQ}</p>
       </PageHeader>
 
       <section className="py-14 md:py-16 border-b border-border" aria-labelledby="newsletter-form-heading">
@@ -85,12 +59,10 @@ export default function Newsletter() {
             id="newsletter-form-heading"
             className="font-medium text-foreground mb-3 text-[1.35rem] [font-family:var(--font-display)]"
           >
-            Una riga nel quaderno
+            {n.formHeading}
           </h2>
           <p className="text-[15px] text-muted-foreground leading-[1.8] max-w-2xl mb-8 [font-family:var(--font-body)]">
-            Lasci qui l&apos;indirizzo come un segnalibro tra le pagine del taccuino: quando avremo una nota pronta — testo
-            lungo, aggiornamento sul trimestrale, invito con data e luogo — te la spediamo. Niente calendario da
-            rispettare dall&apos;altra parte; solo materiale che regge la lettura.
+            {n.formIntro}
           </p>
           <NewsletterSubscribeForm
             source="newsletter"
@@ -99,7 +71,7 @@ export default function Newsletter() {
             editorialSubmitButton
             calmSubscribeErrors
             omitAuxiliaryNewsletterLinks
-            submitButtonLabel="Registra l'indirizzo"
+            submitButtonLabel={n.submitButtonLabel}
           />
         </div>
       </section>
@@ -107,7 +79,7 @@ export default function Newsletter() {
       <section className="py-16 md:py-20 bg-muted/40">
         <div className="container max-w-3xl mx-auto px-6 md:px-10">
           <div className="space-y-10">
-            {VALUE_BLOCKS.map(({ title, text, closing }) => (
+            {n.valueBlocks.map(({ title, text, closing }) => (
               <div
                 key={title}
                 className="border-l-2 border-[color-mix(in_srgb,var(--riso-red)_40%,transparent)] pl-6"

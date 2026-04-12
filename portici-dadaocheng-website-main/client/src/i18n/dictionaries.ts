@@ -62,6 +62,7 @@ export type I18nDict = {
   };
   common: {
     read_more: string;
+    untitled: string;
   };
 };
 
@@ -126,6 +127,7 @@ export const dict: Record<Lang, I18nDict> = {
     },
     common: {
       read_more: "Leggi",
+      untitled: "Senza titolo",
     },
   },
   zh: {
@@ -187,6 +189,7 @@ export const dict: Record<Lang, I18nDict> = {
     },
     common: {
       read_more: "閱讀全文",
+      untitled: "無標題",
     },
   },
   en: {
@@ -249,6 +252,7 @@ export const dict: Record<Lang, I18nDict> = {
     },
     common: {
       read_more: "Read",
+      untitled: "Untitled",
     },
   },
 };

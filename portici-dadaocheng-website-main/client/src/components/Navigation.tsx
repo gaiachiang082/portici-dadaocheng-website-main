@@ -30,9 +30,6 @@ function navItemIsActive(relHref: string, fullLocation: string, lang: Lang): boo
   if (relHref === "/fondatrici") {
     return fullLocation === `${base}/fondatrici` || fullLocation === `${base}/chi-siamo`;
   }
-  if (relHref === "/spazio") {
-    return fullLocation === `${base}/spazio`;
-  }
   return fullLocation === `${base}${relHref}`;
 }
 
@@ -111,7 +108,6 @@ export default function Navigation() {
   const navItems = useMemo(() => {
     const all = [
       { href: "/fondatrici", label: t.nav.founders },
-      { href: "/spazio", label: t.nav.space },
       { href: "/servizi", label: t.nav.services },
       { href: "/casi-studio", label: t.nav.case_studies },
       { href: "/magazine", label: t.nav.magazine },
