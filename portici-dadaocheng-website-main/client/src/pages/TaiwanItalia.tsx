@@ -10,11 +10,32 @@ export default function TaiwanItalia() {
         title="Taiwan e Italia"
       >
         <p>
-          Ponti culturali, traduzioni di sapere e piccole storie che attraversano due mondi
-          gastronomici e linguistici apparentemente lontani.
+          Il{" "}
+          <strong className="font-medium text-[color-mix(in_srgb,var(--paper)_92%,transparent)]">
+            confronto culturale
+          </strong>{" "}
+          tra{" "}
+          <strong className="font-medium text-[color-mix(in_srgb,var(--paper)_92%,transparent)]">Taiwan e Italia</strong>{" "}
+          non è un elenco di somiglianze da brochure: su una costa si intrecciano storie di isola, colonialismo e
+          cosmopolitismo portuale; in Emilia-Romagna,{" "}
+          <strong className="font-medium text-[color-mix(in_srgb,var(--paper)_92%,transparent)]">Bologna</strong>{" "}
+          custodisce memorie di corporazioni, università e migrazioni interne che hanno ridefinito più volte cosa conti
+          come radice. In entrambi i contesti, le origini non sono un deposito chiuso: sono una disputa su chi ha diritto
+          di raccontarle, e con quale accento.
         </p>
         <p className="text-page-header-dim mt-4">
-          Selezioneremo qui materiali utili a chi studia o racconta questi incroci.
+          I portici — a Bologna struttura quotidiana dello spazio pubblico, a Dadaocheng tettoia che copre botteghe e
+          passaggi — restano un simbolo utile: non decorazione, ma luogo dove pioggia, voci e corpi in transito si
+          mescolano senza forzare una sola narrazione collettiva.
+        </p>
+        <p className="text-page-header-dim mt-4 max-w-2xl">
+          Questo hub raccoglie materiali sul rapporto{" "}
+          <strong className="font-medium text-[color-mix(in_srgb,var(--paper)_88%,transparent)]">Taiwan Italia</strong>{" "}
+          senza tabelline da competizione.{" "}
+          <span className="text-[color-mix(in_srgb,var(--paper)_95%,transparent)]">
+            Dove senti che la partenza — emigrare, studiare altrove, cambiare cucina — ti ha insegnato di più sulle
+            radici di ogni discorso ufficiale sulle origini?
+          </span>
         </p>
       </PageHeader>
       <FeaturedArticlesPlaceholder />
