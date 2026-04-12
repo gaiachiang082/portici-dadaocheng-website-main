@@ -9,8 +9,8 @@ import {
   useLocalizedHref,
 } from "@/contexts/LangContext";
 
-/** Locales shown in the nav language switcher (EN kept in codebase but not exposed in UI). */
-const NAV_LANG_SWITCHER_CODES = ["it", "zh"] as const satisfies readonly Lang[];
+/** Locales shown in the nav language switcher. */
+const NAV_LANG_SWITCHER_CODES = ["it", "zh", "en"] as const satisfies readonly Lang[];
 import { useUiDict } from "@/i18n/useUiDict";
 
 const navMono =
