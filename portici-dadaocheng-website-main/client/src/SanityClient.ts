@@ -3,7 +3,7 @@ import { createClient } from '@sanity/client';
 export const client = createClient({
   projectId: 'kchhwq30',
   dataset: 'production',
-  /** Dev: always hit API origin (fresh publishes). Prod: CDN for performance. */
-  useCdn: import.meta.env.PROD,
-  apiVersion: '2024-03-01',
+  /** Always hit API origin (no CDN cache) — fresh reads from Content Lake in dev and prod. */
+  useCdn: false,
+  apiVersion: '2023-05-03',
 });
