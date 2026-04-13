@@ -5,7 +5,7 @@ import { PortableText, type PortableTextBlock } from "@portabletext/react";
 import { useLang, useLocalizedHref } from "@/contexts/LangContext";
 import { DEFAULT_DOCUMENT_DESCRIPTION, DEFAULT_DOCUMENT_TITLE, useDocumentSeo } from "@/hooks/useDocumentSeo";
 import { useJsonLd } from "@/hooks/useJsonLd";
-import { fetchArticleDetail } from "@/sanity/articleDetailFetch";
+import { fetchArticleDetail, normalizeArticleRouteParam } from "@/sanity/articleDetailFetch";
 
 /** Shape of article detail fetch (GROQ projections in `articleQueries.ts`). */
 interface ArticleDetail {
@@ -33,7 +33,8 @@ export default function ArticoloDetail() {
   const lang = useLang();
   const localizedHref = useLocalizedHref();
   const params = useParams<{ slug: string }>();
-  const slugParam = params?.slug ?? "";
+  /** Decode URI + trim; matches what `fetchArticleDetail` passes to GROQ (see `normalizeArticleRouteParam`). */
+  const slugParam = normalizeArticleRouteParam(params?.slug ?? "");
   const [article, setArticle] = useState<ArticleDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

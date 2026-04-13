@@ -15,9 +15,20 @@ export interface ArticleIndexRow {
   zh?: string | null;
 }
 
+/** Decode path segment (`%20`, `+`, Unicode escapes) without throwing on malformed sequences. */
+export function decodeArticleSlugParam(raw: string): string {
+  const t = raw.trim();
+  if (!t) return "";
+  try {
+    return decodeURIComponent(t.replace(/\+/g, " "));
+  } catch {
+    return t;
+  }
+}
+
 /** Strip `drafts.` so pasted draft URLs still resolve to the published id. */
 export function normalizeArticleRouteParam(raw: string): string {
-  const s = decodeURIComponent(raw).trim();
+  const s = decodeArticleSlugParam(raw);
   return s.startsWith("drafts.") ? s.slice(7) : s;
 }
 
@@ -41,8 +52,9 @@ export async function fetchArticleDetail<T>(
 
   const index = await client.fetch<ArticleIndexRow[]>(ARTICLE_SLUG_RESOLVE_INDEX);
   const row = index.find((r) => {
+    if (r.slug && r.slug.toLowerCase() === key.toLowerCase()) return true;
     const titles = [r.it, r.en, r.zh];
-    return titles.some((t) => slugifyForArticlePath(t) === key);
+    return titles.some((t) => slugifyForArticlePath(t) === slugifyForArticlePath(key));
   });
   if (!row) {
     if (import.meta.env.DEV) {

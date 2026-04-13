@@ -78,14 +78,10 @@ const articleDetailProjection = `
 `;
 
 /**
- * Detail document: `slug.current` or `_id` only — no `language` / document-locale filter (field-level i18n).
- * `lower()` branch covers Studio slugs that differ only by case from the URL segment.
+ * Detail document: no `language` filter (field-level i18n).
+ * URL segments may use any casing; Content Lake `slug.current` is compared via `lower($slug)`.
  */
-export const ARTICLE_DETAIL_QUERY = `*[_type == "article" && (
-  slug.current == $slug ||
-  _id == $slug ||
-  (defined(slug.current) && lower(slug.current) == lower($slug))
-)][0]{
+export const ARTICLE_DETAIL_QUERY = `*[_type == "article" && (slug.current == lower($slug) || _id == $slug)][0]{
   ${articleDetailProjection}
 }`;
 
