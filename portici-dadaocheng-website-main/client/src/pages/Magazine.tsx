@@ -130,6 +130,20 @@ export default function Magazine() {
         });
         const data = await client.fetch<Article[]>(MAGAZINE_ARTICLES_QUERY, { lang });
         const list = data ?? [];
+        if (import.meta.env.DEV) {
+          for (const item of list) {
+            const slugOk =
+              typeof item.slug === "string" && item.slug.trim().length > 0;
+            if (!slugOk) {
+              console.error(
+                "[Magazine] Sanity article is missing slug.current (add slug in Studio). _id:",
+                item._id,
+                "title:",
+                item.title ?? "(no title)",
+              );
+            }
+          }
+        }
         console.log("Sanity 回傳的文章列表:", list);
         setArticles(list);
       } catch (err) {

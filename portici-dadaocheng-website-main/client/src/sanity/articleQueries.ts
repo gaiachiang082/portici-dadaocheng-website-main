@@ -1,5 +1,7 @@
 /**
- * GROQ for `article` documents. All queries expect `fetch(..., { lang: 'it' | 'zh' | 'en', ... })`.
+ * GROQ for `article` documents (field-level i18n: `title` localeString, `content_it` / `content_en`, etc.).
+ * No document-level `language` filter — lists are `*[_type == "article"]`.
+ * Projections use `$lang`: always pass `fetch(..., { lang: 'it' | 'zh' | 'en', ... })`.
  * `content_zh` is optional in the schema; coalesce keeps zh usable before the field exists.
  */
 
@@ -32,7 +34,7 @@ const localizedExcerptPt = `
   ))
 `;
 
-export const ARTICLES_LIST_QUERY = `*[_type == "article" && language == $lang] | order(_createdAt desc) {
+export const ARTICLES_LIST_QUERY = `*[_type == "article"] | order(_createdAt desc) {
   _id,
   "slug": slug.current,
   ${localizedTitle},
@@ -41,7 +43,7 @@ export const ARTICLES_LIST_QUERY = `*[_type == "article" && language == $lang] |
   ${localizedExcerptPt}
 }`;
 
-export const ARTICLES_LATEST_THREE_QUERY = `*[_type == "article" && language == $lang] | order(_createdAt desc) [0...3] {
+export const ARTICLES_LATEST_THREE_QUERY = `*[_type == "article"] | order(_createdAt desc) [0...3] {
   _id,
   "slug": slug.current,
   ${localizedTitle},
@@ -50,8 +52,8 @@ export const ARTICLES_LATEST_THREE_QUERY = `*[_type == "article" && language == 
   ${localizedExcerptPt}
 }`;
 
-/** Magazine page grid: same language filter + CMS fields. */
-export const MAGAZINE_ARTICLES_QUERY = `*[_type == "article" && language == $lang] | order(_createdAt desc) {
+/** Magazine page grid: field-localized title via `$lang` + CMS-only fields (`excerpt`, `readTime`, …). */
+export const MAGAZINE_ARTICLES_QUERY = `*[_type == "article"] | order(_createdAt desc) {
   _id,
   "slug": slug.current,
   _createdAt,
@@ -66,7 +68,7 @@ export const MAGAZINE_ARTICLES_QUERY = `*[_type == "article" && language == $lan
 }`;
 
 /** Resolve by `slug.current` (SEO URL); fall back to `_id` for legacy bookmarks. */
-export const ARTICLE_DETAIL_QUERY = `*[_type == "article" && language == $lang && (slug.current == $slug || _id == $slug)][0]{
+export const ARTICLE_DETAIL_QUERY = `*[_type == "article" && (slug.current == $slug || _id == $slug)][0]{
   _id,
   "slug": slug.current,
   ${localizedTitle},
