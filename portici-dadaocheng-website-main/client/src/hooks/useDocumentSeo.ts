@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { wouterHrefToPublicPath } from "@/contexts/LangContext";
 
 /** Mirrors `client/index.html` defaults — restored on unmount for SPA navigation. */
 export const DEFAULT_DOCUMENT_TITLE =
@@ -11,8 +12,9 @@ const CANONICAL_ID = "seo-canonical-link";
 function resolveCanonicalHref(canonicalPath: string | undefined): string | null {
   if (typeof window === "undefined") return null;
   const origin = window.location.origin;
-  const path =
+  const raw =
     (canonicalPath && canonicalPath.length > 0 ? canonicalPath : window.location.pathname) || "/";
+  const path = wouterHrefToPublicPath(raw);
   const normalized = path.startsWith("/") ? path : `/${path}`;
   return `${origin}${normalized}`;
 }

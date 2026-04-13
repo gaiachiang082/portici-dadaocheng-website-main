@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { MAGAZINE_ISSUE_1_SOURCE } from "@shared/const";
 import { PageHeader } from "@/components/PageHeader";
 import { NewsletterSubscribeForm } from "@/components/NewsletterSubscribeForm";
-import { useLang, useLocalizedHref } from "@/contexts/LangContext";
+import { useLang, useLocalizedHref, wouterHrefToPublicPath } from "@/contexts/LangContext";
 import { useDocumentSeo } from "@/hooks/useDocumentSeo";
 import { useJsonLd } from "@/hooks/useJsonLd";
 import { articlePathSegment } from "@/sanity/articlePath";
@@ -163,7 +163,8 @@ export default function Magazine() {
 
   const magazineJsonLd = useMemo(() => {
     const origin = typeof window !== "undefined" ? window.location.origin : "";
-    const pageUrl = origin ? `${origin}${magazinePagePath}` : magazinePagePath;
+    const pubMag = wouterHrefToPublicPath(magazinePagePath);
+    const pageUrl = origin ? `${origin}${pubMag}` : pubMag;
     const allIssues = [...MAGAZINE_ISSUES];
 
     const itemListElement = allIssues.map((issue, index) => {

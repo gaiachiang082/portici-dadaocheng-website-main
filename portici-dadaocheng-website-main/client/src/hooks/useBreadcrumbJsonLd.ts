@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { wouterHrefToPublicPath } from "@/contexts/LangContext";
 import { useJsonLd } from "@/hooks/useJsonLd";
 
 export type BreadcrumbCrumb = { name: string; path: string };
@@ -16,7 +17,7 @@ export function useBreadcrumbJsonLd(
     if (crumbs.length === 0) return null;
     const origin = typeof window !== "undefined" ? window.location.origin : "";
     const itemListElement = crumbs.map((c, i) => {
-      const localizedPath = localizedHref(c.path);
+      const localizedPath = wouterHrefToPublicPath(localizedHref(c.path));
       return {
         "@type": "ListItem",
         position: i + 1,

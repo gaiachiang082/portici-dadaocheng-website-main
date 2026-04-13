@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { Link, useParams } from "wouter";
 import { ArrowLeft } from "lucide-react";
 import { PortableText, type PortableTextBlock } from "@portabletext/react";
-import { useLang, useLocalizedHref } from "@/contexts/LangContext";
+import { useLang, useLocalizedHref, wouterHrefToPublicPath } from "@/contexts/LangContext";
 import { DEFAULT_DOCUMENT_DESCRIPTION, DEFAULT_DOCUMENT_TITLE, useDocumentSeo } from "@/hooks/useDocumentSeo";
 import { useJsonLd } from "@/hooks/useJsonLd";
 import { fetchArticleDetail, normalizeArticleRouteParam } from "@/sanity/articleDetailFetch";
@@ -73,7 +73,8 @@ export default function ArticoloDetail() {
   const articleJsonLd = useMemo(() => {
     if (!article?.title) return null;
     const origin = typeof window !== "undefined" ? window.location.origin : "";
-    const url = canonicalPath && origin ? `${origin}${canonicalPath}` : "";
+    const pub = canonicalPath ? wouterHrefToPublicPath(canonicalPath) : "";
+    const url = pub && origin ? `${origin}${pub}` : "";
     return {
       "@context": "https://schema.org",
       "@type": "Article",

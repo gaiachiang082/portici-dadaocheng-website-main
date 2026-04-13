@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { PageHeader } from "@/components/PageHeader";
 import { NewsletterSubscribeForm } from "@/components/NewsletterSubscribeForm";
-import { useLang, useLocalizedHref } from "@/contexts/LangContext";
+import { useLang, useLocalizedHref, wouterHrefToPublicPath } from "@/contexts/LangContext";
 import { useDocumentSeo } from "@/hooks/useDocumentSeo";
 import { useJsonLd } from "@/hooks/useJsonLd";
 import { getNewsletterPageCopy } from "@/i18n/newsletterPageLocale";
@@ -16,7 +16,8 @@ export default function Newsletter() {
 
   const newsletterJsonLd = useMemo(() => {
     const origin = typeof window !== "undefined" ? window.location.origin : "";
-    const absoluteUrl = origin ? `${origin}${newsletterPath}` : newsletterPath;
+    const pub = wouterHrefToPublicPath(newsletterPath);
+    const absoluteUrl = origin ? `${origin}${pub}` : pub;
     return {
       "@context": "https://schema.org",
       "@type": "WebPage",

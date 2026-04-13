@@ -65,16 +65,35 @@ export function LangProviderFromLocation({ children }: { children: ReactNode }) 
 }
 
 /**
- * Prefix with current locale: `/magazine` → `/it/magazine`.
- * Strips any leading `it|zh|en` segments first so `/it/articoli` or `it/articoli` never becomes `/it/it/articoli`.
+ * Build pathname from site suffix (always starts with `/`, includes `/${lang}`).
+ * Shared by `useLocalizedHref` and SEO helpers.
  */
+export function buildLocalizedSitePath(lang: Lang, path: string): string {
+  if (!path || path === "/") return `/${lang}`;
+  const normalized = path.startsWith("/") ? path : `/${path}`;
+  const sitePath = stripLocalePathPrefixes(normalized);
+  if (sitePath === "/" || sitePath === "") return `/${lang}`;
+  return `/${lang}${sitePath}`;
+}
+
+/**
+ * Wouter nested `<Route path="/:lang" nest>` sets `router.base` to `/${lang}`.
+ * If `Link href` is already `/it/articoli`, the library does `base + href` → `/it/it/articoli`.
+ * Prefix `~` means “absolute from app root” — final `<a href>` and `navigate()` strip it (see wouter `absolutePath`).
+ */
+const WOUTER_ROOT_HREF_PREFIX = "~";
+
 export function useLocalizedHref(): (path: string) => string {
   const lang = useLang();
-  return useCallback((path: string) => {
-    if (!path || path === "/") return `/${lang}`;
-    const normalized = path.startsWith("/") ? path : `/${path}`;
-    const sitePath = stripLocalePathPrefixes(normalized);
-    if (sitePath === "/" || sitePath === "") return `/${lang}`;
-    return `/${lang}${sitePath}`;
-  }, [lang]);
+  return useCallback(
+    (path: string) => `${WOUTER_ROOT_HREF_PREFIX}${buildLocalizedSitePath(lang, path)}`,
+    [lang],
+  );
+}
+
+/** Strip wouter’s `~` prefix for canonical URLs, JSON-LD, and `origin + path`. */
+export function wouterHrefToPublicPath(href: string): string {
+  return href.startsWith(WOUTER_ROOT_HREF_PREFIX)
+    ? href.slice(WOUTER_ROOT_HREF_PREFIX.length)
+    : href;
 }
