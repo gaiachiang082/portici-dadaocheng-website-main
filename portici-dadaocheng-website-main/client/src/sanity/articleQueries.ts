@@ -79,9 +79,9 @@ const articleDetailProjection = `
 
 /**
  * Detail document: no `language` filter (field-level i18n).
- * URL segments may use any casing; Content Lake `slug.current` is compared via `lower($slug)`.
+ * Pass a JS-normalized `$slug` (decode + trim + lower) from `articleDetailFetch.ts`.
  */
-export const ARTICLE_DETAIL_QUERY = `*[_type == "article" && (slug.current == lower($slug) || _id == $slug)][0]{
+export const ARTICLE_DETAIL_QUERY = `*[_type == "article" && (slug.current == $slug || _id == $slug)][0]{
   ${articleDetailProjection}
 }`;
 

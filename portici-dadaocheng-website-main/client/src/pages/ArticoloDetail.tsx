@@ -33,20 +33,20 @@ export default function ArticoloDetail() {
   const lang = useLang();
   const localizedHref = useLocalizedHref();
   const params = useParams<{ slug: string }>();
-  /** Decode URI + trim; matches what `fetchArticleDetail` passes to GROQ (see `normalizeArticleRouteParam`). */
-  const slugParam = normalizeArticleRouteParam(params?.slug ?? "");
+  /** Raw segment from the router; `fetchArticleDetail` applies decode + lower + trim before GROQ. */
+  const slugFromRoute = params?.slug ?? "";
   const [article, setArticle] = useState<ArticleDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!slugParam) {
+    if (!slugFromRoute.trim()) {
       setLoading(false);
       return;
     }
     const fetchArticle = async () => {
       try {
-        const data = await fetchArticleDetail<ArticleDetail>(slugParam, lang);
+        const data = await fetchArticleDetail<ArticleDetail>(slugFromRoute, lang);
         setArticle(data ?? null);
       } catch (err) {
         console.error("ArticoloDetail fetch error:", err);
@@ -56,9 +56,10 @@ export default function ArticoloDetail() {
       }
     };
     fetchArticle();
-  }, [slugParam, lang]);
+  }, [slugFromRoute, lang]);
 
-  const canonicalSegment = article?.slug ?? slugParam;
+  const canonicalSegment =
+    article?.slug ?? normalizeArticleRouteParam(slugFromRoute);
   const canonicalPath =
     canonicalSegment.length > 0 ? localizedHref(`/articoli/${canonicalSegment}`) : undefined;
 

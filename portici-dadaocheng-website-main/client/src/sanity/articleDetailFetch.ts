@@ -26,39 +26,52 @@ export function decodeArticleSlugParam(raw: string): string {
   }
 }
 
-/** Strip `drafts.` so pasted draft URLs still resolve to the published id. */
+/**
+ * Slug as it should appear in the URL / React state (decoded, drafts stripped), **without** forcing lowercase.
+ */
 export function normalizeArticleRouteParam(raw: string): string {
   const s = decodeArticleSlugParam(raw);
   return s.startsWith("drafts.") ? s.slice(7) : s;
+}
+
+/**
+ * Value sent as GROQ `$slug`: URI 解碼 → 轉小寫 → 去頭尾空白 → 去掉 `drafts.` 前綴（對齊 Content Lake 小寫 slug / `_id`）。
+ */
+export function toSafeSlugForSanityLookup(raw: string): string {
+  let s = decodeArticleSlugParam(raw).toLowerCase().trim();
+  if (s.startsWith("drafts.")) s = s.slice(7);
+  return s;
 }
 
 export async function fetchArticleDetail<T>(
   slugParam: string,
   lang: Lang,
 ): Promise<T | null> {
-  const key = normalizeArticleRouteParam(slugParam);
+  const safeSlug = toSafeSlugForSanityLookup(slugParam);
+
+  console.log("🔥 送給 Sanity 的最終 slug:", safeSlug);
 
   const direct = await client.fetch<T | null>(ARTICLE_DETAIL_QUERY, {
-    slug: key,
+    slug: safeSlug,
     lang,
   });
   if (direct) return direct;
 
   if (import.meta.env.DEV) {
     console.warn(
-      `[ArticoloDetail] No article found in GROQ with slug "${key}" or id "${key}" (direct query). Trying title-slug fallback…`,
+      `[ArticoloDetail] No article found in GROQ with slug "${safeSlug}" or id "${safeSlug}" (direct query). Trying title-slug fallback…`,
     );
   }
 
   const index = await client.fetch<ArticleIndexRow[]>(ARTICLE_SLUG_RESOLVE_INDEX);
   const row = index.find((r) => {
-    if (r.slug && r.slug.toLowerCase() === key.toLowerCase()) return true;
+    if (r.slug && r.slug.toLowerCase() === safeSlug) return true;
     const titles = [r.it, r.en, r.zh];
-    return titles.some((t) => slugifyForArticlePath(t) === slugifyForArticlePath(key));
+    return titles.some((t) => slugifyForArticlePath(t) === slugifyForArticlePath(safeSlug));
   });
   if (!row) {
     if (import.meta.env.DEV) {
-      console.warn(`[ArticoloDetail] Fallback slug resolution failed for "${key}"`);
+      console.warn(`[ArticoloDetail] Fallback slug resolution failed for "${safeSlug}"`);
     }
     return null;
   }
