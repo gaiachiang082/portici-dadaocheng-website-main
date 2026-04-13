@@ -67,8 +67,7 @@ export const MAGAZINE_ARTICLES_QUERY = `*[_type == "article"] | order(_createdAt
   }
 }`;
 
-/** Resolve by `slug.current` (SEO URL); fall back to `_id` for legacy bookmarks. */
-export const ARTICLE_DETAIL_QUERY = `*[_type == "article" && (slug.current == $slug || _id == $slug)][0]{
+const articleDetailProjection = `
   _id,
   "slug": slug.current,
   ${localizedTitle},
@@ -76,4 +75,23 @@ export const ARTICLE_DETAIL_QUERY = `*[_type == "article" && (slug.current == $s
   ${localizedBody},
   category,
   mainImage { asset->{ url } }
+`;
+
+/** Resolve by `slug.current` (SEO URL) or `_id` (see `fetchArticleDetail` for title-slug fallback). */
+export const ARTICLE_DETAIL_QUERY = `*[_type == "article" && (slug.current == $slug || _id == $slug)][0]{
+  ${articleDetailProjection}
+}`;
+
+/** Same body as detail query, keyed by document `_id` (used after slug-resolve fallback). */
+export const ARTICLE_DETAIL_BY_ID_QUERY = `*[_type == "article" && _id == $id][0]{
+  ${articleDetailProjection}
+}`;
+
+/** Lightweight index to match URL segments to a document when `slug.current` is empty. */
+export const ARTICLE_SLUG_RESOLVE_INDEX = `*[_type == "article"]{
+  _id,
+  "slug": slug.current,
+  "it": title.it,
+  "en": title.en,
+  "zh": title.zh
 }`;

@@ -5,10 +5,9 @@ import { PortableText, type PortableTextBlock } from "@portabletext/react";
 import { useLang, useLocalizedHref } from "@/contexts/LangContext";
 import { DEFAULT_DOCUMENT_DESCRIPTION, DEFAULT_DOCUMENT_TITLE, useDocumentSeo } from "@/hooks/useDocumentSeo";
 import { useJsonLd } from "@/hooks/useJsonLd";
-import { ARTICLE_DETAIL_QUERY } from "@/sanity/articleQueries";
-import { client } from "../SanityClient";
+import { fetchArticleDetail } from "@/sanity/articleDetailFetch";
 
-/** Shape of {@link ARTICLE_DETAIL_QUERY} result. */
+/** Shape of article detail fetch (GROQ projections in `articleQueries.ts`). */
 interface ArticleDetail {
   _id: string;
   slug?: string | null;
@@ -34,7 +33,7 @@ export default function ArticoloDetail() {
   const lang = useLang();
   const localizedHref = useLocalizedHref();
   const params = useParams<{ slug: string }>();
-  const slugParam = params?.slug ? decodeURIComponent(params.slug) : "";
+  const slugParam = params?.slug ?? "";
   const [article, setArticle] = useState<ArticleDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -46,11 +45,14 @@ export default function ArticoloDetail() {
     }
     const fetchArticle = async () => {
       try {
-        const data = await client.fetch<ArticleDetail | null>(ARTICLE_DETAIL_QUERY, {
-          slug: slugParam,
-          lang,
-        });
+        const data = await fetchArticleDetail<ArticleDetail>(slugParam, lang);
         setArticle(data ?? null);
+        if (import.meta.env.DEV && !data && slugParam) {
+          console.warn(
+            "[ArticoloDetail] No article for URL segment (slug empty in CMS? generate slug in Studio). segment:",
+            slugParam,
+          );
+        }
       } catch (err) {
         console.error("ArticoloDetail fetch error:", err);
         setError("Impossibile caricare l'articolo.");

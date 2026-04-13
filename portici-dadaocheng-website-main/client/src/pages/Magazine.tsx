@@ -7,6 +7,7 @@ import { NewsletterSubscribeForm } from "@/components/NewsletterSubscribeForm";
 import { useLang, useLocalizedHref } from "@/contexts/LangContext";
 import { useDocumentSeo } from "@/hooks/useDocumentSeo";
 import { useJsonLd } from "@/hooks/useJsonLd";
+import { articlePathSegment } from "@/sanity/articlePath";
 import { MAGAZINE_ARTICLES_QUERY } from "@/sanity/articleQueries";
 import { client } from "../SanityClient";
 import {
@@ -438,7 +439,7 @@ export default function Magazine() {
                 return (
                   <Link
                     key={article._id}
-                    href={localizedHref(`/articoli/${article.slug ?? article._id}`)}
+                    href={localizedHref(`/articoli/${articlePathSegment(article)}`)}
                     className="group rounded-xl overflow-hidden border border-border/70 bg-card/80 flex flex-col transition-colors hover:border-border hover:bg-card"
                   >
                     <div className="relative h-28 w-full overflow-hidden bg-muted shrink-0">

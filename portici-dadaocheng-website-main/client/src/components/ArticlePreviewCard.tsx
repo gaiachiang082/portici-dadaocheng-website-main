@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useLocalizedHref } from "@/contexts/LangContext";
 import { useUiDict } from "@/i18n/useUiDict";
+import { articlePathSegment } from "@/sanity/articlePath";
 
 export { ARTICLES_LIST_QUERY, ARTICLES_LATEST_THREE_QUERY } from "@/sanity/articleQueries";
 
@@ -78,7 +79,7 @@ export function ArticleCard({ article }: { article: ArticlePreview }) {
           <div className="mb-4" aria-hidden />
         )}
         <Link
-          href={localizedHref(`/articoli/${article.slug ?? article._id}`)}
+          href={localizedHref(`/articoli/${articlePathSegment(article)}`)}
           className="inline-flex items-center gap-1.5 text-[12px] uppercase tracking-[0.12em] text-foreground/70 [font-family:var(--font-mono)] hover:text-foreground transition-colors"
         >
           {t.common.read_more}
