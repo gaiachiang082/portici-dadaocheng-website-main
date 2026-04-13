@@ -47,12 +47,6 @@ export default function ArticoloDetail() {
       try {
         const data = await fetchArticleDetail<ArticleDetail>(slugParam, lang);
         setArticle(data ?? null);
-        if (import.meta.env.DEV && !data && slugParam) {
-          console.warn(
-            "[ArticoloDetail] No article for URL segment (slug empty in CMS? generate slug in Studio). segment:",
-            slugParam,
-          );
-        }
       } catch (err) {
         console.error("ArticoloDetail fetch error:", err);
         setError("Impossibile caricare l'articolo.");

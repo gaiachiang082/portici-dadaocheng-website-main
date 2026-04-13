@@ -33,12 +33,23 @@ export async function fetchArticleDetail<T>(
   });
   if (direct) return direct;
 
+  if (import.meta.env.DEV) {
+    console.warn(
+      `[ArticoloDetail] No article found in GROQ with slug "${key}" or id "${key}" (direct query). Trying title-slug fallback…`,
+    );
+  }
+
   const index = await client.fetch<ArticleIndexRow[]>(ARTICLE_SLUG_RESOLVE_INDEX);
   const row = index.find((r) => {
     const titles = [r.it, r.en, r.zh];
     return titles.some((t) => slugifyForArticlePath(t) === key);
   });
-  if (!row) return null;
+  if (!row) {
+    if (import.meta.env.DEV) {
+      console.warn(`[ArticoloDetail] Fallback slug resolution failed for "${key}"`);
+    }
+    return null;
+  }
 
   return client.fetch<T | null>(ARTICLE_DETAIL_BY_ID_QUERY, {
     id: row._id,

@@ -77,8 +77,15 @@ const articleDetailProjection = `
   mainImage { asset->{ url } }
 `;
 
-/** Resolve by `slug.current` (SEO URL) or `_id` (see `fetchArticleDetail` for title-slug fallback). */
-export const ARTICLE_DETAIL_QUERY = `*[_type == "article" && (slug.current == $slug || _id == $slug)][0]{
+/**
+ * Detail document: `slug.current` or `_id` only — no `language` / document-locale filter (field-level i18n).
+ * `lower()` branch covers Studio slugs that differ only by case from the URL segment.
+ */
+export const ARTICLE_DETAIL_QUERY = `*[_type == "article" && (
+  slug.current == $slug ||
+  _id == $slug ||
+  (defined(slug.current) && lower(slug.current) == lower($slug))
+)][0]{
   ${articleDetailProjection}
 }`;
 
