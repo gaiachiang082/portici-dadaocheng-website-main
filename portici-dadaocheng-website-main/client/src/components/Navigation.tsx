@@ -19,7 +19,11 @@ const navMono =
 function navItemIsActive(relHref: string, fullLocation: string, lang: Lang): boolean {
   const base = `/${lang}`;
   if (relHref === "/magazine") {
-    return fullLocation === `${base}/magazine` || fullLocation.startsWith(`${base}/articoli/`);
+    return (
+      fullLocation === `${base}/magazine` ||
+      fullLocation.startsWith(`${base}/magazine/`) ||
+      fullLocation.startsWith(`${base}/articoli/`)
+    );
   }
   if (relHref === "/eventi") {
     return fullLocation === `${base}/eventi`;

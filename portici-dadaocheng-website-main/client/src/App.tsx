@@ -42,6 +42,8 @@ function LocalizedRoutes() {
       <Route path="/eventi" component={Eventi} />
       <Route path="/workshop/calligraphy" component={CalligraphyWorkshop} />
       <Route path="/workshop" component={Workshop} />
+      {/* Article detail under /magazine/:slug (e.g. /it/magazine/perche-dadaocheng) — must be before static /magazine */}
+      <Route path="/magazine/:slug" component={ArticoloDetail} />
       <Route path="/magazine" component={Magazine} />
       <Route path="/newsletter" component={Newsletter} />
       <Route path="/articoli/:slug" component={ArticoloDetail} />

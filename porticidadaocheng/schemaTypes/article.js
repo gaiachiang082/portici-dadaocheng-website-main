@@ -15,7 +15,11 @@ export default {
       title: '網址路徑 (Slug)',
       type: 'slug',
       options: {
-        source: (doc) => doc.title?.it || doc.title?.en || doc.title?.zh || 'untitled',
+        source: (doc) => {
+          const t = doc?.title;
+          if (!t || typeof t !== 'object') return 'untitled';
+          return t.it || t.en || t.zh || 'untitled';
+        },
         maxLength: 96,
       },
     },
@@ -48,17 +52,21 @@ export default {
   ],
   preview: {
     select: {
-      titleIt: 'title.it',
-      titleEn: 'title.en',
-      titleZh: 'title.zh',
+      title: 'title',
       media: 'mainImage',
     },
-    prepare({ titleIt, titleEn, titleZh, media }) {
-      const headline = titleIt || titleEn || titleZh || '（無標題）';
+    prepare(selection) {
+      const { title, media } = selection ?? {};
+      const loc =
+        title && typeof title === 'object' && !Array.isArray(title) ? title : {};
+      const it = typeof loc.it === 'string' ? loc.it.trim() : '';
+      const en = typeof loc.en === 'string' ? loc.en.trim() : '';
+      const zh = typeof loc.zh === 'string' ? loc.zh.trim() : '';
+      const headline = it || en || zh || 'Untitled';
       const locales = [];
-      if (titleIt) locales.push('IT');
-      if (titleEn) locales.push('EN');
-      if (titleZh) locales.push('ZH');
+      if (it) locales.push('IT');
+      if (en) locales.push('EN');
+      if (zh) locales.push('ZH');
       return {
         title: headline,
         subtitle: locales.length ? locales.join(' · ') : undefined,
