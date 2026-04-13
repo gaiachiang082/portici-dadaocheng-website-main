@@ -50,6 +50,7 @@ export async function fetchArticleDetail<T>(
   const safeSlug = toSafeSlugForSanityLookup(slugParam);
 
   console.log("🔥 送給 Sanity 的最終 slug:", safeSlug);
+  console.log("Sanity Config:", client.config());
 
   const direct = await client.fetch<T | null>(ARTICLE_DETAIL_QUERY, {
     slug: safeSlug,

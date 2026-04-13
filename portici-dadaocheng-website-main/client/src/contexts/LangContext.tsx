@@ -8,6 +8,25 @@ export function isLang(value: string | undefined): value is Lang {
   return value === "it" || value === "zh" || value === "en";
 }
 
+const LANG_SEGMENT = new Set<string>(SUPPORTED_LANGS);
+
+/** Remove one or more leading `/it|zh|en` segments so we never produce `/it/it/...`. Preserves `?query`. */
+export function stripLocalePathPrefixes(path: string): string {
+  const raw = path.trim();
+  if (!raw || raw === "/") return "/";
+  const qIndex = raw.indexOf("?");
+  const pathPart = qIndex >= 0 ? raw.slice(0, qIndex) : raw;
+  const searchPart = qIndex >= 0 ? raw.slice(qIndex) : "";
+  const normalized = pathPart.startsWith("/") ? pathPart : `/${pathPart}`;
+  const segments = normalized.split("/").filter(Boolean);
+  while (segments.length > 0 && LANG_SEGMENT.has(segments[0])) {
+    segments.shift();
+  }
+  if (segments.length === 0) return searchPart ? `/${searchPart}` : "/";
+  if (searchPart) return `/${segments.join("/")}${searchPart}`;
+  return `/${segments.join("/")}`;
+}
+
 /**
  * Split `/it/foo` → { lang: 'it', suffix: '/foo' }; `/it` → { lang: 'it', suffix: '' }.
  * Non-localized paths (e.g. `/admin`) → { lang: null, suffix: pathname }.
@@ -45,12 +64,17 @@ export function LangProviderFromLocation({ children }: { children: ReactNode }) 
   return <LangProvider lang={lang ?? "it"}>{children}</LangProvider>;
 }
 
-/** Prefix a site path with the current locale: `/magazine` → `/it/magazine`. */
+/**
+ * Prefix with current locale: `/magazine` → `/it/magazine`.
+ * Strips any leading `it|zh|en` segments first so `/it/articoli` or `it/articoli` never becomes `/it/it/articoli`.
+ */
 export function useLocalizedHref(): (path: string) => string {
   const lang = useLang();
   return useCallback((path: string) => {
     if (!path || path === "/") return `/${lang}`;
     const normalized = path.startsWith("/") ? path : `/${path}`;
-    return `/${lang}${normalized}`;
+    const sitePath = stripLocalePathPrefixes(normalized);
+    if (sitePath === "/" || sitePath === "") return `/${lang}`;
+    return `/${lang}${sitePath}`;
   }, [lang]);
 }
