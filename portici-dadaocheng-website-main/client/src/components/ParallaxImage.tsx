@@ -22,6 +22,17 @@ type ParallaxImageProps = {
   aspect?: string;
   /** Loading hint — defaults to "lazy" for non-critical images. */
   loading?: "eager" | "lazy";
+  /**
+   * Priority Hint for the fetch. Set to "high" on above-the-fold LCP
+   * images so the browser schedules their download ahead of later
+   * resources (React 19 lowercases to `fetchpriority` in the DOM).
+   */
+  fetchPriority?: "high" | "low" | "auto";
+  /** Intrinsic width of the source asset — used with `height` to reserve
+   *  aspect ratio before bitmap is decoded (prevents CLS). */
+  width?: number;
+  /** Intrinsic height of the source asset. Pair with `width`. */
+  height?: number;
 };
 
 /**
@@ -46,6 +57,9 @@ export function ParallaxImage({
   overlay,
   aspect,
   loading = "lazy",
+  fetchPriority,
+  width,
+  height,
 }: ParallaxImageProps) {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
@@ -72,6 +86,10 @@ export function ParallaxImage({
         src={src}
         alt={alt}
         loading={loading}
+        fetchPriority={fetchPriority}
+        width={width}
+        height={height}
+        decoding={loading === "eager" ? "sync" : "async"}
         className={`absolute inset-0 h-[112%] w-full will-change-transform ${imgClassName ?? ""}`}
         style={{ y, top: "-6%" }}
       />

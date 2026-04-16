@@ -148,6 +148,9 @@ function HomeHero() {
                 imgClassName="object-cover object-center opacity-[0.92]"
                 offset={50}
                 loading="eager"
+                fetchPriority="high"
+                width={800}
+                height={1000}
                 overlay={
                   <div
                     className="absolute inset-0 pointer-events-none"
