@@ -3,11 +3,11 @@ import { client } from "../SanityClient";
 import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { useLang } from "@/contexts/LangContext";
+import { type ArticlePreview } from "@/components/ArticlePreviewCard";
 import {
-  ArticleCard,
-  ArticleCardSkeleton,
-  type ArticlePreview,
-} from "@/components/ArticlePreviewCard";
+  ArticleMagazineRow,
+  ArticleMagazineRowSkeleton,
+} from "@/components/ArticleMagazineRow";
 import { ARTICLES_LIST_QUERY } from "@/sanity/articleQueries";
 import { pickDict } from "@/i18n/dictionaries";
 import { useUiDict } from "@/i18n/useUiDict";
@@ -63,12 +63,12 @@ export default function ArticoliPage() {
         <p>{t.articoli.subtitle}</p>
       </PageHeader>
 
-      <section className="bg-background px-6 py-14 md:px-10 md:py-16">
-        <div className="container mx-auto max-w-7xl">
+      <section className="bg-background px-6 py-14 md:px-10 md:py-20">
+        <div className="container mx-auto max-w-6xl">
           {loading ? (
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 lg:grid-cols-3 lg:gap-8">
-              {Array.from({ length: 6 }, (_, i) => (
-                <ArticleCardSkeleton key={i} />
+            <div className="flex flex-col">
+              {Array.from({ length: 3 }, (_, i) => (
+                <ArticleMagazineRowSkeleton key={i} index={i} />
               ))}
             </div>
           ) : error ? (
@@ -90,9 +90,9 @@ export default function ArticoliPage() {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 lg:grid-cols-3 lg:gap-8">
-              {articles.map((article) => (
-                <ArticleCard key={article._id} article={article} />
+            <div className="flex flex-col">
+              {articles.map((article, i) => (
+                <ArticleMagazineRow key={article._id} article={article} index={i} />
               ))}
             </div>
           )}
