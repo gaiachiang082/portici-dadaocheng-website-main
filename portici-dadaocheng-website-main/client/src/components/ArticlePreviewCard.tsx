@@ -3,7 +3,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useLocalizedHref } from "@/contexts/LangContext";
 import { useUiDict } from "@/i18n/useUiDict";
 import { articlePathSegment } from "@/sanity/articlePath";
-import { ArticleIllustration } from "@/components/ArticleIllustration";
 
 export { ARTICLES_LIST_QUERY, ARTICLES_LATEST_THREE_QUERY } from "@/sanity/articleQueries";
 
@@ -49,10 +48,9 @@ export function ArticleCard({ article }: { article: ArticlePreview }) {
   const imageUrl = article.mainImage?.asset?.url;
   const title = article.title?.trim() ? article.title : t.common.untitled;
   const excerpt = excerptPreview(article.excerpt);
-  const slug = articlePathSegment(article);
 
   return (
-    <article className="relative border border-border bg-background hover:-translate-y-1 transition-all duration-300 group/card overflow-visible">
+    <article className="border border-border bg-background hover:-translate-y-1 transition-all duration-300 group/card">
       <div className="aspect-[3/2] overflow-hidden bg-muted" data-parallax="24">
         {imageUrl ? (
           <img
@@ -65,13 +63,6 @@ export function ArticleCard({ article }: { article: ArticlePreview }) {
           />
         ) : null}
       </div>
-      {/* Hand-drawn accent peeking over the top-right corner of the card. */}
-      <ArticleIllustration
-        slug={slug}
-        title={title}
-        parallax={30}
-        className="-top-5 -right-3 rotate-[8deg] z-[1]"
-      />
       <div className="p-5">
         {article.category ? (
           <span className="mb-2 block text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground [font-family:var(--font-mono)]">
@@ -89,7 +80,7 @@ export function ArticleCard({ article }: { article: ArticlePreview }) {
           <div className="mb-4" aria-hidden />
         )}
         <Link
-          href={localizedHref(`/articoli/${slug}`)}
+          href={localizedHref(`/articoli/${articlePathSegment(article)}`)}
           className="inline-flex items-center gap-1.5 text-[12px] uppercase tracking-[0.12em] text-foreground/70 [font-family:var(--font-mono)] hover:text-foreground transition-colors"
         >
           {t.common.read_more}

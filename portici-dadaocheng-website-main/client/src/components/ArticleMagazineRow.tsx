@@ -5,7 +5,6 @@ import { useLocalizedHref } from "@/contexts/LangContext";
 import { useUiDict } from "@/i18n/useUiDict";
 import { articlePathSegment } from "@/sanity/articlePath";
 import { excerptPreview, type ArticlePreview } from "@/components/ArticlePreviewCard";
-import { ArticleIllustration } from "@/components/ArticleIllustration";
 
 /**
  * Media slot for the magazine row.
@@ -98,21 +97,7 @@ export function ArticleMagazineRow({
           </div>
         </Link>
 
-        <div
-          className={`relative md:px-2 lg:px-6 ${reverse ? "md:order-1" : "md:order-2"}`}
-        >
-          {/* Hand-drawn accent: opposite corner to the media column so the
-              eye follows a zig-zag rhythm down the page. */}
-          <ArticleIllustration
-            slug={slug}
-            title={title}
-            parallax={30}
-            className={
-              reverse
-                ? "-top-6 -right-2 lg:-right-6 rotate-[6deg]"
-                : "-top-6 -left-2 lg:-left-6 -rotate-[6deg]"
-            }
-          />
+        <div className={`md:px-2 lg:px-6 ${reverse ? "md:order-1" : "md:order-2"}`}>
           {article.category ? (
             <span className="mb-4 block text-[10px] font-medium uppercase tracking-[0.28em] text-muted-foreground [font-family:var(--font-mono)]">
               {article.category}

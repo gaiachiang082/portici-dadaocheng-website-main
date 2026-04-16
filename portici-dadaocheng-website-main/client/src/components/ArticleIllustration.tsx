@@ -3,35 +3,43 @@ import { useState } from "react";
 /**
  * ArticleIllustration
  * ──────────────────────────────────────────────────────────────────────
- * Decorative hand-drawn accent shown next to an article preview.
+ * Decorative hand-drawn accent shown next to an article.
  *
  * Source:
- *   /public/illustrations/{slug}-illo.png  — loaded via plain <img src>.
+ *   /public/illustrations/{slug}-illo.png  — plain <img src>.
  *   If the asset is missing we silently unmount (no broken-image icon,
- *   no console noise beyond the natural 404).
+ *   no hidden layout box, just a natural network 404 in devtools).
  *
  * Motion:
  *   Tagged with `data-parallax` so `GlobalScrollEffects` floats it on
- *   scroll with an offset different from the card content, giving a
- *   light "stuck on the page" feel.
+ *   scroll with its own offset, independent from the page's main
+ *   content.
  *
  * Layout:
- *   `absolute` positioning on md+ (magazine-style accent in a corner),
- *   hidden on mobile to keep dense list views readable. The wrapper
- *   itself is `pointer-events-none` so the image never eats clicks
- *   destined for the underlying link / card.
+ *   Positioning is intentionally delegated to the caller via `className`
+ *   — this component only concerns itself with the img pixels and its
+ *   pointer/selection behaviour. Add e.g. `sticky top-32` or `absolute
+ *   top-0 right-0` from the outside depending on the container.
+ *
+ * Accessibility:
+ *   Purely decorative — wrapper is `aria-hidden`, `pointer-events-none`,
+ *   `select-none`, so it never competes with real content for focus,
+ *   clicks, or text selection.
  */
 export function ArticleIllustration({
   slug,
   title,
-  /** Tailwind utility classes for positioning / sizing the wrapper. */
+  /** Tailwind utility classes applied to the wrapper (position, size, etc.). */
   className = "",
   parallax = 30,
+  /** Tailwind utility classes applied to the <img> itself (size overrides, rotation…). */
+  imgClassName = "w-[clamp(80px,9vw,120px)]",
 }: {
   slug: string;
   title?: string;
   className?: string;
   parallax?: number;
+  imgClassName?: string;
 }) {
   const [failed, setFailed] = useState(false);
   const safeSlug = slug.trim();
@@ -42,7 +50,7 @@ export function ArticleIllustration({
   return (
     <div
       aria-hidden
-      className={`pointer-events-none select-none hidden md:block absolute ${className}`}
+      className={`pointer-events-none select-none ${className}`}
     >
       <img
         src={src}
@@ -51,7 +59,7 @@ export function ArticleIllustration({
         loading="lazy"
         decoding="async"
         onError={() => setFailed(true)}
-        className="block h-auto w-[clamp(80px,9vw,120px)] drop-shadow-[0_6px_14px_color-mix(in_srgb,var(--forest-deep)_18%,transparent)]"
+        className={`block h-auto drop-shadow-[0_6px_14px_color-mix(in_srgb,var(--forest-deep)_18%,transparent)] ${imgClassName}`}
       />
     </div>
   );

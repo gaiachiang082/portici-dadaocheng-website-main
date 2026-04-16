@@ -7,6 +7,7 @@ import { DEFAULT_DOCUMENT_DESCRIPTION, DEFAULT_DOCUMENT_TITLE, useDocumentSeo } 
 import { useJsonLd } from "@/hooks/useJsonLd";
 import { fetchArticleDetail, normalizeArticleRouteParam } from "@/sanity/articleDetailFetch";
 import { useUiDict } from "@/i18n/useUiDict";
+import { ArticleIllustration } from "@/components/ArticleIllustration";
 
 /** Shape of article detail fetch (GROQ projections in `articleQueries.ts`). */
 interface ArticleDetail {
@@ -201,32 +202,48 @@ export default function ArticoloDetail() {
         </div>
       </section>
 
-      {/* Body content */}
+      {/* Body content — prose centered at max-w-2xl; hand-drawn illustration
+          lives in the right gutter of a wider container so it can never
+          overlap the reading column. */}
       <section className="py-16 bg-background">
-        <div className="container max-w-2xl">
-          <article
-            className="prose prose-lg max-w-none
-              prose-headings:font-[family-name:var(--font-display)] prose-headings:text-foreground
-              prose-p:text-muted-foreground prose-p:leading-[1.85] prose-p:font-[family-name:'Source_Serif_4',Georgia,serif]
-              prose-a:text-editorial-mark prose-a:no-underline hover:prose-a:underline prose-a:decoration-editorial-mark/45
-              prose-strong:text-foreground
-              prose-blockquote:border-editorial-mark prose-blockquote:border-l-2 prose-blockquote:italic prose-blockquote:text-muted-foreground
-              prose-hr:border-border
-              prose-img:rounded-xl prose-img:shadow-sm"
-            style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
-          >
-            {hasBody ? (
-              <PortableText value={article.body as PortableTextBlock[]} />
-            ) : article.excerpt ? (
-              <p className="text-muted-foreground leading-[1.85]">{article.excerpt}</p>
-            ) : (
-              <p className="text-muted-foreground italic">
-                {lang === "en"
-                  ? "The full text for this article isn’t available yet."
-                  : "Il testo completo di questo articolo non è ancora disponibile."}
-              </p>
-            )}
-          </article>
+        <div className="container max-w-6xl">
+          <div className="relative grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_160px] lg:gap-16 xl:grid-cols-[minmax(0,1fr)_200px]">
+            <article
+              className="prose prose-lg max-w-2xl mx-auto w-full lg:mx-0 lg:ml-auto
+                prose-headings:font-[family-name:var(--font-display)] prose-headings:text-foreground
+                prose-p:text-muted-foreground prose-p:leading-[1.85] prose-p:font-[family-name:'Source_Serif_4',Georgia,serif]
+                prose-a:text-editorial-mark prose-a:no-underline hover:prose-a:underline prose-a:decoration-editorial-mark/45
+                prose-strong:text-foreground
+                prose-blockquote:border-editorial-mark prose-blockquote:border-l-2 prose-blockquote:italic prose-blockquote:text-muted-foreground
+                prose-hr:border-border
+                prose-img:rounded-xl prose-img:shadow-sm"
+              style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
+            >
+              {hasBody ? (
+                <PortableText value={article.body as PortableTextBlock[]} />
+              ) : article.excerpt ? (
+                <p className="text-muted-foreground leading-[1.85]">{article.excerpt}</p>
+              ) : (
+                <p className="text-muted-foreground italic">
+                  {lang === "en"
+                    ? "The full text for this article isn’t available yet."
+                    : "Il testo completo di questo articolo non è ancora disponibile."}
+                </p>
+              )}
+            </article>
+
+            {/* Right-gutter illustration: sticky so it accompanies the reader,
+                hidden below `lg` to keep mobile & tablet layouts clean. */}
+            <aside className="hidden lg:block">
+              <ArticleIllustration
+                slug={canonicalSegment}
+                title={article.title ?? undefined}
+                parallax={30}
+                className="sticky top-32 flex justify-start"
+                imgClassName="w-[clamp(96px,8vw,120px)] rotate-[-4deg]"
+              />
+            </aside>
+          </div>
         </div>
       </section>
     </main>
