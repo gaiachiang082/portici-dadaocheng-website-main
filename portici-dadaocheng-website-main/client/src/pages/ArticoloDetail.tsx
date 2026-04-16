@@ -6,6 +6,7 @@ import { useLang, useLocalizedHref, wouterHrefToPublicPath } from "@/contexts/La
 import { DEFAULT_DOCUMENT_DESCRIPTION, DEFAULT_DOCUMENT_TITLE, useDocumentSeo } from "@/hooks/useDocumentSeo";
 import { useJsonLd } from "@/hooks/useJsonLd";
 import { fetchArticleDetail, normalizeArticleRouteParam } from "@/sanity/articleDetailFetch";
+import { useUiDict } from "@/i18n/useUiDict";
 
 /** Shape of article detail fetch (GROQ projections in `articleQueries.ts`). */
 interface ArticleDetail {
@@ -32,6 +33,9 @@ const DEFAULT_META_FALLBACK =
 export default function ArticoloDetail() {
   const lang = useLang();
   const localizedHref = useLocalizedHref();
+  const t = useUiDict();
+  const backHref = localizedHref("/articoli");
+  const backLabel = t.nav.articles;
   const params = useParams<{ slug: string }>();
   /** Raw segment from the router; `fetchArticleDetail` applies decode + lower + trim before GROQ. */
   const slugFromRoute = params?.slug ?? "";
@@ -125,11 +129,11 @@ export default function ArticoloDetail() {
               {error ?? "Articolo non trovato."}
             </p>
             <Link
-              href={localizedHref("/magazine")}
+              href={backHref}
               className="inline-flex items-center gap-2 text-on-ink-muted underline-offset-4 hover:text-on-ink hover:underline"
             >
               <ArrowLeft size={18} />
-              Torna al Magazine
+              {backLabel}
             </Link>
           </div>
         </section>
@@ -137,18 +141,42 @@ export default function ArticoloDetail() {
     );
   }
 
+  const heroBgUrl = article.mainImage?.asset?.url;
+  const hasBody = Array.isArray(article.body) && article.body.length > 0;
+
   return (
     <main>
-      {/* Hero */}
-      <section className="pt-32 pb-12 bg-forest">
-        <div className="container max-w-3xl">
+      {/* Hero — cover image as background, not as a full-bleed standalone block. */}
+      <section
+        className="relative pt-32 pb-16 md:pt-40 md:pb-24 bg-forest overflow-hidden isolate"
+        style={
+          heroBgUrl
+            ? {
+                backgroundImage: `url(${heroBgUrl})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }
+            : undefined
+        }
+      >
+        {heroBgUrl && (
+          <div
+            aria-hidden
+            className="absolute inset-0 -z-10"
+            style={{
+              background:
+                "linear-gradient(180deg, color-mix(in srgb, var(--forest) 68%, transparent) 0%, color-mix(in srgb, var(--forest) 82%, transparent) 55%, var(--forest) 100%)",
+            }}
+          />
+        )}
+        <div className="container max-w-3xl relative">
           <Link
-            href={localizedHref("/magazine")}
+            href={backHref}
             className="inline-flex items-center gap-2 text-[15px] text-on-ink-muted underline-offset-4 hover:text-on-ink hover:underline mb-8"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
           >
             <ArrowLeft size={16} />
-            Magazine
+            {backLabel}
           </Link>
           {article.category && (
             <span
@@ -173,19 +201,6 @@ export default function ArticoloDetail() {
         </div>
       </section>
 
-      {/* Main image */}
-      {article.mainImage?.asset?.url && (
-        <section className="bg-forest pb-12">
-          <div className="container max-w-4xl">
-            <img
-              src={article.mainImage.asset.url}
-              alt={article.title ?? ""}
-              className="w-full aspect-[16/10] object-cover rounded-xl shadow-[0_4px_28px_color-mix(in_srgb,var(--forest-deep)_55%,transparent)]"
-            />
-          </div>
-        </section>
-      )}
-
       {/* Body content */}
       <section className="py-16 bg-background">
         <div className="container max-w-2xl">
@@ -200,7 +215,17 @@ export default function ArticoloDetail() {
               prose-img:rounded-xl prose-img:shadow-sm"
             style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
           >
-            {article.body && <PortableText value={article.body} />}
+            {hasBody ? (
+              <PortableText value={article.body as PortableTextBlock[]} />
+            ) : article.excerpt ? (
+              <p className="text-muted-foreground leading-[1.85]">{article.excerpt}</p>
+            ) : (
+              <p className="text-muted-foreground italic">
+                {lang === "en"
+                  ? "The full text for this article isn’t available yet."
+                  : "Il testo completo di questo articolo non è ancora disponibile."}
+              </p>
+            )}
           </article>
         </div>
       </section>
