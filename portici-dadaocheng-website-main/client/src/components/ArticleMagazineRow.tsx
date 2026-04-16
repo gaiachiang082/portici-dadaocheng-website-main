@@ -5,6 +5,7 @@ import { useLocalizedHref } from "@/contexts/LangContext";
 import { useUiDict } from "@/i18n/useUiDict";
 import { articlePathSegment } from "@/sanity/articlePath";
 import { excerptPreview, type ArticlePreview } from "@/components/ArticlePreviewCard";
+import { SmoothImage } from "@/components/SmoothImage";
 
 /**
  * Media slot for the magazine row.
@@ -46,7 +47,7 @@ function ArticleMagazineMedia({
 
   if (imageUrl) {
     return (
-      <img
+      <SmoothImage
         src={imageUrl}
         alt={title}
         loading="lazy"

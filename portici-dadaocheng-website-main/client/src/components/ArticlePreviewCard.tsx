@@ -3,6 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useLocalizedHref } from "@/contexts/LangContext";
 import { useUiDict } from "@/i18n/useUiDict";
 import { articlePathSegment } from "@/sanity/articlePath";
+import { SmoothImage } from "@/components/SmoothImage";
 
 export { ARTICLES_LIST_QUERY, ARTICLES_LATEST_THREE_QUERY } from "@/sanity/articleQueries";
 
@@ -53,7 +54,7 @@ export function ArticleCard({ article }: { article: ArticlePreview }) {
     <article className="border border-border bg-background hover:-translate-y-1 transition-all duration-300 group/card">
       <div className="aspect-[3/2] overflow-hidden bg-muted" data-parallax="24">
         {imageUrl ? (
-          <img
+          <SmoothImage
             src={imageUrl}
             alt={title}
             className="h-[115%] w-full object-cover"

@@ -8,6 +8,7 @@ import { useJsonLd } from "@/hooks/useJsonLd";
 import { fetchArticleDetail, normalizeArticleRouteParam } from "@/sanity/articleDetailFetch";
 import { useUiDict } from "@/i18n/useUiDict";
 import { ArticleIllustration } from "@/components/ArticleIllustration";
+import { SmoothImage } from "@/components/SmoothImage";
 
 /** Shape of article detail fetch (GROQ projections in `articleQueries.ts`). */
 interface ArticleDetail {
@@ -147,28 +148,28 @@ export default function ArticoloDetail() {
 
   return (
     <main>
-      {/* Hero — cover image as background, not as a full-bleed standalone block. */}
-      <section
-        className="relative pt-32 pb-16 md:pt-40 md:pb-24 bg-forest overflow-hidden isolate"
-        style={
-          heroBgUrl
-            ? {
-                backgroundImage: `url(${heroBgUrl})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }
-            : undefined
-        }
-      >
+      {/* Hero — cover image layered behind the content, not a full-bleed
+          standalone block. The `bg-forest` of the section is the soft
+          earth-tone placeholder visible while the image loads. */}
+      <section className="relative pt-32 pb-16 md:pt-40 md:pb-24 bg-forest overflow-hidden isolate">
         {heroBgUrl && (
-          <div
-            aria-hidden
-            className="absolute inset-0 -z-10"
-            style={{
-              background:
-                "linear-gradient(180deg, color-mix(in srgb, var(--forest) 68%, transparent) 0%, color-mix(in srgb, var(--forest) 82%, transparent) 55%, var(--forest) 100%)",
-            }}
-          />
+          <>
+            <SmoothImage
+              src={heroBgUrl}
+              alt=""
+              aria-hidden
+              decoding="async"
+              className="absolute inset-0 -z-20 h-full w-full object-cover"
+            />
+            <div
+              aria-hidden
+              className="absolute inset-0 -z-10"
+              style={{
+                background:
+                  "linear-gradient(180deg, color-mix(in srgb, var(--forest) 68%, transparent) 0%, color-mix(in srgb, var(--forest) 82%, transparent) 55%, var(--forest) 100%)",
+              }}
+            />
+          </>
         )}
         <div className="container max-w-3xl relative">
           <Link
