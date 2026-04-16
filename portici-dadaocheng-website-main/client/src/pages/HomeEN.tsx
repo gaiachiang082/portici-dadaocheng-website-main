@@ -6,7 +6,7 @@ import { BrandMark } from "@/components/BrandMark";
 import { NewsletterSubscribeForm } from "@/components/NewsletterSubscribeForm";
 import { useLang, useLocalizedHref } from "@/contexts/LangContext";
 import { ArticleCard, ArticleCardSkeleton, type ArticlePreview } from "@/components/ArticlePreviewCard";
-import { formatIssueMeta, getCurrentIssue, ISSUE_NO1_COVER_FALLBACK_URL } from "@/data/magazineIssues";
+import { formatIssueMeta, getCurrentIssue } from "@/data/magazineIssues";
 import { ARTICLES_LATEST_THREE_QUERY } from "@/sanity/articleQueries";
 import { client } from "../SanityClient";
 
@@ -156,8 +156,8 @@ function HomeHero() {
               </header>
               <div className="relative aspect-[4/5] max-h-[min(52vh,520px)] bg-[var(--paper-deep)]">
                 <img
-                  src={ISSUE_NO1_COVER_FALLBACK_URL}
-                  alt="Tea ceremony — cover still from issue one"
+                  src="/brand/home-landing-cover.png"
+                  alt="Editorial abstract cover artwork"
                   className="absolute inset-0 h-full w-full object-cover object-center opacity-[0.92]"
                 />
                 <div
@@ -168,14 +168,6 @@ function HomeHero() {
                   }}
                 />
               </div>
-              <footer className="px-5 py-4 border-t border-border/60">
-                <p
-                  className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground"
-                  style={{ fontFamily: "var(--font-ui)" }}
-                >
-                  The tea rite — colophon
-                </p>
-              </footer>
             </article>
           </div>
         </div>

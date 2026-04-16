@@ -300,7 +300,7 @@ export default function ContattiEN() {
                   這只是對話的開始。
                 </p>
                 <p className="text-xs text-muted-foreground mt-3" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
-                  — Sara Chen &amp; Angie, co-founders
+                  — HUA &amp; ANGIE, co-founders
                 </p>
               </div>
             </div>

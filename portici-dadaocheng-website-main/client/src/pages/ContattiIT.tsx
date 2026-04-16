@@ -309,7 +309,7 @@ export default function Contatti() {
                   className="text-xs text-muted-foreground mt-3"
                   style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
                 >
-                  — Sara Chen & Angie, Co-fondatrici
+                  — HUA & ANGIE, Co-fondatrici
                 </p>
               </div>
             </div>
