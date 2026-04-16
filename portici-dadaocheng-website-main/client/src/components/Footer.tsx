@@ -76,7 +76,7 @@ export default function Footer() {
 
       <div className="container py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" data-reveal>
             <div className="flex items-center gap-3">
               <BrandMark tone="paper" className="h-16 w-auto" />
               <div className="flex flex-col leading-none">
@@ -96,7 +96,7 @@ export default function Footer() {
             </p>
           </div>
 
-          <div>
+          <div data-reveal data-reveal-delay="80">
             <p className={`${footerMono} text-[color-mix(in_srgb,var(--paper)_55%,transparent)] mb-5`}>
               {t.footer.explore}
             </p>
@@ -115,7 +115,9 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div><FooterNewsletter /></div>
+          <div data-reveal data-reveal-delay="160">
+            <FooterNewsletter />
+          </div>
         </div>
 
         <div className="mt-12 pt-6 border-t border-[color-mix(in_srgb,var(--paper)_14%,transparent)] flex flex-col md:flex-row items-center justify-between gap-3">

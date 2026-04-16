@@ -51,12 +51,13 @@ export function ArticleCard({ article }: { article: ArticlePreview }) {
 
   return (
     <article className="border border-border bg-background hover:-translate-y-1 transition-all duration-300 group/card">
-      <div className="aspect-[3/2] overflow-hidden bg-muted">
+      <div className="aspect-[3/2] overflow-hidden bg-muted" data-parallax="24">
         {imageUrl ? (
           <img
             src={imageUrl}
             alt={title}
-            className="h-full w-full object-cover"
+            className="h-[115%] w-full object-cover"
+            style={{ marginTop: "-7.5%" }}
             loading="lazy"
             decoding="async"
           />

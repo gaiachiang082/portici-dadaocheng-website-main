@@ -225,6 +225,8 @@ export default function Navigation() {
                 opacity: mounted ? 1 : 0,
                 transition: `opacity 0.5s ease 700ms, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease`,
               }}
+              data-magnetic
+              data-magnetic-strength="0.3"
             >
               {t.nav.open_magazine}
             </Link>

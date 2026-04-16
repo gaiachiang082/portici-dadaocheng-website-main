@@ -48,11 +48,24 @@ function Button({
   }) {
   const Comp = asChild ? Slot : "button";
 
+  // Opt *prominent* buttons into the global magnetic effect. We only tag
+  // `size="lg"` here — that size is reserved for hero/page-level CTAs, where
+  // magnetic draw reads as intentional. Smaller sizes, link/ghost/icon
+  // variants stay neutral to avoid noisy jitter on dense toolbars or inside
+  // form rows. Callers may still force the effect on/off via the
+  // `data-magnetic` prop on individual buttons.
+  const isMagneticEligible =
+    size === "lg" && variant !== "link" && variant !== "ghost";
+  const propsWithMagnet =
+    isMagneticEligible && (props as Record<string, unknown>)["data-magnetic"] === undefined
+      ? { "data-magnetic": "", "data-magnetic-strength": "0.3", ...props }
+      : props;
+
   return (
     <Comp
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
+      {...propsWithMagnet}
     />
   );
 }

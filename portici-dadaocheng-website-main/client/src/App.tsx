@@ -33,6 +33,8 @@ import Glossario from "./pages/Glossario";
 import GlossarioTerm from "./pages/GlossarioTerm";
 import ScrollToTopOnRouteChange from "./components/ScrollToTopOnRouteChange";
 import { CustomCursor } from "./components/CustomCursor";
+import { GlobalScrollEffects } from "./components/GlobalScrollEffects";
+import { GlobalMagneticEffects } from "./components/GlobalMagneticEffects";
 
 function LocalizedRoutes() {
   return (
@@ -95,6 +97,8 @@ function App() {
             <Router />
             <Footer />
             <CustomCursor />
+            <GlobalScrollEffects />
+            <GlobalMagneticEffects />
           </LangProviderFromLocation>
         </TooltipProvider>
       </ThemeProvider>
