@@ -12,7 +12,6 @@ export interface ArticleIndexRow {
   slug: string | null;
   it?: string | null;
   en?: string | null;
-  zh?: string | null;
 }
 
 /** Decode path segment (`%20`, `+`, Unicode escapes) without throwing on malformed sequences. */
@@ -67,7 +66,7 @@ export async function fetchArticleDetail<T>(
   const index = await client.fetch<ArticleIndexRow[]>(ARTICLE_SLUG_RESOLVE_INDEX);
   const row = index.find((r) => {
     if (r.slug && r.slug.toLowerCase() === safeSlug) return true;
-    const titles = [r.it, r.en, r.zh];
+    const titles = [r.it, r.en];
     return titles.some((t) => slugifyForArticlePath(t) === slugifyForArticlePath(safeSlug));
   });
   if (!row) {

@@ -1,27 +1,23 @@
 /**
  * GROQ for `article` documents (field-level i18n: `title` localeString, `content_it` / `content_en`, etc.).
  * No document-level `language` filter — lists are `*[_type == "article"]`.
- * Projections use `$lang`: always pass `fetch(..., { lang: 'it' | 'zh' | 'en', ... })`.
- * `content_zh` is optional in the schema; coalesce keeps zh usable before the field exists.
+ * Projections use `$lang`: always pass `fetch(..., { lang: 'it' | 'en', ... })`.
  */
 
 const localizedTitle = `
   "title": coalesce(
     select(
       $lang == "it" => title.it,
-      $lang == "en" => title.en,
-      $lang == "zh" => title.zh
+      $lang == "en" => title.en
     ),
     title.it,
-    title.en,
-    title.zh
+    title.en
   )
 `;
 
 const localizedBody = `
   "body": select(
     $lang == "en" => content_en,
-    $lang == "zh" => coalesce(content_zh, content_it),
     content_it
   )
 `;
@@ -29,7 +25,6 @@ const localizedBody = `
 const localizedExcerptPt = `
   "excerpt": pt::text(select(
     $lang == "en" => content_en,
-    $lang == "zh" => coalesce(content_zh, content_it),
     content_it
   ))
 `;
@@ -95,6 +90,5 @@ export const ARTICLE_SLUG_RESOLVE_INDEX = `*[_type == "article"]{
   _id,
   "slug": slug.current,
   "it": title.it,
-  "en": title.en,
-  "zh": title.zh
+  "en": title.en
 }`;

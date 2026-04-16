@@ -10,7 +10,7 @@ import {
 } from "@/contexts/LangContext";
 
 /** Locales shown in the nav language switcher. */
-const NAV_LANG_SWITCHER_CODES = ["it", "zh", "en"] as const satisfies readonly Lang[];
+const NAV_LANG_SWITCHER_CODES = ["it", "en"] as const satisfies readonly Lang[];
 import { useUiDict } from "@/i18n/useUiDict";
 
 const navMono =
@@ -120,11 +120,8 @@ export default function Navigation() {
       { href: "/eventi", label: t.nav.events },
       { href: "/contatti", label: t.nav.contact },
     ];
-    const zhHidden = ["/magazine", "/newsletter", "/eventi"];
     const b2bOnly = ["/servizi", "/casi-studio"];
-    return all.filter((item) =>
-      lang === "zh" ? !zhHidden.includes(item.href) : !b2bOnly.includes(item.href)
-    );
+    return all.filter((item) => !b2bOnly.includes(item.href));
   }, [t, lang]);
 
   useEffect(() => {
@@ -217,22 +214,20 @@ export default function Navigation() {
 
             <LangSwitcher isHome={isHome} scrolled={scrolled} className="hidden md:flex" />
 
-            {lang !== "zh" ? (
-              <Link
-                href={localizedHref("/magazine")}
-                className={`hidden md:inline-flex items-center justify-center px-[18px] py-2 rounded-sm border transition-colors duration-200 ${navMono} ${
-                  isHome && !scrolled
-                    ? "bg-background/90 text-foreground border-[color-mix(in_srgb,var(--ink)_18%,transparent)] hover:bg-muted"
-                    : "bg-transparent text-foreground border-foreground hover:bg-foreground hover:text-background"
-                }`}
-                style={{
-                  opacity: mounted ? 1 : 0,
-                  transition: `opacity 0.5s ease 700ms, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease`,
-                }}
-              >
-                {t.nav.open_magazine}
-              </Link>
-            ) : null}
+            <Link
+              href={localizedHref("/magazine")}
+              className={`hidden md:inline-flex items-center justify-center px-[18px] py-2 rounded-sm border transition-colors duration-200 ${navMono} ${
+                isHome && !scrolled
+                  ? "bg-background/90 text-foreground border-[color-mix(in_srgb,var(--ink)_18%,transparent)] hover:bg-muted"
+                  : "bg-transparent text-foreground border-foreground hover:bg-foreground hover:text-background"
+              }`}
+              style={{
+                opacity: mounted ? 1 : 0,
+                transition: `opacity 0.5s ease 700ms, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease`,
+              }}
+            >
+              {t.nav.open_magazine}
+            </Link>
 
             <button
               type="button"
@@ -289,18 +284,16 @@ export default function Navigation() {
               </Link>
             );
           })}
-          {lang !== "zh" ? (
-            <Link
-              href={localizedHref("/magazine")}
-              className={`mt-2 inline-flex items-center justify-center px-5 py-2.5 rounded-sm border transition-colors duration-200 self-start ${navMono} ${
-                isHome && !scrolled
-                  ? "bg-background text-foreground border-[color-mix(in_srgb,var(--ink)_18%,transparent)] hover:bg-muted"
-                  : "bg-transparent text-foreground border-foreground hover:bg-foreground hover:text-background"
-              }`}
-            >
-              {t.nav.open_magazine}
-            </Link>
-          ) : null}
+          <Link
+            href={localizedHref("/magazine")}
+            className={`mt-2 inline-flex items-center justify-center px-5 py-2.5 rounded-sm border transition-colors duration-200 self-start ${navMono} ${
+              isHome && !scrolled
+                ? "bg-background text-foreground border-[color-mix(in_srgb,var(--ink)_18%,transparent)] hover:bg-muted"
+                : "bg-transparent text-foreground border-foreground hover:bg-foreground hover:text-background"
+            }`}
+          >
+            {t.nav.open_magazine}
+          </Link>
         </div>
       </div>
     </header>

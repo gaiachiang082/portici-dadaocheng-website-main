@@ -1,6 +1,5 @@
 import { Link } from "wouter";
 import { useLang, useLocalizedHref } from "@/contexts/LangContext";
-import CasiStudioZH from "./CasiStudioZH";
 
 function CasiStudioFallback() {
   const localizedHref = useLocalizedHref();
@@ -32,8 +31,6 @@ export default function CasiStudio() {
   const lang = useLang();
 
   switch (lang) {
-    case "zh":
-      return <CasiStudioZH />;
     case "en":
       return <CasiStudioFallback />;
     default:

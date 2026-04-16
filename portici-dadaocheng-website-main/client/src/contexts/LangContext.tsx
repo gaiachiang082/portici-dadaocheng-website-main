@@ -1,16 +1,16 @@
 import { createContext, useCallback, useContext, type ReactNode } from "react";
 import { useLocation } from "wouter";
 
-export const SUPPORTED_LANGS = ["it", "zh", "en"] as const;
+export const SUPPORTED_LANGS = ["it", "en"] as const;
 export type Lang = (typeof SUPPORTED_LANGS)[number];
 
 export function isLang(value: string | undefined): value is Lang {
-  return value === "it" || value === "zh" || value === "en";
+  return value === "it" || value === "en";
 }
 
 const LANG_SEGMENT = new Set<string>(SUPPORTED_LANGS);
 
-/** Remove one or more leading `/it|zh|en` segments so we never produce `/it/it/...`. Preserves `?query`. */
+/** Remove one or more leading `/it|en` segments so we never produce `/it/it/...`. Preserves `?query`. */
 export function stripLocalePathPrefixes(path: string): string {
   const raw = path.trim();
   if (!raw || raw === "/") return "/";
@@ -32,7 +32,7 @@ export function stripLocalePathPrefixes(path: string): string {
  * Non-localized paths (e.g. `/admin`) → { lang: null, suffix: pathname }.
  */
 export function parseLocalizedPath(pathname: string): { lang: Lang | null; suffix: string } {
-  const m = pathname.match(/^\/(it|zh|en)(\/.*)?$/);
+  const m = pathname.match(/^\/(it|en)(\/.*)?$/);
   if (!m || !isLang(m[1])) return { lang: null, suffix: pathname };
   return { lang: m[1], suffix: m[2] ?? "" };
 }

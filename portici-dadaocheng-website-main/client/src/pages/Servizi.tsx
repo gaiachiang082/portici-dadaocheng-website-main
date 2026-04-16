@@ -1,6 +1,5 @@
 import { useLang, useLocalizedHref } from "@/contexts/LangContext";
 import { Link } from "wouter";
-import ServiziZH from "./ServiziZH";
 
 function ServiziFallback() {
   const localizedHref = useLocalizedHref();
@@ -32,8 +31,6 @@ export default function Servizi() {
   const lang = useLang();
 
   switch (lang) {
-    case "zh":
-      return <ServiziZH />;
     case "en":
       return <ServiziFallback />;
     default:

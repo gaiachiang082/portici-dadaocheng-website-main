@@ -4,7 +4,7 @@ import { isLang } from "@/contexts/LangContext";
 import NotFound from "@/pages/NotFound";
 
 /**
- * Nested under `/:lang` (wouter `nest`). Renders children only for supported locale codes (`it`, `zh`, `en`).
+ * Nested under `/:lang` (wouter `nest`). Renders children only for supported locale codes (`it`, `en`).
  */
 export default function LangRouteWrapper({ children }: { children: ReactNode }) {
   const params = useParams<{ lang: string }>();

@@ -1,33 +1,12 @@
 import { Link } from "wouter";
 import { useState, useEffect, useMemo } from "react";
-import { Instagram, ArrowUp, ArrowRight } from "lucide-react";
+import { Instagram, ArrowUp } from "lucide-react";
 import { BrandMark } from "@/components/BrandMark";
 import { NewsletterSubscribeForm } from "@/components/NewsletterSubscribeForm";
-import { useLang, useLocalizedHref } from "@/contexts/LangContext";
+import { useLocalizedHref } from "@/contexts/LangContext";
 import { useUiDict } from "@/i18n/useUiDict";
 
 const footerMono = "[font-family:var(--font-mono)] text-[11px] font-medium uppercase tracking-[0.1em]";
-
-function FooterB2bCta() {
-  const localizedHref = useLocalizedHref();
-  return (
-    <div className="rounded-xl border border-[color-mix(in_srgb,var(--paper)_22%,transparent)] bg-[color-mix(in_srgb,var(--paper)_6%,transparent)] p-6 md:p-7">
-      <h3 className="text-[1.25rem] text-[var(--paper)] font-medium leading-snug mb-4 [font-family:var(--font-display)]">
-        開啟你的義大利市場佈局
-      </h3>
-      <p className="text-[1.0625rem] text-[color-mix(in_srgb,var(--paper)_82%,transparent)] leading-[1.75] mb-6 [font-family:var(--font-body)]">
-        無論是初步市場探索，或是實體展會落地，我們都準備好為你的品牌量身打造專屬策略。
-      </p>
-      <Link
-        href={localizedHref("/contatti")}
-        className={`inline-flex items-center gap-2 rounded-sm bg-[var(--paper)] text-forest px-5 py-3 text-[13px] font-semibold tracking-wide hover:opacity-90 transition-opacity ${footerMono} !normal-case !tracking-normal`}
-      >
-        預約 30 分鐘免費諮詢
-        <ArrowRight size={16} aria-hidden className="shrink-0" />
-      </Link>
-    </div>
-  );
-}
 
 function FooterNewsletter() {
   const localizedHref = useLocalizedHref();
@@ -53,7 +32,6 @@ function FooterNewsletter() {
 
 export default function Footer() {
   const t = useUiDict();
-  const lang = useLang();
   const localizedHref = useLocalizedHref();
   const [showBackToTop, setShowBackToTop] = useState(false);
 
@@ -77,12 +55,9 @@ export default function Footer() {
       { href: "/eventi", label: t.nav.events },
       { href: "/contatti", label: t.nav.contact },
     ];
-    const zhHidden = ["/magazine", "/newsletter", "/eventi"];
     const b2bOnly = ["/servizi", "/casi-studio"];
-    return all.filter((item) =>
-      lang === "zh" ? !zhHidden.includes(item.href) : !b2bOnly.includes(item.href)
-    );
-  }, [t, lang]);
+    return all.filter((item) => !b2bOnly.includes(item.href));
+  }, [t]);
 
   const year = new Date().getFullYear();
 
@@ -140,7 +115,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div>{lang === "zh" ? <FooterB2bCta /> : <FooterNewsletter />}</div>
+          <div><FooterNewsletter /></div>
         </div>
 
         <div className="mt-12 pt-6 border-t border-[color-mix(in_srgb,var(--paper)_14%,transparent)] flex flex-col md:flex-row items-center justify-between gap-3">
