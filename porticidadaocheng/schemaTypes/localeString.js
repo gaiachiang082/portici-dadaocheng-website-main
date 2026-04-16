@@ -18,7 +18,6 @@ export default {
         name: 'zh',
         title: '繁體中文',
         type: 'string',
-        hidden: true,
       },
     ]
   }

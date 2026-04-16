@@ -66,6 +66,7 @@ export default {
       const locales = [];
       if (it) locales.push('IT');
       if (en) locales.push('EN');
+      if (zh) locales.push('ZH');
       return {
         title: headline,
         subtitle: locales.length ? locales.join(' · ') : undefined,
