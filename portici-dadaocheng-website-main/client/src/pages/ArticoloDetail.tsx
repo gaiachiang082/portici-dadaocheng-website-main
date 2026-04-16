@@ -125,7 +125,6 @@ export default function ArticoloDetail() {
     () => (hasBody ? extractSidenotes(article?.body ?? []) : []),
     [article?.body, hasBody],
   );
-  const hasToc = tocItems.length > 1;
 
   if (loading) {
     return (
@@ -329,8 +328,10 @@ export default function ArticoloDetail() {
           left edge. The drawer keeps chapter navigation one click away
           without cluttering the reading layout. Rendered last so it
           layers above the article but below any future top-level
-          modals. */}
-      {hasToc && <TocDrawer items={tocItems} />}
+          modals. The trigger is always mounted (even if the article
+          currently has no H2/H3) so the editorial affordance stays
+          discoverable and testable. */}
+      <TocDrawer items={tocItems} />
     </main>
   );
 }

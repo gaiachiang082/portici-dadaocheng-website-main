@@ -76,12 +76,14 @@ const DRAWER_COPY = {
     heading: "In questo articolo",
     close: "Chiudi indice",
     aria: "Indice dei capitoli",
+    empty: "Questo articolo non ha ancora titoli di sezione.",
   },
   en: {
     trigger: "Index",
     heading: "In this article",
     close: "Close index",
     aria: "Table of contents",
+    empty: "This article doesn’t have section headings yet.",
   },
 } as const;
 
@@ -95,9 +97,14 @@ export function TocDrawer({ items }: { items: TocItem[] }) {
 
   /* Scroll-spy: same logic regardless of drawer open/closed state —
      the active indicator stays fresh so opening the drawer always
-     reveals the *current* reading position. */
+     reveals the *current* reading position. Bails cleanly when the
+     article has no H2/H3, but the surrounding component still renders
+     the trigger + empty-state drawer. */
   useEffect(() => {
-    if (items.length === 0) return;
+    if (items.length === 0) {
+      setActiveId(null);
+      return;
+    }
     setActiveId((prev) =>
       prev && items.some((i) => i.id === prev) ? prev : items[0]?.id ?? null,
     );
@@ -159,7 +166,7 @@ export function TocDrawer({ items }: { items: TocItem[] }) {
     [],
   );
 
-  if (items.length === 0) return null;
+  const isEmpty = items.length === 0;
 
   return (
     <>
@@ -268,8 +275,18 @@ export function TocDrawer({ items }: { items: TocItem[] }) {
                 aria-label={copy.aria}
                 className="flex-1 overflow-y-auto px-6 py-6"
               >
-                <ul className="relative border-l border-border/50">
-                  {items.map((item) => {
+                {isEmpty ? (
+                  <p
+                    className="text-sm italic text-muted-foreground leading-relaxed"
+                    style={{
+                      fontFamily: "'Source Serif 4', Georgia, serif",
+                    }}
+                  >
+                    {copy.empty}
+                  </p>
+                ) : (
+                  <ul className="relative border-l border-border/50">
+                    {items.map((item) => {
                     const isActive = item.id === activeId;
                     return (
                       <li key={item.id}>
@@ -290,10 +307,11 @@ export function TocDrawer({ items }: { items: TocItem[] }) {
                         >
                           {item.text}
                         </a>
-                      </li>
-                    );
-                  })}
-                </ul>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
               </nav>
             </motion.aside>
           </motion.div>

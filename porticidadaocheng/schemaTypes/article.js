@@ -35,13 +35,23 @@ export default {
       name: 'content_it',
       title: 'Content (義大利文內容)',
       type: 'array',
-      of: [{ type: 'block' }, { type: 'image' }],
+      of: [
+        { type: 'block' },
+        { type: 'image' },
+        { type: 'pullQuote' },
+        { type: 'sidenote' },
+      ],
     },
     {
       name: 'content_en',
       title: 'Content (英文內容)',
       type: 'array',
-      of: [{ type: 'block' }, { type: 'image' }],
+      of: [
+        { type: 'block' },
+        { type: 'image' },
+        { type: 'pullQuote' },
+        { type: 'sidenote' },
+      ],
     },
   ],
   preview: {
