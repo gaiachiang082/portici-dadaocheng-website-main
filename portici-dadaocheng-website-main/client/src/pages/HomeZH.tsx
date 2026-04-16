@@ -4,6 +4,7 @@ import { Link } from "wouter";
 import { useLang, useLocalizedHref } from "@/contexts/LangContext";
 import { ArticleCard, ArticleCardSkeleton, type ArticlePreview } from "@/components/ArticlePreviewCard";
 import { ARTICLES_LATEST_THREE_QUERY } from "@/sanity/articleQueries";
+import { SmoothImage } from "@/components/SmoothImage";
 import heroImage from "@/assets/images/hero_zh_54_bologna.png";
 import iconInsights from "@/assets/images/zh_service_1_insights.png";
 import iconTradeShow from "@/assets/images/zh_service_2_tradeshow.png";
@@ -58,9 +59,14 @@ function HeroSection() {
 
           <div className="border border-border bg-[var(--paper-warm)] p-6 md:p-8">
             <div className="aspect-[5/4] w-full">
-              <img
+              <SmoothImage
                 src={heroImage}
                 alt="台灣顧問與義大利買家於波隆納 Due Torri 露台握手簽約"
+                loading="eager"
+                fetchPriority="high"
+                decoding="sync"
+                width={1200}
+                height={960}
                 className="w-full h-full object-cover rounded-sm border border-border"
               />
             </div>

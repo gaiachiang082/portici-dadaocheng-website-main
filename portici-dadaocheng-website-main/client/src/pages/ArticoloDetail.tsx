@@ -158,7 +158,11 @@ export default function ArticoloDetail() {
               src={heroBgUrl}
               alt=""
               aria-hidden
-              decoding="async"
+              loading="eager"
+              fetchPriority="high"
+              decoding="sync"
+              width={1600}
+              height={900}
               className="absolute inset-0 -z-20 h-full w-full object-cover"
             />
             <div
