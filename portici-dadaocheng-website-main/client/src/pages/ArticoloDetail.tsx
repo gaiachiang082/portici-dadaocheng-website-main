@@ -9,6 +9,12 @@ import { fetchArticleDetail, normalizeArticleRouteParam } from "@/sanity/article
 import { useUiDict } from "@/i18n/useUiDict";
 import { ArticleIllustration } from "@/components/ArticleIllustration";
 import { SmoothImage } from "@/components/SmoothImage";
+import {
+  portableTextComponents,
+  extractSidenotes,
+  Sidenote,
+} from "@/components/PortableTextComponents";
+import { TocDrawer, extractToc } from "@/components/ArticleToc";
 
 /** Shape of article detail fetch (GROQ projections in `articleQueries.ts`). */
 interface ArticleDetail {
@@ -145,13 +151,31 @@ export default function ArticoloDetail() {
 
   const heroBgUrl = article.mainImage?.asset?.url;
   const hasBody = Array.isArray(article.body) && article.body.length > 0;
+  /**
+   * Derive side-channel content once per body change:
+   *   - tocItems feed the floating TOC drawer (`TocDrawer`), kept out
+   *     of the visible layout so the right gutter stays reserved for
+   *     marginalia.
+   *   - sidenoteItems mirror inline sidenote blocks into the xl+
+   *     right gutter — same source of truth in the CMS, two render
+   *     contexts (see `PortableTextComponents.tsx`).
+   */
+  const tocItems = useMemo(
+    () => (hasBody ? extractToc(article.body ?? []) : []),
+    [article.body, hasBody],
+  );
+  const sidenoteItems = useMemo(
+    () => (hasBody ? extractSidenotes(article.body ?? []) : []),
+    [article.body, hasBody],
+  );
+  const hasToc = tocItems.length > 1;
 
   return (
     <main>
       {/* Hero — cover image layered behind the content, not a full-bleed
           standalone block. The `bg-forest` of the section is the soft
           earth-tone placeholder visible while the image loads. */}
-      <section className="relative pt-32 pb-16 md:pt-40 md:pb-24 bg-forest overflow-hidden isolate">
+      <section className="relative pt-32 pb-20 md:pt-40 md:pb-32 bg-forest overflow-hidden isolate">
         {heroBgUrl && (
           <>
             <SmoothImage
@@ -193,7 +217,7 @@ export default function ArticoloDetail() {
             </span>
           )}
           <h1
-            className="font-medium text-on-ink mb-6"
+            className="font-medium text-on-ink mb-8"
             style={{
               fontFamily: "var(--font-display)",
               fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
@@ -207,18 +231,54 @@ export default function ArticoloDetail() {
         </div>
       </section>
 
-      {/* Body content — single centered column; the hand-drawn illustration
-          sits above the prose as a "chapter plate", letting the reader
-          settle into the piece before the text begins. */}
-      <section className="py-16 bg-background">
-        <div className="container max-w-2xl mx-auto">
-          {/* Chapter-plate illustration: centered above the body on every
-              breakpoint. Graceful-degrades away if the asset is missing. */}
+      {/* Body content — a viewport-centered reading column with a
+          dedicated right gutter on xl+ for marginalia (illustration +
+          sidenotes). The gutter is absolutely positioned so the prose
+          column stays exactly viewport-centered: this preserves the
+          symmetry of pullQuote breakouts. Chapter navigation lives in
+          a floating TOC drawer (see `TocDrawer` below) instead of a
+          third column — the layout stays calm and uncluttered.
+
+          The section clips horizontally so the w-screen pullQuote can
+          never spawn a scrollbar. */}
+      <section className="relative py-20 md:py-24 bg-background overflow-x-clip">
+        <div className="container max-w-2xl mx-auto relative">
+          {/* Right gutter (xl+). Absolute so it does not push the prose
+              off centre. Sidenotes inside the PT body carry `xl:hidden`
+              on their inline render so we never duplicate visually —
+              only the gutter copy is shown at this breakpoint. */}
+          <aside
+            aria-label="Marginalia"
+            className="hidden xl:block absolute top-0 left-full ml-8 w-60"
+          >
+            <div className="space-y-12 pt-2">
+              <ArticleIllustration
+                slug={canonicalSegment}
+                title={article.title ?? undefined}
+                parallax={0}
+                className="flex justify-start w-full"
+                imgClassName="w-full max-w-[11rem] rotate-[-2deg]"
+              />
+              {sidenoteItems.map((sn) => (
+                <Sidenote
+                  key={sn.key}
+                  label={sn.label}
+                  variant="gutter"
+                >
+                  {sn.body}
+                </Sidenote>
+              ))}
+            </div>
+          </aside>
+
+          {/* Mobile / tablet chapter-plate illustration: centered
+              above the body. Hidden on xl where the gutter hosts it
+              instead. Graceful-degrades away if the asset is missing. */}
           <ArticleIllustration
             slug={canonicalSegment}
             title={article.title ?? undefined}
             parallax={30}
-            className="flex justify-center w-full mt-2 mb-12 md:mb-16"
+            className="xl:hidden flex justify-center w-full mt-6 md:mt-10 mb-14 md:mb-20"
             imgClassName="w-[clamp(160px,25vw,280px)] rotate-[-2deg]"
           />
 
@@ -230,11 +290,29 @@ export default function ArticoloDetail() {
               prose-strong:text-foreground
               prose-blockquote:border-editorial-mark prose-blockquote:border-l-2 prose-blockquote:italic prose-blockquote:text-muted-foreground
               prose-hr:border-border
-              prose-img:rounded-xl prose-img:shadow-sm"
+              prose-img:rounded-xl prose-img:shadow-sm
+              prose-p:first-of-type:text-xl md:prose-p:first-of-type:text-2xl
+              prose-p:first-of-type:italic
+              prose-p:first-of-type:leading-[1.55]
+              prose-p:first-of-type:text-foreground/90
+              prose-p:first-of-type:mb-10
+              prose-p:first-of-type:first-letter:float-left
+              prose-p:first-of-type:first-letter:mr-3
+              prose-p:first-of-type:first-letter:mt-2
+              prose-p:first-of-type:first-letter:text-6xl
+              md:prose-p:first-of-type:first-letter:text-7xl
+              prose-p:first-of-type:first-letter:font-bold
+              prose-p:first-of-type:first-letter:not-italic
+              prose-p:first-of-type:first-letter:leading-[0.85]
+              prose-p:first-of-type:first-letter:text-editorial-mark
+              prose-p:first-of-type:first-letter:font-[family-name:var(--font-display)]"
             style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}
           >
             {hasBody ? (
-              <PortableText value={article.body as PortableTextBlock[]} />
+              <PortableText
+                value={article.body as PortableTextBlock[]}
+                components={portableTextComponents}
+              />
             ) : article.excerpt ? (
               <p className="text-muted-foreground leading-[1.85]">{article.excerpt}</p>
             ) : (
@@ -247,6 +325,13 @@ export default function ArticoloDetail() {
           </article>
         </div>
       </section>
+
+      {/* Floating TOC drawer — a minimal earth-tone pill pinned to the
+          left edge. The drawer keeps chapter navigation one click away
+          without cluttering the reading layout. Rendered last so it
+          layers above the article but below any future top-level
+          modals. */}
+      {hasToc && <TocDrawer items={tocItems} />}
     </main>
   );
 }
