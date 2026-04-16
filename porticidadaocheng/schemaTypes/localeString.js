@@ -14,11 +14,6 @@ export default {
         title: 'English (英文)',
         type: 'string',
       },
-      {
-        name: 'zh',
-        title: '繁體中文',
-        type: 'string',
-      },
     ]
   }
   

@@ -8,7 +8,7 @@ export default {
       name: 'title',
       title: 'Title (文章標題)',
       type: 'localeString',
-      description: '義大利文、英文、繁體中文標題可視需要填寫；前台依網站語系讀取對應欄位。',
+      description: '義大利文、英文標題可視需要填寫；前台依網站語系讀取對應欄位。',
     },
     {
       name: 'slug',
@@ -18,7 +18,7 @@ export default {
         source: (doc) => {
           const t = doc?.title;
           if (!t || typeof t !== 'object') return 'untitled';
-          return t.it || t.en || t.zh || 'untitled';
+          return t.it || t.en || 'untitled';
         },
         maxLength: 96,
       },
@@ -43,12 +43,6 @@ export default {
       type: 'array',
       of: [{ type: 'block' }, { type: 'image' }],
     },
-    {
-      name: 'content_zh',
-      title: 'Content (繁體中文)',
-      type: 'array',
-      of: [{ type: 'block' }, { type: 'image' }],
-    },
   ],
   preview: {
     select: {
@@ -61,12 +55,10 @@ export default {
         title && typeof title === 'object' && !Array.isArray(title) ? title : {};
       const it = typeof loc.it === 'string' ? loc.it.trim() : '';
       const en = typeof loc.en === 'string' ? loc.en.trim() : '';
-      const zh = typeof loc.zh === 'string' ? loc.zh.trim() : '';
-      const headline = it || en || zh || 'Untitled';
+      const headline = it || en || 'Untitled';
       const locales = [];
       if (it) locales.push('IT');
       if (en) locales.push('EN');
-      if (zh) locales.push('ZH');
       return {
         title: headline,
         subtitle: locales.length ? locales.join(' · ') : undefined,
