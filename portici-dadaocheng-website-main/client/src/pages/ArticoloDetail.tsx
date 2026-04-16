@@ -107,6 +107,26 @@ export default function ArticoloDetail() {
 
   useJsonLd("jsonld-article-detail", articleJsonLd);
 
+  /*
+   * IMPORTANT — Hooks must run on every render in a fixed order. The
+   * loading / error branches below early-return, so every hook used
+   * by the success branch lives above them. `useMemo` callbacks are
+   * null-safe: when `article` is still null, `hasBody` is false and
+   * the extractors short-circuit to `[]`.
+   */
+  const heroBgUrl = article?.mainImage?.asset?.url;
+  const hasBody =
+    Array.isArray(article?.body) && (article?.body?.length ?? 0) > 0;
+  const tocItems = useMemo(
+    () => (hasBody ? extractToc(article?.body ?? []) : []),
+    [article?.body, hasBody],
+  );
+  const sidenoteItems = useMemo(
+    () => (hasBody ? extractSidenotes(article?.body ?? []) : []),
+    [article?.body, hasBody],
+  );
+  const hasToc = tocItems.length > 1;
+
   if (loading) {
     return (
       <main>
@@ -148,27 +168,6 @@ export default function ArticoloDetail() {
       </main>
     );
   }
-
-  const heroBgUrl = article.mainImage?.asset?.url;
-  const hasBody = Array.isArray(article.body) && article.body.length > 0;
-  /**
-   * Derive side-channel content once per body change:
-   *   - tocItems feed the floating TOC drawer (`TocDrawer`), kept out
-   *     of the visible layout so the right gutter stays reserved for
-   *     marginalia.
-   *   - sidenoteItems mirror inline sidenote blocks into the xl+
-   *     right gutter — same source of truth in the CMS, two render
-   *     contexts (see `PortableTextComponents.tsx`).
-   */
-  const tocItems = useMemo(
-    () => (hasBody ? extractToc(article.body ?? []) : []),
-    [article.body, hasBody],
-  );
-  const sidenoteItems = useMemo(
-    () => (hasBody ? extractSidenotes(article.body ?? []) : []),
-    [article.body, hasBody],
-  );
-  const hasToc = tocItems.length > 1;
 
   return (
     <main>
