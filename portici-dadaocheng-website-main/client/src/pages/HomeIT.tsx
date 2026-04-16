@@ -6,6 +6,7 @@ import { BrandMark } from "@/components/BrandMark";
 import { NewsletterSubscribeForm } from "@/components/NewsletterSubscribeForm";
 import { useLang, useLocalizedHref } from "@/contexts/LangContext";
 import { ArticleCard, ArticleCardSkeleton, type ArticlePreview } from "@/components/ArticlePreviewCard";
+import { MagneticButton } from "@/components/MagneticButton";
 import { formatIssueMeta, getCurrentIssue } from "@/data/magazineIssues";
 import { ARTICLES_LATEST_THREE_QUERY } from "@/sanity/articleQueries";
 import { client } from "../SanityClient";
@@ -93,26 +94,30 @@ function HomeHero() {
               role="group"
               aria-label="Ingressi principali"
             >
-              <Link
-                href={localizedHref("/magazine")}
-                className="group inline-flex flex-col gap-1 w-fit focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground"
-                style={{ fontFamily: "var(--font-ui)" }}
-              >
-                <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Letture</span>
-                <span className="text-[17px] font-medium text-foreground border-b border-foreground/25 pb-0.5 group-hover:border-foreground transition-colors">
-                  Magazine
-                </span>
-              </Link>
-              <Link
-                href={localizedHref("/newsletter")}
-                className="group inline-flex flex-col gap-1 w-fit focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground"
-                style={{ fontFamily: "var(--font-ui)" }}
-              >
-                <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Note dalla redazione</span>
-                <span className="text-[17px] font-medium text-foreground border-b border-foreground/25 pb-0.5 group-hover:border-foreground transition-colors">
-                  Newsletter
-                </span>
-              </Link>
+              <MagneticButton>
+                <Link
+                  href={localizedHref("/magazine")}
+                  className="group inline-flex flex-col gap-1 w-fit focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground"
+                  style={{ fontFamily: "var(--font-ui)" }}
+                >
+                  <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Letture</span>
+                  <span className="text-[17px] font-medium text-foreground border-b border-foreground/25 pb-0.5 group-hover:border-foreground transition-colors">
+                    Magazine
+                  </span>
+                </Link>
+              </MagneticButton>
+              <MagneticButton>
+                <Link
+                  href={localizedHref("/newsletter")}
+                  className="group inline-flex flex-col gap-1 w-fit focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground"
+                  style={{ fontFamily: "var(--font-ui)" }}
+                >
+                  <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Note dalla redazione</span>
+                  <span className="text-[17px] font-medium text-foreground border-b border-foreground/25 pb-0.5 group-hover:border-foreground transition-colors">
+                    Newsletter
+                  </span>
+                </Link>
+              </MagneticButton>
             </div>
 
             <nav

@@ -32,6 +32,7 @@ import Dadaocheng from "./pages/Dadaocheng";
 import Glossario from "./pages/Glossario";
 import GlossarioTerm from "./pages/GlossarioTerm";
 import ScrollToTopOnRouteChange from "./components/ScrollToTopOnRouteChange";
+import { CustomCursor } from "./components/CustomCursor";
 
 function LocalizedRoutes() {
   return (
@@ -93,6 +94,7 @@ function App() {
             <ScrollToTopOnRouteChange />
             <Router />
             <Footer />
+            <CustomCursor />
           </LangProviderFromLocation>
         </TooltipProvider>
       </ThemeProvider>

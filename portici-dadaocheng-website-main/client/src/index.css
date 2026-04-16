@@ -429,6 +429,31 @@ html.dark body::before {
   input[type="radio"]:not(:disabled) {
     @apply cursor-pointer;
   }
+
+  /* ── Custom cursor ──────────────────────────────────────────────
+     Mounted by <CustomCursor /> in App.tsx.
+     When active we hide the native cursor globally and let the dot do the work.
+     Text inputs keep a text-caret affordance so typing stays legible.
+  ───────────────────────────────────────────────────────────────── */
+  html.custom-cursor-active,
+  html.custom-cursor-active body,
+  html.custom-cursor-active *:not(input):not(textarea):not([contenteditable="true"]) {
+    cursor: none !important;
+  }
+
+  html.custom-cursor-active input,
+  html.custom-cursor-active textarea,
+  html.custom-cursor-active [contenteditable="true"] {
+    cursor: text !important;
+  }
+
+  @media (pointer: coarse) {
+    html.custom-cursor-active,
+    html.custom-cursor-active body,
+    html.custom-cursor-active * {
+      cursor: auto !important;
+    }
+  }
 }
 
 /* ─── Component patterns ────────────────────────────────────────────── */
