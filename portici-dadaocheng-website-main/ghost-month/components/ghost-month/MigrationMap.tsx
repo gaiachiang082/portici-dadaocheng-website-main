@@ -9,6 +9,7 @@ import {
   routePath,
   type MigrationPoint,
 } from "@/lib/ghost-month/map-data";
+import { ghostMonthAsset } from "@/lib/paths";
 
 function MapPoint({
   point,
@@ -165,7 +166,7 @@ export function MigrationMap() {
             >
               {/* Base map illustration */}
               <image
-                href="/ghost-month/images/migration-map.jpg"
+                href={ghostMonthAsset("/images/migration-map.jpg")}
                 x={MAP_IMAGE_BOUNDS.x}
                 y={MAP_IMAGE_BOUNDS.y}
                 width={MAP_IMAGE_BOUNDS.width}

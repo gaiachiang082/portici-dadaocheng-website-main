@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { ghostMonthAsset } from "@/lib/paths";
 import { motion } from "framer-motion";
 
 type PortalArcProps = {
@@ -31,7 +32,7 @@ export function PortalArc({ isLit }: PortalArcProps) {
       }
     >
       <Image
-        src="/images/ghost-gate.png"
+        src={ghostMonthAsset("/images/ghost-gate.png")}
         alt=""
         fill
         priority

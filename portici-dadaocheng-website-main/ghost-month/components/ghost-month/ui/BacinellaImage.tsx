@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { ghostMonthAsset } from "@/lib/paths";
 import { useState } from "react";
 
 export function BacinellaImage() {
@@ -24,7 +25,7 @@ export function BacinellaImage() {
   return (
     <div className="relative aspect-[3/4] w-full overflow-hidden border border-red-ritual shadow-[0_0_24px_var(--red-glow)]">
       <Image
-        src="/images/bacinella.jpg"
+        src={ghostMonthAsset("/images/bacinella.jpg")}
         alt="Bacinella e asciugamano — illustrazione dalla rivista"
         fill
         className="object-cover"

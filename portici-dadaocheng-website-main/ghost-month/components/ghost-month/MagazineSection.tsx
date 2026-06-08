@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { ghostMonthAsset } from "@/lib/paths";
 
 const contents = [
   "Soglia — L'acqua, l'asciugamano e la zuppa a metà cottura",
@@ -24,7 +25,7 @@ export function MagazineSection() {
         >
           <div className="group relative mx-auto aspect-[3/4] max-w-sm overflow-hidden border border-red-ritual transition-[transform,box-shadow] duration-[400ms] hover:scale-[1.02] hover:shadow-[0_0_24px_var(--red-glow)]">
             <Image
-              src="/images/cover.png"
+              src={ghostMonthAsset("/images/cover.png")}
               alt="Portici DaDaocheng N°2 — Il Mese dell'Ospitalità Invisibile"
               fill
               className="object-cover"
