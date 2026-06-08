@@ -1,17 +1,17 @@
 import { z } from "zod";
 import { eq } from "drizzle-orm";
-import { MAGAZINE_ISSUE_1_SOURCE } from "@shared/const";
+import { MAGAZINE_ISSUE_2_SOURCE } from "@shared/const";
 import { getDb } from "../db";
 import { newsletterSubscribers } from "../../drizzle/schema";
 import { publicProcedure, router } from "../_core/trpc";
 import {
-  sendMagazineIssue1Delivery,
+  sendMagazineIssue2Delivery,
   sendNewsletterWelcomeEmail,
-  sendNewsletterWelcomeWithMagazineIssue1,
+  sendNewsletterWelcomeWithMagazineIssue2,
 } from "../email/resend";
 
-function isMagazineIssue1Subscribe(source?: string) {
-  return source === MAGAZINE_ISSUE_1_SOURCE;
+function isMagazineCurrentIssueSubscribe(source?: string) {
+  return source === MAGAZINE_ISSUE_2_SOURCE;
 }
 
 /** Log-friendly; keeps domain for debugging deliverability. */
@@ -36,7 +36,7 @@ export const newsletterRouter = router({
       const db = await getDb();
       if (!db) throw new Error("Database not available");
 
-      const magazineIssue1 = isMagazineIssue1Subscribe(input.source);
+      const magazineCurrentIssue = isMagazineCurrentIssueSubscribe(input.source);
       /** Set when an outbound email was attempted; false = Resend returned failure or key missing. */
       let emailSent: boolean | undefined;
 
@@ -48,11 +48,10 @@ export const newsletterRouter = router({
 
       if (existing) {
         if (existing.isActive) {
-          if (magazineIssue1) {
-            // Await so send finishes in this request, `emailSent` is accurate, and DB `welcomeSentAt` stays in sync
-            emailSent = await sendMagazineIssue1Delivery(input.email, input.name, { repeatDelivery: true });
+          if (magazineCurrentIssue) {
+            emailSent = await sendMagazineIssue2Delivery(input.email, input.name, { repeatDelivery: true });
             if (!emailSent) {
-              console.error("[Newsletter] sendMagazineIssue1Delivery failed after subscribe", {
+              console.error("[Newsletter] sendMagazineIssue2Delivery failed after subscribe", {
                 hint: logEmailHint(input.email),
                 source: input.source,
                 branch: "already_active",
@@ -70,15 +69,15 @@ export const newsletterRouter = router({
             language: input.language,
           })
           .where(eq(newsletterSubscribers.id, existing.id));
-        if (magazineIssue1) {
-          emailSent = await sendNewsletterWelcomeWithMagazineIssue1(input.email, input.name);
+        if (magazineCurrentIssue) {
+          emailSent = await sendNewsletterWelcomeWithMagazineIssue2(input.email, input.name);
           if (emailSent) {
             await db
               .update(newsletterSubscribers)
               .set({ welcomeSentAt: new Date() })
               .where(eq(newsletterSubscribers.email, input.email));
           } else {
-            console.error("[Newsletter] sendNewsletterWelcomeWithMagazineIssue1 failed after reactivate", {
+            console.error("[Newsletter] sendNewsletterWelcomeWithMagazineIssue2 failed after reactivate", {
               hint: logEmailHint(input.email),
               source: input.source,
               branch: "reactivate",
@@ -111,15 +110,15 @@ export const newsletterRouter = router({
         isActive: true,
       });
 
-      if (magazineIssue1) {
-        emailSent = await sendNewsletterWelcomeWithMagazineIssue1(input.email, input.name);
+      if (magazineCurrentIssue) {
+        emailSent = await sendNewsletterWelcomeWithMagazineIssue2(input.email, input.name);
         if (emailSent) {
           await db
             .update(newsletterSubscribers)
             .set({ welcomeSentAt: new Date() })
             .where(eq(newsletterSubscribers.email, input.email));
         } else {
-          console.error("[Newsletter] sendNewsletterWelcomeWithMagazineIssue1 failed after insert", {
+          console.error("[Newsletter] sendNewsletterWelcomeWithMagazineIssue2 failed after insert", {
             hint: logEmailHint(input.email),
             source: input.source,
             branch: "new_magazine",

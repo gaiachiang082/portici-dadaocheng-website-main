@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { Link } from "wouter";
 import { ArrowRight } from "lucide-react";
-import { MAGAZINE_ISSUE_1_SOURCE } from "@shared/const";
+import { MAGAZINE_ISSUE_2_SOURCE } from "@shared/const";
 import { PageHeader } from "@/components/PageHeader";
 import { NewsletterSubscribeForm } from "@/components/NewsletterSubscribeForm";
 import { useLang, useLocalizedHref, wouterHrefToPublicPath } from "@/contexts/LangContext";
@@ -278,13 +278,27 @@ export default function Magazine() {
                   <p key={i}>{p}</p>
                 ))}
               </div>
+              {current.landingHref ? (
+                <div className="space-y-3 pt-1">
+                  <a
+                    href={current.landingHref}
+                    className="inline-flex items-center justify-center gap-2 rounded-sm bg-[var(--riso-red)] px-5 py-3.5 text-[var(--paper)] text-[13px] font-medium uppercase tracking-[0.08em] [font-family:var(--font-mono)] hover:opacity-90 transition-opacity w-fit"
+                  >
+                    {m.enterExperience}
+                    <ArrowRight size={16} strokeWidth={1.75} aria-hidden />
+                  </a>
+                  <p className="text-[13px] text-muted-foreground/80 leading-relaxed [font-family:var(--font-body)] max-w-[min(100%,72ch)]">
+                    {m.enterExperienceNote}
+                  </p>
+                </div>
+              ) : null}
               <div className="space-y-6 lg:space-y-7 pt-1 border-t border-border/35" role="group" aria-label={m.receiveCurrentAria}>
                 <p className="text-[14px] text-muted-foreground/90 leading-[1.7] [font-family:var(--font-body)] max-w-[min(100%,72ch)]">
                   {m.pdfByEmailLead}
                 </p>
                 <div className="w-full min-w-0 max-w-[min(100%,72ch)]">
                   <NewsletterSubscribeForm
-                    source={MAGAZINE_ISSUE_1_SOURCE}
+                    source={MAGAZINE_ISSUE_2_SOURCE}
                     variant="home"
                     showUnsubscribeHint
                     editorialSubmitButton

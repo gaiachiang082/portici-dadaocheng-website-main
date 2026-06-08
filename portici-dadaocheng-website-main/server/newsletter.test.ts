@@ -11,6 +11,8 @@ vi.mock("./email/resend", () => ({
   sendNewsletterWelcomeEmail: vi.fn().mockResolvedValue(true),
   sendNewsletterWelcomeWithMagazineIssue1: vi.fn().mockResolvedValue(true),
   sendMagazineIssue1Delivery: vi.fn().mockResolvedValue(true),
+  sendNewsletterWelcomeWithMagazineIssue2: vi.fn().mockResolvedValue(true),
+  sendMagazineIssue2Delivery: vi.fn().mockResolvedValue(true),
 }));
 
 import { getDb } from "./db";

@@ -243,10 +243,7 @@ function HomeEntryPanels() {
       </h2>
       <div className="container max-w-6xl mx-auto px-6 md:px-10">
         <MotionReveal className="grid md:grid-cols-2 gap-0 md:gap-px bg-border/40 border border-border/50">
-          <Link
-            href={localizedHref("/magazine")}
-            className="group block bg-background p-8 md:p-10 min-h-[280px] md:min-h-[320px] flex flex-col justify-between focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-foreground transition-colors hover:bg-[var(--paper-warm)]/50"
-          >
+          <div className="group block bg-background p-8 md:p-10 min-h-[280px] md:min-h-[320px] flex flex-col justify-between">
             <div>
               <p
                 className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-4"
@@ -273,14 +270,27 @@ function HomeEntryPanels() {
                 ) : null}
               </p>
             </div>
-            <p
-              className="mt-8 text-[13px] uppercase tracking-[0.14em] text-foreground group-hover:translate-x-0.5 transition-transform inline-flex items-center gap-2"
-              style={{ fontFamily: "var(--font-ui)" }}
-            >
-              Open the Magazine
-              <ArrowRight size={14} strokeWidth={1.75} className="opacity-70" aria-hidden />
-            </p>
-          </Link>
+            <div className="mt-8 flex flex-col gap-3">
+              {currentIssue.landingHref ? (
+                <a
+                  href={currentIssue.landingHref}
+                  className="text-[13px] uppercase tracking-[0.14em] text-[var(--riso-red)] hover:opacity-80 transition-opacity inline-flex items-center gap-2 w-fit"
+                  style={{ fontFamily: "var(--font-ui)" }}
+                >
+                  Enter the Vol.2 experience
+                  <ArrowRight size={14} strokeWidth={1.75} className="opacity-70" aria-hidden />
+                </a>
+              ) : null}
+              <Link
+                href={localizedHref("/magazine")}
+                className="text-[13px] uppercase tracking-[0.14em] text-foreground hover:translate-x-0.5 transition-transform inline-flex items-center gap-2 w-fit"
+                style={{ fontFamily: "var(--font-ui)" }}
+              >
+                Open the Magazine
+                <ArrowRight size={14} strokeWidth={1.75} className="opacity-70" aria-hidden />
+              </Link>
+            </div>
+          </div>
 
           <Link
             href={localizedHref("/eventi")}
