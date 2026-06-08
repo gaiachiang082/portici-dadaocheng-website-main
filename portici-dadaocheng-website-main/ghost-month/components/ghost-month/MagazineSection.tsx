@@ -66,9 +66,7 @@ export function MagazineSection() {
           </ul>
 
           <a
-            href="/ghost-month/pdf/vol2.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/it/magazine"
             className="mt-8 inline-block bg-red-ritual px-9 py-3.5 font-label text-xs font-light uppercase tracking-[0.2em] text-ink transition-opacity hover:opacity-85"
           >
             Leggi il numero completo →
