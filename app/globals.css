@@ -1,26 +1,207 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-dark: #0d0a07;
+  --bg-medium: #1a1208;
+  --ink: #f5efe6;
+  --ink-secondary: #c8b89a;
+  --red-ritual: #b5402a;
+  --red-glow: rgba(181, 64, 42, 0.3);
+  --gold-incense: #d4a853;
+  --gold-dim: rgba(212, 168, 83, 0.15);
+  --water-dark: #0a1520;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg-dark: var(--bg-dark);
+  --color-bg-medium: var(--bg-medium);
+  --color-ink: var(--ink);
+  --color-ink-secondary: var(--ink-secondary);
+  --color-red-ritual: var(--red-ritual);
+  --color-red-glow: var(--red-glow);
+  --color-gold-incense: var(--gold-incense);
+  --color-gold-dim: var(--gold-dim);
+  --color-water-dark: var(--water-dark);
+  --font-display: var(--font-im-fell), serif;
+  --font-body: var(--font-cormorant), serif;
+  --font-chinese: var(--font-noto-tc), serif;
+  --font-label: var(--font-montserrat), sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg-dark);
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+
+/* Paper-burned noise overlay */
+.noise-overlay::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@keyframes incense-smoke {
+  0% {
+    stroke-dashoffset: 200;
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.3;
+  }
+}
+
+.incense-smoke-path {
+  animation: incense-smoke 8s ease-in-out infinite;
+}
+
+@keyframes cta-pulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.cta-pulse {
+  animation: cta-pulse 3s ease-in-out infinite;
+}
+
+.entra-link {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='32' viewBox='0 0 24 32'%3E%3Cellipse cx='12' cy='26' rx='6' ry='4' fill='%23d4a853' opacity='0.6'/%3E%3Cpath d='M12 26 C8 18 6 10 12 4 C18 10 16 18 12 26Z' fill='%23b5402a'/%3E%3Cpath d='M12 26 C10 20 11 14 12 8 C13 14 14 20 12 26Z' fill='%23d4a853'/%3E%3C/svg%3E")
+      12 28,
+    pointer;
+}
+
+.border-ritual {
+  border: 1px solid color-mix(in srgb, var(--ink-secondary) 30%, transparent);
+}
+
+@keyframes map-point-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+.map-point-pulse {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: map-point-pulse 2s ease-in-out infinite;
+}
+
+@keyframes water-wave {
+  0%,
+  100% {
+    transform: translateX(-20px);
+  }
+  50% {
+    transform: translateX(20px);
+  }
+}
+
+.water-wave {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.water-wave-1 {
+  animation: water-wave 6s ease-in-out infinite;
+}
+
+.water-wave-2 {
+  animation: water-wave 7.5s ease-in-out infinite 1s;
+}
+
+.water-wave-3 {
+  animation: water-wave 9s ease-in-out infinite 2s;
+}
+
+@keyframes lantern-flame-flicker {
+  0%,
+  100% {
+    transform: scale(0.8);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+.lantern-flame {
+  transform-origin: center bottom;
+  animation: lantern-flame-flicker 1.5s ease-in-out infinite;
+}
+
+@keyframes floating-lantern-drift {
+  0% {
+    transform: translateX(var(--lantern-start-x, -40vw));
+    opacity: 0.85;
+  }
+  10% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(calc(var(--lantern-start-x, -40vw) + 120vw));
+    opacity: 0;
+  }
+}
+
+.floating-lantern {
+  animation: floating-lantern-drift var(--lantern-duration, 30s) linear
+    var(--lantern-delay, 0s) infinite;
+}
+
+@keyframes preloader-smoke {
+  0% {
+    stroke-dashoffset: 40;
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.35;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.2;
+  }
+}
+
+.preloader-smoke-path {
+  animation: preloader-smoke 4s ease-in-out infinite;
+}
+
+@keyframes preloader-progress {
+  from {
+    width: 0;
+  }
+  to {
+    width: 120px;
+  }
+}
+
+.preloader-progress {
+  animation: preloader-progress 1.8s ease-in-out forwards;
 }
