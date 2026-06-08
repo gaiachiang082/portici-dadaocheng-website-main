@@ -73,7 +73,7 @@ export function MagazineSection() {
           </a>
 
           <a
-            href="/newsletter"
+            href="/it/newsletter"
             className="mt-4 block font-label text-[10px] font-extralight tracking-[0.2em] text-ink-secondary transition-colors hover:text-gold-incense"
           >
             Iscriviti per ricevere il Vol.3 ↓

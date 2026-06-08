@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
-import { useLocalizedHref } from "@/contexts/LangContext";
+import { useLang, useLocalizedHref, wouterHrefToPublicPath } from "@/contexts/LangContext";
 
 /** Standardized across footer, home teaser, and /newsletter page. */
 export const NEWSLETTER_SUCCESS_TITLE = "Indirizzo registrato.";
@@ -90,7 +91,10 @@ export function NewsletterSubscribeForm({
   quietSuccess = false,
   omitAuxiliaryNewsletterLinks = false,
 }: NewsletterSubscribeFormProps) {
+  const lang = useLang();
   const localizedHref = useLocalizedHref();
+  const newsletterHref = localizedHref("/newsletter");
+  const newsletterPublicPath = wouterHrefToPublicPath(newsletterHref);
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [returningSubscriber, setReturningSubscriber] = useState(false);
@@ -132,9 +136,9 @@ export function NewsletterSubscribeForm({
           ) : (
             <>
               {calmErrorBodyPrefix ?? NEWSLETTER_CALM_ERROR_BODY_PREFIX}{" "}
-              <a href={localizedHref("/newsletter")} className="text-primary underline-offset-4 hover:underline">
-                /newsletter
-              </a>
+              <Link href={newsletterHref} className="text-primary underline-offset-4 hover:underline">
+                {newsletterPublicPath}
+              </Link>
               .
             </>
           )}
@@ -153,7 +157,7 @@ export function NewsletterSubscribeForm({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim()) return;
-    subscribe.mutate({ email: email.trim(), source });
+    subscribe.mutate({ email: email.trim(), source, language: lang });
   };
 
   const emailNotSentSupplement =
@@ -166,9 +170,9 @@ export function NewsletterSubscribeForm({
         {successSupplementWhenEmailNotSent}{" "}
         {omitAuxiliaryNewsletterLinks ? null : (
           <>
-            <a href={localizedHref("/newsletter")} className="text-primary underline-offset-4 hover:underline">
-              /newsletter
-            </a>
+            <Link href={newsletterHref} className="text-primary underline-offset-4 hover:underline">
+              {newsletterPublicPath}
+            </Link>
             .
           </>
         )}

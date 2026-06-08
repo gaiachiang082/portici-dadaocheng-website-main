@@ -57,6 +57,10 @@ function createApp() {
     })
   );
 
+  // Legacy paths without /:lang prefix (ghost-month CTAs, old bookmarks)
+  app.get("/newsletter", (_req, res) => res.redirect(302, "/it/newsletter"));
+  app.get("/magazine", (_req, res) => res.redirect(302, "/it/magazine"));
+
   return app;
 }
 
