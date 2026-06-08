@@ -23,6 +23,8 @@ export type MagazinePageCopy = {
   newsletterAlreadyBody: string;
   newsletterEmailFailSupplement: string;
   sessionsLink: string;
+  enterExperience: string;
+  enterExperienceNote: string;
   samePdfInBrowser: string;
   samePdfNote: string;
   highlightsKicker: string;
@@ -67,17 +69,20 @@ const it: MagazinePageCopy = {
   currentKicker: "Trimestrale · edizione corrente",
   receiveCurrentAria: "Ricevere il numero attuale",
   pdfByEmailLead:
-    "Ti mandiamo il PDF del primo numero e, se vorrai, note sui numeri successivi — senza promettere un ritmo fisso.",
-  newsletterSubmit: "Registra l'indirizzo per il Nº1",
-  newsletterSuccessTitle: "Registrato — ti inviamo il Nº1 via email.",
-  newsletterSuccessBody: "Controlla la casella: a breve il link al PDF del primo numero.",
+    "Ti mandiamo il PDF del numero 2 e, se vorrai, note sui numeri successivi — senza promettere un ritmo fisso.",
+  newsletterSubmit: "Registra l'indirizzo per il Nº2",
+  newsletterSuccessTitle: "Registrato — ti inviamo il Nº2 via email.",
+  newsletterSuccessBody: "Controlla la casella: a breve il link al PDF del secondo numero.",
   newsletterAlreadyTitle: "Sei già nella lista.",
   newsletterAlreadyBody:
-    "Ti rimandiamo il messaggio con il link al PDF del numero 1: controlla la posta, anche in spam, quando ti è comodo.",
+    "Ti rimandiamo il messaggio con il link al PDF del numero 2: controlla la posta, anche in spam, quando ti è comodo.",
   newsletterEmailFailSupplement:
     "L'iscrizione è registrata, ma l'email non è partita da qui. Puoi riprovare tra poco o passare dalla pagina",
   sessionsLink: "Sessioni e laboratori",
-  samePdfInBrowser: "Stesso PDF nel browser",
+  enterExperience: "Entra nell'esperienza interattiva",
+  enterExperienceNote:
+    "Mappe, rituali e lanterne — il numero 2 ha anche un ingresso dedicato sul sito, oltre al PDF.",
+  samePdfInBrowser: "Apri il PDF nel browser",
   samePdfNote: "per chi preferisce non usare la posta",
   highlightsKicker: "Stesso numero · sommario",
   highlightsTitle: "Cosa trovi nel PDF",
@@ -89,7 +94,7 @@ const it: MagazinePageCopy = {
   archiveIntro:
     "L'archivio del trimestrale: ogni stagione resta scaricabile. Quando esce un nuovo numero, quello precedente si sposta qui — stessa pagina, stesso sistema.",
   archiveEmpty:
-    "È online il primo numero del trimestrale; quando ne uscirà un altro, quello precedente comparirà qui come scheda d'archivio — stesso URL, stesso sistema.",
+    "Quando uscirà un terzo numero, quello precedente comparirà qui come scheda d'archivio — stesso URL, stesso sistema.",
   openPdfInBrowser: "Apri il PDF nel browser",
   downloadPdf: "Scarica",
   coverAlt: (n) => `Copertina Portici Magazine Numero ${n}`,
@@ -126,17 +131,20 @@ const en: MagazinePageCopy = {
   currentKicker: "Quarterly · current issue",
   receiveCurrentAria: "Receive the current issue",
   pdfByEmailLead:
-    "We send the PDF of the first issue and, if you wish, notes on later numbers — without promising a fixed rhythm.",
-  newsletterSubmit: "Save this address for issue no. 1",
-  newsletterSuccessTitle: "Saved — we will email you issue no. 1.",
-  newsletterSuccessBody: "Check your inbox: the link to the first PDF will follow shortly.",
+    "We send the PDF of issue no. 2 and, if you wish, notes on later numbers — without promising a fixed rhythm.",
+  newsletterSubmit: "Save this address for issue no. 2",
+  newsletterSuccessTitle: "Saved — we will email you issue no. 2.",
+  newsletterSuccessBody: "Check your inbox: the link to the second PDF will follow shortly.",
   newsletterAlreadyTitle: "You are already on the list.",
   newsletterAlreadyBody:
-    "We will resend the message with the link to issue no. 1 — check mail, including spam, when it suits you.",
+    "We will resend the message with the link to issue no. 2 — check mail, including spam, when it suits you.",
   newsletterEmailFailSupplement:
     "Your signup is saved, but the email did not send from here. Try again shortly, or open",
   sessionsLink: "Sessions and labs",
-  samePdfInBrowser: "Same PDF in the browser",
+  enterExperience: "Enter the interactive experience",
+  enterExperienceNote:
+    "Maps, rituals, and lanterns — issue no. 2 also has a dedicated entry on the site, beyond the PDF.",
+  samePdfInBrowser: "Open the PDF in the browser",
   samePdfNote: "for those who prefer not to use mail",
   highlightsKicker: "Same issue · contents",
   highlightsTitle: "What you will find in the PDF",
@@ -148,7 +156,7 @@ const en: MagazinePageCopy = {
   archiveIntro:
     "The quarterly archive: each season stays downloadable. When a new number appears, the previous one moves here — same page, same system.",
   archiveEmpty:
-    "Only the first quarterly issue is online so far; when another appears, the earlier one will show here as an archive card — same URL, same system.",
+    "When a third issue appears, the previous one will show here as an archive card — same URL, same system.",
   openPdfInBrowser: "Open the PDF in the browser",
   downloadPdf: "Download",
   coverAlt: (n) => `Cover of Portici Magazine issue ${n}`,

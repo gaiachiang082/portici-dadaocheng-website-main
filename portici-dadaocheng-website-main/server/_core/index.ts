@@ -8,6 +8,7 @@ import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
 import { handleStripeWebhook } from "../stripe/webhook";
+import { registerGhostMonth } from "./ghostMonth";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -62,6 +63,9 @@ function createApp() {
 async function startServer() {
   const app = createApp();
   const server = createServer(app);
+
+  await registerGhostMonth(app);
+
   // development mode uses Vite, production mode uses static files
   if (process.env.NODE_ENV === "development") {
     await setupVite(app, server);
